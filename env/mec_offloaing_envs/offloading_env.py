@@ -55,6 +55,7 @@ class Resources(object):
 
         return computation_time
 
+
 class OffloadingEnvironment(MetaEnv):
     def __init__(self, resource_cluster, batch_size,
                  graph_number,
