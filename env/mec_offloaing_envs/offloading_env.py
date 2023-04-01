@@ -1,9 +1,8 @@
 from env.base import MetaEnv
 from env.mec_offloaing_envs.offloading_task_graph import OffloadingTaskGraph
-
-from samplers.vectorized_env_executor import MetaIterativeEnvExecutor
 import numpy as np
-import os
+import logging
+
 
 class Resources(object):
     """
@@ -25,6 +24,8 @@ class Resources(object):
 
         self.bandwidth_up = bandwidth_up
         self.bandwidth_dl = bandwidth_dl
+        logging.debug('Resources Class')
+        logging.debug('mec_process_capable = %s',str(mec_process_capable))
 
     def up_transmission_cost(self, data):
         rate = self.bandwidth_up * (1024.0 * 1024.0 / 8.0)
@@ -54,6 +55,7 @@ class Resources(object):
 
         return computation_time
 
+
 class OffloadingEnvironment(MetaEnv):
     def __init__(self, resource_cluster, batch_size,
                  graph_number,
@@ -66,6 +68,7 @@ class OffloadingEnvironment(MetaEnv):
         self.max_running_time_batchs = []
         self.min_running_time_batchs = []
         self.graph_file_paths = graph_file_paths
+        logging.debug('OffloadingEnvironment Class')
 
         # load all the task graphs into the evnironment
         for graph_file_path in graph_file_paths:
@@ -105,32 +108,32 @@ class OffloadingEnvironment(MetaEnv):
         """
         return np.random.choice(np.arange(self.total_task), n_tasks, replace=False)
 
-    def merge_graphs(self):
-        encoder_batchs = []
-        encoder_lengths = []
-        task_graphs_batchs = []
-        decoder_full_lengths =[]
-        max_running_time_batchs = []
-        min_running_time_batchs = []
-
-        for encoder_batch, encoder_length, task_graphs_batch, \
-            decoder_full_length, max_running_time_batch, \
-            min_running_time_batch in zip(self.encoder_batchs, self.encoder_lengths,
-                                          self.task_graphs_batchs, self.decoder_full_lengths,
-                                          self.max_running_time_batchs, self.min_running_time_batchs):
-            encoder_batchs += encoder_batch.tolist()
-            encoder_lengths += encoder_length.tolist()
-            task_graphs_batchs += task_graphs_batch
-            decoder_full_lengths += decoder_full_length.tolist()
-            max_running_time_batchs += max_running_time_batch
-            min_running_time_batchs += min_running_time_batch
-
-        self.encoder_batchs = np.array([encoder_batchs])
-        self.encoder_lengths = np.array([encoder_lengths])
-        self.task_graphs_batchs = [task_graphs_batchs]
-        self.decoder_full_lengths = np.array([decoder_full_lengths])
-        self.max_running_time_batchs = np.array([max_running_time_batchs])
-        self.min_running_time_batchs = np.array([min_running_time_batchs])
+    # def merge_graphs(self):
+    #     encoder_batchs = []
+    #     encoder_lengths = []
+    #     task_graphs_batchs = []
+    #     decoder_full_lengths =[]
+    #     max_running_time_batchs = []
+    #     min_running_time_batchs = []
+    #
+    #     for encoder_batch, encoder_length, task_graphs_batch, \
+    #         decoder_full_length, max_running_time_batch, \
+    #         min_running_time_batch in zip(self.encoder_batchs, self.encoder_lengths,
+    #                                       self.task_graphs_batchs, self.decoder_full_lengths,
+    #                                       self.max_running_time_batchs, self.min_running_time_batchs):
+    #         encoder_batchs += encoder_batch.tolist()
+    #         encoder_lengths += encoder_length.tolist()
+    #         task_graphs_batchs += task_graphs_batch
+    #         decoder_full_lengths += decoder_full_length.tolist()
+    #         max_running_time_batchs += max_running_time_batch
+    #         min_running_time_batchs += min_running_time_batch
+    #
+    #     self.encoder_batchs = np.array([encoder_batchs])
+    #     self.encoder_lengths = np.array([encoder_lengths])
+    #     self.task_graphs_batchs = [task_graphs_batchs]
+    #     self.decoder_full_lengths = np.array([decoder_full_lengths])
+    #     self.max_running_time_batchs = np.array([max_running_time_batchs])
+    #     self.min_running_time_batchs = np.array([min_running_time_batchs])
 
     def set_task(self, task):
         """
@@ -398,23 +401,23 @@ class OffloadingEnvironment(MetaEnv):
 
     def greedy_solution(self):
         result_plan = []
-        finish_time_batchs = []
+        finish_time_batches = []
         for task_graph_batch in self.task_graphs_batchs:
-            plan_batchs = []
+            plan_batches = []
             finish_time_plan = []
             for task_graph in task_graph_batch:
-                cloud_avaliable_time = 0.0
-                ws_avaliable_time = 0.0
-                local_avaliable_time = 0.0
+                cloud_available_time = 0.0
+                ws_available_time = 0.0
+                local_available_time = 0.0
 
                 # finish time on cloud for each task
-                FT_cloud = [0] * task_graph.task_number
+                ft_cloud = [0] * task_graph.task_number
                 # finish time on sending channel for each task
-                FT_ws = [0] * task_graph.task_number
+                ft_ws = [0] * task_graph.task_number
                 # finish time locally for each task
-                FT_locally = [0] * task_graph.task_number
-                # finish time recieving channel for each task
-                FT_wr = [0] * task_graph.task_number
+                ft_locally = [0] * task_graph.task_number
+                # finish time receiving channel for each task
+                ft_wr = [0] * task_graph.task_number
                 plan = []
 
                 for i in task_graph.prioritize_sequence:
@@ -422,59 +425,61 @@ class OffloadingEnvironment(MetaEnv):
 
                     # calculate the local finish time
                     if len(task_graph.pre_task_sets[i]) != 0:
-                        start_time = max(local_avaliable_time,
-                                         max([max(FT_locally[j], FT_wr[j]) for j in task_graph.pre_task_sets[i]]))
+                        start_time = max(local_available_time,
+                                         max([max(ft_locally[j], ft_wr[j]) for j in task_graph.pre_task_sets[i]]))
                     else:
-                        start_time = local_avaliable_time
+                        start_time = local_available_time
 
                     local_running_time = self.resource_cluster.locally_execution_cost(task.processing_data_size)
-                    FT_locally[i] = start_time + local_running_time
+                    ft_locally[i] = start_time + local_running_time
 
                     # calculate the remote finish time
                     if len(task_graph.pre_task_sets[i]) != 0:
-                        ws_start_time = max(ws_avaliable_time,
-                                            max([max(FT_locally[j], FT_ws[j]) for j in task_graph.pre_task_sets[i]]))
-                        FT_ws[i] = ws_start_time + self.resource_cluster.up_transmission_cost(task.processing_data_size)
-                        cloud_start_time = max(cloud_avaliable_time,
-                                               max([max(FT_ws[i], FT_cloud[j]) for j in task_graph.pre_task_sets[i]]))
+                        ws_start_time = max(ws_available_time,
+                                            max([max(ft_locally[j], ft_ws[j]) for j in task_graph.pre_task_sets[i]]))
+                        ft_ws[i] = ws_start_time + self.resource_cluster.up_transmission_cost(task.processing_data_size)
+                        cloud_start_time = max(cloud_available_time,
+                                               max([max(ft_ws[i], ft_cloud[j]) for j in task_graph.pre_task_sets[i]]))
                         cloud_finish_time = cloud_start_time + self.resource_cluster.mec_execution_cost(
                             task.processing_data_size)
-                        FT_cloud[i] = cloud_finish_time
-                        # print("task {}, Cloud finish time {}".format(i, FT_cloud[i]))
-                        wr_start_time = FT_cloud[i]
-                        wr_finish_time = wr_start_time + self.resource_cluster.dl_transmission_cost(task.transmission_data_size)
-                        FT_wr[i] = wr_finish_time
+                        ft_cloud[i] = cloud_finish_time
+                        # print("task {}, Cloud finish time {}".format(i, ft_cloud[i]))
+                        wr_start_time = ft_cloud[i]
+                        wr_finish_time = wr_start_time + self.resource_cluster.\
+                            dl_transmission_cost(task.transmission_data_size)
+                        ft_wr[i] = wr_finish_time
                     else:
-                        ws_start_time = ws_avaliable_time
-                        ws_finish_time = ws_start_time + self.resource_cluster.up_transmission_cost(task.processing_data_size)
-                        FT_ws[i] = ws_finish_time
+                        ws_start_time = ws_available_time
+                        ws_finish_time = ws_start_time + self.resource_cluster.\
+                            up_transmission_cost(task.processing_data_size)
+                        ft_ws[i] = ws_finish_time
 
-                        cloud_start_time = max(cloud_avaliable_time, FT_ws[i])
-                        FT_cloud[i] = cloud_start_time + self.resource_cluster.mec_execution_cost(
+                        cloud_start_time = max(cloud_available_time, ft_ws[i])
+                        ft_cloud[i] = cloud_start_time + self.resource_cluster.mec_execution_cost(
                             task.processing_data_size)
-                        FT_wr[i] = FT_cloud[i] + self.resource_cluster.dl_transmission_cost(task.transmission_data_size)
+                        ft_wr[i] = ft_cloud[i] + self.resource_cluster.dl_transmission_cost(task.transmission_data_size)
 
-                    if FT_locally[i] < FT_wr[i]:
+                    if ft_locally[i] < ft_wr[i]:
                         action = 0
-                        local_avaliable_time = FT_locally[i]
-                        FT_wr[i] = 0.0
-                        FT_cloud[i] = 0.0
-                        FT_ws[i] = 0.0
+                        local_available_time = ft_locally[i]
+                        ft_wr[i] = 0.0
+                        ft_cloud[i] = 0.0
+                        ft_ws[i] = 0.0
                     else:
                         action = 1
-                        FT_locally[i] = 0.0
-                        cloud_avaliable_time = FT_cloud[i]
-                        ws_avaliable_time = FT_ws[i]
+                        ft_locally[i] = 0.0
+                        cloud_available_time = ft_cloud[i]
+                        ws_available_time = ft_ws[i]
                     plan.append((i, action))
 
-                finish_time = max( max(FT_wr), max(FT_locally) )
-                plan_batchs.append(plan)
+                finish_time = max(max(ft_wr), max(ft_locally) )
+                plan_batches.append(plan)
                 finish_time_plan.append(finish_time)
 
-            finish_time_batchs.append(finish_time_plan)
-            result_plan.append(plan_batchs)
+            finish_time_batches.append(finish_time_plan)
+            result_plan.append(plan_batches)
 
-        return result_plan, finish_time_batchs
+        return result_plan, finish_time_batches
 
     def calculate_optimal_solution(self):
         # Finding the optimal solution via exhausting search the solution space.

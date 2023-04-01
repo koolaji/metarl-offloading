@@ -1,6 +1,7 @@
 from gym.core import Env
 import numpy as np
 
+
 class MetaEnv(Env):
     """
     Wrapper around OpenAI gym environments, interface for meta learning

@@ -7,6 +7,7 @@ import tensorflow as tf
 import os
 import multiprocessing
 
+
 def get_original_tf_name(name):
     """
     Args:
@@ -30,8 +31,10 @@ def remove_scope_from_name(name, scope):
     result = result[1:] if result[0] == '/' else result
     return result.split(":")[0]
 
+
 def remove_first_scope_from_name(name):
     return name.replace(name + '/', "").split(":")[0]
+
 
 def get_last_scope(name):
     """
@@ -162,6 +165,7 @@ def create_feed_dict(placeholder_dict, value_dict):
     # match the placeholders with their values
     return dict([(placeholder_dict[key], value_dict[key]) for key in placeholder_dict.keys()])
 
+
 def set_seed(seed):
     """
     Set the random seed for all random number generators
@@ -180,6 +184,7 @@ def set_seed(seed):
     tf.set_random_seed(seed)
     print('using seed %s' % (str(seed)))
 
+
 class ClassEncoder(json.JSONEncoder):
     def default(self, o):
         if isinstance(o, type):
@@ -187,6 +192,7 @@ class ClassEncoder(json.JSONEncoder):
         if callable(o):
             return {'function': o.__name__}
         return json.JSONEncoder.default(self, o)
+
 
 def function(inputs, outputs, updates=None, givens=None):
     """Just like Theano function. Take a bunch of tensorflow placeholders and expressions
@@ -228,6 +234,7 @@ def function(inputs, outputs, updates=None, givens=None):
         f = _Function(inputs, [outputs], updates, givens=givens)
         return lambda *args, **kwargs: f(*args, **kwargs)[0]
 
+
 def _check_shape(placeholder_shape, data_shape):
     ''' check if two shapes are compatible (i.e. differ only by dimensions of size 1, or by the batch dimension)'''
 
@@ -241,6 +248,7 @@ def _check_shape(placeholder_shape, data_shape):
             return False
 
     return True
+
 
 def _squeeze_shape(shape):
     return [x for x in shape if x != 1]
@@ -298,6 +306,7 @@ def get_session(config=None):
         sess = make_session(config=config, make_default=True)
     return sess
 
+
 class _Function(object):
     def __init__(self, inputs, outputs, updates, givens):
         for inpt in inputs:
@@ -326,6 +335,7 @@ class _Function(object):
             feed_dict[inpt] = adjust_shape(inpt, feed_dict.get(inpt, self.givens[inpt]))
         results = get_session().run(self.outputs_update, feed_dict=feed_dict)[:-1]
         return results
+
 
 def zipsame(*seqs):
     L = len(seqs[0])

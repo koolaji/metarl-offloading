@@ -30,7 +30,7 @@ pip install graphviz
 pip install pydotplus
 pip install pyprind
 conda install gxx_linux-64
-pip install --upgrade pip setuptools whee
+pip install --upgrade pip setuptools wheel
 pip install mpi4py
 ```
 ### Start Meta Training:
@@ -64,4 +64,9 @@ If you like this research, please cite this paper:
   year={2020},
   publisher={IEEE}
 }
+```
+
+
+```
+https://github.com/frs69wq/daggen
 ```

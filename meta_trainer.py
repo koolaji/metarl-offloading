@@ -1,7 +1,9 @@
 import tensorflow as tf
 import numpy as np
 import time
+import logging
 from utils import logger
+
 
 class Trainer(object):
     def __init__(self,algo,
@@ -84,7 +86,6 @@ class Trainer(object):
             avg_latency = np.mean(latency)
             avg_latencies.append(avg_latency)
 
-
             logger.logkv('Itr', itr)
             logger.logkv('Average reward, ', avg_reward)
             logger.logkv('Average latency,', avg_latency)
@@ -101,14 +102,14 @@ class Trainer(object):
 
 
 if __name__ == "__main__":
-    from env.mec_offloaing_envs.offloading_env import Resources
-    from env.mec_offloaing_envs.offloading_env import OffloadingEnvironment
+    from env.mec_offloaing_envs.offloading_env import Resources  # import resource spec
+    from env.mec_offloaing_envs.offloading_env import OffloadingEnvironment  # import env spec
     from policies.meta_seq2seq_policy import MetaSeq2SeqPolicy
     from samplers.seq2seq_meta_sampler import Seq2SeqMetaSampler
     from samplers.seq2seq_meta_sampler_process import Seq2SeqMetaSamplerProcessor
     from baselines.vf_baseline import ValueFunctionBaseline
     from meta_algos.MRLCO import MRLCO
-
+    logging.basicConfig(level=logging.DEBUG)
     tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
     logger.configure(dir="./meta_offloading20_log-inner_step1/", format_strs=['stdout', 'log', 'csv'])
 
@@ -143,57 +144,55 @@ if __name__ == "__main__":
                                     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_25/random.20.",
                                 ],
                                 time_major=False)
-
-    action, greedy_finish_time = env.greedy_solution()
-    print("avg greedy solution: ", np.mean(greedy_finish_time))
-    print()
-    finish_time = env.get_all_mec_execute_time()
-    print("avg all remote solution: ", np.mean(finish_time))
-    print()
-    finish_time = env.get_all_locally_execute_time()
-    print("avg all local solution: ", np.mean(finish_time))
-    print()
-
+    # logging.debug('start of greedy_solution')
+    # action, greedy_finish_time = env.greedy_solution()
+    # logging.debug('end of greedy_solution')
+    # logging.debug("avg greedy solution: %s", np.mean(greedy_finish_time))
+    # finish_time = env.get_all_mec_execute_time()
+    # logging.debug("avg all remote solution: %s", np.mean(finish_time))
+    # finish_time = env.get_all_locally_execute_time()
+    # logging.debug("avg all local solution: %s", np.mean(finish_time))
+    # generate baseline
     baseline = ValueFunctionBaseline()
 
     meta_policy = MetaSeq2SeqPolicy(meta_batch_size=META_BATCH_SIZE, obs_dim=17, encoder_units=128, decoder_units=128,
                                     vocab_size=2)
 
-    sampler = Seq2SeqMetaSampler(
-        env=env,
-        policy=meta_policy,
-        rollouts_per_meta_task=1,  # This batch_size is confusing
-        meta_batch_size=META_BATCH_SIZE,
-        max_path_length=20000,
-        parallel=False,
-    )
-
-    sample_processor = Seq2SeqMetaSamplerProcessor(baseline=baseline,
-                                                   discount=0.99,
-                                                   gae_lambda=0.95,
-                                                   normalize_adv=True,
-                                                   positive_adv=False)
-    algo = MRLCO(policy=meta_policy,
-                         meta_sampler=sampler,
-                         meta_sampler_process=sample_processor,
-                         inner_lr=5e-4,
-                         outer_lr=5e-4,
-                         meta_batch_size=META_BATCH_SIZE,
-                         num_inner_grad_steps=1,
-                         clip_value = 0.3)
-
-    trainer = Trainer(algo = algo,
-                        env=env,
-                        sampler=sampler,
-                        sample_processor=sample_processor,
-                        policy=meta_policy,
-                        n_itr=2000,
-                        greedy_finish_time= greedy_finish_time,
-                        start_itr=0,
-                        inner_batch_size=1000)
-
-    with tf.compat.v1.Session() as sess:
-        sess.run(tf.global_variables_initializer())
-        avg_ret, avg_loss, avg_latencies = trainer.train()
-
-
+    # sampler = Seq2SeqMetaSampler(
+    #     env=env,
+    #     policy=meta_policy,
+    #     rollouts_per_meta_task=1,  # This batch_size is confusing
+    #     meta_batch_size=META_BATCH_SIZE,
+    #     max_path_length=20000,
+    #     parallel=False,
+    # )
+    #
+    # sample_processor = Seq2SeqMetaSamplerProcessor(baseline=baseline,
+    #                                                discount=0.99,
+    #                                                gae_lambda=0.95,
+    #                                                normalize_adv=True,
+    #                                                positive_adv=False)
+    # algo = MRLCO(policy=meta_policy,
+    #                      meta_sampler=sampler,
+    #                      meta_sampler_process=sample_processor,
+    #                      inner_lr=5e-4,
+    #                      outer_lr=5e-4,
+    #                      meta_batch_size=META_BATCH_SIZE,
+    #                      num_inner_grad_steps=1,
+    #                      clip_value = 0.3)
+    #
+    # trainer = Trainer(algo = algo,
+    #                     env=env,
+    #                     sampler=sampler,
+    #                     sample_processor=sample_processor,
+    #                     policy=meta_policy,
+    #                     n_itr=2000,
+    #                     greedy_finish_time= greedy_finish_time,
+    #                     start_itr=0,
+    #                     inner_batch_size=1000)
+    #
+    # with tf.compat.v1.Session() as sess:
+    #     sess.run(tf.global_variables_initializer())
+    #     avg_ret, avg_loss, avg_latencies = trainer.train()
+    #
+    #

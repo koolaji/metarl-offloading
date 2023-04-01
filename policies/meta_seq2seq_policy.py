@@ -358,13 +358,16 @@ class Seq2SeqNetwork():
         return tf.compat.v1.get_collection(tf.compat.v1.GraphKeys.TRAINABLE_VARIABLES, self.scope)
 
 
-class Seq2SeqPolicy():
+class Seq2SeqPolicy:
     def __init__(self, obs_dim, encoder_units,
                  decoder_units, vocab_size, name="pi"):
-        self.decoder_targets = tf.compat.v1.placeholder(shape=[None, None], dtype=tf.int32, name="decoder_targets_ph_"+name)
-        self.decoder_inputs = tf.compat.v1.placeholder(shape=[None, None], dtype=tf.int32, name="decoder_inputs_ph"+name)
+        self.decoder_targets = tf.compat.v1.placeholder(shape=[None, None], dtype=tf.int32,
+                                                        name="decoder_targets_ph_"+name)
+        self.decoder_inputs = tf.compat.v1.placeholder(shape=[None, None], dtype=tf.int32,
+                                                       name="decoder_inputs_ph"+name)
         self.obs = tf.compat.v1.placeholder(shape=[None, None, obs_dim], dtype=tf.float32, name="obs_ph"+name)
-        self.decoder_full_length = tf.compat.v1.placeholder(shape=[None], dtype=tf.int32, name="decoder_full_length"+name)
+        self.decoder_full_length = tf.compat.v1.placeholder(shape=[None], dtype=tf.int32,
+                                                            name="decoder_full_length"+name)
 
         self.action_dim = vocab_size
         self.name = name
@@ -387,7 +390,7 @@ class Seq2SeqPolicy():
             is_bidencoder=False
         )
 
-        self.network = Seq2SeqNetwork( hparams = hparams, reuse=tf.compat.v1.AUTO_REUSE,
+        self.network = Seq2SeqNetwork(hparams=hparams, reuse=tf.compat.v1.AUTO_REUSE,
                  encoder_inputs=self.obs,
                  decoder_inputs=self.decoder_inputs,
                  decoder_full_length=self.decoder_full_length,
@@ -450,7 +453,7 @@ class Seq2SeqPolicy():
         sess.run(restores)
 
 
-class MetaSeq2SeqPolicy():
+class MetaSeq2SeqPolicy:
     def __init__(self, meta_batch_size, obs_dim, encoder_units, decoder_units,
                  vocab_size):
 
@@ -459,7 +462,6 @@ class MetaSeq2SeqPolicy():
         self.action_dim = vocab_size
 
         self.core_policy = Seq2SeqPolicy(obs_dim, encoder_units, decoder_units, vocab_size, name='core_policy')
-
 
         self.meta_policies = []
 
@@ -476,7 +478,6 @@ class MetaSeq2SeqPolicy():
                 )
 
         self._dist = CategoricalPd(vocab_size)
-
 
     def get_actions(self, observations):
         assert len(observations) == self.meta_batch_size
