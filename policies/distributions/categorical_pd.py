@@ -2,6 +2,7 @@ import tensorflow as tf
 import numpy as np
 from policies.distributions.base import Distribution
 
+
 class CategoricalPd(Distribution):
     """
         General methods for a diagonal gaussian distribution of this size

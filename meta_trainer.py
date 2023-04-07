@@ -158,20 +158,20 @@ if __name__ == "__main__":
     meta_policy = MetaSeq2SeqPolicy(meta_batch_size=META_BATCH_SIZE, obs_dim=17, encoder_units=128, decoder_units=128,
                                     vocab_size=2)
 
-    # sampler = Seq2SeqMetaSampler(
-    #     env=env,
-    #     policy=meta_policy,
-    #     rollouts_per_meta_task=1,  # This batch_size is confusing
-    #     meta_batch_size=META_BATCH_SIZE,
-    #     max_path_length=20000,
-    #     parallel=False,
-    # )
-    #
-    # sample_processor = Seq2SeqMetaSamplerProcessor(baseline=baseline,
-    #                                                discount=0.99,
-    #                                                gae_lambda=0.95,
-    #                                                normalize_adv=True,
-    #                                                positive_adv=False)
+    sampler = Seq2SeqMetaSampler(
+        env=env,
+        policy=meta_policy,
+        rollouts_per_meta_task=1,  # This batch_size is confusing
+        meta_batch_size=META_BATCH_SIZE,
+        max_path_length=20000,
+        parallel=False,
+    )
+
+    sample_processor = Seq2SeqMetaSamplerProcessor(baseline=baseline,
+                                                   discount=0.99,
+                                                   gae_lambda=0.95,
+                                                   normalize_adv=True,
+                                                   positive_adv=False)
     # algo = MRLCO(policy=meta_policy,
     #                      meta_sampler=sampler,
     #                      meta_sampler_process=sample_processor,
@@ -194,5 +194,5 @@ if __name__ == "__main__":
     # with tf.compat.v1.Session() as sess:
     #     sess.run(tf.global_variables_initializer())
     #     avg_ret, avg_loss, avg_latencies = trainer.train()
-    #
-    #
+
+

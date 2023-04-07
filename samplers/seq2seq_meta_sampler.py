@@ -1,3 +1,25 @@
+"""
+This code defines a Seq2SeqMetaSampler class that is used for sampling trajectories for meta-reinforcement learning.
+he class takes as input an environment, a policy, and various parameters such as the batch size, the maximum path
+length, and the number of environments to run vectorized for each task.
+
+The class implements the obtain_samples() method, which collects batch_size trajectories from each task by executing
+the policy on the current observations and stepping the environment. The method returns a dictionary of paths, where
+each path corresponds to one task and contains the observations, actions, logits, rewards, finish times, and values for
+each time step in the trajectory.
+
+The class also implements the update_tasks() method, which samples a new goal for each meta task. The method returns
+a list of tasks, where each task is a tuple of goal parameters.
+
+The sampler can be run in parallel mode or iterative mode, depending on the parallel parameter passed to the
+constructor. In parallel mode, the sampler uses a MetaParallelEnvExecutor to run multiple environments in parallel for
+each task. In iterative mode, the sampler uses a MetaIterativeEnvExecutor to run a single
+environment iteratively for each task.
+
+Overall, this code provides a useful tool for collecting trajectories for meta-reinforcement learning,
+which is a type of reinforcement learning where the goal is to learn how to learn by adapting to new tasks quickly.
+"""
+
 from samplers.base import Sampler
 from samplers.vectorized_env_executor import MetaParallelEnvExecutor, MetaIterativeEnvExecutor
 from utils import utils, logger
@@ -22,15 +44,8 @@ class Seq2SeqMetaSampler(Sampler):
         envs_per_task (int) : number of envs to run vectorized for each task (influences the memory usage)
     """
 
-    def __init__(self,
-                env,
-                policy,
-                rollouts_per_meta_task,
-                meta_batch_size,
-                max_path_length,
-                envs_per_task=None,
-                parallel=False
-                ):
+    def __init__(self, env, policy, rollouts_per_meta_task, meta_batch_size, max_path_length, envs_per_task=None,
+                 parallel=False):
         super(Seq2SeqMetaSampler, self).__init__(env, policy, rollouts_per_meta_task, max_path_length)
         assert hasattr(env, 'set_task')
 

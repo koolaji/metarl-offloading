@@ -1,6 +1,22 @@
+"""
+This class is a subclass of the SampleProcessor class and is specifically designed for processing samples for a
+sequence-to-sequence meta-learning algorithm. The main method, process_samples, takes in a dictionary of
+paths_meta_batch, where each key is a meta-task and the corresponding value is a list of paths for that task.
+The method then goes through each task, fits a baseline estimator using the paths for that task, and computes advantages
+ and adjusted rewards. The method then stacks the path data and returns a dictionary of samples_data_meta_batch,
+ where each key is a meta-task and the corresponding value is a dictionary of the stacked path data for that task.
+
+The _compute_samples_data method is called by the process_samples method and is responsible for computing discounted
+rewards, fitting the baseline estimator, computing advantages, and adjusted rewards. The _append_path_data method is
+responsible for appending the path data and returning it as a tuple of numpy arrays.
+
+Overall, this class provides a way to process samples for a sequence-to-sequence meta-learning algorithm by computing
+discounted rewards, fitting the baseline estimator, and computing advantages and adjusted rewards.
+"""
 from samplers.base import SampleProcessor
 from utils import utils
 import numpy as np
+
 
 class Seq2SeqMetaSamplerProcessor(SampleProcessor):
     def process_samples(self, paths_meta_batch, log=False, log_prefix=''):

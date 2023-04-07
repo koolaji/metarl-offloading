@@ -2,6 +2,30 @@ import numpy as np
 import pickle as pickle
 from multiprocessing import Process, Pipe
 import copy
+"""
+This code defines a MetaIterativeEnvExecutor class that wraps multiple environments of the same kind and provides 
+functionality to reset/step the environments in a vectorized manner. Internally, the environments are 
+executed iteratively.
+
+The class takes as input a meta environment object, the number of meta tasks, the number of environments 
+per meta task, and the maximum length of sampled environment paths. The class initializes an array of environments, 
+each of which is a deep copy of the input environment object.
+
+The class implements the step() method, which takes a list of actions and steps the wrapped environments with 
+the provided actions. The method returns a tuple of lists containing the observations, rewards, dones, and environment 
+information for each environment. If the maximum path length is reached or the environment is done, the method resets 
+the environment.
+
+The class also implements the set_tasks() method, which sets a list of tasks to each environment. The method takes as 
+input a list of tasks, where each task is a tuple of goal parameters.
+
+The class also implements the reset() method, which resets the environments and returns a list of 
+the new initial observations.
+
+Overall, this code provides a useful tool for vectorizing the execution of multiple environments in 
+meta-reinforcement learning.
+"""
+
 
 class MetaIterativeEnvExecutor(object):
     """
@@ -82,6 +106,7 @@ class MetaIterativeEnvExecutor(object):
             (int): number of environments
         """
         return len(self.envs)
+
 
 class MetaParallelEnvExecutor(object):
     """

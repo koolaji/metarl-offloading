@@ -58,7 +58,7 @@ if __name__ == "__main__":
             # newPos = pop[i].pos + rand_bar * (Teacher.pos - TF * Mean)
             # # print(newPos)
             if pop[i].cost < fitness(Mean):
-                newPos = pop[i].pos * w + (Teacher.pos - pop[i].pos) * rand_bar
+                newPos = pop[i].pos * w + (x - pop[i].pos) * rand_bar
             else:
                 newPos = (pop[i].pos + (rand_bar - 0.5) * 2 * (Mean - pop[i].pos)) * math \
                     .sin((math.pi / 2) * (Itr / MaxItr)) + diff * math.cos((math.pi / 2) * (Itr / MaxItr))

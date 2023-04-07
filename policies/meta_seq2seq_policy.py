@@ -12,8 +12,11 @@ from tensorflow.python.ops.distributions import categorical
 from policies.distributions.categorical_pd import CategoricalPd
 import utils as U
 from utils.utils import zipsame
+import logging
+
 
 tf.get_logger().setLevel('WARNING')
+
 
 class FixedSequenceLearningSampleEmbedingHelper(tf.contrib.seq2seq.SampleEmbeddingHelper):
     def __init__(self, sequence_length, embedding, start_tokens, end_token, softmax_temperature=None, seed=None):
@@ -60,7 +63,7 @@ class FixedSequenceLearningSampleEmbedingHelper(tf.contrib.seq2seq.SampleEmbeddi
         return (finished, next_inputs, state)
 
 
-class Seq2SeqNetwork():
+class Seq2SeqNetwork:
     def __init__(self, name,
                  hparams, reuse,
                  encoder_inputs,
@@ -96,11 +99,11 @@ class Seq2SeqNetwork():
 
         with tf.compat.v1.variable_scope(name, reuse=self.reuse, initializer=tf.glorot_normal_initializer()):
             self.scope = tf.compat.v1.get_variable_scope().name
+            logging.debug(tf.compat.v1.get_variable_scope().name)
             self.embeddings = tf.Variable(tf.random.uniform(
                 [self.n_features,
                  self.encoder_hidden_unit],
                 -1.0, 1.0), dtype=tf.float32)
-
             # using a fully connected layer as embeddings
             self.encoder_embeddings = tf.contrib.layers.fully_connected(self.encoder_inputs,
                                                                         self.encoder_hidden_unit,
@@ -110,13 +113,10 @@ class Seq2SeqNetwork():
 
             self.decoder_embeddings = tf.nn.embedding_lookup(self.embeddings,
                                                              self.decoder_inputs)
-
             self.decoder_targets_embeddings = tf.one_hot(self.decoder_targets,
                                                          self.n_features,
                                                          dtype=tf.float32)
-
             self.output_layer = tf.compat.v1.layers.Dense(self.n_features, use_bias=False, name="output_projection")
-
             if self.is_bidencoder:
                 self.encoder_outputs, self.encoder_state = self.create_bidrect_encoder(hparams)
             else:
@@ -128,77 +128,73 @@ class Seq2SeqNetwork():
             self.decoder_logits = self.decoder_outputs.rnn_output
             self.pi = tf.nn.softmax(self.decoder_logits)
             self.q = tf.compat.v1.layers.dense(self.decoder_logits, self.n_features, activation=None,
-                                     reuse=tf.compat.v1.AUTO_REUSE, name="qvalue_layer")
+                                               reuse=tf.compat.v1.AUTO_REUSE, name="qvalue_layer")
             self.vf = tf.reduce_sum(self.pi * self.q, axis=-1)
-
             self.decoder_prediction = self.decoder_outputs.sample_id
 
             # sample decoder
-            self.sample_decoder_outputs, self.sample_decoder_state = self.create_decoder(hparams, self.encoder_outputs,
-                                                                           self.encoder_state, model="sample")
+            self.sample_decoder_outputs, self.sample_decoder_state = \
+                self.create_decoder(hparams, self.encoder_outputs, self.encoder_state, model="sample")
             self.sample_decoder_logits = self.sample_decoder_outputs.rnn_output
             self.sample_pi = tf.nn.softmax(self.sample_decoder_logits)
             self.sample_q = tf.compat.v1.layers.dense(self.sample_decoder_logits, self.n_features,
-                                            activation=None, reuse=tf.compat.v1.AUTO_REUSE, name="qvalue_layer")
-
+                                                      activation=None, reuse=tf.compat.v1.AUTO_REUSE,
+                                                      name="qvalue_layer")
             self.sample_vf = tf.reduce_sum(self.sample_pi*self.sample_q, axis=-1)
-
             self.sample_decoder_prediction = self.sample_decoder_outputs.sample_id
 
             # Note: we can't use sparse_softmax_cross_entropy_with_logits
             self.sample_decoder_embeddings = tf.one_hot(self.sample_decoder_prediction,
                                                         self.n_features,
                                                         dtype=tf.float32)
-
             self.sample_neglogp = tf.nn.softmax_cross_entropy_with_logits_v2(labels=self.sample_decoder_embeddings,
                                                                              logits=self.sample_decoder_logits)
 
             # greedy decoder
-            self.greedy_decoder_outputs, self.greedy_decoder_state = self.create_decoder(hparams, self.encoder_outputs,
-                                                                           self.encoder_state, model="greedy")
+            self.greedy_decoder_outputs, self.greedy_decoder_state = \
+                self.create_decoder(hparams, self.encoder_outputs, self.encoder_state, model="greedy")
             self.greedy_decoder_logits = self.greedy_decoder_outputs.rnn_output
             self.greedy_pi = tf.nn.softmax(self.greedy_decoder_logits)
-            self.greedy_q = tf.compat.v1.layers.dense(self.greedy_decoder_logits, self.n_features, activation=None, reuse=tf.compat.v1.AUTO_REUSE,
-                                     name="qvalue_layer")
+            self.greedy_q = tf.compat.v1.layers.dense(self.greedy_decoder_logits, self.n_features, activation=None,
+                                                      reuse=tf.compat.v1.AUTO_REUSE, name="qvalue_layer")
             self.greedy_vf = tf.reduce_sum(self.greedy_pi * self.greedy_q, axis=-1)
-
             self.greedy_decoder_prediction = self.greedy_decoder_outputs.sample_id
 
-    def predict_training(self, sess, encoder_input_batch, decoder_input, decoder_full_length):
-        return sess.run([self.decoder_prediction, self.pi],
-                        feed_dict={
-                            self.encoder_inputs: encoder_input_batch,
-                            self.decoder_inputs: decoder_input,
-                            self.decoder_full_length: decoder_full_length
-                        })
-
-    def kl(self, other):
-        a0 = self.decoder_logits - tf.reduce_max(self.decoder_logits, axis=-1, keepdims=True)
-        a1 = other.decoder_logits - tf.reduce_max(other.decoder_logits, axis=-1, keepdims=True)
-        ea0 = tf.exp(a0)
-        ea1 = tf.exp(a1)
-        z0 = tf.reduce_sum(ea0, axis=-1, keepdims=True)
-        z1 = tf.reduce_sum(ea1, axis=-1, keepdims=True)
-        p0 = ea0 / z0
-        return tf.reduce_sum(p0 * (a0 - tf.log(z0) - a1 + tf.log(z1)), axis=-1)
-
-    def entropy(self):
-        a0 = self.decoder_logits - tf.reduce_max(self.decoder_logits, axis=-1, keepdims=True)
-        ea0 = tf.exp(a0)
-        z0 = tf.reduce_sum(ea0, axis=-1, keepdims=True)
-        p0 = ea0 / z0
-        return tf.reduce_sum(p0 * (tf.log(z0) - a0), axis=-1)
-
-    def neglogp(self):
-        # return tf.nn.sparse_softmax_cross_entropy_with_logits(logits=self.logits, labels=x)
-        # Note: we can't use sparse_softmax_cross_entropy_with_logits because
-        #       the implementation does not allow second-order derivatives...
-        return tf.nn.softmax_cross_entropy_with_logits_v2(
-            logits=self.decoder_logits,
-            labels=self.decoder_targets_embeddings)
-
-    def logp(self):
-        return -self.neglogp()
+    # def predict_training(self, sess, encoder_input_batch, decoder_input, decoder_full_length):
+    #     return sess.run([self.decoder_prediction, self.pi],
+    #                     feed_dict={
+    #                         self.encoder_inputs: encoder_input_batch,
+    #                         self.decoder_inputs: decoder_input,
+    #                         self.decoder_full_length: decoder_full_length
+    #                     })
+    #
+    # def kl(self, other):
+    #     a0 = self.decoder_logits - tf.reduce_max(self.decoder_logits, axis=-1, keepdims=True)
+    #     a1 = other.decoder_logits - tf.reduce_max(other.decoder_logits, axis=-1, keepdims=True)
+    #     ea0 = tf.exp(a0)
+    #     ea1 = tf.exp(a1)
+    #     z0 = tf.reduce_sum(ea0, axis=-1, keepdims=True)
+    #     z1 = tf.reduce_sum(ea1, axis=-1, keepdims=True)
+    #     p0 = ea0 / z0
+    #     return tf.reduce_sum(p0 * (a0 - tf.log(z0) - a1 + tf.log(z1)), axis=-1)
+    #
+    # def entropy(self):
+    #     a0 = self.decoder_logits - tf.reduce_max(self.decoder_logits, axis=-1, keepdims=True)
+    #     ea0 = tf.exp(a0)
+    #     z0 = tf.reduce_sum(ea0, axis=-1, keepdims=True)
+    #     p0 = ea0 / z0
+    #     return tf.reduce_sum(p0 * (tf.log(z0) - a0), axis=-1)
+    #
+    # def neglogp(self):
+    #     # return tf.nn.sparse_softmax_cross_entropy_with_logits(logits=self.logits, labels=x)
+    #     # Note: we can't use sparse_softmax_cross_entropy_with_logits because
+    #     #       the implementation does not allow second-order derivatives...
+    #     return tf.nn.softmax_cross_entropy_with_logits_v2(
+    #         logits=self.decoder_logits,
+    #         labels=self.decoder_targets_embeddings)
+    #
+    # def logp(self):
+    #     return -self.neglogp()
 
     def _build_encoder_cell(self, hparams, num_layers, num_residual_layers, base_gpu=0):
         """Build a multi-layer RNN cell that can be used by encoder."""
@@ -394,7 +390,7 @@ class Seq2SeqPolicy:
                  encoder_inputs=self.obs,
                  decoder_inputs=self.decoder_inputs,
                  decoder_full_length=self.decoder_full_length,
-                 decoder_targets=self.decoder_targets,name = name)
+                 decoder_targets=self.decoder_targets, name = name)
 
         self.vf = self.network.vf
 
@@ -474,7 +470,8 @@ class MetaSeq2SeqPolicy:
             self.assign_old_eq_new_tasks.append(
                 U.function([], [], updates=[tf.compat.v1.assign(oldv, newv)
                                             for (oldv, newv) in
-                                            zipsame(self.meta_policies[i].get_variables(), self.core_policy.get_variables())])
+                                            zipsame(self.meta_policies[i].get_variables(),
+                                                    self.core_policy.get_variables())])
                 )
 
         self._dist = CategoricalPd(vocab_size)
