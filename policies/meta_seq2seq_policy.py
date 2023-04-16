@@ -99,7 +99,7 @@ class Seq2SeqNetwork:
 
         with tf.compat.v1.variable_scope(name, reuse=self.reuse, initializer=tf.glorot_normal_initializer()):
             self.scope = tf.compat.v1.get_variable_scope().name
-            logging.debug(tf.compat.v1.get_variable_scope().name)
+            # logging.debug(tf.compat.v1.get_variable_scope().name)
             self.embeddings = tf.Variable(tf.random.uniform(
                 [self.n_features,
                  self.encoder_hidden_unit],
@@ -160,41 +160,41 @@ class Seq2SeqNetwork:
             self.greedy_vf = tf.reduce_sum(self.greedy_pi * self.greedy_q, axis=-1)
             self.greedy_decoder_prediction = self.greedy_decoder_outputs.sample_id
 
-    # def predict_training(self, sess, encoder_input_batch, decoder_input, decoder_full_length):
-    #     return sess.run([self.decoder_prediction, self.pi],
-    #                     feed_dict={
-    #                         self.encoder_inputs: encoder_input_batch,
-    #                         self.decoder_inputs: decoder_input,
-    #                         self.decoder_full_length: decoder_full_length
-    #                     })
-    #
-    # def kl(self, other):
-    #     a0 = self.decoder_logits - tf.reduce_max(self.decoder_logits, axis=-1, keepdims=True)
-    #     a1 = other.decoder_logits - tf.reduce_max(other.decoder_logits, axis=-1, keepdims=True)
-    #     ea0 = tf.exp(a0)
-    #     ea1 = tf.exp(a1)
-    #     z0 = tf.reduce_sum(ea0, axis=-1, keepdims=True)
-    #     z1 = tf.reduce_sum(ea1, axis=-1, keepdims=True)
-    #     p0 = ea0 / z0
-    #     return tf.reduce_sum(p0 * (a0 - tf.log(z0) - a1 + tf.log(z1)), axis=-1)
-    #
-    # def entropy(self):
-    #     a0 = self.decoder_logits - tf.reduce_max(self.decoder_logits, axis=-1, keepdims=True)
-    #     ea0 = tf.exp(a0)
-    #     z0 = tf.reduce_sum(ea0, axis=-1, keepdims=True)
-    #     p0 = ea0 / z0
-    #     return tf.reduce_sum(p0 * (tf.log(z0) - a0), axis=-1)
-    #
-    # def neglogp(self):
-    #     # return tf.nn.sparse_softmax_cross_entropy_with_logits(logits=self.logits, labels=x)
-    #     # Note: we can't use sparse_softmax_cross_entropy_with_logits because
-    #     #       the implementation does not allow second-order derivatives...
-    #     return tf.nn.softmax_cross_entropy_with_logits_v2(
-    #         logits=self.decoder_logits,
-    #         labels=self.decoder_targets_embeddings)
-    #
-    # def logp(self):
-    #     return -self.neglogp()
+    def predict_training(self, sess, encoder_input_batch, decoder_input, decoder_full_length):
+        return sess.run([self.decoder_prediction, self.pi],
+                        feed_dict={
+                            self.encoder_inputs: encoder_input_batch,
+                            self.decoder_inputs: decoder_input,
+                            self.decoder_full_length: decoder_full_length
+                        })
+
+    def kl(self, other):
+        a0 = self.decoder_logits - tf.reduce_max(self.decoder_logits, axis=-1, keepdims=True)
+        a1 = other.decoder_logits - tf.reduce_max(other.decoder_logits, axis=-1, keepdims=True)
+        ea0 = tf.exp(a0)
+        ea1 = tf.exp(a1)
+        z0 = tf.reduce_sum(ea0, axis=-1, keepdims=True)
+        z1 = tf.reduce_sum(ea1, axis=-1, keepdims=True)
+        p0 = ea0 / z0
+        return tf.reduce_sum(p0 * (a0 - tf.log(z0) - a1 + tf.log(z1)), axis=-1)
+
+    def entropy(self):
+        a0 = self.decoder_logits - tf.reduce_max(self.decoder_logits, axis=-1, keepdims=True)
+        ea0 = tf.exp(a0)
+        z0 = tf.reduce_sum(ea0, axis=-1, keepdims=True)
+        p0 = ea0 / z0
+        return tf.reduce_sum(p0 * (tf.log(z0) - a0), axis=-1)
+
+    def neglogp(self):
+        # return tf.nn.sparse_softmax_cross_entropy_with_logits(logits=self.logits, labels=x)
+        # Note: we can't use sparse_softmax_cross_entropy_with_logits because
+        #       the implementation does not allow second-order derivatives...
+        return tf.nn.softmax_cross_entropy_with_logits_v2(
+            logits=self.decoder_logits,
+            labels=self.decoder_targets_embeddings)
+
+    def logp(self):
+        return -self.neglogp()
 
     def _build_encoder_cell(self, hparams, num_layers, num_residual_layers, base_gpu=0):
         """Build a multi-layer RNN cell that can be used by encoder."""
@@ -397,14 +397,30 @@ class Seq2SeqPolicy:
         self._dist = CategoricalPd(vocab_size)
 
     def get_actions(self, observations):
+        """
+        The get_actions method of the Sampler class is used to obtain actions to take from the policy given a batch of
+        observations. It calls the sample_decoder_prediction, sample_decoder_logits, and sample_vf methods of the neural
+        network model to obtain the actions, logits, and value estimates for the given observations.
+        The method first gets the default TensorFlow session using the tf.compat.v1.get_default_session() method. It
+        then computes the decoder_full_length array, which is an array of the same length as the batch size that
+        contains the maximum length of the decoder sequence for each observation in the batch. This is used to feed
+        the decoder_full_length placeholder in the TensorFlow graph.
+        The method then runs the TensorFlow graph by calling the sess.run() method with the sample_decoder_prediction,
+        sample_decoder_logits, and sample_vf TensorFlow tensors as input. The feed_dict argument is used to feed the
+        observations and decoder_full_length numpy arrays to the input placeholders in the TensorFlow graph.
+        Finally, the method returns the obtained actions, logits, and v_value numpy arrays. These arrays represent the
+        actions to take, the logits of the action distribution, and the estimated value function for the given
+        observations.
+        """
         sess = tf.compat.v1.get_default_session()
 
-        decoder_full_length = np.array( [observations.shape[1]] * observations.shape[0] , dtype=np.int32)
-
+        decoder_full_length = np.array([observations.shape[1]] * observations.shape[0], dtype=np.int32)
+        # logging.debug(" decoder_full_length %s", decoder_full_length)
         actions, logits, v_value = sess.run([self.network.sample_decoder_prediction,
                                              self.network.sample_decoder_logits,
                                              self.network.sample_vf],
-                                            feed_dict={self.obs: observations, self.decoder_full_length: decoder_full_length})
+                                            feed_dict={self.obs: observations,
+                                                       self.decoder_full_length: decoder_full_length})
 
         return actions, logits, v_value
 

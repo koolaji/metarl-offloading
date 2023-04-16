@@ -2,6 +2,8 @@ import numpy as np
 import pickle as pickle
 from multiprocessing import Process, Pipe
 import copy
+import logging
+
 """
 This code defines a MetaIterativeEnvExecutor class that wraps multiple environments of the same kind and provides 
 functionality to reset/step the environments in a vectorized manner. Internally, the environments are 
@@ -56,6 +58,21 @@ class MetaIterativeEnvExecutor(object):
             (tuple): a length 4 tuple of lists, containing obs (np.array), rewards (float), dones (bool),
              env_infos (dict). Each list is of length meta_batch_size x envs_per_task
              (assumes that every task has same number of envs)
+        The step method of the VecEnvExecutor class is used to step all the environments in the vectorized environment
+        with the provided actions and return the resulting observations, rewards, dones, and environment infos.
+        The method takes a list of actions as input, where each action corresponds to an environment in the vectorized
+        environment. It then steps each environment in the vectorized environment with its corresponding action using
+        a list comprehension and stores the resulting observations, rewards, dones, and environment infos in a list of
+        tuples called all_results.
+        The obs, rewards, dones, and env_infos lists are then created by unpacking the all_results list of tuples using
+        the map and zip functions. The resulting lists contain the observations, rewards, dones, and environment infos
+        for each environment in the vectorized environment.
+        The method then checks if any of the environments have reached their maximum path length or are done.
+        If an environment has reached its maximum path length or is done, it resets the environment and sets its time
+        step counter to zero. This ensures that each environment in the vectorized environment is reset when it reaches
+        the end of a trajectory or when it is done.
+        Finally, the method returns the resulting observations, rewards, dones, and environment infos as a tuple of
+        lists.
         """
         assert len(actions) == self.num_envs
 
@@ -80,11 +97,27 @@ class MetaIterativeEnvExecutor(object):
 
         Args:
             tasks (list): list of the tasks for each environment
+        This code is used to set the task for each environment created in the previous line of code.
+        It first splits the numpy array of environments (self.envs) into a list of arrays, with each array
+        containing the environments for a particular task. The number of arrays in the list is equal to the number of
+        tasks. This is done using the numpy.split function.
+
+        For each task and the corresponding array of environments, the code then sets the task for each
+        environment using the set_task method of the environment object. The set_task method is typically
+        defined by the user and is specific to the environment being used. It sets the task-specific parameters of
+        the environment, such as the goal state or the reward function, based on the task passed as an argument.
+
+        Overall, this code sets the task for each environment created in the previous line of code, which allows for
+        task-specific training and evaluation of the meta-learned policy.
         """
+        # logging.debug("set_tasks")
         envs_per_task = np.split(self.envs, len(tasks))
+        # for env_per_task in envs_per_task:
+        #     logging.debug("set_tasks envs_per_task %s", env_per_task)
         for task, envs in zip(tasks, envs_per_task):
             for env in envs:
                 env.set_task(task)
+                # logging.debug("set_tasks task envs task_id %s %s %s %s", task, env, env.task_id, env.graph_file_paths)
 
     def reset(self):
         """
@@ -92,9 +125,18 @@ class MetaIterativeEnvExecutor(object):
 
         Returns:
             (list): list of (np.ndarray) with the new initial observations.
+        The reset method of the VecEnvExecutor class is used to reset all the environments in the vectorized environment
+        and return their initial observations.
+        In this implementation, the method first calls the reset method of each individual environment in the vectorized
+        environment using a list comprehension. This returns a list of numpy arrays containing the initial observations
+        for each environment.
+        Then, the ts attribute of the VecEnvExecutor object is set to zero. This attribute is a numpy array that keeps
+        track of the current time step of each environment in the vectorized environment.
+        Finally, the list of initial observations is returned.
         """
         obses = [env.reset() for env in self.envs]
         self.ts[:] = 0
+        logging.debug("obses %s", len(obses))
         return obses
 
     @property

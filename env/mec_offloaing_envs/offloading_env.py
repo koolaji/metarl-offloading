@@ -105,6 +105,13 @@ class OffloadingEnvironment(MetaEnv):
 
         Returns:
             tasks (list) : an (n_tasks) length list of tasks
+        This line of code generates a random subset of tasks from the total number of tasks available.
+        It uses the numpy.random.choice function to randomly select n_tasks number of tasks from
+        np.arange(self.total_task), which is an array of integers from 0 to self.total_task-1. The replace=False
+        argument ensures that the same task is not selected more than once.
+
+        For example, if self.total_task = 10 and n_tasks = 3, this line of code could generate a random subset of
+        tasks [2, 5, 8].
         """
         return np.random.choice(np.arange(self.total_task), n_tasks, replace=False)
 

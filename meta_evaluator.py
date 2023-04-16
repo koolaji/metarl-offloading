@@ -3,6 +3,7 @@ import numpy as np
 import time
 from utils import logger
 
+
 class Trainer():
     def __init__(self,algo,
                 env,
