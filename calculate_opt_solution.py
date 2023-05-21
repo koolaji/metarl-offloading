@@ -22,9 +22,9 @@ if __name__ == "__main__":
     print("calculate optimal solution offloading20_4======")
     cost, plan = env.calculate_optimal_solution()
     target_batch, task_finish_time_batch = env.get_reward_batch_step_by_step(plan,
-                                                                             env.task_graphs_batchs[env.task_id],
-                                                                             env.max_running_time_batchs[env.task_id],
-                                                                             env.min_running_time_batchs[env.task_id])
+                                                                             env.task_graphs_batches[env.task_id],
+                                                                             env.max_running_time_batches[env.task_id],
+                                                                             env.min_running_time_batches[env.task_id])
     discounted_reward = []
     for reward_path in target_batch:
         discounted_reward.append(utils.discount_cumsum(reward_path, 1.0)[0])
@@ -50,9 +50,9 @@ if __name__ == "__main__":
     print("calculate optimal solution offloading20_8======")
     cost, plan = env.calculate_optimal_solution()
     target_batch, task_finish_time_batch = env.get_reward_batch_step_by_step(plan,
-                                                                             env.task_graphs_batchs[env.task_id],
-                                                                             env.max_running_time_batchs[env.task_id],
-                                                                             env.min_running_time_batchs[env.task_id])
+                                                                             env.task_graphs_batches[env.task_id],
+                                                                             env.max_running_time_batches[env.task_id],
+                                                                             env.min_running_time_batches[env.task_id])
     discounted_reward = []
     for reward_path in target_batch:
         discounted_reward.append(utils.discount_cumsum(reward_path, 1.0)[0])
@@ -78,9 +78,9 @@ if __name__ == "__main__":
     print("calculate optimal solution offloading20_12======")
     cost, plan = env.calculate_optimal_solution()
     target_batch, task_finish_time_batch = env.get_reward_batch_step_by_step(plan,
-                                                                             env.task_graphs_batchs[env.task_id],
-                                                                             env.max_running_time_batchs[env.task_id],
-                                                                             env.min_running_time_batchs[env.task_id])
+                                                                             env.task_graphs_batches[env.task_id],
+                                                                             env.max_running_time_batches[env.task_id],
+                                                                             env.min_running_time_batches[env.task_id])
     discounted_reward = []
     for reward_path in target_batch:
         discounted_reward.append(utils.discount_cumsum(reward_path, 1.0)[0])
@@ -106,9 +106,9 @@ if __name__ == "__main__":
     print("calculate optimal solution offloading20_16======")
     cost, plan = env.calculate_optimal_solution()
     target_batch, task_finish_time_batch = env.get_reward_batch_step_by_step(plan,
-                                                                             env.task_graphs_batchs[env.task_id],
-                                                                             env.max_running_time_batchs[env.task_id],
-                                                                             env.min_running_time_batchs[env.task_id])
+                                                                             env.task_graphs_batches[env.task_id],
+                                                                             env.max_running_time_batches[env.task_id],
+                                                                             env.min_running_time_batches[env.task_id])
     discounted_reward = []
     for reward_path in target_batch:
         discounted_reward.append(utils.discount_cumsum(reward_path, 1.0)[0])
@@ -134,9 +134,9 @@ if __name__ == "__main__":
     print("calculate optimal solution offloading20_20======")
     cost, plan = env.calculate_optimal_solution()
     target_batch, task_finish_time_batch = env.get_reward_batch_step_by_step(plan,
-                                                                             env.task_graphs_batchs[env.task_id],
-                                                                             env.max_running_time_batchs[env.task_id],
-                                                                             env.min_running_time_batchs[env.task_id])
+                                                                             env.task_graphs_batches[env.task_id],
+                                                                             env.max_running_time_batches[env.task_id],
+                                                                             env.min_running_time_batches[env.task_id])
     discounted_reward = []
     for reward_path in target_batch:
         discounted_reward.append(utils.discount_cumsum(reward_path, 1.0)[0])
@@ -162,9 +162,9 @@ if __name__ == "__main__":
     print("calculate optimal solution offloading20_24======")
     cost, plan = env.calculate_optimal_solution()
     target_batch, task_finish_time_batch = env.get_reward_batch_step_by_step(plan,
-                                                                             env.task_graphs_batchs[env.task_id],
-                                                                             env.max_running_time_batchs[env.task_id],
-                                                                             env.min_running_time_batchs[env.task_id])
+                                                                             env.task_graphs_batches[env.task_id],
+                                                                             env.max_running_time_batches[env.task_id],
+                                                                             env.min_running_time_batches[env.task_id])
     discounted_reward = []
     for reward_path in target_batch:
         discounted_reward.append(utils.discount_cumsum(reward_path, 1.0)[0])

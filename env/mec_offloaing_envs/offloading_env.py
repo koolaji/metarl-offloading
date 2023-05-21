@@ -4,6 +4,12 @@ import numpy as np
 import logging
 
 
+def _computation_cost(data, processing_power):
+    computation_time = data / processing_power
+
+    return computation_time
+
+
 class Resources(object):
     """
     This class denotes the MEC server and Mobile devices (computation resources)
@@ -11,21 +17,21 @@ class Resources(object):
     Args:
         mec_process_capable: computation capacity of the MEC server
         mobile_process_capable: computation capacity of the mobile device
-        bandwidth_up: wireless uplink band width
-        bandwidth_dl: wireless downlink band width
+        bandwidth_up: wireless uplink bandwidth
+        bandwidth_dl: wireless downlink bandwidth
     """
 
     def __init__(self, mec_process_capable,
-                  mobile_process_capable, bandwidth_up = 7.0, bandwidth_dl = 7.0):
-        self.mec_process_capble = mec_process_capable
+                 mobile_process_capable, bandwidth_up=7.0, bandwidth_dl=7.0):
+        self.mec_process_capable = mec_process_capable
         self.mobile_process_capable = mobile_process_capable
-        self.mobile_process_avaliable_time = 0.0
-        self.mec_process_avaliable_time = 0.0
+        self.mobile_process_available_time = 0.0
+        self.mec_process_available_time = 0.0
 
         self.bandwidth_up = bandwidth_up
         self.bandwidth_dl = bandwidth_dl
         logging.debug('Resources Class')
-        logging.debug('mec_process_capable = %s',str(mec_process_capable))
+        logging.debug('mec_process_capable = %s', str(mec_process_capable))
 
     def up_transmission_cost(self, data):
         rate = self.bandwidth_up * (1024.0 * 1024.0 / 8.0)
@@ -35,8 +41,8 @@ class Resources(object):
         return transmission_time
 
     def reset(self):
-        self.mec_process_avaliable_time = 0.0
-        self.mobile_process_avaliable_time = 0.0
+        self.mec_process_available_time = 0.0
+        self.mobile_process_available_time = 0.0
 
     def dl_transmission_cost(self, data):
         rate = self.bandwidth_dl * (1024.0 * 1024.0 / 8.0)
@@ -45,15 +51,10 @@ class Resources(object):
         return transmission_time
 
     def locally_execution_cost(self, data):
-        return self._computation_cost(data, self.mobile_process_capable)
+        return _computation_cost(data, self.mobile_process_capable)
 
     def mec_execution_cost(self, data):
-        return self._computation_cost(data, self.mec_process_capble)
-
-    def _computation_cost(self, data, processing_power):
-        computation_time = data / processing_power
-
-        return computation_time
+        return _computation_cost(data, self.mec_process_capable)
 
 
 class OffloadingEnvironment(MetaEnv):
@@ -61,37 +62,36 @@ class OffloadingEnvironment(MetaEnv):
                  graph_number,
                  graph_file_paths, time_major):
         self.resource_cluster = resource_cluster
-        self.task_graphs_batchs = []
-        self.encoder_batchs = []
+        self.task_graphs_batches = []
+        self.encoder_batches = []
         self.encoder_lengths = []
         self.decoder_full_lengths = []
-        self.max_running_time_batchs = []
-        self.min_running_time_batchs = []
+        self.max_running_time_batches = []
+        self.min_running_time_batches = []
         self.graph_file_paths = graph_file_paths
         logging.debug('OffloadingEnvironment Class')
 
-        # load all the task graphs into the evnironment
+        # load all the task graphs into the environment
         for graph_file_path in graph_file_paths:
-            encoder_batchs, encoder_lengths, task_graph_batchs, decoder_full_lengths, max_running_time_batchs, min_running_time_batchs = \
+            encoder_batches, encoder_lengths, task_graph_batches, decoder_full_lengths, max_running_time_batchs, min_running_time_batchs = \
                 self.generate_point_batch_for_random_graphs(batch_size, graph_number, graph_file_path, time_major)
 
-            self.encoder_batchs += encoder_batchs
+            self.encoder_batches += encoder_batches
             self.encoder_lengths += encoder_lengths
-            self.task_graphs_batchs += task_graph_batchs
+            self.task_graphs_batches += task_graph_batches
             self.decoder_full_lengths += decoder_full_lengths
-            self.max_running_time_batchs += max_running_time_batchs
-            self.min_running_time_batchs += min_running_time_batchs
+            self.max_running_time_batches += max_running_time_batchs
+            self.min_running_time_batches += min_running_time_batchs
 
-        self.total_task = len(self.encoder_batchs)
+        self.total_task = len(self.encoder_batches)
         self.optimal_solution = -1
         self.task_id = -1
         self.time_major = time_major
-        self.input_dim = np.array(encoder_batchs[0]).shape[-1]
+        self.input_dim = np.array(encoder_batches[0]).shape[-1]
 
         # set the file paht of task graphs.
         self.graph_file_paths = graph_file_paths
         self.graph_number = graph_number
-
 
         self.local_exe_time = self.get_all_locally_execute_time()
         self.mec_exe_time = self.get_all_mec_execute_time()
@@ -107,7 +107,7 @@ class OffloadingEnvironment(MetaEnv):
             tasks (list) : an (n_tasks) length list of tasks
         This line of code generates a random subset of tasks from the total number of tasks available.
         It uses the numpy.random.choice function to randomly select n_tasks number of tasks from
-        np.arange(self.total_task), which is an array of integers from 0 to self.total_task-1. The replace=False
+        np.arrange(self.total_task), which is an array of integers from 0 to self.total_task-1. The replacement=False
         argument ensures that the same task is not selected more than once.
 
         For example, if self.total_task = 10 and n_tasks = 3, this line of code could generate a random subset of
@@ -116,31 +116,31 @@ class OffloadingEnvironment(MetaEnv):
         return np.random.choice(np.arange(self.total_task), n_tasks, replace=False)
 
     # def merge_graphs(self):
-    #     encoder_batchs = []
+    #     encoder_batches = []
     #     encoder_lengths = []
-    #     task_graphs_batchs = []
+    #     task_graphs_batches = []
     #     decoder_full_lengths =[]
-    #     max_running_time_batchs = []
-    #     min_running_time_batchs = []
+    #     max_running_time_batches = []
+    #     min_running_time_batches = []
     #
     #     for encoder_batch, encoder_length, task_graphs_batch, \
     #         decoder_full_length, max_running_time_batch, \
-    #         min_running_time_batch in zip(self.encoder_batchs, self.encoder_lengths,
-    #                                       self.task_graphs_batchs, self.decoder_full_lengths,
-    #                                       self.max_running_time_batchs, self.min_running_time_batchs):
-    #         encoder_batchs += encoder_batch.tolist()
+    #         min_running_time_batch in zip(self.encoder_batches, self.encoder_lengths,
+    #                                       self.task_graphs_batches, self.decoder_full_lengths,
+    #                                       self.max_running_time_batches, self.min_running_time_batches):
+    #         encoder_batches += encoder_batch.tolist()
     #         encoder_lengths += encoder_length.tolist()
-    #         task_graphs_batchs += task_graphs_batch
+    #         task_graphs_batches += task_graphs_batch
     #         decoder_full_lengths += decoder_full_length.tolist()
-    #         max_running_time_batchs += max_running_time_batch
-    #         min_running_time_batchs += min_running_time_batch
+    #         max_running_time_batches += max_running_time_batch
+    #         min_running_time_batches += min_running_time_batch
     #
-    #     self.encoder_batchs = np.array([encoder_batchs])
+    #     self.encoder_batches = np.array([encoder_batches])
     #     self.encoder_lengths = np.array([encoder_lengths])
-    #     self.task_graphs_batchs = [task_graphs_batchs]
+    #     self.task_graphs_batches = [task_graphs_batches]
     #     self.decoder_full_lengths = np.array([decoder_full_lengths])
-    #     self.max_running_time_batchs = np.array([max_running_time_batchs])
-    #     self.min_running_time_batchs = np.array([min_running_time_batchs])
+    #     self.max_running_time_batches = np.array([max_running_time_batches])
+    #     self.min_running_time_batches = np.array([min_running_time_batches])
 
     def set_task(self, task):
         """
@@ -177,9 +177,9 @@ class OffloadingEnvironment(MetaEnv):
             info (dict): contains auxiliary diagnostic information (helpful for debugging, and sometimes learning)
         """
         plan_batch = []
-        task_graph_batch = self.task_graphs_batchs[self.task_id]
-        max_running_time_batch = self.max_running_time_batchs[self.task_id]
-        min_running_time_batch = self.min_running_time_batchs[self.task_id]
+        task_graph_batch = self.task_graphs_batches[self.task_id]
+        max_running_time_batch = self.max_running_time_batches[self.task_id]
+        min_running_time_batch = self.min_running_time_batches[self.task_id]
 
         for action_sequence, task_graph in zip(action, task_graph_batch):
             plan_sequence = []
@@ -189,13 +189,13 @@ class OffloadingEnvironment(MetaEnv):
 
             plan_batch.append(plan_sequence)
 
-        reward_batch, task_finish_time= self.get_reward_batch_step_by_step(plan_batch,
-                                                  task_graph_batch,
-                                                  max_running_time_batch,
-                                                  min_running_time_batch)
+        reward_batch, task_finish_time = self.get_reward_batch_step_by_step(plan_batch,
+                                                                            task_graph_batch,
+                                                                            max_running_time_batch,
+                                                                            min_running_time_batch)
 
         done = True
-        observation = np.array(self.encoder_batchs[self.task_id])
+        observation = np.array(self.encoder_batches[self.task_id])
         info = task_finish_time
 
         return observation, reward_batch, done, info
@@ -209,7 +209,7 @@ class OffloadingEnvironment(MetaEnv):
         # reset the resource environment.
         self.resource_cluster.reset()
 
-        return np.array(self.encoder_batchs[self.task_id])
+        return np.array(self.encoder_batches[self.task_id])
 
     def render(self, mode='human'):
         pass
@@ -218,16 +218,16 @@ class OffloadingEnvironment(MetaEnv):
         encoder_list = []
         task_graph_list = []
 
-        encoder_batchs = []
+        encoder_batches = []
         encoder_lengths = []
-        task_graph_batchs = []
+        task_graph_batches = []
         decoder_full_lengths = []
 
         max_running_time_vector = []
         min_running_time_vector = []
 
-        max_running_time_batchs = []
-        min_running_time_batchs = []
+        max_running_time_batches = []
+        min_running_time_batches = []
 
         for i in range(graph_number):
             task_graph = OffloadingTaskGraph(graph_file_path + str(i) + '.gv')
@@ -242,7 +242,8 @@ class OffloadingEnvironment(MetaEnv):
             scheduling_sequence = task_graph.prioritize_tasks(self.resource_cluster)
 
             task_encode = np.array(task_graph.encode_point_sequence_with_ranking_and_cost(scheduling_sequence,
-                                                                                          self.resource_cluster), dtype=np.float32)
+                                                                                          self.resource_cluster),
+                                   dtype=np.float32)
             encoder_list.append(task_encode)
 
         for i in range(int(graph_number / batch_size)):
@@ -259,38 +260,37 @@ class OffloadingEnvironment(MetaEnv):
 
             decoder_full_lengths.append(sequence_length)
             encoder_lengths.append(sequence_length)
-            encoder_batchs.append(task_encode_batch)
+            encoder_batches.append(task_encode_batch)
 
             task_graph_batch = task_graph_list[start_batch_index:end_batch_index]
-            task_graph_batchs.append(task_graph_batch)
-            max_running_time_batchs.append(max_running_time_vector[start_batch_index:end_batch_index])
-            min_running_time_batchs.append(min_running_time_vector[start_batch_index:end_batch_index])
+            task_graph_batches.append(task_graph_batch)
+            max_running_time_batches.append(max_running_time_vector[start_batch_index:end_batch_index])
+            min_running_time_batches.append(min_running_time_vector[start_batch_index:end_batch_index])
 
-        return encoder_batchs, encoder_lengths, task_graph_batchs, \
-               decoder_full_lengths, max_running_time_batchs, \
-               min_running_time_batchs
+        return encoder_batches, encoder_lengths, task_graph_batches, \
+            decoder_full_lengths, max_running_time_batches, \
+            min_running_time_batches
 
     def calculate_max_min_runningcost(self, max_data_size, min_data_size):
-        max_time = max( [self.resource_cluster.up_transmission_cost(max_data_size),
-                         self.resource_cluster.dl_transmission_cost(max_data_size),
-                         self.resource_cluster.locally_execution_cost(max_data_size)] )
+        max_time = max([self.resource_cluster.up_transmission_cost(max_data_size),
+                        self.resource_cluster.dl_transmission_cost(max_data_size),
+                        self.resource_cluster.locally_execution_cost(max_data_size)])
 
         min_time = self.resource_cluster.mec_execution_cost(min_data_size)
 
         return max_time, min_time
 
     def get_scheduling_cost_step_by_step(self, plan, task_graph):
-        cloud_avaliable_time = 0.0
-        ws_avaliable_time =0.0
-        local_avaliable_time = 0.0
+        cloud_available_time = 0.0
+        ws_available_time = 0.0
+        local_available_time = 0.0
 
         # running time on local processor
         T_l = [0] * task_graph.task_number
         # running time on sending channel
         T_ul = [0] * task_graph.task_number
-        #running time on receiving channel
+        # running time on receiving channel
         T_dl = [0] * task_graph.task_number
-
 
         # finish time on cloud for each task
         FT_cloud = [0] * task_graph.task_number
@@ -298,7 +298,7 @@ class OffloadingEnvironment(MetaEnv):
         FT_ws = [0] * task_graph.task_number
         # finish time locally for each task
         FT_locally = [0] * task_graph.task_number
-        # finish time recieving channel for each task
+        # finish time receiving channel for each task
         FT_wr = [0] * task_graph.task_number
         current_FT = 0.0
         total_energy = 0.0
@@ -313,36 +313,37 @@ class OffloadingEnvironment(MetaEnv):
             # locally scheduling
             if x == 0:
                 if len(task_graph.pre_task_sets[i]) != 0:
-                    start_time = max(local_avaliable_time,
+                    start_time = max(local_available_time,
                                      max([max(FT_locally[j], FT_wr[j]) for j in task_graph.pre_task_sets[i]]))
                 else:
-                    start_time = local_avaliable_time
+                    start_time = local_available_time
 
                 T_l[i] = self.resource_cluster.locally_execution_cost(task.processing_data_size)
                 FT_locally[i] = start_time + T_l[i]
-                local_avaliable_time = FT_locally[i]
+                local_available_time = FT_locally[i]
 
                 task_finish_time = FT_locally[i]
 
                 # calculate the energy consumption
-                #energy_consumption = T_l[i] * self.rho * (self.f_l ** self.zeta)
+                # energy_consumption = T_l[i] * self.rho * (self.f_l ** self.zeta)
             # mcc scheduling
             else:
                 if len(task_graph.pre_task_sets[i]) != 0:
-                    ws_start_time = max(ws_avaliable_time,
-                                        max([max(FT_locally[j], FT_ws[j])  for j in task_graph.pre_task_sets[i]]))
+                    ws_start_time = max(ws_available_time,
+                                        max([max(FT_locally[j], FT_ws[j]) for j in task_graph.pre_task_sets[i]]))
 
                     T_ul[i] = self.resource_cluster.up_transmission_cost(task.processing_data_size)
                     ws_finish_time = ws_start_time + T_ul[i]
                     FT_ws[i] = ws_finish_time
-                    ws_avaliable_time = ws_finish_time
+                    ws_available_time = ws_finish_time
 
-                    cloud_start_time = max( cloud_avaliable_time,
-                                            max([max(FT_ws[i], FT_cloud[j]) for j in task_graph.pre_task_sets[i]]))
-                    cloud_finish_time = cloud_start_time + self.resource_cluster.mec_execution_cost(task.processing_data_size)
+                    cloud_start_time = max(cloud_available_time,
+                                           max([max(FT_ws[i], FT_cloud[j]) for j in task_graph.pre_task_sets[i]]))
+                    cloud_finish_time = cloud_start_time + self.resource_cluster.mec_execution_cost(
+                        task.processing_data_size)
                     FT_cloud[i] = cloud_finish_time
                     # print("task {}, Cloud finish time {}".format(i, FT_cloud[i]))
-                    cloud_avaliable_time = cloud_finish_time
+                    cloud_available_time = cloud_finish_time
 
                     wr_start_time = FT_cloud[i]
                     T_dl[i] = self.resource_cluster.dl_transmission_cost(task.transmission_data_size)
@@ -350,18 +351,19 @@ class OffloadingEnvironment(MetaEnv):
                     FT_wr[i] = wr_finish_time
 
                     # calculate the energy consumption
-                    #energy_consumption = T_ul[i] * self.ptx + T_dl[i] * self.prx
+                    # energy_consumption = T_ul[i] * self.ptx + T_dl[i] * self.prx
 
                 else:
-                    ws_start_time = ws_avaliable_time
+                    ws_start_time = ws_available_time
                     T_ul[i] = self.resource_cluster.up_transmission_cost(task.processing_data_size)
                     ws_finish_time = ws_start_time + T_ul[i]
                     FT_ws[i] = ws_finish_time
 
-                    cloud_start_time = max(cloud_avaliable_time, FT_ws[i])
-                    cloud_finish_time = cloud_start_time + self.resource_cluster.mec_execution_cost(task.processing_data_size)
+                    cloud_start_time = max(cloud_available_time, FT_ws[i])
+                    cloud_finish_time = cloud_start_time + self.resource_cluster.mec_execution_cost(
+                        task.processing_data_size)
                     FT_cloud[i] = cloud_finish_time
-                    cloud_avaliable_time = cloud_finish_time
+                    cloud_available_time = cloud_finish_time
 
                     wr_start_time = FT_cloud[i]
                     T_dl[i] = self.resource_cluster.dl_transmission_cost(task.transmission_data_size)
@@ -369,7 +371,7 @@ class OffloadingEnvironment(MetaEnv):
                     FT_wr[i] = wr_finish_time
 
                     # calculate the energy consumption
-                    #energy_consumption = T_ul[i] * self.ptx + T_dl[i] * self.prx
+                    # energy_consumption = T_ul[i] * self.ptx + T_dl[i] * self.prx
 
                 task_finish_time = wr_finish_time
 
@@ -398,8 +400,8 @@ class OffloadingEnvironment(MetaEnv):
 
             latency = self.score_func(cost, max_running_time, min_running_time)
 
-            score =  np.array(latency)
-            #print("score is", score)
+            score = np.array(latency)
+            # print("score is", score)
             target_batch.append(score)
             task_finish_time_batch.append(task_finish_time)
 
@@ -409,7 +411,7 @@ class OffloadingEnvironment(MetaEnv):
     def greedy_solution(self):
         result_plan = []
         finish_time_batches = []
-        for task_graph_batch in self.task_graphs_batchs:
+        for task_graph_batch in self.task_graphs_batches:
             plan_batches = []
             finish_time_plan = []
             for task_graph in task_graph_batch:
@@ -452,12 +454,12 @@ class OffloadingEnvironment(MetaEnv):
                         ft_cloud[i] = cloud_finish_time
                         # print("task {}, Cloud finish time {}".format(i, ft_cloud[i]))
                         wr_start_time = ft_cloud[i]
-                        wr_finish_time = wr_start_time + self.resource_cluster.\
+                        wr_finish_time = wr_start_time + self.resource_cluster. \
                             dl_transmission_cost(task.transmission_data_size)
                         ft_wr[i] = wr_finish_time
                     else:
                         ws_start_time = ws_available_time
-                        ws_finish_time = ws_start_time + self.resource_cluster.\
+                        ws_finish_time = ws_start_time + self.resource_cluster. \
                             up_transmission_cost(task.processing_data_size)
                         ft_ws[i] = ws_finish_time
 
@@ -479,7 +481,7 @@ class OffloadingEnvironment(MetaEnv):
                         ws_available_time = ft_ws[i]
                     plan.append((i, action))
 
-                finish_time = max(max(ft_wr), max(ft_locally) )
+                finish_time = max(max(ft_wr), max(ft_locally))
                 plan_batches.append(plan)
                 finish_time_plan.append(finish_time)
 
@@ -493,7 +495,7 @@ class OffloadingEnvironment(MetaEnv):
         def exhaustion_plans(n):
             plan_batch = []
 
-            for i in range(2**n):
+            for i in range(2 ** n):
                 plan_str = bin(i)
                 plan = []
 
@@ -505,7 +507,7 @@ class OffloadingEnvironment(MetaEnv):
                 plan_batch.append(plan)
             return plan_batch
 
-        n = self.task_graphs_batchs[0][0].task_number
+        n = self.task_graphs_batches[0][0].task_number
         plan_batch = exhaustion_plans(n)
 
         print("exhausted plan size: ", len(plan_batch))
@@ -513,7 +515,7 @@ class OffloadingEnvironment(MetaEnv):
         task_graph_optimal_costs = []
         optimal_plan = []
 
-        for task_graph_batch in self.task_graphs_batchs:
+        for task_graph_batch in self.task_graphs_batches:
             task_graph_batch_cost = []
             for task_graph in task_graph_batch:
                 plans_costs = []
@@ -562,7 +564,7 @@ class OffloadingEnvironment(MetaEnv):
 
     def get_all_locally_execute_time(self):
         running_cost = []
-        for task_graph_batch, encode_batch in zip(self.task_graphs_batchs, self.encoder_batchs):
+        for task_graph_batch, encode_batch in zip(self.task_graphs_batches, self.encoder_batches):
             batch_size = encode_batch.shape[0]
             sequence_length = encode_batch.shape[1]
 
@@ -575,7 +577,7 @@ class OffloadingEnvironment(MetaEnv):
     def get_all_mec_execute_time(self):
         running_cost = []
 
-        for task_graph_batch, encode_batch in zip(self.task_graphs_batchs, self.encoder_batchs):
+        for task_graph_batch, encode_batch in zip(self.task_graphs_batches, self.encoder_batches):
             batch_size = encode_batch.shape[0]
             sequence_length = encode_batch.shape[1]
 
@@ -590,6 +592,3 @@ class OffloadingEnvironment(MetaEnv):
         result_plan, finish_time_batchs = self.greedy_solution()
 
         return result_plan[self.task_id], finish_time_batchs[self.task_id]
-
-
-

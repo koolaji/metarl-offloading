@@ -223,7 +223,7 @@ class OffloadingTaskGraph(object):
             task = self.task_list[i]
             local_process_cost = task.processing_data_size / resource_cluster.mobile_process_capable
             up_link_cost = resource_cluster.up_transmission_cost(task.processing_data_size)
-            mec_process_cost = task.processing_data_size / resource_cluster.mec_process_capble
+            mec_process_cost = task.processing_data_size / resource_cluster.mec_process_capable
             down_link_cost = resource_cluster.dl_transmission_cost(task.transmission_data_size)
 
             task_embeding_vector = [i, local_process_cost, up_link_cost,
@@ -298,7 +298,7 @@ class OffloadingTaskGraph(object):
         for i, task in enumerate(self.task_list):
             t_locally = task.processing_data_size / resource_cluster.mobile_process_capable
             t_mec = resource_cluster.up_transmission_cost(task.processing_data_size) + \
-                    task.processing_data_size / resource_cluster.mec_process_capble + \
+                    task.processing_data_size / resource_cluster.mec_process_capable + \
                     resource_cluster.dl_transmission_cost(task.transmission_data_size)
 
             w[i] = min(t_locally, t_mec)
