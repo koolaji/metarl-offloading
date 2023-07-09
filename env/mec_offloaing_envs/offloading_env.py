@@ -30,8 +30,6 @@ class Resources(object):
 
         self.bandwidth_up = bandwidth_up
         self.bandwidth_dl = bandwidth_dl
-        logging.debug('Resources Class')
-        logging.debug('mec_process_capable = %s', str(mec_process_capable))
 
     def up_transmission_cost(self, data):
         rate = self.bandwidth_up * (1024.0 * 1024.0 / 8.0)
@@ -69,19 +67,18 @@ class OffloadingEnvironment(MetaEnv):
         self.max_running_time_batches = []
         self.min_running_time_batches = []
         self.graph_file_paths = graph_file_paths
-        logging.debug('OffloadingEnvironment Class')
 
         # load all the task graphs into the environment
         for graph_file_path in graph_file_paths:
-            encoder_batches, encoder_lengths, task_graph_batches, decoder_full_lengths, max_running_time_batchs, min_running_time_batchs = \
-                self.generate_point_batch_for_random_graphs(batch_size, graph_number, graph_file_path, time_major)
-
+            encoder_batches, encoder_lengths, task_graph_batches, decoder_full_lengths, max_running_time_batches, \
+            min_running_time_batches = self.generate_point_batch_for_random_graphs(batch_size, graph_number,
+                                                                                   graph_file_path, time_major)
             self.encoder_batches += encoder_batches
             self.encoder_lengths += encoder_lengths
             self.task_graphs_batches += task_graph_batches
             self.decoder_full_lengths += decoder_full_lengths
-            self.max_running_time_batches += max_running_time_batchs
-            self.min_running_time_batches += min_running_time_batchs
+            self.max_running_time_batches += max_running_time_batches
+            self.min_running_time_batches += min_running_time_batches
 
         self.total_task = len(self.encoder_batches)
         self.optimal_solution = -1
@@ -268,8 +265,8 @@ class OffloadingEnvironment(MetaEnv):
             min_running_time_batches.append(min_running_time_vector[start_batch_index:end_batch_index])
 
         return encoder_batches, encoder_lengths, task_graph_batches, \
-            decoder_full_lengths, max_running_time_batches, \
-            min_running_time_batches
+               decoder_full_lengths, max_running_time_batches, \
+               min_running_time_batches
 
     def calculate_max_min_runningcost(self, max_data_size, min_data_size):
         max_time = max([self.resource_cluster.up_transmission_cost(max_data_size),

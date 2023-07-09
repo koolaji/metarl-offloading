@@ -3,6 +3,7 @@ from graphviz import Digraph
 import json
 import pydotplus
 
+
 class OffloadingTask(object):
     def __init__(self, id_name, process_data_size, transmission_data_size, type_name, depth=0, heft_score=0 ):
         self.id_name = id_name
@@ -128,7 +129,7 @@ class OffloadingTaskGraph(object):
         self.task_number = len(task_list)
         self.dependency = np.zeros((self.task_number, self.task_number))
         self.task_list = []
-        self.prioritize_sequence=[]
+        self.prioritize_sequence = []
 
         self.pre_task_sets = []
         self.succ_task_sets = []
