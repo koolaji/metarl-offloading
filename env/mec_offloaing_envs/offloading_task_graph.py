@@ -5,7 +5,7 @@ import pydotplus
 
 
 class OffloadingTask(object):
-    def __init__(self, id_name, process_data_size, transmission_data_size, type_name, depth=0, heft_score=0 ):
+    def __init__(self, id_name, process_data_size, transmission_data_size, type_name, depth=0, heft_score=0):
         self.id_name = id_name
         self.processing_data_size = process_data_size
         self.transmission_data_size = transmission_data_size
@@ -176,47 +176,47 @@ class OffloadingTaskGraph(object):
 
         self.edge_set.append(edge)
 
-    def encode_point_sequence(self):
-        point_sequence = []
-        for i in range(self.task_number):
-            norm_processing_data_size = self.norm_feature(self.task_list[i].processing_data_size)
-            norm_transmission_data_size = self.norm_feature(self.task_list[i].transmission_data_size)
-            norm_data_size_list = [norm_processing_data_size, norm_transmission_data_size]
-            # heft_score = [self.task_list[i].heft_score]
+    # def encode_point_sequence(self):
+    #     point_sequence = []
+    #     for i in range(self.task_number):
+    #         norm_processing_data_size = self.norm_feature(self.task_list[i].processing_data_size)
+    #         norm_transmission_data_size = self.norm_feature(self.task_list[i].transmission_data_size)
+    #         norm_data_size_list = [norm_processing_data_size, norm_transmission_data_size]
+    #         # heft_score = [self.task_list[i].heft_score]
+    #
+    #         pre_task_index_set = []
+    #         succs_task_index_set = []
+    #
+    #         for pre_task_index in range(0, i):
+    #             if self.dependency[pre_task_index][i] > 0.1:
+    #                 pre_task_index_set.append(pre_task_index)
+    #
+    #         while (len(pre_task_index_set) < 6):
+    #             pre_task_index_set.append(-1.0)
+    #
+    #         for succs_task_index in range(i + 1, self.task_number):
+    #             if self.dependency[i][succs_task_index] > 0.1:
+    #                 succs_task_index_set.append(succs_task_index)
+    #
+    #         while (len(succs_task_index_set) < 6):
+    #             succs_task_index_set.append(-1.0)
+    #
+    #         succs_task_index_set = succs_task_index_set[0:6]
+    #         pre_task_index_set = pre_task_index_set[0:6]
+    #
+    #         point_vector = norm_data_size_list + pre_task_index_set + succs_task_index_set
+    #         point_sequence.append(point_vector)
+    #
+    #     return point_sequence
 
-            pre_task_index_set = []
-            succs_task_index_set = []
-
-            for pre_task_index in range(0, i):
-                if self.dependency[pre_task_index][i] > 0.1:
-                    pre_task_index_set.append(pre_task_index)
-
-            while (len(pre_task_index_set) < 6):
-                pre_task_index_set.append(-1.0)
-
-            for succs_task_index in range(i + 1, self.task_number):
-                if self.dependency[i][succs_task_index] > 0.1:
-                    succs_task_index_set.append(succs_task_index)
-
-            while (len(succs_task_index_set) < 6):
-                succs_task_index_set.append(-1.0)
-
-            succs_task_index_set = succs_task_index_set[0:6]
-            pre_task_index_set = pre_task_index_set[0:6]
-
-            point_vector = norm_data_size_list + pre_task_index_set + succs_task_index_set
-            point_sequence.append(point_vector)
-
-        return point_sequence
-
-    def encode_point_sequence_with_ranking(self, sorted_task):
-        point_sequence = self.encode_point_sequence()
-
-        prioritize_point_sequence = []
-        for task_id in sorted_task:
-            prioritize_point_sequence.append(point_sequence[task_id])
-
-        return prioritize_point_sequence
+    # def encode_point_sequence_with_ranking(self, sorted_task):
+    #     point_sequence = self.encode_point_sequence()
+    #
+    #     prioritize_point_sequence = []
+    #     for task_id in sorted_task:
+    #         prioritize_point_sequence.append(point_sequence[task_id])
+    #
+    #     return prioritize_point_sequence
 
     def encode_point_sequence_with_cost(self, resource_cluster):
         point_sequence = []
