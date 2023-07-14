@@ -12,13 +12,21 @@ def _computation_cost(data, processing_power):
 
 class Resources(object):
     """
-    This class denotes the MEC server and Mobile devices (computation resources)
-
-    Args:
-        mec_process_capable: computation capacity of the MEC server
-        mobile_process_capable: computation capacity of the mobile device
-        bandwidth_up: wireless uplink bandwidth
-        bandwidth_dl: wireless downlink bandwidth
+    The Resources class provides a simple implementation of a Mobile Edge 
+    Computing (MEC) system, where the processing of data can be offloaded 
+    from mobile devices to the MEC server, depending on the available 
+    resources and network conditions. The class models the computation 
+    capacities of the MEC server and mobile device, as well as the 
+    wireless uplink and downlink bandwidths.
+    The methods up_transmission_cost, dl_transmission_cost, 
+    locally_execution_cost, and mec_execution_cost calculate the 
+    transmission time for data sent between the mobile device and 
+    MEC server, as well as the time to execute data on the device or server. 
+    These methods rely on the _computation_cost function, which is not 
+    defined in this class.
+    Overall, the Resources class provides a good starting point for 
+    modeling an MEC system, but it may require further customization and 
+    implementation of additional methods to meet specific use cases.
     """
 
     def __init__(self, mec_process_capable,
@@ -212,6 +220,38 @@ class OffloadingEnvironment(MetaEnv):
         pass
 
     def generate_point_batch_for_random_graphs(self, batch_size, graph_number, graph_file_path, time_major):
+        """
+        This method generates batches of encoded task graphs with associated 
+        metadata for a set of randomly generated task graphs.
+        The method takes several arguments:
+        batch_size: The number of task graphs per batch.
+        graph_number: The total number of task graphs to generate.
+        graph_file_path: The file path to the Graphviz files that contain the task graphs.
+        time_major: A boolean indicating whether the data in the batch should be 
+        time-major (True) or batch-major (False).
+        The method first initializes several lists and arrays to store the encoded task graphs,
+        the task graph objects themselves, and metadata such as the maximum and 
+        minimum running times for each task graph.
+        The method then iterates over each task graph, creates an OffloadingTaskGraph 
+        object for the graph, and calculates the maximum and minimum running times 
+        for the graph. It then generates an encoding of the task graph using the 
+        encode_point_sequence_with_ranking_and_cost method of the OffloadingTaskGraph 
+        object and appends it to a list of encoded task graphs. It also appends 
+        the task graph object to a list of task graphs.
+        Next, the method groups the encoded task graphs and task graph objects into 
+        batches of size batch_size. For each batch, it creates an array of encoded 
+        task graphs, and if time_major is True, it transposes the array to make it time-major. 
+        It also calculates the sequence length for each task graph in the batch and 
+        appends it to a list of sequence lengths.
+        Finally, the method returns several arrays containing the encoded task graph 
+        batches, their sequence lengths, the corresponding task graph object batches, 
+        the sequence lengths of the full decoder inputs, and the maximum and minimum 
+        running times for each task graph batch.
+        Overall, this method provides a way to generate batches of encoded task graphs 
+        and associated metadata for use in training and evaluating machine learning models 
+        in an MEC system. The implementation is clear and follows best practices, such as using 
+        descriptive variable names and commenting code appropriately.
+        """
         encoder_list = []
         task_graph_list = []
 
