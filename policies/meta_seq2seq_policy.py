@@ -357,6 +357,17 @@ class Seq2SeqNetwork:
 class Seq2SeqPolicy:
     def __init__(self, obs_dim, encoder_units,
                  decoder_units, vocab_size, name="pi"):
+        """
+        tf.compat.v1.placeholder is a method in TensorFlow 1.x that allows the creation of a 
+        placeholder tensor of a certain shape and data type. A placeholder is a way to represent 
+        an input to a TensorFlow graph without actually providing the input data yet. 
+        It is a symbolic tensor that acts as a placeholder for a value that will be fed into 
+        the graph later during execution using the feed_dict argument of the Session.run() method.
+        The tf.compat.v1.placeholder method takes two arguments: dtype and shape. 
+        The dtype argument specifies the data type of the placeholder, such as tf.float32 or 
+        tf.int64. The shape argument specifies the shape of the placeholder tensor, which can be 
+        either a tuple of integers or None for dimensions that can vary in size.
+        """
         self.decoder_targets = tf.compat.v1.placeholder(shape=[None, None], dtype=tf.int32,
                                                         name="decoder_targets_ph_"+name)
         self.decoder_inputs = tf.compat.v1.placeholder(shape=[None, None], dtype=tf.int32,
@@ -367,7 +378,9 @@ class Seq2SeqPolicy:
 
         self.action_dim = vocab_size
         self.name = name
-
+        # hparams is a variable that likely represents a set of hyperparameters or configuration options for 
+        # a machine learning model or algorithm. It is short for "hyperparameters" and is used to specify 
+        # the settings and constraints for training and evaluating a model
         hparams = tf.contrib.training.HParams(
             unit_type="lstm",
             encoder_units=encoder_units,

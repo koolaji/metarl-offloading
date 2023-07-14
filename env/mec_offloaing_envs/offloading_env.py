@@ -446,6 +446,32 @@ class OffloadingEnvironment(MetaEnv):
         return target_batch, task_finish_time_batch
 
     def greedy_solution(self):
+        """
+        This class appears to represent a scheduler in an MEC system that generates a plan for 
+        executing a set of task graphs on available resources. The generate_schedule method of 
+        this class uses a heuristic algorithm to generate a plan for executing each task 
+        graph in the set.
+        The method first initializes an empty list result_plan and finish_time_batches. It then 
+        iterates over each batch of task graphs in self.task_graphs_batches. For each batch, 
+        it initializes an empty list plan_batches and finish_time_plan.
+        The method then iterates over each task graph in the batch and initializes variables 
+        to track available execution times for each resource type (local, MEC, cloud), as well as 
+        lists to store the finish times for each task on each resource type. It also initializes 
+        an empty plan list to store the execution plan for the task graph.
+        For each task in the task graph, the method calculates the finish time for executing 
+        the task on each resource type (locally, on an MEC server, or on the cloud) based on 
+        the finish times of its predecessors. It then chooses the execution option (local or remote) 
+        that results in the earliest finish time for the task. The method adds the task and its 
+        chosen execution option to the plan list and updates the available execution times for 
+        each resource type.
+        After iterating over all tasks in the task graph, the method calculates the finish time 
+        for the entire task graph and appends the plan list and finish time to plan_batches and 
+        finish_time_plan, respectively.
+        Finally, after iterating over all task graphs in the batch, the method appends 
+        finish_time_plan to finish_time_batches and plan_batches to result_plan.
+        Overall, this class provides a way to generate an execution plan for a set of task graphs 
+        in an MEC system using a heuristic algorithm. 
+        """
         result_plan = []
         finish_time_batches = []
         for task_graph_batch in self.task_graphs_batches:
