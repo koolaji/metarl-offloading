@@ -318,6 +318,31 @@ class OffloadingEnvironment(MetaEnv):
         return max_time, min_time
 
     def get_scheduling_cost_step_by_step(self, plan, task_graph):
+        """
+        This code defines a method called get_scheduling_cost_step_by_step that calculates the latency 
+        of executing a set of tasks on a distributed system. The method takes two arguments: 
+        plan, which is a list of tuples representing the scheduling plan, and task_graph, 
+        which is a directed acyclic graph representing the dependencies between the tasks. 
+        The method returns a list of latencies for each task in the plan, as well as the total time 
+        it takes to execute all the tasks.
+        The method first initializes variables for available time on the cloud, the wireless network, 
+        and the local processor. It then initializes variables for the running time on the local processor, 
+        sending channel, and receiving channel for each task, as well as the finish time on the cloud, 
+        sending channel, local processor, and receiving channel for each task.
+        The method then iterates through the scheduling plan and for each task, it checks whether 
+        the task is scheduled to run locally or on the cloud. If the task is scheduled to run locally, 
+        it calculates the start time for the task based on the available time on the local processor and 
+        the finish times of its predecessors, then calculates the running time on the local processor and 
+        the finish time on the local processor for the task. If the task is scheduled to run on the cloud, 
+        it calculates the start time for the task on the sending channel based on the available time on 
+        the wireless network and the finish times of its predecessors, then calculates the running time on 
+        the sending channel, finish time on the sending channel, start time on the cloud, finish time on 
+        the cloud, start time on the receiving channel, and finish time on the receiving channel for the task.
+        The method then calculates the delta make-span for the task, which is the time it takes to complete 
+        the current task after completing all its predecessors. It also updates the current finish time, 
+        which is the time it takes to complete all the tasks up to the current task. Finally, the method 
+        returns the list of latencies for each task and the total time it takes to execute all the tasks.
+        """
         cloud_available_time = 0.0
         ws_available_time = 0.0
         local_available_time = 0.0
@@ -338,9 +363,9 @@ class OffloadingEnvironment(MetaEnv):
         # finish time receiving channel for each task
         FT_wr = [0] * task_graph.task_number
         current_FT = 0.0
-        total_energy = 0.0
+        # total_energy = 0.0
         return_latency = []
-        return_energy = []
+        # return_energy = []
 
         for item in plan:
             i = item[0]
@@ -609,8 +634,24 @@ class OffloadingEnvironment(MetaEnv):
         return task_graph_optimal_costs, optimal_plan
 
     def get_running_cost(self, action_sequence_batch, task_graph_batch):
+        """
+        This is a method definition in Python. It defines a method called get_running_cost that 
+        takes two arguments: action_sequence_batch and task_graph_batch. It returns a list of 
+        floating-point numbers representing the execution time for each task graph in the batch.
+        The method iterates over pairs of action_sequence and task_graph in the action_sequence_batch 
+        and task_graph_batch, respectively. It assumes that action_sequence_batch and task_graph_batch 
+        are arrays or tensors containing batched action sequences and task graphs, respectively.
+        For each pair of action_sequence and task_graph, the method creates an empty list called 
+        plan_sequence, which will be used to store a sequence of (task_id, action) tuples. 
+        It then iterates over pairs of action and task_id in action_sequence and 
+        task_graph.prioritize_sequence, respectively. For each pair, it appends a tuple containing 
+        the task ID and action to plan_sequence. It then calls the get_scheduling_cost_step_by_step 
+        method with plan_sequence and task_graph to compute the finish time for the task sequence.
+        The finish time is appended to a list called cost_batch, which will store the finish times 
+        for all task graphs in the batch. Finally, the method returns cost_batch, which is a list of 
+        floating-point numbers representing the finish times for each task graph in the batch.
+        """
         cost_batch = []
-        energy_batch = []
         for action_sequence, task_graph in zip(action_sequence_batch,
                                                task_graph_batch):
             plan_sequence = []
@@ -638,6 +679,19 @@ class OffloadingEnvironment(MetaEnv):
         return running_cost
 
     def get_all_mec_execute_time(self):
+        """
+        This is a method definition in Python. It defines a method called get_all_mec_execute_time 
+        that takes no arguments and returns a list of floating-point numbers representing 
+        the average execution time for each batch of tasks.
+        The method iterates over pairs of task_graph_batch and encode_batch, which are assumed 
+        to be arrays or tensors containing batched task graphs and their corresponding encoded 
+        representations, respectively. For each pair, it computes the batch size and sequence 
+        length of the encoded representations, creates a scheduling action array of ones with 
+        the same shape as the encoded representations, and calls the get_running_cost method 
+        with the scheduling action and task graph batch to compute the running cost for the batch. 
+        The running cost is then appended to a list of running costs for all batches, and the method 
+        returns the list of average running costs for each batch.
+        """
         running_cost = []
 
         for task_graph_batch, encode_batch in zip(self.task_graphs_batches, self.encoder_batches):
