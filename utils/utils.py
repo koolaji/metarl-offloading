@@ -309,8 +309,8 @@ def get_session(config=None):
 
 class _Function(object):
     def __init__(self, inputs, outputs, updates, givens):
-        for inpt in inputs:
-            if not hasattr(inpt, 'make_feed_dict') and not (type(inpt) is tf.Tensor and len(inpt.op.inputs) == 0):
+        for input in inputs:
+            if not hasattr(input, 'make_feed_dict') and not (type(input) is tf.Tensor and len(input.op.inputs) == 0):
                 assert False, "inputs should all be placeholders, constants, or have a make_feed_dict method"
         self.inputs = inputs
         updates = updates or []
@@ -318,21 +318,21 @@ class _Function(object):
         self.outputs_update = list(outputs) + [self.update_group]
         self.givens = {} if givens is None else givens
 
-    def _feed_input(self, feed_dict, inpt, value):
-        if hasattr(inpt, 'make_feed_dict'):
-            feed_dict.update(inpt.make_feed_dict(value))
+    def _feed_input(self, feed_dict, input, value):
+        if hasattr(input, 'make_feed_dict'):
+            feed_dict.update(input.make_feed_dict(value))
         else:
-            feed_dict[inpt] = adjust_shape(inpt, value)
+            feed_dict[input] = adjust_shape(input, value)
 
     def __call__(self, *args):
         assert len(args) <= len(self.inputs), "Too many arguments provided"
         feed_dict = {}
         # Update the args
-        for inpt, value in zip(self.inputs, args):
-            self._feed_input(feed_dict, inpt, value)
+        for input, value in zip(self.inputs, args):
+            self._feed_input(feed_dict, input, value)
         # Update feed dict with givens.
-        for inpt in self.givens:
-            feed_dict[inpt] = adjust_shape(inpt, feed_dict.get(inpt, self.givens[inpt]))
+        for input in self.givens:
+            feed_dict[input] = adjust_shape(input, feed_dict.get(input, self.givens[input]))
         results = get_session().run(self.outputs_update, feed_dict=feed_dict)[:-1]
         return results
 

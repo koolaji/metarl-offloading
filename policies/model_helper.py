@@ -76,6 +76,7 @@ def create_rnn_cell(unit_type, num_units, num_layers, num_residual_layers,
                          base_gpu=base_gpu,
                          single_cell_fn=single_cell_fn)
 
+
   if len(cell_list) == 1:  # Single layer.
     return cell_list[0]
   else:  # Multi layers

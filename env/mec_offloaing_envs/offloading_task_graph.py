@@ -380,7 +380,6 @@ class OffloadingTaskGraph(object):
         for i in range(self.task_number):
             rank(i)
         sort = np.argsort(rank_dict)[::-1]
-        print(sort)
         self.prioritize_sequence = sort
         return sort
 
