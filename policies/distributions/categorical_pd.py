@@ -68,6 +68,9 @@ class CategoricalPd(Distribution):
 
     def likelihood_ratio_sym(self, x_var, old_dist_info_vars, new_dist_info_vars):
         """
+        The likelihood ratio is defined as the ratio of the probability of taking 
+        an action under the new policy to the probability of taking the same action 
+        under the old policy. Mathematically, it can be expressed as:
         Symbolic likelihood ratio p_new(x)/p_old(x) of two distributions
 
         Args:

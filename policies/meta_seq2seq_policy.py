@@ -453,7 +453,7 @@ class Seq2SeqPolicy:
 
         self.vf = self.network.vf
 
-        # self._dist = CategoricalPd(vocab_size)
+        self._dist = CategoricalPd(vocab_size)
 
     def get_actions(self, observations):
         """
@@ -549,7 +549,7 @@ class MetaSeq2SeqPolicy:
                                                     self.core_policy.get_variables())])
                 )
 
-        # self._dist = CategoricalPd(vocab_size)
+        self._dist = CategoricalPd(vocab_size)
 
     def get_actions(self, observations):
         assert len(observations) == self.meta_batch_size

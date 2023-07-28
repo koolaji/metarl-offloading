@@ -171,7 +171,6 @@ if __name__ == "__main__":
         max_path_length=20000,
         parallel=False,
     )
-
     sample_processor = Seq2SeqMetaSamplerProcessor(baseline=baseline,
                                                    discount=0.99,
                                                    gae_lambda=0.95,

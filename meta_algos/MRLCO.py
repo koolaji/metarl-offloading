@@ -75,6 +75,23 @@ class MRLCO():
         self.build_graph()
 
     def build_graph(self):
+        """
+        This method builds the TensorFlow computation graph for the meta-learning algorithm. 
+        It defines the inner update for each task in the meta-batch and the outer update 
+        for the meta-parameters.
+        For each task in the meta-batch, the method creates placeholders for the input data 
+        (observation, action, reward, etc.) and defines the loss functions and training 
+        operations using TensorFlow operations. Specifically, it computes the surrogate 
+        objective, value function loss, and total loss for each task using the policy 
+        parameters of the inner policy network and the input data. It then uses the inner 
+        optimizer to compute the gradients of the total loss with respect to the policy 
+        parameters and applies them to update the policy parameters.
+        The method then defines the outer update for the meta-parameters using the outer 
+        optimizer. It creates placeholders for the gradient of the total loss with respect 
+        to the meta-parameters and updates the meta-parameters using the outer optimizer.
+        Overall, this method sets up the TensorFlow computation graph for the meta-learning 
+        algorithm, which can then be used for meta-training on a set of tasks.
+        """
         # build inner update for each tasks
         for i in range(self.meta_batch_size):
             self.new_logits.append(self.policy.meta_policies[i].network.decoder_logits)

@@ -1,15 +1,1 @@
 Logging to ./meta_offloading20_log-inner_step1/
-Optimizing policy...
---------------------------------------
-| Average latency,        | 1.03e+03 |
-| Average reward,         | -7.09    |
-| AverageDiscountedReturn | -6.52    |
-| AverageReturn           | -7.07    |
-| EnvExecTime             | 1.11     |
-| Itr                     | 0        |
-| MaxReturn               | -2.44    |
-| MinReturn               | -12.7    |
-| NumTrajs                | 10000    |
-| PolicyExecTime          | 2.81     |
-| StdReturn               | 1.58     |
---------------------------------------
