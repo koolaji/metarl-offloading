@@ -1,25 +1,4 @@
-"""
-The MRLCO class is a reinforcement learning algorithm that implements a meta-learned policy with a
-PPO (Proximal Policy Optimization) update rule. The algorithm uses a sequence-to-sequence model as the policy network
-and updates the policy parameters using first-order approximation. The class takes in a policy, a meta_batch_size,
-a meta_sampler, a meta_sampler_process, and various hyperparameters such as outer_lr, inner_lr, num_inner_grad_steps,
-clip_value, vf_coef, and max_grad_norm.
 
-The build_graph method is responsible for building the computation graph for the algorithm. It creates placeholders for
-the path data such as observations, actions, and rewards, as well as placeholders for the old policy logits,
-old value estimations, and advantages. It then computes the PPO loss and the value function loss for each task in
-the meta-batch and updates the policy parameters using the inner_optimizer. Finally, it updates the meta-policy
-parameters using the outer_optimizer.
-
-The UpdateMetaPolicy method updates the meta-policy parameters by computing the gradient updates for the
-meta-policy through first-order approximation and updating the meta-policy parameters using the outer_optimizer.
-
-The UpdatePPOTarget method updates the PPO target network for each task in the meta-batch by computing the PPO loss and
-the value function loss for each batch of path data and updating the policy parameters using the inner_optimizer.
-
-Overall, the MRLCO class provides a way to implement a reinforcement learning algorithm that uses a meta-learned policy
-with a PPO update rule and first-order approximation for the meta-optimization.
-"""
 import tensorflow as tf
 import numpy as np
 import itertools

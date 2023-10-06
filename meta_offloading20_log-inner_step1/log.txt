@@ -1,1 +1,27 @@
 Logging to ./meta_offloading20_log-inner_step1/
+--------------------------------------
+| Average latency,        | 1.08e+03 |
+| Average reward,         | -7.67    |
+| AverageDiscountedReturn | -7.09    |
+| AverageReturn           | -7.67    |
+| EnvExecTime             | 0.1      |
+| Itr                     | 0        |
+| MaxReturn               | -4.88    |
+| MinReturn               | -11.2    |
+| NumTrajs                | 1000     |
+| PolicyExecTime          | 0.353    |
+| StdReturn               | 1.16     |
+--------------------------------------
+--------------------------------------
+| Average latency,        | 1.08e+03 |
+| Average reward,         | -7.66    |
+| AverageDiscountedReturn | -7.08    |
+| AverageReturn           | -7.66    |
+| EnvExecTime             | 0.115    |
+| Itr                     | 1        |
+| MaxReturn               | -4.48    |
+| MinReturn               | -11.6    |
+| NumTrajs                | 1000     |
+| PolicyExecTime          | 0.423    |
+| StdReturn               | 1.13     |
+--------------------------------------

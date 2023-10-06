@@ -20,6 +20,7 @@ tf.get_logger().setLevel('WARNING')
 
 class FixedSequenceLearningSampleEmbedingHelper(tf.contrib.seq2seq.SampleEmbeddingHelper):
     def __init__(self, sequence_length, embedding, start_tokens, end_token, softmax_temperature=None, seed=None):
+        logging.debug('Start FixedSequenceLearningSampleEmbedingHelper')
         super(FixedSequenceLearningSampleEmbedingHelper, self).__init__(
             embedding, start_tokens, end_token, softmax_temperature, seed
         )
@@ -70,7 +71,7 @@ class Seq2SeqNetwork:
                  decoder_inputs,
                  decoder_full_length,
                  decoder_targets):
-
+        logging.debug('Start Seq2SeqNetwork')
         self.encoder_hidden_unit = hparams.encoder_units
         self.decoder_hidden_unit = hparams.decoder_units
         self.is_bidencoder = hparams.is_bidencoder
@@ -117,9 +118,6 @@ class Seq2SeqNetwork:
                                                          self.n_features,
                                                          dtype=tf.float32)
             self.output_layer = tf.compat.v1.layers.Dense(self.n_features, use_bias=False, name="output_projection")
-            # if self.is_bidencoder:
-            #     self.encoder_outputs, self.encoder_state = self.create_bidrect_encoder(hparams)
-            # else:
             self.encoder_outputs, self.encoder_state = self.create_encoder(hparams)
 
             # training decoder
@@ -143,13 +141,6 @@ class Seq2SeqNetwork:
             self.sample_vf = tf.reduce_sum(self.sample_pi*self.sample_q, axis=-1)
             self.sample_decoder_prediction = self.sample_decoder_outputs.sample_id
 
-            # Note: we can't use sparse_softmax_cross_entropy_with_logits
-            # self.sample_decoder_embeddings = tf.one_hot(self.sample_decoder_prediction,
-            #                                             self.n_features,
-            #                                             dtype=tf.float32)
-            # self.sample_neglogp = tf.nn.softmax_cross_entropy_with_logits_v2(labels=self.sample_decoder_embeddings,
-            #                                                                  logits=self.sample_decoder_logits)
-
             # greedy decoder
             self.greedy_decoder_outputs, self.greedy_decoder_state = \
                 self.create_decoder(hparams, self.encoder_outputs, self.encoder_state, model="greedy")
@@ -160,44 +151,9 @@ class Seq2SeqNetwork:
             self.greedy_vf = tf.reduce_sum(self.greedy_pi * self.greedy_q, axis=-1)
             self.greedy_decoder_prediction = self.greedy_decoder_outputs.sample_id
 
-    def predict_training(self, sess, encoder_input_batch, decoder_input, decoder_full_length):
-        return sess.run([self.decoder_prediction, self.pi],
-                        feed_dict={
-                            self.encoder_inputs: encoder_input_batch,
-                            self.decoder_inputs: decoder_input,
-                            self.decoder_full_length: decoder_full_length
-                        })
-
-    def kl(self, other):
-        a0 = self.decoder_logits - tf.reduce_max(self.decoder_logits, axis=-1, keepdims=True)
-        a1 = other.decoder_logits - tf.reduce_max(other.decoder_logits, axis=-1, keepdims=True)
-        ea0 = tf.exp(a0)
-        ea1 = tf.exp(a1)
-        z0 = tf.reduce_sum(ea0, axis=-1, keepdims=True)
-        z1 = tf.reduce_sum(ea1, axis=-1, keepdims=True)
-        p0 = ea0 / z0
-        return tf.reduce_sum(p0 * (a0 - tf.log(z0) - a1 + tf.log(z1)), axis=-1)
-
-    def entropy(self):
-        a0 = self.decoder_logits - tf.reduce_max(self.decoder_logits, axis=-1, keepdims=True)
-        ea0 = tf.exp(a0)
-        z0 = tf.reduce_sum(ea0, axis=-1, keepdims=True)
-        p0 = ea0 / z0
-        return tf.reduce_sum(p0 * (tf.log(z0) - a0), axis=-1)
-
-    def neglogp(self):
-        # return tf.nn.sparse_softmax_cross_entropy_with_logits(logits=self.logits, labels=x)
-        # Note: we can't use sparse_softmax_cross_entropy_with_logits because
-        #       the implementation does not allow second-order derivatives...
-        return tf.nn.softmax_cross_entropy_with_logits_v2(
-            logits=self.decoder_logits,
-            labels=self.decoder_targets_embeddings)
-
-    def logp(self):
-        return -self.neglogp()
-
     def _build_encoder_cell(self, hparams, num_layers, num_residual_layers, base_gpu=0):
         """Build a multi-layer RNN cell that can be used by encoder."""
+        logging.debug('Start _build_encoder_cell')
         return model_helper.create_rnn_cell(
             unit_type=hparams.unit_type,
             num_units=hparams.encoder_units,
@@ -212,6 +168,7 @@ class Seq2SeqNetwork:
 
     def _build_decoder_cell(self, hparams, num_layers, num_residual_layers, base_gpu=0):
         """Build a multi-layer RNN cell that can be used by decoder"""
+        logging.debug('Start _build_decoder_cell')
         return model_helper.create_rnn_cell(
             unit_type=hparams.unit_type,
             num_units=hparams.decoder_units,
@@ -225,14 +182,11 @@ class Seq2SeqNetwork:
             single_cell_fn=self.single_cell_fn)
 
     def create_encoder(self, hparams):
-        # Build RNN cell
+        logging.debug('Start create_encoder')
         with tf.compat.v1.variable_scope("encoder", reuse=tf.compat.v1.AUTO_REUSE) as scope:
             encoder_cell = self._build_encoder_cell(hparams=hparams,
                                                     num_layers=self.num_layers,
                                                     num_residual_layers=self.num_residual_layers)
-
-            # encoder_cell = tf.contrib.rnn.GRUCell(self.encoder_hidden_unit)
-            # currently only consider the normal dynamic rnn
             encoder_outputs, encoder_state = tf.nn.dynamic_rnn(
                 cell=encoder_cell,
                 sequence_length = None,
@@ -244,46 +198,13 @@ class Seq2SeqNetwork:
             )
 
         return encoder_outputs, encoder_state
-
-    # def create_bidrect_encoder(self, hparams):
-    #     with tf.compat.v1.variable_scope("encoder", reuse=tf.compat.v1.AUTO_REUSE) as scope:
-    #         num_bi_layers = int(self.num_layers / 2)
-    #         num_bi_residual_layers = int(self.num_residual_layers / 2)
-    #         forward_cell = self._build_encoder_cell(hparams=hparams,
-    #                                                 num_layers=num_bi_layers,
-    #                                                 num_residual_layers=num_bi_residual_layers)
-    #         backward_cell = self._build_encoder_cell(hparams=hparams,
-    #                                                  num_layers=num_bi_layers,
-    #                                                  num_residual_layers=num_bi_residual_layers)
-
-    #         bi_outputs, bi_state = tf.nn.bidirectional_dynamic_rnn(
-    #             forward_cell,
-    #             backward_cell,
-    #             inputs=self.encoder_embeddings,
-    #             time_major=self.time_major,
-    #             swap_memory=True,
-    #             dtype=tf.float32)
-
-    #         encoder_outputs = tf.concat(bi_outputs, -1)
-
-    #         if num_bi_layers == 1:
-    #             encoder_state = bi_state
-    #         else:
-    #             encoder_state = []
-    #             for layer_id in range(num_bi_layers):
-    #                 encoder_state.append(bi_state[0][layer_id])  # forward
-    #                 encoder_state.append(bi_state[1][layer_id])  # backward
-
-    #             encoder_state = tuple(encoder_state)
-
-    #         return encoder_outputs, encoder_state
-
+    
     def create_decoder(self, hparams, encoder_outputs, encoder_state, model):
+        logging.debug('Start create_decoder  model = %s, is_attention = %s', str(model), str(self.is_attention))
         with tf.compat.v1.variable_scope("decoder", reuse=tf.compat.v1.AUTO_REUSE) as decoder_scope:
             if model == "greedy":
                 helper = tf.contrib.seq2seq.GreedyEmbeddingHelper(
                     self.embeddings,
-                    # Batchsize * Start_token
                     start_tokens=tf.fill([tf.size(self.decoder_full_length)], self.start_token),
                     end_token=self.end_token
                 )
@@ -311,9 +232,7 @@ class Seq2SeqNetwork:
                 decoder_cell = self._build_decoder_cell(hparams=hparams,
                                                         num_layers=self.num_layers,
                                                         num_residual_layers=self.num_residual_layers)
-                # decoder_cell = tf.contrib.rnn.GRUCell(self.decoder_hidden_unit)
                 if self.time_major:
-                    # [batch_size, max_time, num_nunits]
                     attention_states = tf.transpose(encoder_outputs, [1, 0, 2])
                 else:
                     attention_states = encoder_outputs
@@ -357,27 +276,7 @@ class Seq2SeqNetwork:
 class Seq2SeqPolicy:
     def __init__(self, obs_dim, encoder_units,
                  decoder_units, vocab_size, name="pi"):
-        """
-        This is a code snippet written in TensorFlow 1.x to initialize the placeholders 
-        and build a sequence-to-sequence (seq2seq) model with a Categorical policy for 
-        reinforcement learning.
-        The code initializes four placeholders: decoder_targets_ph, decoder_inputs_ph, 
-        obs_ph, and decoder_full_length. These are used to feed in the target sequence, 
-        input sequence, observation sequence, and length of the decoder sequence, 
-        respectively, during training or inference.
-        The code then defines a hparams object to specify the hyperparameters of 
-        the seq2seq model, including the type of recurrent unit, number of units in 
-        the encoder and decoder, vocabulary size, use of attention mechanism, dropout rate, 
-        number of layers, and start and end tokens.
-        It then creates a Seq2SeqNetwork object with the specified hyperparameters, using 
-        the obs, decoder_inputs, decoder_full_length, and decoder_targets placeholders as 
-        inputs. The Seq2SeqNetwork object contains the encoder and decoder layers, as well 
-        as methods to compute the value function and the probability distribution over actions.
-        Finally, the code creates a CategoricalPd object to represent the policy distribution 
-        over actions, using the vocabulary size as the number of discrete actions. 
-        The policy distribution is represented as a categorical distribution, where each 
-        action is assigned a probability proportional to its score.
-        """
+        logging.debug('Start Seq2SeqPolicy name=%s' , name)
         self.decoder_targets = tf.compat.v1.placeholder(shape=[None, None], dtype=tf.int32,
                                                         name="decoder_targets_ph_"+name)
         self.decoder_inputs = tf.compat.v1.placeholder(shape=[None, None], dtype=tf.int32,
@@ -388,28 +287,6 @@ class Seq2SeqPolicy:
 
         self.action_dim = vocab_size # number of possible action in our case means two action (local or MEC) 
         self.name = name
-        """
-        * unit_type: Specifies the type of recurrent unit to use for the encoder and decoder. 
-          In this case, it is set to "lstm", which stands for Long Short-Term Memory.
-        * encoder_units: The number of units in each layer of the encoder.
-        * decoder_units: The number of units in each layer of the decoder.
-        * n_features: The number of features in the input data. In this case, 
-          it is set to the vocabulary size.
-        * time_major: A boolean that determines whether the time dimension is the first dimension 
-          of the input data. If set to True, the input tensor should have shape 
-          [max_time, batch_size, ...]. If set to False (the default), the input tensor should 
-          have shape [batch_size, max_time, ...].
-        * is_attention: A boolean that specifies whether the decoder should use attention.
-        * forget_bias: The bias added to forget gates in the LSTM units.
-        * dropout: The dropout rate to use for dropout regularization.
-        * num_gpus: The number of GPUs to use for training. In this case, it is set to 1.
-        * num_layers: The number of layers in the encoder and decoder.
-        * num_residual_layers: The number of residual layers in the encoder and decoder.
-        * start_token: The token used to indicate the start of a sequence.
-        * end_token: The token used to indicate the end of a sequence.
-        * is_bidencoder: A boolean that specifies whether the encoder should be bidirectional. 
-          In this case, it is set to False.
-        """
         hparams = tf.contrib.training.HParams(
             unit_type="lstm", # layer_norm_lstm or Gru
             encoder_units=encoder_units,
@@ -427,24 +304,6 @@ class Seq2SeqPolicy:
             end_token=2,
             is_bidencoder=False
         )
-        """
-        hparams = tf.contrib.training.HParams(
-            unit_type="layer_norm_lstm",
-            encoder_units=256,
-            decoder_units=256,
-            n_features=10000,
-            time_major=False,
-            is_attention=True,
-            forget_bias=1.0,
-            dropout=0.5,
-            num_gpus=1,
-            num_layers=2,
-            num_residual_layers=0,
-            start_token=0,
-            end_token=2,
-            is_bidencoder=False
-        )
-        """
         self.network = Seq2SeqNetwork(hparams=hparams, reuse=tf.compat.v1.AUTO_REUSE,
                  encoder_inputs=self.obs,
                  decoder_inputs=self.decoder_inputs,
@@ -454,27 +313,13 @@ class Seq2SeqPolicy:
         self.vf = self.network.vf
 
         self._dist = CategoricalPd(vocab_size)
+        logging.debug('END MetaSeq2SeqPolicy')
 
     def get_actions(self, observations):
-        """
-        The get_actions method of the Sampler class is used to obtain actions to take from the policy given a batch of
-        observations. It calls the sample_decoder_prediction, sample_decoder_logits, and sample_vf methods of the neural
-        network model to obtain the actions, logits, and value estimates for the given observations.
-        The method first gets the default TensorFlow session using the tf.compat.v1.get_default_session() method. It
-        then computes the decoder_full_length array, which is an array of the same length as the batch size that
-        contains the maximum length of the decoder sequence for each observation in the batch. This is used to feed
-        the decoder_full_length placeholder in the TensorFlow graph.
-        The method then runs the TensorFlow graph by calling the sess.run() method with the sample_decoder_prediction,
-        sample_decoder_logits, and sample_vf TensorFlow tensors as input. The feed_dict argument is used to feed the
-        observations and decoder_full_length numpy arrays to the input placeholders in the TensorFlow graph.
-        Finally, the method returns the obtained actions, logits, and v_value numpy arrays. These arrays represent the
-        actions to take, the logits of the action distribution, and the estimated value function for the given
-        observations.
-        """
+        logging.debug('Start Seq2SeqPolicy get_actions')
         sess = tf.compat.v1.get_default_session()
 
         decoder_full_length = np.array([observations.shape[1]] * observations.shape[0], dtype=np.int32)
-        # logging.debug(" decoder_full_length %s", decoder_full_length)
         actions, logits, v_value = sess.run([self.network.sample_decoder_prediction,
                                              self.network.sample_decoder_logits,
                                              self.network.sample_vf],
@@ -527,7 +372,7 @@ class Seq2SeqPolicy:
 class MetaSeq2SeqPolicy:
     def __init__(self, meta_batch_size, obs_dim, encoder_units, decoder_units,
                  vocab_size):
-
+        logging.debug('Start MetaSeq2SeqPolicy')
         self.meta_batch_size = meta_batch_size
         self.obs_dim = obs_dim
         self.action_dim = vocab_size
@@ -550,8 +395,11 @@ class MetaSeq2SeqPolicy:
                 )
 
         self._dist = CategoricalPd(vocab_size)
+        logging.debug('END MetaSeq2SeqPolicy')
+
 
     def get_actions(self, observations):
+        logging.debug('Start MetaSeq2SeqPolicy get_actions')
         assert len(observations) == self.meta_batch_size
 
         meta_actions = []
@@ -574,4 +422,29 @@ class MetaSeq2SeqPolicy:
     @property
     def distribution(self):
         return self._dist
+    
+    def get_params(self):
+        """Get the current parameters of the policy."""
+        with tf.compat.v1.Session() as sess:
+            sess.run(tf.compat.v1.global_variables_initializer())
+            variables = self.core_policy.get_trainable_variables()
+            return {v.name: sess.run(v) for v in variables}
 
+    def set_params(self, new_params):
+        """Set the policy parameters to new values."""
+        with tf.compat.v1.Session() as sess:
+            sess.run(tf.compat.v1.global_variables_initializer())
+            for var in self.core_policy.get_trainable_variables():
+                value = new_params[var.name]
+                var.load(value, sess)
+
+    def get_random_params(self):
+        with tf.compat.v1.Session() as sess:
+            sess.run(tf.compat.v1.global_variables_initializer())
+            # Assuming the policy's parameters are TensorFlow variables
+            params = self.get_params()
+            # logging.debug('get_random_params params %s', params)
+            random_params = {}
+            for key, value in params.items():
+                random_params[key] = np.random.randn(*value.shape)
+            return random_params

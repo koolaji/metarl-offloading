@@ -115,10 +115,12 @@ if __name__ == "__main__":
     print("avg greedy solution: ", np.mean(finish_time))
 
     print()
-    finish_time, energy_cost = env.get_all_mec_execute_time()
+    # finish_time, energy_cost = env.get_all_mec_execute_time()
+    finish_time = env.get_all_mec_execute_time()
     print("avg all remote solution: ", np.mean(finish_time))
     print()
-    finish_time, energy_cost = env.get_all_locally_execute_time()
+    # finish_time, energy_cost = env.get_all_locally_execute_time()
+    finish_time = env.get_all_locally_execute_time()
     print("avg all local solution: ", np.mean(finish_time))
 
     policy = Seq2SeqPolicy(obs_dim=17,
@@ -155,14 +157,14 @@ if __name__ == "__main__":
                       sampler=sampler,
                       sample_processor=sample_processor,
                       policy=policy,
-                      n_itr=21,
+                      n_itr=1,
                       start_itr=0,
                       batch_size=500,
                       num_inner_grad_steps=3)
 
     with tf.Session() as sess:
         sess.run(tf.compat.v1.global_variables_initializer())
-        policy.load_variables(load_path="./meta_model_offload20_25_batch_10/meta_model_2900.ckpt")
+        policy.load_variables(load_path="./meta_model_inner_step1/meta_model_200.ckpt")
         avg_ret, avg_pg_loss, avg_vf_loss, avg_latencies = trainer.train()
 
 

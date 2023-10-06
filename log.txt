@@ -1,0 +1,4 @@
+Logging to ./meta_offloading20_log-inner_step1/
+[1449.421876051085]
+Warning: No valid output stream.
+Warning: No valid output stream.

@@ -11,7 +11,7 @@ from samplers.vectorized_env_executor import  MetaIterativeEnvExecutor
 
 class Trainer(object):
     def __init__(self, 
-                 algo,
+                 tlbo,
                  env,
                  sampler,
                  sample_processor,
@@ -20,8 +20,10 @@ class Trainer(object):
                  greedy_finish_time,
                  start_itr=0,
                  inner_batch_size=500,
-                 save_interval=100):
-        self.algo = algo
+                 save_interval=100,
+                 population_size = 100, 
+                 num_generations = 100):
+        self.tlbo = tlbo
         self.env = env
         self.sampler = sampler
         self.sampler_processor = sample_processor
@@ -31,54 +33,48 @@ class Trainer(object):
         self.inner_batch_size = inner_batch_size
         self.greedy_finish_time = greedy_finish_time
         self.save_interval = save_interval
-
+        self.population_size = population_size
+        self.num_generations = num_generations
     def train(self):
         """
-        Implement the MRLCO training process for task offloading problem
+        Implement the TLBO training process for task offloading problem
         """
         logging.debug('Start train')
-        start_time = time.time()
         avg_ret = []
         avg_loss = []
         avg_latencies = []
+
+        # 1. Initialization
+        tlbo_optimizer = TLBO(population_size=self.population_size,
+                              num_generations = self.num_generations,
+                              policy=self.policy, env=self.env, 
+                              sampler=self.sampler, 
+                              sample_processor=self.sampler_processor)
         for itr in range(self.start_itr, self.n_itr):
-            current_time = time.time()
             logging.debug("\n ---------------- Iteration %d ----------------" % itr)
             logging.debug("Sampling set of tasks/goals for this meta-batch...")
+
             # random select some task and set task_id
             task_ids = self.sampler.update_tasks()
             logging.debug(" task_ids %s", task_ids)
             paths = self.sampler.obtain_samples(log=False, log_prefix='')
-            # logging.debug(" paths %s", paths)
             logging.debug("sampled path length is: %s", len(paths[0]))
-
-            greedy_run_time = [self.greedy_finish_time[x] for x in task_ids]
-            logger.debug('Average greedy latency,', np.mean(greedy_run_time))
-            logger.debug('greedy_run_time,', greedy_run_time)
 
             """ ----------------- Processing Samples ---------------------"""
             logger.debug("Processing samples...")
             samples_data = self.sampler_processor.process_samples(paths, log=False, log_prefix='')
 
-            """ ------------------- Inner Policy Update --------------------"""
-            policy_losses, value_losses = self.algo.UpdatePPOTarget(samples_data, batch_size=self.inner_batch_size )
+            """ ------------------- TLBO Optimization --------------------"""
+            # 2. Evaluation
+            policy_params = self.policy.get_params()
+            self.tlbo.objective_function(policy_params)
 
-            print("task losses: ", value_losses)
-            print("average task losses: ", np.mean(policy_losses))
-            avg_loss.append(np.mean(policy_losses))
-
-            print("average value losses: ", np.mean(value_losses))
-
-            """ ------------------ Resample from updated sub-task policy ------------"""
-            print("Evaluate the one-step update for sub-task policy")
+            # 3. Optimization
+            best_params = tlbo_optimizer.optimize()
+            self.policy.set_params(best_params)
+            """ ------------------- Logging Stuff --------------------------"""
             new_paths = self.sampler.obtain_samples(log=True, log_prefix='')
             new_samples_data = self.sampler_processor.process_samples(new_paths, log="all", log_prefix='')
-
-            """ ------------------ Outer Policy Update ---------------------"""
-            logger.log("Optimizing policy...")
-            self.algo.UpdateMetaPolicy()
-
-            """ ------------------- Logging Stuff --------------------------"""
 
             ret = np.array([])
             for i in range(1):
@@ -102,12 +98,8 @@ class Trainer(object):
 
             if itr % self.save_interval == 0:
                 self.policy.core_policy.save_variables(save_path="./meta_model_inner_step1/meta_model_"+str(itr)+".ckpt")
-            elapsed_time = time.time() - current_time
-            logging.debug("Elapsed time: %s  seconds ", str(elapsed_time))
 
         self.policy.core_policy.save_variables(save_path="./meta_model_inner_step1/meta_model_final.ckpt")
-        elapsed_time = time.time() - start_time
-        print("Elapsed time:", elapsed_time, "seconds")
         return avg_ret, avg_loss, avg_latencies
 
 
@@ -118,7 +110,7 @@ if __name__ == "__main__":
     from samplers.seq2seq_meta_sampler import Seq2SeqMetaSampler
     from samplers.seq2seq_meta_sampler_process import Seq2SeqMetaSamplerProcessor
     from baselines.vf_baseline import ValueFunctionBaseline
-    from meta_algos.MRLCO import MRLCO
+    # from meta_algos.MRLCO import MRLCO
     from meta_algos.TLBO import TLBO
     tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
     logging.basicConfig(level=logging.DEBUG, filename='meta_train.log',  filemode='a',)
@@ -171,12 +163,10 @@ if __name__ == "__main__":
     meta_policy = MetaSeq2SeqPolicy(meta_batch_size=META_BATCH_SIZE, obs_dim=17, encoder_units=128, decoder_units=128,
                                     vocab_size=2)
     
-    # vec_env = MetaIterativeEnvExecutor(env, meta_batch_size=META_BATCH_SIZE, envs_per_task=1, max_path_length=20000)
-    # obses = vec_env.reset()
     sampler = Seq2SeqMetaSampler(
         env=env,
         policy=meta_policy,
-        rollouts_per_meta_task=1,  # This batch_size is confusing
+        rollouts_per_meta_task=1,  
         meta_batch_size=META_BATCH_SIZE,
         max_path_length=20000,
         parallel=False,
@@ -188,24 +178,17 @@ if __name__ == "__main__":
                                                    positive_adv=False)
 
     
-    # algo = MRLCO(policy=meta_policy,
-    #              meta_sampler=sampler,
-    #              meta_sampler_process=sample_processor,
-    #              inner_lr=5e-4,
-    #              outer_lr=5e-4,
-    #              meta_batch_size=META_BATCH_SIZE,
-    #              num_inner_grad_steps=1,
-    #              clip_value=0.3)
-    
-    tlbo = TLBO (population_size = 100, 
-                 num_generations =100, 
+    population_size = 10
+    num_generations = 10
+    tlbo = TLBO (population_size = population_size, 
+                 num_generations = num_generations, 
                  policy=meta_policy, 
                  env=env, 
                  sampler=sampler, 
                  sample_processor=sample_processor)
 
     trainer = Trainer(
-                      algo=algo,
+                      tlbo=tlbo,
                       env=env,
                       sampler=sampler,
                       sample_processor=sample_processor,
@@ -213,21 +196,13 @@ if __name__ == "__main__":
                       n_itr=2,
                       greedy_finish_time= greedy_finish_time,
                       start_itr=0,
-                      inner_batch_size=1000)
+                      inner_batch_size=1000,
+                      population_size = population_size, 
+                      num_generations = num_generations)
 
     with tf.compat.v1.Session() as sess:
         sess.run(tf.global_variables_initializer())
-        #### test ####
-        # obs_per_task = np.array(obses)
-        # actions, logits, values = meta_policy.get_actions(obs_per_task)    
-        # next_obses, rewards, dones, env_infos = vec_env.step(actions)
-        # next_obs_per_task = np.array(next_obses)
-        # diff_array = np.setdiff1d(next_obs_per_task , obs_per_task)
-        # logging.debug('diff_array %s',diff_array)
-        ####
-
         avg_ret, avg_loss, avg_latencies = trainer.train()
-        # trainer.train()
         logging.debug("final result %s, %s, %s ", avg_ret, avg_loss, avg_latencies)
 
 

@@ -21,7 +21,8 @@ which is a type of reinforcement learning where the goal is to learn how to lear
 """
 
 from samplers.base import Sampler
-from samplers.vectorized_env_executor import MetaParallelEnvExecutor, MetaIterativeEnvExecutor
+# from samplers.vectorized_env_executor import MetaParallelEnvExecutor, MetaIterativeEnvExecutor
+from samplers.vectorized_env_executor import  MetaIterativeEnvExecutor
 from utils import utils, logger
 from collections import OrderedDict
 
@@ -47,6 +48,7 @@ class Seq2SeqMetaSampler(Sampler):
 
     def __init__(self, env, policy, rollouts_per_meta_task, meta_batch_size, max_path_length, envs_per_task=None,
                  parallel=False):
+        logging.debug('Start Seq2SeqMetaSampler')
         super(Seq2SeqMetaSampler, self).__init__(env, policy, rollouts_per_meta_task, max_path_length)
         assert hasattr(env, 'set_task')
 
@@ -57,22 +59,20 @@ class Seq2SeqMetaSampler(Sampler):
         self.total_timesteps_sampled = 0
 
         # setup vectorized environment
-        if self.parallel:
-            self.vec_env = MetaParallelEnvExecutor(env, self.meta_batch_size, self.envs_per_task, self.max_path_length)
-        else:
-            self.vec_env = MetaIterativeEnvExecutor(env, self.meta_batch_size, self.envs_per_task, self.max_path_length)
+        # if self.parallel:
+        #     self.vec_env = MetaParallelEnvExecutor(env, self.meta_batch_size, self.envs_per_task, self.max_path_length)
+        # else:
+        self.vec_env = MetaIterativeEnvExecutor(env, self.meta_batch_size, self.envs_per_task, self.max_path_length)
 
     def update_tasks(self):
         """
         Samples a new goal for each meta task
         """
-        # logging.debug("update_tasks")
+        logging.debug("Start update_tasks")
         tasks = self.env.sample_tasks(self.meta_batch_size)
-        # logging.debug("tasks %s", tasks)
         assert len(tasks) == self.meta_batch_size
-        # logging.debug("meta_batch_size %s", self.meta_batch_size)
         self.vec_env.set_tasks(tasks)
-        # logging.debug("tasks %s", tasks)
+        logging.debug("END update_tasks")
         return tasks
 
     def obtain_samples(self, log=False, log_prefix=''):
@@ -86,52 +86,28 @@ class Seq2SeqMetaSampler(Sampler):
         Returns:
             (dict) : A dict of paths of size [meta_batch_size] x (batch_size) x [5] x (max_path_length)
         """
-        # logging.debug("obtain_samples")
-
-        # initial setup / preparation
+        logging.debug("Seq2SeqMetaSampler obtain_samples")
         paths = OrderedDict()
         for i in range(self.meta_batch_size):
             paths[i] = []
 
         n_samples = 0
         running_paths = [_get_empty_running_paths_dict() for _ in range(self.vec_env.num_envs)]
-        # logging.debug("running_paths  %s", running_paths)
-        # logging.debug("self.total_samples  %s", self.total_samples)
-        pbar = ProgBar(self.total_samples)
-        # logging.debug("pbar  %s", pbar)
         policy_time, env_time = 0, 0
 
         policy = self.policy
-        # logging.debug("self.policy  %s", self.policy)
-
-        # initial reset of envs
         obses = self.vec_env.reset()
-        # logging.debug("obses  %s", obses)
-
         while n_samples < self.total_samples:
-            # execute policy
             t = time.time()
-            # obs_per_task = np.split(np.asarray(obses), self.meta_batch_size)
             obs_per_task = np.array(obses)
-            # logging.debug("obs_per_task %s", obs_per_task)
             actions, logits, values = policy.get_actions(obs_per_task)
-            # logging.debug("actions logits values %s %s %s", actions, logits, values)
             policy_time += time.time() - t
-            # step environments
             t = time.time()
-            # actions = np.concatenate(actions)
             next_obses, rewards, dones, env_infos = self.vec_env.step(actions)
-            # logging.debug("next_obses, rewards, dones, env_infos  %s %s %s %s", next_obses, rewards, dones, env_infos)
-            # print("rewards shape is: ", np.array(rewards).shape)
-            # print("finish time shape is: ", np.array(env_infos).shape)
             env_time += time.time() - t
-            #  stack agent_infos and if no infos were provided (--> None) create empty dicts
             new_samples = 0
             for idx, observation, action, logit, reward, value, done, task_finish_times \
                     in zip(itertools.count(), obses, actions, logits, rewards, values, dones, env_infos):
-                # append new samples to running paths
-                # handling
-                # logging.debug("idx %s", idx)
                 for single_ob, single_ac, single_logit, single_reward, single_value, single_task_finish_time \
                         in zip(observation, action, logit, reward, value, task_finish_times):
                     running_paths[idx]["observations"] = single_ob
@@ -150,15 +126,10 @@ class Seq2SeqMetaSampler(Sampler):
                         values  = np.squeeze(np.asarray(running_paths[idx]["values"]))
                     ))
 
-                # if running path is done, add it to paths and empty the running path
                     new_samples += len(running_paths[idx]["rewards"])
                     running_paths[idx] = _get_empty_running_paths_dict()
-
-            pbar.update(new_samples)
             n_samples += new_samples
             obses = next_obses
-        pbar.stop()
-
         self.total_timesteps_sampled += self.total_samples
         if log:
             logger.logkv(log_prefix + "PolicyExecTime", policy_time)

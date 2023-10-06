@@ -1,5 +1,5 @@
 from samplers.base import Sampler
-from samplers.vectorized_env_executor import MetaParallelEnvExecutor, MetaIterativeEnvExecutor
+# from samplers.vectorized_env_executor import MetaParallelEnvExecutor, MetaIterativeEnvExecutor
 from utils import utils, logger
 from collections import OrderedDict
 

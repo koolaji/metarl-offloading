@@ -1,0 +1,8 @@
+appmap_dir: tmp/appmap
+language: python
+name: ''
+packages:
+- path: samplers
+- path: utils
+- path: baselines
+- path: policies
