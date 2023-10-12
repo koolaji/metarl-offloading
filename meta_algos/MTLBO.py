@@ -1,46 +1,52 @@
 import numpy as np
 import logging
 from utils import logger
-
+from functools import lru_cache
 
 class MTLBO:
-    def __init__(self, population_size, num_generations, policy, env, sampler, sampler_processor, generation):
+    def __init__(self, population_size, policy, env, sampler, sampler_processor):
         self.population_size = population_size
-        self.num_generations = num_generations
         self.policy = policy
         self.env = env
         self.sampler = sampler
         self.sampler_processor = sampler_processor
-        self.generation = 0
 
-    # def objective_function(self, policy_params):
-    #     self.policy.set_params(policy_params)
-    #     paths = self.sampler.obtain_samples()
-    #     samples_data = self.sampler_processor.process_samples(paths)
-    #     return -np.mean(samples_data['rewards'])
-
-    def teacher_phase(self, population):
+    def teacher_phase(self, population, iteration, max_iterations):
         logging.info('teacher_phase')
+        
+        # Identify the teacher (best solution in the population)
+        teacher = min(population, key=self.objective_function)
+        
         # Compute the mean solution
         mean_solution = {}
         keys = population[0].keys()
+        
         for key in keys:
             mean_solution[key] = np.mean([individual[key] for individual in population], axis=0)
 
         # Update the solutions using sine and cosine functions
-        for student in population:
-            diff = self.subtract_dicts(student, mean_solution)
+        for idx, student in enumerate(population):
+            diff = self.subtract_dicts(student, teacher)  # Use teacher here
             
-            # Use sine or cosine based on a random choice
-            if np.random.rand() < 0.5:
-                scaled_diff = self.scale_dict(diff, np.random.random() * np.sin(np.random.uniform(-np.pi/2, np.pi/2)))
+            rand_num = np.random.random()
+            teaching_factor = np.random.randint(1, 3)  # Either 1 or 2
+            
+            if self.objective_function(student) > self.objective_function(teacher):
+                scaled_diff = self.scale_dict(diff, teaching_factor * rand_num)
             else:
-                scaled_diff = self.scale_dict(diff, np.random.random() * np.cos(np.random.uniform(0, np.pi)))
+                # Adjusting the behavior based on the current iteration
+                angle = (np.pi / 2) * (iteration / max_iterations)
+                scaled_diff = self.add_dicts(
+                    self.scale_dict(diff, teaching_factor * rand_num * np.sin(angle)),
+                    self.scale_dict(diff, teaching_factor * rand_num * np.cos(angle))
+                )
+
             
             new_solution = self.add_dicts(student, scaled_diff)
-            logging.info('teacher_phase')
+            
             if self.objective_function(new_solution) < self.objective_function(student):
-                student = new_solution
+                population[idx] = new_solution
+
 
 
     def subtract_dicts(self,dict1, dict2):
@@ -49,94 +55,97 @@ class MTLBO:
             result[key] = dict1[key] - dict2[key]
         return result
 
-    def scale_dict(self,d, scalar):
-            """Multiply each value in the dictionary by a scalar."""
-            return {key: d[key] * scalar for key in d}
-    def add_dicts(self,dict1, dict2):
-            """Add values in two dictionaries with the same keys."""
-            return {key: dict1[key] + dict2[key] for key in dict1}
+    def scale_dict(self, dict1, scalar):
+        result = {}
+        for key in dict1:
+            result[key] = dict1[key] * scalar
+        return result
+    def add_dicts(self, dict1, dict2):
+        result = {}
+        for key in dict1:
+            result[key] = dict1[key] + dict2[key]
+        return result
 
-    def learner_phase(self, population):
-        for i in range(self.population_size):
-            logging.info('learner_phase %s', i)
-            j = np.random.choice([x for x in range(self.population_size) if x != i])
-            logging.info('learner_phase random')
-            diff = self.subtract_dicts(population[i], population[j])
 
-            # Use sine or cosine based on a random choice
-            if np.random.rand() < 0.5:
-                scaled_diff = self.scale_dict(diff, np.random.random() * np.sin(np.random.uniform(-np.pi/2, np.pi/2)))
-            else:
-                scaled_diff = self.scale_dict(diff, np.random.random() * np.cos(np.random.uniform(0, np.pi)))
-
-            logging.info('learner_phase scaled_diff')
-            new_solution = self.add_dicts(population[i], scaled_diff)
-            logging.info(f'learner_phase new_solution {i}')
-            if self.objective_function(new_solution) < self.objective_function(population[i]):
-                population[i] = new_solution
-            logging.info('learner_phase objective_function')
-       
-
-    def optimize(self):
-        logging.info('optimize ')
-        population = [self.policy.get_random_params() for _ in range(self.population_size)]        
-        for generation in range(self.num_generations):
-            self.generation = generation
-            logging.info('teacher_phase ')
-            self.teacher_phase(population)
-            logging.info('optimize ')
-            self.learner_phase(population)
-
-            """ ------------------- Logging Stuff --------------------------"""
-            new_paths = self.sampler.obtain_samples(log=True, log_prefix='')
-            new_samples_data = self.sampler_processor.process_samples(new_paths, log="all", log_prefix='')
-            ret = np.array([])
-            logging.info('optimize len new_samples_data = %s', len(new_samples_data))
-            for i in range(1):
-                ret = np.concatenate((ret, np.sum(new_samples_data[i]['rewards'], axis=-1)), axis=-1)
-
-            avg_reward = np.mean(ret)
-
-            latency = np.array([])
-            for i in range(1):
-                latency = np.concatenate((latency, new_samples_data[i]['finish_time']), axis=-1)
-
-            avg_latency = np.mean(latency)
-
-            logger.logkv('generation', generation)
-            logger.logkv('Average reward, ', avg_reward)
-            logger.logkv('Average latency,', "{:.4f}".format(avg_latency))
-
-            logger.dumpkvs()
+    def learner_phase(self, population, iteration, max_iterations):
+        logging.info('learner_phase')
         
-        # Return the best solution found
-        return min(population, key=self.objective_function)
-    
-    def objective_function(self, policy_params):
-                logging.debug('objective_function')
-                self.policy.set_params(policy_params)
-                paths = self.sampler.obtain_samples(log=False, log_prefix='')
-                samples_data = self.sampler_processor.process_samples(paths, log="all", log_prefix='')
-                ret = np.array([])
-                logging.info('objective_function len samples_data = %s', len(samples_data))
-                for i in range(1):
-                    ret = np.concatenate((ret, np.sum(samples_data[i]['rewards'], axis=-1)), axis=-1)
+        n = len(population)
+        half_n = n // 2
+        
+        # First Group
+        for idx in range(half_n):  # Only considering the first half of the population
+            student = population[idx]
+            
+            # Randomly select another learner
+            j = np.random.choice([x for x in range(half_n) if x != idx])
+            other_learner = population[j]
+            
+            diff = self.subtract_dicts(student, other_learner)
+            
+            rand_num = np.random.random()
+            
+            # Adjusting the behavior based on the current iteration
+            angle = (np.pi / 2) * (iteration / max_iterations)
+            
+            if self.objective_function(student) > self.objective_function(other_learner):
+                scaled_diff = self.scale_dict(diff, rand_num * np.sin(angle))
+            else:
+                scaled_diff = self.scale_dict(diff, rand_num * np.cos(angle))
+            
+            new_solution = self.add_dicts(student, scaled_diff)
+            
+            if self.objective_function(new_solution) < self.objective_function(student):
+                population[idx] = new_solution
+        
+        # Second Group
+        teacher = min(population, key=self.objective_function)
+        
+        for idx in range(half_n, n):  # Only considering the second half of the population
+            student = population[idx]
+            
+            diff = self.subtract_dicts(student, teacher)
+            
+            rand_num = np.random.random()
+            
+            # Adjusting the behavior based on the current iteration
+            angle = (np.pi / 2) * (iteration / max_iterations)
+            
+            if self.objective_function(student) > self.objective_function(teacher):
+                scaled_diff = self.scale_dict(diff, rand_num * np.sin(angle))
+            else:
+                scaled_diff = self.scale_dict(diff, rand_num * np.cos(angle))
+            
+            new_solution = self.add_dicts(student, scaled_diff)
+            
+            if self.objective_function(new_solution) < self.objective_function(student):
+                population[idx] = new_solution
+       
+    def numpy_to_tuple(self, obj):
+        if isinstance(obj, np.ndarray):
+            return tuple(self.numpy_to_tuple(item) for item in obj)
+        elif isinstance(obj, list):
+            return tuple(self.numpy_to_tuple(item) for item in obj)
+        elif isinstance(obj, dict):
+            return {k: self.numpy_to_tuple(v) for k, v in obj.items()}
+        else:
+            return obj
 
-                avg_reward = np.mean(ret)
+    @lru_cache(maxsize=None)
+    def call_objective_function(self, *policy_params_tuple):
+        policy_params = dict(policy_params_tuple)
+        logging.debug('objective_function')
+        self.policy.set_params(policy_params)
+        paths = self.sampler.obtain_samples(log=False, log_prefix='')
+        samples_data = self.sampler_processor.process_samples(paths, log=False, log_prefix='')
 
-                latency = np.array([])
-                for i in range(1):
-                    latency = np.concatenate((latency, samples_data[i]['finish_time']), axis=-1)
+        all_rewards = [data['rewards'] for data in samples_data]
+        rewards = np.concatenate(all_rewards, axis=0)
+        return -np.mean(rewards)
 
-                avg_latency = np.mean(latency)
+    def objective_function(self, policy_params_dict):
+        # Convert all numpy arrays to tuples
+        policy_params_converted = self.numpy_to_tuple(policy_params_dict)
+        policy_params_tuple = tuple(sorted(policy_params_converted.items()))
+        return self.call_objective_function(*policy_params_tuple)
 
-                logger.logkv('generation', self.generation)
-                logger.logkv('Average reward, ', avg_reward)
-                logger.logkv('Average latency,', "{:.4f}".format(avg_latency))
-
-                logger.dumpkvs()
-                # Assuming samples_data is a list of dictionaries
-                all_latency = [data['finish_time'] for data in samples_data]
-                latency = np.concatenate(all_latency, axis=0)
-                
-                return -np.mean(latency)

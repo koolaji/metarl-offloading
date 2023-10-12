@@ -1,1 +1,34 @@
 Logging to ./meta_evaluate_ppo_log/task_offloading
+
+ ---------------- Iteration 0 ----------------
+Sampling set of tasks/goals for this meta-batch...
+Processing samples...
+-------------------------------
+| Average latency, | 885      |
+| Average reward,  | -5.88    |
+| EnvExecTime      | 0.198    |
+| Itr              | 0        |
+| PolicyExecTime   | 0.724    |
+-------------------------------
+
+ ---------------- Iteration 0 ----------------
+Sampling set of tasks/goals for this meta-batch...
+Processing samples...
+-------------------------------
+| Average latency, | 775      |
+| Average reward,  | -5.16    |
+| EnvExecTime      | 0.203    |
+| Itr              | 0        |
+| PolicyExecTime   | 0.566    |
+-------------------------------
+
+ ---------------- Iteration 0 ----------------
+Sampling set of tasks/goals for this meta-batch...
+Processing samples...
+-------------------------------
+| Average latency, | 917      |
+| Average reward,  | -6.12    |
+| EnvExecTime      | 0.218    |
+| Itr              | 0        |
+| PolicyExecTime   | 0.552    |
+-------------------------------

@@ -426,7 +426,7 @@ class MetaSeq2SeqPolicy:
     
     def get_params(self):
         """Get the current parameters of the policy."""
-        logging.info('get_params ')
+        # logging.info('get_params ')
         with tf.compat.v1.Session() as sess:
             sess.run(tf.compat.v1.global_variables_initializer())
             variables = self.core_policy.get_trainable_variables()

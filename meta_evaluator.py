@@ -2,6 +2,7 @@ import tensorflow as tf
 import numpy as np
 import time
 from utils import logger
+import os
 
 
 class Trainer():
@@ -161,10 +162,12 @@ if __name__ == "__main__":
                       start_itr=0,
                       batch_size=500,
                       num_inner_grad_steps=3)
-
+    path = './meta_model_inner_step1'
     with tf.Session() as sess:
         sess.run(tf.compat.v1.global_variables_initializer())
-        policy.load_variables(load_path="./meta_model_inner_step1/meta_model_200.ckpt")
-        avg_ret, avg_pg_loss, avg_vf_loss, avg_latencies = trainer.train()
+        for filename in os.listdir(path):
+            if filename.endswith('.ckpt'):
+                policy.load_variables(load_path=path+'/'+filename)
+                avg_ret, avg_pg_loss, avg_vf_loss, avg_latencies = trainer.train()
 
 

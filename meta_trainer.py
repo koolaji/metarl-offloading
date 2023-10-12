@@ -209,7 +209,7 @@ if __name__ == "__main__":
                       sampler=sampler,
                       sampler_processor=sampler_processor,
                       policy=meta_policy,
-                      n_itr=25,
+                      n_itr=200,
                       greedy_finish_time= greedy_finish_time,
                       start_itr=0,
                       inner_batch_size=1000)

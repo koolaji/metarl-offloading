@@ -23,8 +23,7 @@ class Trainer(object):
                  start_itr=0,
                  inner_batch_size=500,
                  save_interval=100,
-                 population_size = 100, 
-                 num_generations = 100):
+                 population_size = 25):
         self.tlbo = tlbo
         self.env = env
         self.sampler = sampler
@@ -36,7 +35,6 @@ class Trainer(object):
         self.greedy_finish_time = greedy_finish_time
         self.save_interval = save_interval
         self.population_size = population_size
-        self.num_generations = num_generations
     def train(self):
         """
         Implement the TLBO training process for task offloading problem
@@ -47,61 +45,57 @@ class Trainer(object):
         avg_latencies = []
 
         # 1. Initialization
-        tlbo_optimizer = MTLBO(population_size=self.population_size,
-                              num_generations = self.num_generations,
+        tlbo = MTLBO(population_size=self.population_size,
                               policy=self.policy, env=self.env, 
                               sampler=self.sampler, 
-                              sampler_processor=self.sampler_processor,
-                              generation=0)
-        # for itr in range(self.start_itr, self.n_itr):
-        # logging.info("\n ---------------- Iteration %d ---------------- %d %d" , itr,population_size,num_generations)
-        logging.info("Sampling set of tasks/goals for this meta-batch...")
-        self.generation = 0
-        task_ids = self.sampler.update_tasks()
-        logging.info(" task_ids %s", task_ids)
-        paths = self.sampler.obtain_samples(log=False, log_prefix='')
-        logging.info("sampled path length is: %s", len(paths[0]))
+                              sampler_processor=self.sampler_processor)
+        population = [self.policy.get_random_params() for _ in range(self.population_size)]        
+        for itr in range(self.start_itr, self.n_itr):
+            logging.debug("\n ---------------- Iteration %d ----------------" % itr)
+            logging.debug("Sampling set of tasks/goals for this meta-batch...")
+            logging.info("Sampling set of tasks/goals for this meta-batch...")
+            task_ids = self.sampler.update_tasks()
+            logging.info(" task_ids %s", task_ids)
+            paths = self.sampler.obtain_samples(log=False, log_prefix='')
+            logging.info("sampled path length is: %s", len(paths[0]))
 
-        # """ ----------------- Processing Samples ---------------------"""
-        # logger.info("Processing samples...")
-        # samples_data = self.sampler_processor.process_samples(paths, log=False, log_prefix='')
+            # """ ----------------- Processing Samples ---------------------"""
+            # logger.info("Processing samples...")
+            # samples_data = self.sampler_processor.process_samples(paths, log=False, log_prefix='')
 
-        """ ------------------- TLBO Optimization --------------------"""
-        logging.info(" policy_params")
-        policy_params = self.policy.get_params()
-        logging.info("self.tlbo.objective_function")
-        self.tlbo.objective_function(policy_params)
+            """ ------------------- TLBO Optimization --------------------"""
+            logging.info(" policy_params")
+            policy_params = self.policy.get_params()
+            logging.info("self.tlbo.objective_function")
+            self.tlbo.objective_function(policy_params)
 
-        logging.info("best_params")
-        best_params = tlbo_optimizer.optimize()
-        logging.info("self.policy.set_params")
-        self.policy.set_params(best_params)
-        """ ------------------- Logging Stuff --------------------------"""
-        new_paths = self.sampler.obtain_samples(log=True, log_prefix='')
-        new_samples_data = self.sampler_processor.process_samples(new_paths, log="all", log_prefix='')
+            # logging.info("best_params")
+            # best_params = tlbo_optimizer.optimize()
+            # logging.info("self.policy.set_params")
+            # self.policy.set_params(best_params)
+            tlbo.teacher_phase(population=population, iteration=itr, max_iterations=self.n_itr)
+            tlbo.learner_phase(population=population, iteration=itr, max_iterations=self.n_itr)
 
-        ret = np.array([])
-        for i in range(1):
-            ret = np.concatenate((ret, np.sum(new_samples_data[i]['rewards'], axis=-1)), axis=-1)
+            """ ------------------- Logging Stuff --------------------------"""
+            paths = self.sampler.obtain_samples(log=False, log_prefix='')
+            samples_data = self.sampler_processor.process_samples(paths, log="all", log_prefix='')
 
-        avg_reward = np.mean(ret)
+            all_latency = [data['finish_time'] for data in samples_data]
+            latency = np.concatenate(all_latency, axis=0)
+            avg_latency = np.mean(latency)
 
-        latency = np.array([])
-        for i in range(1):
-            latency = np.concatenate((latency, new_samples_data[i]['finish_time']), axis=-1)
+            # Assuming samples_data is a list of dictionaries
+            all_rewards = [data['rewards'] for data in samples_data]
+            rewards = np.concatenate(all_rewards, axis=0)
+            logging.info(f'objective_function len samples_data = {-np.mean(rewards)}')
+            logger.logkv('iteration', itr)
+            logger.logkv('Average reward, ', -np.mean(rewards))
+            logger.logkv('Average latency,', "{:.4f}".format(avg_latency))
+            logger.dumpkvs()
+            avg_ret.append(-np.mean(rewards))
 
-        avg_latency = np.mean(latency)
-        avg_latencies.append(avg_latency)
-
-        logger.logkv('Itr', self.generation)
-        logger.logkv('Average reward, ', avg_reward)
-        logger.logkv('Average latency,', avg_latency)
-
-        logger.dumpkvs()
-        avg_ret.append(avg_reward)
-
-        if itr % self.save_interval == 0:
-            self.policy.core_policy.save_variables(save_path="./meta_model_inner_step1/meta_model_"+str(itr)+".ckpt")
+            if itr % self.save_interval == 0:
+                self.policy.core_policy.save_variables(save_path="./meta_model_inner_step1/meta_model_"+str(itr)+".ckpt")
 
         self.policy.core_policy.save_variables(save_path="./meta_model_inner_step1/meta_model_final.ckpt")
         return avg_ret, avg_loss, avg_latencies
@@ -190,15 +184,12 @@ if __name__ == "__main__":
 
     
     population_size = 25
-    num_generations = 10
     logging.info('tlbo')
     tlbo = MTLBO (population_size = population_size, 
-                 num_generations = num_generations, 
                  policy=meta_policy, 
                  env=env, 
                  sampler=sampler, 
-                 sampler_processor=sampler_processor,
-                 generation=0)
+                 sampler_processor=sampler_processor)
     logging.info('trainer')
     trainer = Trainer(
                       tlbo=tlbo,
@@ -206,12 +197,11 @@ if __name__ == "__main__":
                       sampler=sampler,
                       sampler_processor=sampler_processor,
                       policy=meta_policy,
-                      n_itr=2,
+                      n_itr=2000,
                       greedy_finish_time= greedy_finish_time,
                       start_itr=0,
                       inner_batch_size=1000,
-                      population_size = population_size, 
-                      num_generations = num_generations)
+                      population_size = population_size)
 
     with tf.compat.v1.Session() as sess:
         sess.run(tf.global_variables_initializer())
