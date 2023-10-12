@@ -270,6 +270,7 @@ class Seq2SeqNetwork:
         return tf.compat.v1.get_collection(tf.compat.v1.GraphKeys.GLOBAL_VARIABLES, self.scope)
 
     def get_trainable_variables(self):
+        logging.debug('Start Seq2SeqPolicy scope=%s' , self.scope)
         return tf.compat.v1.get_collection(tf.compat.v1.GraphKeys.TRAINABLE_VARIABLES, self.scope)
 
 
@@ -425,6 +426,7 @@ class MetaSeq2SeqPolicy:
     
     def get_params(self):
         """Get the current parameters of the policy."""
+        logging.info('get_params ')
         with tf.compat.v1.Session() as sess:
             sess.run(tf.compat.v1.global_variables_initializer())
             variables = self.core_policy.get_trainable_variables()
@@ -439,12 +441,15 @@ class MetaSeq2SeqPolicy:
                 var.load(value, sess)
 
     def get_random_params(self):
-        with tf.compat.v1.Session() as sess:
-            sess.run(tf.compat.v1.global_variables_initializer())
-            # Assuming the policy's parameters are TensorFlow variables
+            # logging.info('get_random_params ')
+        # with tf.compat.v1.Session() as sess:
+        #     sess.run(tf.compat.v1.global_variables_initializer())
             params = self.get_params()
-            # logging.debug('get_random_params params %s', params)
             random_params = {}
+            # logging.info('get_random_params %s %s', str(len(params)), type(params))
             for key, value in params.items():
-                random_params[key] = np.random.randn(*value.shape)
+                np.random.seed(None)
+                random_value = np.random.randn(*value.shape)
+                # logging.info(f"Random value for {value.shape} key {key}")
+                random_params[key] = random_value            
             return random_params

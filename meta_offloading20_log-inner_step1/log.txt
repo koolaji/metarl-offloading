@@ -1,27 +1,351 @@
 Logging to ./meta_offloading20_log-inner_step1/
---------------------------------------
-| Average latency,        | 1.08e+03 |
-| Average reward,         | -7.67    |
-| AverageDiscountedReturn | -7.09    |
-| AverageReturn           | -7.67    |
-| EnvExecTime             | 0.1      |
-| Itr                     | 0        |
-| MaxReturn               | -4.88    |
-| MinReturn               | -11.2    |
-| NumTrajs                | 1000     |
-| PolicyExecTime          | 0.353    |
-| StdReturn               | 1.16     |
---------------------------------------
---------------------------------------
-| Average latency,        | 1.08e+03 |
-| Average reward,         | -7.66    |
-| AverageDiscountedReturn | -7.08    |
-| AverageReturn           | -7.66    |
-| EnvExecTime             | 0.115    |
-| Itr                     | 1        |
-| MaxReturn               | -4.48    |
-| MinReturn               | -11.6    |
-| NumTrajs                | 1000     |
-| PolicyExecTime          | 0.423    |
-| StdReturn               | 1.13     |
---------------------------------------
+Optimizing policy...
+---------------------------------------
+| Average latency,        | 1140.2704 |
+| Average reward,         | -8.09     |
+| AverageDiscountedReturn | -7.47     |
+| AverageReturn           | -8.09     |
+| EnvExecTime             | 0.111     |
+| Itr                     | 0         |
+| MaxReturn               | -5.05     |
+| MinReturn               | -11.7     |
+| NumTrajs                | 1000      |
+| PolicyExecTime          | 0.263     |
+| StdReturn               | 1.24      |
+---------------------------------------
+Optimizing policy...
+---------------------------------------
+| Average latency,        | 1189.3587 |
+| Average reward,         | -8.42     |
+| AverageDiscountedReturn | -7.76     |
+| AverageReturn           | -8.42     |
+| EnvExecTime             | 0.149     |
+| Itr                     | 1         |
+| MaxReturn               | -5.02     |
+| MinReturn               | -13.1     |
+| NumTrajs                | 1000      |
+| PolicyExecTime          | 0.361     |
+| StdReturn               | 1.34      |
+---------------------------------------
+Optimizing policy...
+---------------------------------------
+| Average latency,        | 1209.3913 |
+| Average reward,         | -8.57     |
+| AverageDiscountedReturn | -7.89     |
+| AverageReturn           | -8.57     |
+| EnvExecTime             | 0.113     |
+| Itr                     | 2         |
+| MaxReturn               | -4.94     |
+| MinReturn               | -13.7     |
+| NumTrajs                | 1000      |
+| PolicyExecTime          | 0.261     |
+| StdReturn               | 1.34      |
+---------------------------------------
+Optimizing policy...
+---------------------------------------
+| Average latency,        | 1225.7466 |
+| Average reward,         | -8.69     |
+| AverageDiscountedReturn | -8        |
+| AverageReturn           | -8.69     |
+| EnvExecTime             | 0.114     |
+| Itr                     | 3         |
+| MaxReturn               | -5.16     |
+| MinReturn               | -13.3     |
+| NumTrajs                | 1000      |
+| PolicyExecTime          | 0.275     |
+| StdReturn               | 1.35      |
+---------------------------------------
+Optimizing policy...
+---------------------------------------
+| Average latency,        | 1233.3774 |
+| Average reward,         | -8.75     |
+| AverageDiscountedReturn | -8.05     |
+| AverageReturn           | -8.75     |
+| EnvExecTime             | 0.123     |
+| Itr                     | 4         |
+| MaxReturn               | -5.42     |
+| MinReturn               | -13.4     |
+| NumTrajs                | 1000      |
+| PolicyExecTime          | 0.284     |
+| StdReturn               | 1.35      |
+---------------------------------------
+Optimizing policy...
+---------------------------------------
+| Average latency,        | 1238.7720 |
+| Average reward,         | -8.79     |
+| AverageDiscountedReturn | -8.09     |
+| AverageReturn           | -8.79     |
+| EnvExecTime             | 0.115     |
+| Itr                     | 5         |
+| MaxReturn               | -4.95     |
+| MinReturn               | -13.1     |
+| NumTrajs                | 1000      |
+| PolicyExecTime          | 0.276     |
+| StdReturn               | 1.37      |
+---------------------------------------
+Optimizing policy...
+---------------------------------------
+| Average latency,        | 1252.7018 |
+| Average reward,         | -8.89     |
+| AverageDiscountedReturn | -8.18     |
+| AverageReturn           | -8.89     |
+| EnvExecTime             | 0.108     |
+| Itr                     | 6         |
+| MaxReturn               | -4.8      |
+| MinReturn               | -12.6     |
+| NumTrajs                | 1000      |
+| PolicyExecTime          | 0.232     |
+| StdReturn               | 1.35      |
+---------------------------------------
+Optimizing policy...
+---------------------------------------
+| Average latency,        | 1259.6435 |
+| Average reward,         | -8.95     |
+| AverageDiscountedReturn | -8.23     |
+| AverageReturn           | -8.95     |
+| EnvExecTime             | 0.108     |
+| Itr                     | 7         |
+| MaxReturn               | -4.96     |
+| MinReturn               | -12.9     |
+| NumTrajs                | 1000      |
+| PolicyExecTime          | 0.234     |
+| StdReturn               | 1.39      |
+---------------------------------------
+Optimizing policy...
+---------------------------------------
+| Average latency,        | 1266.4791 |
+| Average reward,         | -8.99     |
+| AverageDiscountedReturn | -8.26     |
+| AverageReturn           | -8.99     |
+| EnvExecTime             | 0.109     |
+| Itr                     | 8         |
+| MaxReturn               | -5.26     |
+| MinReturn               | -13.6     |
+| NumTrajs                | 1000      |
+| PolicyExecTime          | 0.233     |
+| StdReturn               | 1.35      |
+---------------------------------------
+Optimizing policy...
+---------------------------------------
+| Average latency,        | 1280.4593 |
+| Average reward,         | -9.08     |
+| AverageDiscountedReturn | -8.35     |
+| AverageReturn           | -9.08     |
+| EnvExecTime             | 0.114     |
+| Itr                     | 9         |
+| MaxReturn               | -5.03     |
+| MinReturn               | -13.5     |
+| NumTrajs                | 1000      |
+| PolicyExecTime          | 0.248     |
+| StdReturn               | 1.35      |
+---------------------------------------
+Optimizing policy...
+---------------------------------------
+| Average latency,        | 1289.6496 |
+| Average reward,         | -9.16     |
+| AverageDiscountedReturn | -8.41     |
+| AverageReturn           | -9.16     |
+| EnvExecTime             | 0.115     |
+| Itr                     | 10        |
+| MaxReturn               | -5.48     |
+| MinReturn               | -13.5     |
+| NumTrajs                | 1000      |
+| PolicyExecTime          | 0.231     |
+| StdReturn               | 1.36      |
+---------------------------------------
+Optimizing policy...
+---------------------------------------
+| Average latency,        | 1301.7867 |
+| Average reward,         | -9.25     |
+| AverageDiscountedReturn | -8.5      |
+| AverageReturn           | -9.25     |
+| EnvExecTime             | 0.117     |
+| Itr                     | 11        |
+| MaxReturn               | -5.49     |
+| MinReturn               | -12.8     |
+| NumTrajs                | 1000      |
+| PolicyExecTime          | 0.234     |
+| StdReturn               | 1.34      |
+---------------------------------------
+Optimizing policy...
+---------------------------------------
+| Average latency,        | 1316.9958 |
+| Average reward,         | -9.36     |
+| AverageDiscountedReturn | -8.6      |
+| AverageReturn           | -9.36     |
+| EnvExecTime             | 0.116     |
+| Itr                     | 12        |
+| MaxReturn               | -5.2      |
+| MinReturn               | -13.8     |
+| NumTrajs                | 1000      |
+| PolicyExecTime          | 0.237     |
+| StdReturn               | 1.37      |
+---------------------------------------
+Optimizing policy...
+---------------------------------------
+| Average latency,        | 1325.6423 |
+| Average reward,         | -9.42     |
+| AverageDiscountedReturn | -8.66     |
+| AverageReturn           | -9.42     |
+| EnvExecTime             | 0.118     |
+| Itr                     | 13        |
+| MaxReturn               | -5.28     |
+| MinReturn               | -13.4     |
+| NumTrajs                | 1000      |
+| PolicyExecTime          | 0.234     |
+| StdReturn               | 1.36      |
+---------------------------------------
+Optimizing policy...
+---------------------------------------
+| Average latency,        | 1335.5666 |
+| Average reward,         | -9.48     |
+| AverageDiscountedReturn | -8.71     |
+| AverageReturn           | -9.48     |
+| EnvExecTime             | 0.119     |
+| Itr                     | 14        |
+| MaxReturn               | -5.79     |
+| MinReturn               | -13.8     |
+| NumTrajs                | 1000      |
+| PolicyExecTime          | 0.236     |
+| StdReturn               | 1.35      |
+---------------------------------------
+Optimizing policy...
+---------------------------------------
+| Average latency,        | 1345.2937 |
+| Average reward,         | -9.55     |
+| AverageDiscountedReturn | -8.77     |
+| AverageReturn           | -9.55     |
+| EnvExecTime             | 0.119     |
+| Itr                     | 15        |
+| MaxReturn               | -5.66     |
+| MinReturn               | -13.5     |
+| NumTrajs                | 1000      |
+| PolicyExecTime          | 0.241     |
+| StdReturn               | 1.37      |
+---------------------------------------
+Optimizing policy...
+---------------------------------------
+| Average latency,        | 1357.4896 |
+| Average reward,         | -9.64     |
+| AverageDiscountedReturn | -8.85     |
+| AverageReturn           | -9.64     |
+| EnvExecTime             | 0.12      |
+| Itr                     | 16        |
+| MaxReturn               | -5.73     |
+| MinReturn               | -13.6     |
+| NumTrajs                | 1000      |
+| PolicyExecTime          | 0.236     |
+| StdReturn               | 1.36      |
+---------------------------------------
+Optimizing policy...
+---------------------------------------
+| Average latency,        | 1366.4725 |
+| Average reward,         | -9.7      |
+| AverageDiscountedReturn | -8.9      |
+| AverageReturn           | -9.7      |
+| EnvExecTime             | 0.12      |
+| Itr                     | 17        |
+| MaxReturn               | -5.98     |
+| MinReturn               | -13.5     |
+| NumTrajs                | 1000      |
+| PolicyExecTime          | 0.234     |
+| StdReturn               | 1.33      |
+---------------------------------------
+Optimizing policy...
+---------------------------------------
+| Average latency,        | 1383.4666 |
+| Average reward,         | -9.82     |
+| AverageDiscountedReturn | -9.02     |
+| AverageReturn           | -9.82     |
+| EnvExecTime             | 0.118     |
+| Itr                     | 18        |
+| MaxReturn               | -6.48     |
+| MinReturn               | -13.5     |
+| NumTrajs                | 1000      |
+| PolicyExecTime          | 0.237     |
+| StdReturn               | 1.34      |
+---------------------------------------
+Optimizing policy...
+---------------------------------------
+| Average latency,        | 1389.7441 |
+| Average reward,         | -9.87     |
+| AverageDiscountedReturn | -9.05     |
+| AverageReturn           | -9.87     |
+| EnvExecTime             | 0.115     |
+| Itr                     | 19        |
+| MaxReturn               | -6.21     |
+| MinReturn               | -13.6     |
+| NumTrajs                | 1000      |
+| PolicyExecTime          | 0.24      |
+| StdReturn               | 1.31      |
+---------------------------------------
+Optimizing policy...
+---------------------------------------
+| Average latency,        | 1397.3301 |
+| Average reward,         | -9.93     |
+| AverageDiscountedReturn | -9.11     |
+| AverageReturn           | -9.93     |
+| EnvExecTime             | 0.119     |
+| Itr                     | 20        |
+| MaxReturn               | -6.86     |
+| MinReturn               | -13.8     |
+| NumTrajs                | 1000      |
+| PolicyExecTime          | 0.241     |
+| StdReturn               | 1.35      |
+---------------------------------------
+Optimizing policy...
+---------------------------------------
+| Average latency,        | 1400.2271 |
+| Average reward,         | -9.94     |
+| AverageDiscountedReturn | -9.12     |
+| AverageReturn           | -9.94     |
+| EnvExecTime             | 0.134     |
+| Itr                     | 21        |
+| MaxReturn               | -6.66     |
+| MinReturn               | -13.5     |
+| NumTrajs                | 1000      |
+| PolicyExecTime          | 0.301     |
+| StdReturn               | 1.31      |
+---------------------------------------
+Optimizing policy...
+---------------------------------------
+| Average latency,        | 1406.6691 |
+| Average reward,         | -9.99     |
+| AverageDiscountedReturn | -9.17     |
+| AverageReturn           | -9.99     |
+| EnvExecTime             | 0.121     |
+| Itr                     | 22        |
+| MaxReturn               | -6.83     |
+| MinReturn               | -13.5     |
+| NumTrajs                | 1000      |
+| PolicyExecTime          | 0.236     |
+| StdReturn               | 1.29      |
+---------------------------------------
+Optimizing policy...
+---------------------------------------
+| Average latency,        | 1412.1871 |
+| Average reward,         | -10       |
+| AverageDiscountedReturn | -9.2      |
+| AverageReturn           | -10       |
+| EnvExecTime             | 0.121     |
+| Itr                     | 23        |
+| MaxReturn               | -6.4      |
+| MinReturn               | -13.6     |
+| NumTrajs                | 1000      |
+| PolicyExecTime          | 0.245     |
+| StdReturn               | 1.3       |
+---------------------------------------
+Optimizing policy...
+---------------------------------------
+| Average latency,        | 1412.8498 |
+| Average reward,         | -10       |
+| AverageDiscountedReturn | -9.21     |
+| AverageReturn           | -10       |
+| EnvExecTime             | 0.129     |
+| Itr                     | 24        |
+| MaxReturn               | -7.08     |
+| MinReturn               | -13.6     |
+| NumTrajs                | 1000      |
+| PolicyExecTime          | 0.296     |
+| StdReturn               | 1.29      |
+---------------------------------------

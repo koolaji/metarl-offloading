@@ -21,8 +21,8 @@ which is a type of reinforcement learning where the goal is to learn how to lear
 """
 
 from samplers.base import Sampler
-# from samplers.vectorized_env_executor import MetaParallelEnvExecutor, MetaIterativeEnvExecutor
-from samplers.vectorized_env_executor import  MetaIterativeEnvExecutor
+from samplers.vectorized_env_executor import MetaParallelEnvExecutor, MetaIterativeEnvExecutor
+# from samplers.vectorized_env_executor import  MetaIterativeEnvExecutor
 from utils import utils, logger
 from collections import OrderedDict
 
@@ -59,10 +59,10 @@ class Seq2SeqMetaSampler(Sampler):
         self.total_timesteps_sampled = 0
 
         # setup vectorized environment
-        # if self.parallel:
-        #     self.vec_env = MetaParallelEnvExecutor(env, self.meta_batch_size, self.envs_per_task, self.max_path_length)
-        # else:
-        self.vec_env = MetaIterativeEnvExecutor(env, self.meta_batch_size, self.envs_per_task, self.max_path_length)
+        if self.parallel:
+            self.vec_env = MetaParallelEnvExecutor(env, self.meta_batch_size, self.envs_per_task, self.max_path_length)
+        else:
+            self.vec_env = MetaIterativeEnvExecutor(env, self.meta_batch_size, self.envs_per_task, self.max_path_length)
 
     def update_tasks(self):
         """

@@ -8,7 +8,7 @@ class Trainer():
     def __init__(self,algo,
                 env,
                 sampler,
-                sample_processor,
+                sampler_processor,
                 policy,
                 n_itr,
                 batch_size=500,
@@ -17,7 +17,7 @@ class Trainer():
         self.algo = algo
         self.env = env
         self.sampler = sampler
-        self.sampler_processor = sample_processor
+        self.sampler_processor = sampler_processor
         self.policy = policy
         self.n_itr = n_itr
         self.start_itr = start_itr
@@ -138,14 +138,14 @@ if __name__ == "__main__":
 
     baseline = ValueFunctionBaseline()
 
-    sample_processor = Seq2SeSamplerProcessor(baseline=baseline,
+    sampler_processor = Seq2SeSamplerProcessor(baseline=baseline,
                                               discount=0.99,
                                               gae_lambda=0.95,
                                               normalize_adv=True,
                                               positive_adv=False)
     algo = PPO(policy=policy,
                meta_sampler=sampler,
-               meta_sampler_process=sample_processor,
+               meta_sampler_process=sampler_processor,
                lr=1e-4,
                num_inner_grad_steps=3,
                clip_value=0.2,
@@ -155,7 +155,7 @@ if __name__ == "__main__":
     trainer = Trainer(algo=algo,
                       env=env,
                       sampler=sampler,
-                      sample_processor=sample_processor,
+                      sampler_processor=sampler_processor,
                       policy=policy,
                       n_itr=1,
                       start_itr=0,

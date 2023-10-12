@@ -41,99 +41,99 @@ class MetaIterativeEnvExecutor(object):
         return len(self.envs)
 
 
-# class MetaParallelEnvExecutor(object):
-#     """
-#     Wraps multiple environments of the same kind and provides functionality to reset / step the environments
-#     in a vectorized manner. Thereby the environments are distributed among meta_batch_size processes and
-#     executed in parallel.
+class MetaParallelEnvExecutor(object):
+    """
+    Wraps multiple environments of the same kind and provides functionality to reset / step the environments
+    in a vectorized manner. Thereby the environments are distributed among meta_batch_size processes and
+    executed in parallel.
 
-#     Args:
-#         env (meta_policy_search.envs.base.MetaEnv): meta environment object
-#         meta_batch_size (int): number of meta tasks
-#         envs_per_task (int): number of environments per meta task
-#         max_path_length (int): maximum length of sampled environment paths - if the max_path_length is reached,
-#                              the respective environment is reset
-#     """
+    Args:
+        env (meta_policy_search.envs.base.MetaEnv): meta environment object
+        meta_batch_size (int): number of meta tasks
+        envs_per_task (int): number of environments per meta task
+        max_path_length (int): maximum length of sampled environment paths - if the max_path_length is reached,
+                             the respective environment is reset
+    """
 
-#     def __init__(self, env, meta_batch_size, envs_per_task, max_path_length):
-#         logging.debug('Start MetaParallelEnvExecutor')
-#         self.n_envs = meta_batch_size * envs_per_task
-#         self.meta_batch_size = meta_batch_size
-#         self.envs_per_task = envs_per_task
-#         self.remotes, self.work_remotes = zip(*[Pipe() for _ in range(meta_batch_size)])
-#         seeds = np.random.choice(range(10**6), size=meta_batch_size, replace=False)
+    def __init__(self, env, meta_batch_size, envs_per_task, max_path_length):
+        logging.debug('Start MetaParallelEnvExecutor')
+        self.n_envs = meta_batch_size * envs_per_task
+        self.meta_batch_size = meta_batch_size
+        self.envs_per_task = envs_per_task
+        self.remotes, self.work_remotes = zip(*[Pipe() for _ in range(meta_batch_size)])
+        seeds = np.random.choice(range(10**6), size=meta_batch_size, replace=False)
 
-#         self.ps = [
-#             Process(target=worker, args=(work_remote, remote, pickle.dumps(env), envs_per_task, max_path_length, seed))
-#             for (work_remote, remote, seed) in zip(self.work_remotes, self.remotes, seeds)]  # Why pass work remotes?
+        self.ps = [
+            Process(target=worker, args=(work_remote, remote, pickle.dumps(env), envs_per_task, max_path_length, seed))
+            for (work_remote, remote, seed) in zip(self.work_remotes, self.remotes, seeds)]  # Why pass work remotes?
 
-#         for p in self.ps:
-#             p.daemon = True  # if the main process crashes, we should not cause things to hang
-#             p.start()
-#         for remote in self.work_remotes:
-#             remote.close()
+        for p in self.ps:
+            p.daemon = True  # if the main process crashes, we should not cause things to hang
+            p.start()
+        for remote in self.work_remotes:
+            remote.close()
 
-#     def step(self, actions):
-#         """
-#         Executes actions on each env
+    def step(self, actions):
+        """
+        Executes actions on each env
 
-#         Args:
-#             actions (list): lists of actions, of length meta_batch_size x envs_per_task
+        Args:
+            actions (list): lists of actions, of length meta_batch_size x envs_per_task
 
-#         Returns
-#             (tuple): a length 4 tuple of lists, containing obs (np.array), rewards (float), dones (bool), env_infos (dict)
-#                       each list is of length meta_batch_size x envs_per_task (assumes that every task has same number of envs)
-#         """
-#         logging.debug('Start MetaParallelEnvExecutor step')
-#         assert len(actions) == self.num_envs
+        Returns
+            (tuple): a length 4 tuple of lists, containing obs (np.array), rewards (float), dones (bool), env_infos (dict)
+                      each list is of length meta_batch_size x envs_per_task (assumes that every task has same number of envs)
+        """
+        logging.debug('Start MetaParallelEnvExecutor step')
+        assert len(actions) == self.num_envs
 
-#         # split list of actions in list of list of actions per meta tasks
-#         chunks = lambda l, n: [l[x: x + n] for x in range(0, len(l), n)]
-#         actions_per_meta_task = chunks(actions, self.envs_per_task)
+        # split list of actions in list of list of actions per meta tasks
+        chunks = lambda l, n: [l[x: x + n] for x in range(0, len(l), n)]
+        actions_per_meta_task = chunks(actions, self.envs_per_task)
 
-#         # step remote environments
-#         for remote, action_list in zip(self.remotes, actions_per_meta_task):
-#             remote.send(('step', action_list))
+        # step remote environments
+        for remote, action_list in zip(self.remotes, actions_per_meta_task):
+            remote.send(('step', action_list))
 
-#         results = [remote.recv() for remote in self.remotes]
+        results = [remote.recv() for remote in self.remotes]
 
-#         obs, rewards, dones, env_infos = map(lambda x: sum(x, []), zip(*results))
+        obs, rewards, dones, env_infos = map(lambda x: sum(x, []), zip(*results))
 
-#         return obs, rewards, dones, env_infos
+        return obs, rewards, dones, env_infos
 
-#     def reset(self):
-#         """
-#         Resets the environments of each worker
+    def reset(self):
+        """
+        Resets the environments of each worker
 
-#         Returns:
-#             (list): list of (np.ndarray) with the new initial observations.
-#         """
-#         for remote in self.remotes:
-#             remote.send(('reset', None))
-#         return sum([remote.recv() for remote in self.remotes], [])
+        Returns:
+            (list): list of (np.ndarray) with the new initial observations.
+        """
+        for remote in self.remotes:
+            remote.send(('reset', None))
+        return sum([remote.recv() for remote in self.remotes], [])
 
-#     def set_tasks(self, tasks=None):
-#         """
-#         Sets a list of tasks to each worker
+    def set_tasks(self, tasks=None):
+        """
+        Sets a list of tasks to each worker
 
-#         Args:
-#             tasks (list): list of the tasks for each worker
-#         """
-#         logging.debug("MetaParallelEnvExecutor set_tasks")
-#         for remote, task in zip(self.remotes, tasks):
-#             remote.send(('set_task', task))
-#         for remote in self.remotes:
-#             remote.recv()
+        Args:
+            tasks (list): list of the tasks for each worker
+        """
+        logging.debug("MetaParallelEnvExecutor set_tasks")
+        for remote, task in zip(self.remotes, tasks):
+            remote.send(('set_task', task))
+        for remote in self.remotes:
+            remote.recv()
 
-#     @property
-#     def num_envs(self):
-#         """
-#         Number of environments
+    @property
+    def num_envs(self):
+        """
+        Number of environments
 
-#         Returns:
-#             (int): number of environments
-#         """
-#         return self.n_envs
+        Returns:
+            (int): number of environments
+        """
+        return self.n_envs
 
 
 def worker(remote, parent_remote, env_pickle, n_envs, max_path_length, seed):

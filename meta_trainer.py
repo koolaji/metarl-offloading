@@ -14,7 +14,7 @@ class Trainer(object):
                  algo,
                  env,
                  sampler,
-                 sample_processor,
+                 sampler_processor,
                  policy,
                  n_itr,
                  greedy_finish_time,
@@ -24,7 +24,7 @@ class Trainer(object):
         self.algo = algo
         self.env = env
         self.sampler = sampler
-        self.sampler_processor = sample_processor
+        self.sampler_processor = sampler_processor
         self.policy = policy
         self.n_itr = n_itr
         self.start_itr = start_itr
@@ -95,7 +95,7 @@ class Trainer(object):
 
             logger.logkv('Itr', itr)
             logger.logkv('Average reward, ', avg_reward)
-            logger.logkv('Average latency,', avg_latency)
+            logger.logkv('Average latency,', "{:.4f}".format(avg_latency))
 
             logger.dumpkvs()
             avg_ret.append(avg_reward)
@@ -122,9 +122,8 @@ if __name__ == "__main__":
     from meta_algos.TLBO import TLBO
     tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
     logging.basicConfig(level=logging.DEBUG, filename='meta_train.log',  filemode='a',)
-    logging.root.setLevel(logging.DEBUG)
+    logging.root.setLevel(logging.ERROR)
     logger.configure(dir="./meta_offloading20_log-inner_step1/", format_strs=['stdout', 'log', 'csv'])
-    # META_BATCH_SIZE = 10
     META_BATCH_SIZE = 1
     logging.debug('starting')
     
@@ -179,38 +178,38 @@ if __name__ == "__main__":
         rollouts_per_meta_task=1,  # This batch_size is confusing
         meta_batch_size=META_BATCH_SIZE,
         max_path_length=20000,
-        parallel=False,
+        parallel=True,
     )
-    sample_processor = Seq2SeqMetaSamplerProcessor(baseline=baseline,
+    sampler_processor = Seq2SeqMetaSamplerProcessor(baseline=baseline,
                                                    discount=0.99,
                                                    gae_lambda=0.95,
                                                    normalize_adv=True,
                                                    positive_adv=False)
 
     
-    # algo = MRLCO(policy=meta_policy,
-    #              meta_sampler=sampler,
-    #              meta_sampler_process=sample_processor,
-    #              inner_lr=5e-4,
-    #              outer_lr=5e-4,
-    #              meta_batch_size=META_BATCH_SIZE,
-    #              num_inner_grad_steps=1,
-    #              clip_value=0.3)
+    algo = MRLCO(policy=meta_policy,
+                 meta_sampler=sampler,
+                 meta_sampler_process=sampler_processor,
+                 inner_lr=5e-4,
+                 outer_lr=5e-4,
+                 meta_batch_size=META_BATCH_SIZE,
+                 num_inner_grad_steps=1,
+                 clip_value=0.3)
     
-    tlbo = TLBO (population_size = 100, 
-                 num_generations =100, 
-                 policy=meta_policy, 
-                 env=env, 
-                 sampler=sampler, 
-                 sample_processor=sample_processor)
+    # tlbo = TLBO (population_size = 100, 
+    #              num_generations =100, 
+    #              policy=meta_policy, 
+    #              env=env, 
+    #              sampler=sampler, 
+    #              sampler_processor=sampler_processor)
 
     trainer = Trainer(
                       algo=algo,
                       env=env,
                       sampler=sampler,
-                      sample_processor=sample_processor,
+                      sampler_processor=sampler_processor,
                       policy=meta_policy,
-                      n_itr=2,
+                      n_itr=25,
                       greedy_finish_time= greedy_finish_time,
                       start_itr=0,
                       inner_batch_size=1000)
@@ -228,6 +227,6 @@ if __name__ == "__main__":
 
         avg_ret, avg_loss, avg_latencies = trainer.train()
         # trainer.train()
-        logging.debug("final result %s, %s, %s ", avg_ret, avg_loss, avg_latencies)
+        logging.info("final result %s, %s, %s ", avg_ret, avg_loss, avg_latencies)
 
 

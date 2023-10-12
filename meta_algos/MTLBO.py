@@ -3,7 +3,7 @@ import logging
 from utils import logger
 
 
-class TLBO:
+class MTLBO:
     def __init__(self, population_size, num_generations, policy, env, sampler, sampler_processor, generation):
         self.population_size = population_size
         self.num_generations = num_generations
@@ -20,12 +20,28 @@ class TLBO:
     #     return -np.mean(samples_data['rewards'])
 
     def teacher_phase(self, population):
-        logging.debug('teacher_phase')
+        logging.info('teacher_phase')
         # Compute the mean solution
         mean_solution = {}
         keys = population[0].keys()
         for key in keys:
             mean_solution[key] = np.mean([individual[key] for individual in population], axis=0)
+
+        # Update the solutions using sine and cosine functions
+        for student in population:
+            diff = self.subtract_dicts(student, mean_solution)
+            
+            # Use sine or cosine based on a random choice
+            if np.random.rand() < 0.5:
+                scaled_diff = self.scale_dict(diff, np.random.random() * np.sin(np.random.uniform(-np.pi/2, np.pi/2)))
+            else:
+                scaled_diff = self.scale_dict(diff, np.random.random() * np.cos(np.random.uniform(0, np.pi)))
+            
+            new_solution = self.add_dicts(student, scaled_diff)
+            logging.info('teacher_phase')
+            if self.objective_function(new_solution) < self.objective_function(student):
+                student = new_solution
+
 
     def subtract_dicts(self,dict1, dict2):
         result = {}
@@ -42,18 +58,24 @@ class TLBO:
 
     def learner_phase(self, population):
         for i in range(self.population_size):
-            logging.info('learner_phase %s',i)
+            logging.info('learner_phase %s', i)
             j = np.random.choice([x for x in range(self.population_size) if x != i])
             logging.info('learner_phase random')
-            diff = self.subtract_dicts(population[i], population[j])   
-            logging.info('learner_phase subtract_dicts')         
-            scaled_diff = self.scale_dict(diff, np.random.random())
-            logging.info('learner_phase scaled_diff')         
+            diff = self.subtract_dicts(population[i], population[j])
+
+            # Use sine or cosine based on a random choice
+            if np.random.rand() < 0.5:
+                scaled_diff = self.scale_dict(diff, np.random.random() * np.sin(np.random.uniform(-np.pi/2, np.pi/2)))
+            else:
+                scaled_diff = self.scale_dict(diff, np.random.random() * np.cos(np.random.uniform(0, np.pi)))
+
+            logging.info('learner_phase scaled_diff')
             new_solution = self.add_dicts(population[i], scaled_diff)
-            logging.info('learner_phase new_solution')         
+            logging.info(f'learner_phase new_solution {i}')
             if self.objective_function(new_solution) < self.objective_function(population[i]):
                 population[i] = new_solution
-            logging.info('learner_phase objective_function')         
+            logging.info('learner_phase objective_function')
+       
 
     def optimize(self):
         logging.info('optimize ')
@@ -62,14 +84,14 @@ class TLBO:
             self.generation = generation
             logging.info('teacher_phase ')
             self.teacher_phase(population)
-            logging.info('learner_phase ')
+            logging.info('optimize ')
             self.learner_phase(population)
 
             """ ------------------- Logging Stuff --------------------------"""
             new_paths = self.sampler.obtain_samples(log=True, log_prefix='')
             new_samples_data = self.sampler_processor.process_samples(new_paths, log="all", log_prefix='')
             ret = np.array([])
-            logging.info('learner_phase len new_samples_data = %s', len(new_samples_data))
+            logging.info('optimize len new_samples_data = %s', len(new_samples_data))
             for i in range(1):
                 ret = np.concatenate((ret, np.sum(new_samples_data[i]['rewards'], axis=-1)), axis=-1)
 
@@ -96,7 +118,7 @@ class TLBO:
                 paths = self.sampler.obtain_samples(log=False, log_prefix='')
                 samples_data = self.sampler_processor.process_samples(paths, log="all", log_prefix='')
                 ret = np.array([])
-                logging.info('learner_phase len samples_data = %s', len(samples_data))
+                logging.info('objective_function len samples_data = %s', len(samples_data))
                 for i in range(1):
                     ret = np.concatenate((ret, np.sum(samples_data[i]['rewards'], axis=-1)), axis=-1)
 
@@ -114,7 +136,7 @@ class TLBO:
 
                 logger.dumpkvs()
                 # Assuming samples_data is a list of dictionaries
-                all_rewards = [data['rewards'] for data in samples_data]
-                flattened_rewards = np.concatenate(all_rewards, axis=0)
+                all_latency = [data['finish_time'] for data in samples_data]
+                latency = np.concatenate(all_latency, axis=0)
                 
-                return -np.mean(flattened_rewards)
+                return -np.mean(latency)
