@@ -1,7 +1,7 @@
 import numpy as np
 import logging
 from utils import logger
-from functools import lru_cache
+
 
 class MTLBO:
     def __init__(self, population_size, policy, env, sampler, sampler_processor):
@@ -121,31 +121,13 @@ class MTLBO:
             if self.objective_function(new_solution) < self.objective_function(student):
                 population[idx] = new_solution
        
-    def numpy_to_tuple(self, obj):
-        if isinstance(obj, np.ndarray):
-            return tuple(self.numpy_to_tuple(item) for item in obj)
-        elif isinstance(obj, list):
-            return tuple(self.numpy_to_tuple(item) for item in obj)
-        elif isinstance(obj, dict):
-            return {k: self.numpy_to_tuple(v) for k, v in obj.items()}
-        else:
-            return obj
 
-    @lru_cache(maxsize=None)
-    def call_objective_function(self, *policy_params_tuple):
-        policy_params = dict(policy_params_tuple)
-        logging.debug('objective_function')
-        self.policy.set_params(policy_params)
-        paths = self.sampler.obtain_samples(log=False, log_prefix='')
-        samples_data = self.sampler_processor.process_samples(paths, log=False, log_prefix='')
+    def objective_function(self, policy_params):
+                logging.debug('objective_function')
+                self.policy.set_params(policy_params)
+                paths = self.sampler.obtain_samples(log=False, log_prefix='')
+                samples_data = self.sampler_processor.process_samples(paths, log="all", log_prefix='')
 
-        all_rewards = [data['rewards'] for data in samples_data]
-        rewards = np.concatenate(all_rewards, axis=0)
-        return -np.mean(rewards)
-
-    def objective_function(self, policy_params_dict):
-        # Convert all numpy arrays to tuples
-        policy_params_converted = self.numpy_to_tuple(policy_params_dict)
-        policy_params_tuple = tuple(sorted(policy_params_converted.items()))
-        return self.call_objective_function(*policy_params_tuple)
-
+                all_rewards = [data['rewards'] for data in samples_data]
+                rewards = np.concatenate(all_rewards, axis=0)
+                return -np.mean(rewards)

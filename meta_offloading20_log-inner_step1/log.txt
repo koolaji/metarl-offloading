@@ -1,12 +1,1 @@
 Logging to ./meta_offloading20_log-inner_step1/
----------------------------------------
-| Average latency,        | 1083.5318 |
-| Average reward,         | 0.384     |
-| AverageDiscountedReturn | -7.08     |
-| AverageReturn           | -7.67     |
-| MaxReturn               | -4.79     |
-| MinReturn               | -11.4     |
-| NumTrajs                | 1000      |
-| StdReturn               | 1.15      |
-| iteration               | 0         |
----------------------------------------
