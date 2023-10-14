@@ -61,6 +61,7 @@ class Trainer(object):
             samples_data = self.sampler_processor.process_samples(paths, log=False, log_prefix='')
 
             """ ------------------- Inner Policy Update --------------------"""
+            logger.info(f"UpdatePPOTarget{self.inner_batch_siz}")
             policy_losses, value_losses = self.algo.UpdatePPOTarget(samples_data, batch_size=self.inner_batch_size )
 
             print("task losses: ", value_losses)
@@ -120,9 +121,9 @@ if __name__ == "__main__":
     from baselines.vf_baseline import ValueFunctionBaseline
     from meta_algos.MRLCO import MRLCO
     from meta_algos.TLBO import TLBO
-    tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
+    tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.info)
     logging.basicConfig(level=logging.DEBUG, filename='meta_train.log',  filemode='a',)
-    logging.root.setLevel(logging.ERROR)
+    logging.root.setLevel(logging.info)
     logger.configure(dir="./meta_offloading20_log-inner_step1/", format_strs=['stdout', 'log', 'csv'])
     META_BATCH_SIZE = 1
     logging.debug('starting')

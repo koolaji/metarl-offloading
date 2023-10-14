@@ -89,10 +89,10 @@ class Trainer(object):
             rewards = np.concatenate(all_rewards, axis=0)
             logging.info(f'objective_function len samples_data = {-np.mean(rewards)}')
             logger.logkv('iteration', itr)
-            logger.logkv('Average reward, ', -np.mean(rewards))
+            logger.logkv('Average reward, ', np.mean(rewards))
             logger.logkv('Average latency,', "{:.4f}".format(avg_latency))
             logger.dumpkvs()
-            avg_ret.append(-np.mean(rewards))
+            avg_ret.append(np.mean(rewards))
 
             if itr % self.save_interval == 0:
                 self.policy.core_policy.save_variables(save_path="./meta_model_inner_step1/meta_model_"+str(itr)+".ckpt")
@@ -183,7 +183,7 @@ if __name__ == "__main__":
                                                    positive_adv=False)
 
     
-    population_size = 25
+    population_size = 20
     logging.info('tlbo')
     tlbo = MTLBO (population_size = population_size, 
                  policy=meta_policy, 
@@ -197,7 +197,7 @@ if __name__ == "__main__":
                       sampler=sampler,
                       sampler_processor=sampler_processor,
                       policy=meta_policy,
-                      n_itr=2000,
+                      n_itr=10,
                       greedy_finish_time= greedy_finish_time,
                       start_itr=0,
                       inner_batch_size=1000,
