@@ -23,7 +23,8 @@ class Trainer(object):
                  start_itr=0,
                  inner_batch_size=500,
                  save_interval=100,
-                 population_size = 25):
+                 population_size = 25,
+                 batch_size=10):
         self.tlbo = tlbo
         self.env = env
         self.sampler = sampler
@@ -35,6 +36,7 @@ class Trainer(object):
         self.greedy_finish_time = greedy_finish_time
         self.save_interval = save_interval
         self.population_size = population_size
+        self.batch_size = batch_size
     def train(self):
         """
         Implement the TLBO training process for task offloading problem
@@ -44,11 +46,6 @@ class Trainer(object):
         avg_loss = []
         avg_latencies = []
 
-        # 1. Initialization
-        tlbo = MTLBO(population_size=self.population_size,
-                              policy=self.policy, env=self.env, 
-                              sampler=self.sampler, 
-                              sampler_processor=self.sampler_processor)
         population = [self.policy.get_random_params() for _ in range(self.population_size)]        
         for itr in range(self.start_itr, self.n_itr):
             logging.debug("\n ---------------- Iteration %d ----------------" % itr)
@@ -61,7 +58,7 @@ class Trainer(object):
 
             # """ ----------------- Processing Samples ---------------------"""
             # logger.info("Processing samples...")
-            # samples_data = self.sampler_processor.process_samples(paths, log=False, log_prefix='')
+            samples_data = self.sampler_processor.process_samples(paths, log=False, log_prefix='')
 
             """ ------------------- TLBO Optimization --------------------"""
             logging.info(" policy_params")
@@ -189,7 +186,9 @@ if __name__ == "__main__":
                  policy=meta_policy, 
                  env=env, 
                  sampler=sampler, 
-                 sampler_processor=sampler_processor)
+                 sampler_processor=sampler_processor,
+                 batch_size=META_BATCH_SIZE,
+                 inner_batch_size=1000,)
     logging.info('trainer')
     trainer = Trainer(
                       tlbo=tlbo,
@@ -201,7 +200,8 @@ if __name__ == "__main__":
                       greedy_finish_time= greedy_finish_time,
                       start_itr=0,
                       inner_batch_size=1000,
-                      population_size = population_size)
+                      population_size = population_size,
+                      batch_size=META_BATCH_SIZE)
 
     with tf.compat.v1.Session() as sess:
         sess.run(tf.global_variables_initializer())

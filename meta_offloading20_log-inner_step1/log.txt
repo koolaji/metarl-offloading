@@ -1,100 +1,111 @@
 Logging to ./meta_offloading20_log-inner_step1/
 ---------------------------------------
-| Average latency,        | 1092.0612 |
-| Average reward,         | -0.386    |
-| AverageDiscountedReturn | -7.14     |
-| AverageReturn           | -7.73     |
-| MaxReturn               | -4.76     |
-| MinReturn               | -11.3     |
+| Average latency,        | 1096.4387 |
+| Average reward,         | -0.388    |
+| AverageDiscountedReturn | -7.17     |
+| AverageReturn           | -7.76     |
+| MaxReturn               | -4.93     |
+| MinReturn               | -12       |
 | NumTrajs                | 1000      |
-| StdReturn               | 1.16      |
+| StdReturn               | 1.1       |
 | iteration               | 0         |
 ---------------------------------------
 ---------------------------------------
-| Average latency,        | 1086.0160 |
-| Average reward,         | -0.385    |
-| AverageDiscountedReturn | -7.1      |
-| AverageReturn           | -7.69     |
-| MaxReturn               | -4.93     |
-| MinReturn               | -11.6     |
+| Average latency,        | 1090.4422 |
+| Average reward,         | -0.386    |
+| AverageDiscountedReturn | -7.13     |
+| AverageReturn           | -7.73     |
+| MaxReturn               | -4.66     |
+| MinReturn               | -11.5     |
 | NumTrajs                | 1000      |
-| StdReturn               | 1.08      |
+| StdReturn               | 1.1       |
 | iteration               | 1         |
 ---------------------------------------
 ---------------------------------------
-| Average latency,        | 1095.3389 |
-| Average reward,         | -0.388    |
-| AverageDiscountedReturn | -7.16     |
-| AverageReturn           | -7.75     |
-| MaxReturn               | -4.75     |
-| MinReturn               | -11.1     |
+| Average latency,        | 1096.2304 |
+| Average reward,         | -0.389    |
+| AverageDiscountedReturn | -7.18     |
+| AverageReturn           | -7.77     |
+| MaxReturn               | -5.07     |
+| MinReturn               | -12.3     |
 | NumTrajs                | 1000      |
-| StdReturn               | 1.13      |
+| StdReturn               | 1.09      |
 | iteration               | 2         |
 ---------------------------------------
 ---------------------------------------
-| Average latency,        | 1088.4464 |
+| Average latency,        | 1088.7692 |
 | Average reward,         | -0.386    |
 | AverageDiscountedReturn | -7.12     |
 | AverageReturn           | -7.71     |
-| MaxReturn               | -4.65     |
-| MinReturn               | -11.8     |
+| MaxReturn               | -4.54     |
+| MinReturn               | -11.4     |
 | NumTrajs                | 1000      |
 | StdReturn               | 1.11      |
 | iteration               | 3         |
 ---------------------------------------
 ---------------------------------------
-| Average latency,        | 1092.6228 |
+| Average latency,        | 1091.7765 |
 | Average reward,         | -0.387    |
-| AverageDiscountedReturn | -7.14     |
+| AverageDiscountedReturn | -7.15     |
 | AverageReturn           | -7.74     |
-| MaxReturn               | -4.96     |
+| MaxReturn               | -4.79     |
 | MinReturn               | -11.6     |
 | NumTrajs                | 1000      |
-| StdReturn               | 1.13      |
+| StdReturn               | 1.11      |
 | iteration               | 4         |
 ---------------------------------------
 ---------------------------------------
-| Average latency,        | 1095.5723 |
-| Average reward,         | -0.388    |
-| AverageDiscountedReturn | -7.16     |
-| AverageReturn           | -7.76     |
-| MaxReturn               | -4.9      |
-| MinReturn               | -11.4     |
+| Average latency,        | 1091.0698 |
+| Average reward,         | -0.387    |
+| AverageDiscountedReturn | -7.14     |
+| AverageReturn           | -7.73     |
+| MaxReturn               | -5.01     |
+| MinReturn               | -11.3     |
 | NumTrajs                | 1000      |
-| StdReturn               | 1.15      |
+| StdReturn               | 1.09      |
 | iteration               | 5         |
 ---------------------------------------
 ---------------------------------------
-| Average latency,        | 1087.4735 |
-| Average reward,         | -0.385    |
-| AverageDiscountedReturn | -7.11     |
-| AverageReturn           | -7.7      |
-| MaxReturn               | -4.74     |
-| MinReturn               | -11.5     |
+| Average latency,        | 1092.3304 |
+| Average reward,         | -0.387    |
+| AverageDiscountedReturn | -7.15     |
+| AverageReturn           | -7.74     |
+| MaxReturn               | -4.85     |
+| MinReturn               | -11.2     |
 | NumTrajs                | 1000      |
 | StdReturn               | 1.12      |
 | iteration               | 6         |
 ---------------------------------------
 ---------------------------------------
-| Average latency,        | 1087.3209 |
-| Average reward,         | -0.385    |
-| AverageDiscountedReturn | -7.1      |
-| AverageReturn           | -7.69     |
-| MaxReturn               | -5.17     |
-| MinReturn               | -12.1     |
+| Average latency,        | 1097.9247 |
+| Average reward,         | -0.389    |
+| AverageDiscountedReturn | -7.18     |
+| AverageReturn           | -7.78     |
+| MaxReturn               | -5.14     |
+| MinReturn               | -10.8     |
 | NumTrajs                | 1000      |
-| StdReturn               | 1.12      |
+| StdReturn               | 1.11      |
 | iteration               | 7         |
 ---------------------------------------
 ---------------------------------------
-| Average latency,        | 1089.4140 |
-| Average reward,         | -0.386    |
-| AverageDiscountedReturn | -7.12     |
-| AverageReturn           | -7.71     |
-| MaxReturn               | -4.97     |
+| Average latency,        | 1096.5848 |
+| Average reward,         | -0.389    |
+| AverageDiscountedReturn | -7.17     |
+| AverageReturn           | -7.77     |
+| MaxReturn               | -4.9      |
 | MinReturn               | -11.3     |
 | NumTrajs                | 1000      |
 | StdReturn               | 1.11      |
 | iteration               | 8         |
+---------------------------------------
+---------------------------------------
+| Average latency,        | 1097.2055 |
+| Average reward,         | -0.389    |
+| AverageDiscountedReturn | -7.17     |
+| AverageReturn           | -7.77     |
+| MaxReturn               | -4.8      |
+| MinReturn               | -11.6     |
+| NumTrajs                | 1000      |
+| StdReturn               | 1.13      |
+| iteration               | 9         |
 ---------------------------------------

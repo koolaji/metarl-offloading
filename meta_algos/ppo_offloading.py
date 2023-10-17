@@ -36,7 +36,7 @@ class PPO():
         self.build_graph()
 
     def build_graph(self):
-        new_logits = self.policy.network.decoder_logits
+        new_logits = self.policy.network.decoder_logitspolicy.network.decoder_logits
         self.decoder_inputs = self.policy.decoder_inputs
         self.old_logits = tf.placeholder(dtype=tf.float32, shape=[None, None, self.policy.action_dim])
         self.actions = self.policy.decoder_targets

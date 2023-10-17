@@ -1,9 +1,6 @@
-
 import tensorflow as tf
 import numpy as np
 import itertools
-from utils import logger
-
 
 # this is the tf graph version of reptile:
 class MRLCO():
@@ -88,15 +85,13 @@ class MRLCO():
                 self.total_loss.append( self.surr_obj[i] + self.vf_coef * self.vf_loss[i])
 
                 params = self.policy.meta_policies[i].network.get_trainable_variables()
-
                 grads_and_var = self.inner_optimizer.compute_gradients(self.total_loss[i], params)
                 grads, var = zip(*grads_and_var)
 
-                if self.max_grad_norm is not None:
-                    # Clip the gradients (normalize)
-                    grads, _grad_norm = tf.clip_by_global_norm(grads, self.max_grad_norm)
+                # if self.max_grad_norm is not None:
+                #     # Clip the gradients (normalize)
+                #     grads, _grad_norm = tf.clip_by_global_norm(grads, self.max_grad_norm)
                 grads_and_var = list(zip(grads, var))
-
                 self._train.append(self.inner_optimizer.apply_gradients(grads_and_var))
 
         # Outer update for the parameters
@@ -136,8 +131,6 @@ class MRLCO():
         self.policy.async_parameters()
 
     def UpdatePPOTarget(self, task_samples, batch_size=50):
-        logger.info(f"UpdatePPOTarget batch_size = {batch_size}")
-
         total_policy_losses = []
         total_value_losses = []
         for i in range(self.meta_batch_size):
@@ -148,12 +141,10 @@ class MRLCO():
         return total_policy_losses, total_value_losses
 
     def UpdatePPOTargetPerTask(self, task_samples, task_id, batch_size=50):
-        logger.info(f"UpdatePPOTarget task_id = {task_id}, batch_size = {batch_size}")
         policy_losses = []
         value_losses = []
 
         batch_number = int(task_samples['observations'].shape[0] / batch_size)
-        logger.info(f"UpdatePPOTarget batch_number = {batch_number}")
         self.update_numbers = batch_number
         #:q!
         # print("update number is: ", self.update_numbers)

@@ -315,13 +315,15 @@ class Seq2SeqPolicy:
 
         self._dist = CategoricalPd(vocab_size)
         logging.debug('END MetaSeq2SeqPolicy')
+        self.sess = tf.compat.v1.Session()
+        self.sess.run(tf.compat.v1.global_variables_initializer())  
 
     def get_actions(self, observations):
         logging.debug('Start Seq2SeqPolicy get_actions')
         sess = tf.compat.v1.get_default_session()
 
         decoder_full_length = np.array([observations.shape[1]] * observations.shape[0], dtype=np.int32)
-        actions, logits, v_value = sess.run([self.network.sample_decoder_prediction,
+        actions, logits, v_value = self.sess.run([self.network.sample_decoder_prediction,
                                              self.network.sample_decoder_logits,
                                              self.network.sample_vf],
                                             feed_dict={self.obs: observations,
@@ -383,6 +385,7 @@ class MetaSeq2SeqPolicy:
         self.meta_policies = []
 
         self.assign_old_eq_new_tasks = []
+        
 
         for i in range(meta_batch_size):
             self.meta_policies.append(Seq2SeqPolicy(obs_dim, encoder_units, decoder_units,
@@ -441,7 +444,7 @@ class MetaSeq2SeqPolicy:
                 var.load(value, sess)
 
     def get_random_params(self):
-            # logging.info('get_random_params ')
+            logging.info('get_random_params ')
         # with tf.compat.v1.Session() as sess:
         #     sess.run(tf.compat.v1.global_variables_initializer())
             params = self.get_params()
