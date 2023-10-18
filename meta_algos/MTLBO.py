@@ -25,7 +25,9 @@ class MTLBO(MRLCO):  # Inherit from MRLCO to access its methods
         self.inner_batch_size = inner_batch_size
         self.teacher_reward = 0
         self.teacher = []
-        self.objective_function_list=[]
+        self.teacher_sample = []
+        self.objective_function_list_score=[]
+        self.objective_function_list_sample=[]
 
         # Initialize self.surr_obj as a list
         # self.surr_obj = [None for _ in range(self.policy.meta_batch_size)]
@@ -48,13 +50,16 @@ class MTLBO(MRLCO):  # Inherit from MRLCO to access its methods
         logging.info('teacher_phase')
         
         # Identify the teacher (best solution in the population)
-        if len(self.objective_function_list) != len(population):
+        if len(self.objective_function_list_score) != len(population):
             for idx, student in enumerate(population):
-                self.objective_function_list.append(self.objective_function(student))
-        max_value, max_index = max((value, index) for index, value in enumerate(self.objective_function_list))
-        print(len(self.objective_function_list), max_value, max_index)
+                score, sample = self.objective_function(student)
+                self.objective_function_list_score.append(score)
+                self.objective_function_list_sample.append(sample)
+        max_value, max_index = max((value, index) for index, value in enumerate(self.objective_function_list_score))
+        print(len(self.objective_function_list_score), max_value, max_index)
         self.teacher = population[max_index]
         self.teacher_reward = max_value
+        self.teacher_sample = self.objective_function_list_sample [max_index]
         
         logging.info('teacher_phase, teacher')
         
@@ -64,7 +69,7 @@ class MTLBO(MRLCO):  # Inherit from MRLCO to access its methods
         
         for key in keys:
             mean_solution[key] = np.mean([individual[key] for individual in population], axis=0)
-        mean_solution_val= self.objective_function(mean_solution)
+        mean_solution_val, _ = self.objective_function(mean_solution)
 
         # Calculate w based on the current iteration
         w_start = 0.9  # or another value you choose
@@ -78,7 +83,7 @@ class MTLBO(MRLCO):  # Inherit from MRLCO to access its methods
             rand_num = np.random.random()
             teaching_factor = np.random.randint(1, 3)  # Either 1 or 2
             
-            if self.objective_function_list[idx] > mean_solution_val:
+            if self.objective_function_list_score[idx] > mean_solution_val:
                 scaled_diff = self.scale_dict(diff, teaching_factor * rand_num)
             else:
                 # Adjusting the behavior based on the current iteration
@@ -89,12 +94,13 @@ class MTLBO(MRLCO):  # Inherit from MRLCO to access its methods
                 )
 
             new_solution = self.add_dicts(student, scaled_diff)
-            objective_function_new = self.objective_function(new_solution)
-            if objective_function_new > self.objective_function_list[idx]:
+            objective_function_new, sample_new = self.objective_function(new_solution)
+            if objective_function_new > self.objective_function_list_score[idx]:
                 population[idx] = new_solution
-                logging.info(f'teacher_phase{idx} -- {objective_function_new} -- {self.objective_function_list[idx]} -- {self.teacher_reward}')
-                self.objective_function_list[idx] = objective_function_new
-            return self.teacher
+                logging.info(f'teacher_phase{idx} -- {objective_function_new} -- {self.objective_function_list_score[idx]} -- {self.teacher_reward}')
+                self.objective_function_list_score[idx] = objective_function_new
+                self.objective_function_list_sample[idx] = sample_new
+            return self.teacher_sample
 
 
 
@@ -145,11 +151,12 @@ class MTLBO(MRLCO):  # Inherit from MRLCO to access its methods
                 scaled_diff = self.scale_dict(diff, rand_num * np.cos(angle))
             
             new_solution = self.add_dicts(student, scaled_diff)
-            objective_function_new = self.objective_function(new_solution)
-            if objective_function_new > self.objective_function_list[idx]:
+            objective_function_new , sample_new= self.objective_function(new_solution)
+            if objective_function_new > self.objective_function_list_score[idx]:
                 population[idx] = new_solution
-                logging.info(f'teacher_phase{idx} -- {objective_function_new} -- {self.objective_function_list[idx]} -- {self.teacher_reward}')
-                self.objective_function_list[idx] = objective_function_new
+                logging.info(f'teacher_phase{idx} -- {objective_function_new} -- {self.objective_function_list_score[idx]} -- {self.teacher_reward}')
+                self.objective_function_list_score[idx] = objective_function_new
+                self.objective_function_list_sample[idx] = sample_new
 
         
         # Second Group
@@ -169,12 +176,12 @@ class MTLBO(MRLCO):  # Inherit from MRLCO to access its methods
             
             new_solution = self.add_dicts(student, scaled_diff)
             
-            objective_function_new = self.objective_function(new_solution, True)
-            objective_function_new = self.objective_function(new_solution)
-            if objective_function_new > self.objective_function_list[idx]:
+            objective_function_new, sample_new = self.objective_function(new_solution)
+            if objective_function_new > self.objective_function_list_score[idx]:
                 population[idx] = new_solution
-                logging.info(f'teacher_phase{idx} -- {objective_function_new} -- {self.objective_function_list[idx]} -- {self.teacher_reward}')
-                self.objective_function_list[idx] = objective_function_new
+                logging.info(f'teacher_phase{idx} -- {objective_function_new} -- {self.objective_function_list_score[idx]} -- {self.teacher_reward}')
+                self.objective_function_list_score[idx] = objective_function_new
+                self.objective_function_list_sample[idx] = sample_new
         # paths = self.sampler.obtain_samples(log=False, log_prefix='')
         # samples_data = self.sampler_processor.process_samples(paths, log=False, log_prefix='')
         # # Perform PPO update
@@ -187,7 +194,7 @@ class MTLBO(MRLCO):  # Inherit from MRLCO to access its methods
 
         # Check if the result is already in the cache
         if key in self.history:
-            return self.history[key]
+            return self.history[key][0], self.history[key][1]
 
         # If not, compute the result
         logging.debug('objective_function')
@@ -208,7 +215,7 @@ class MTLBO(MRLCO):  # Inherit from MRLCO to access its methods
         combined_metric = mean_reward - self.variance_coefficient * variance + 0.1 * median_reward - 0.05 * skewness_reward
         
         # Store the result in the cache
-        self.history[key] = -np.mean(combined_metric)
+        self.history[key] = [-np.mean(combined_metric) , samples_data]
         logging.info(f'objective_function  {-np.mean(combined_metric)} -- {self.teacher_reward}')
-        return -np.mean(combined_metric)
+        return -np.mean(combined_metric), samples_data
 

@@ -55,6 +55,7 @@ class Trainer(object):
             task_ids = self.sampler.update_tasks()
             logging.info(" task_ids %s", task_ids)
             paths = self.sampler.obtain_samples(log=False, log_prefix='')
+            # print(paths)
             logging.info("sampled path length is: %s", len(paths[0]))
 
             # """ ----------------- Processing Samples ---------------------"""
@@ -74,10 +75,12 @@ class Trainer(object):
             tlbo.teacher_phase(population=self.population, iteration=itr, max_iterations=self.n_itr)
             tlbo.learner_phase(population=self.population, iteration=itr, max_iterations=self.n_itr)
             teacher = tlbo.teacher_phase(population=self.population, iteration=itr, max_iterations=self.n_itr)
-            self.policy.set_params(teacher)
+            # self.policy.set_params(teacher)
+            
             """ ------------------- Logging Stuff --------------------------"""
             paths = self.sampler.obtain_samples(log=False, log_prefix='')
             samples_data = self.sampler_processor.process_samples(paths, log="all", log_prefix='')
+            samples_data = teacher
 
             all_latency = [data['finish_time'] for data in samples_data]
             latency = np.concatenate(all_latency, axis=-1)
@@ -110,8 +113,8 @@ if __name__ == "__main__":
     # from meta_algos.MRLCO import MRLCO
     from meta_algos.MTLBO import MTLBO
     tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
-    logging.basicConfig(level=logging.DEBUG, filename='meta_train.log',  filemode='a',)
-    logging.root.setLevel(logging.DEBUG)
+    logging.basicConfig(level=logging.INFO, filename='meta_train.log',  filemode='a',)
+    logging.root.setLevel(logging.INFO)
     logger.configure(dir="./meta_offloading20_log-inner_step1/", format_strs=['stdout', 'log', 'csv'])
     META_BATCH_SIZE = 1
     logging.debug('starting')
