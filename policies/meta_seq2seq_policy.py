@@ -435,13 +435,20 @@ class MetaSeq2SeqPolicy:
             variables = self.core_policy.get_trainable_variables()
             return {v.name: sess.run(v) for v in variables}
 
-    def set_params(self, new_params):
+    # def set_params(self, new_params):
+    #     """Set the policy parameters to new values."""
+    #     with tf.compat.v1.Session() as sess:
+    #         sess.run(tf.compat.v1.global_variables_initializer())
+    #         for var in self.core_policy.get_trainable_variables():
+    #             value = new_params[var.name]
+    #             var.load(value, sess)
+
+    def set_params(self, new_params, sess=None):
         """Set the policy parameters to new values."""
-        with tf.compat.v1.Session() as sess:
-            sess.run(tf.compat.v1.global_variables_initializer())
-            for var in self.core_policy.get_trainable_variables():
-                value = new_params[var.name]
-                var.load(value, sess)
+        sess = sess or  tf.compat.v1.get_default_session()
+        for var in self.core_policy.get_trainable_variables():
+            value = new_params[var.name]
+            sess.run(var.assign(value))
 
     def get_random_params(self):
             logging.info('get_random_params ')
@@ -451,7 +458,7 @@ class MetaSeq2SeqPolicy:
             random_params = {}
             # logging.info('get_random_params %s %s', str(len(params)), type(params))
             for key, value in params.items():
-                np.random.seed(None)
+                # np.random.seed(None)
                 random_value = np.random.randn(*value.shape)
                 # logging.info(f"Random value for {value.shape} key {key}")
                 random_params[key] = random_value            

@@ -37,7 +37,8 @@ class Trainer(object):
         self.save_interval = save_interval
         self.population_size = population_size
         self.batch_size = batch_size
-    def train(self):
+        self.population = 0
+    def train(self, sess):
         """
         Implement the TLBO training process for task offloading problem
         """
@@ -46,7 +47,7 @@ class Trainer(object):
         avg_loss = []
         avg_latencies = []
 
-        population = [self.policy.get_random_params() for _ in range(self.population_size)]        
+        self.population = [self.policy.get_random_params() for _ in range(self.population_size)]        
         for itr in range(self.start_itr, self.n_itr):
             logging.debug("\n ---------------- Iteration %d ----------------" % itr)
             logging.debug("Sampling set of tasks/goals for this meta-batch...")
@@ -70,21 +71,22 @@ class Trainer(object):
             # best_params = tlbo_optimizer.optimize()
             # logging.info("self.policy.set_params")
             # self.policy.set_params(best_params)
-            tlbo.teacher_phase(population=population, iteration=itr, max_iterations=self.n_itr)
-            tlbo.learner_phase(population=population, iteration=itr, max_iterations=self.n_itr)
-
+            tlbo.teacher_phase(population=self.population, iteration=itr, max_iterations=self.n_itr)
+            tlbo.learner_phase(population=self.population, iteration=itr, max_iterations=self.n_itr)
+            teacher = tlbo.teacher_phase(population=self.population, iteration=itr, max_iterations=self.n_itr)
+            self.policy.set_params(teacher)
             """ ------------------- Logging Stuff --------------------------"""
             paths = self.sampler.obtain_samples(log=False, log_prefix='')
             samples_data = self.sampler_processor.process_samples(paths, log="all", log_prefix='')
 
             all_latency = [data['finish_time'] for data in samples_data]
-            latency = np.concatenate(all_latency, axis=0)
+            latency = np.concatenate(all_latency, axis=-1)
             avg_latency = np.mean(latency)
 
             # Assuming samples_data is a list of dictionaries
             all_rewards = [data['rewards'] for data in samples_data]
             rewards = np.concatenate(all_rewards, axis=0)
-            logging.info(f'objective_function len samples_data = {-np.mean(rewards)}')
+            logging.info(f'objective_function len samples_data = {np.mean(rewards)}')
             logger.logkv('iteration', itr)
             logger.logkv('Average reward, ', np.mean(rewards))
             logger.logkv('Average latency,', "{:.4f}".format(avg_latency))
@@ -108,8 +110,8 @@ if __name__ == "__main__":
     # from meta_algos.MRLCO import MRLCO
     from meta_algos.MTLBO import MTLBO
     tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
-    logging.basicConfig(level=logging.INFO, filename='meta_train.log',  filemode='a',)
-    logging.root.setLevel(logging.INFO)
+    logging.basicConfig(level=logging.DEBUG, filename='meta_train.log',  filemode='a',)
+    logging.root.setLevel(logging.DEBUG)
     logger.configure(dir="./meta_offloading20_log-inner_step1/", format_strs=['stdout', 'log', 'csv'])
     META_BATCH_SIZE = 1
     logging.debug('starting')
@@ -205,7 +207,7 @@ if __name__ == "__main__":
 
     with tf.compat.v1.Session() as sess:
         sess.run(tf.global_variables_initializer())
-        avg_ret, avg_loss, avg_latencies = trainer.train()
+        avg_ret, avg_loss, avg_latencies = trainer.train(sess)
         logging.debug("final result %s, %s, %s ", avg_ret, avg_loss, avg_latencies)
 
 
