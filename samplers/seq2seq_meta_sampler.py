@@ -125,7 +125,6 @@ class Seq2SeqMetaSampler(Sampler):
                         finish_time = np.squeeze(np.asarray(running_paths[idx]["finish_time"])),
                         values  = np.squeeze(np.asarray(running_paths[idx]["values"]))
                     ))
-
                     new_samples += len(running_paths[idx]["rewards"])
                     running_paths[idx] = _get_empty_running_paths_dict()
             n_samples += new_samples

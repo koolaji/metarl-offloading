@@ -323,7 +323,7 @@ class Seq2SeqPolicy:
         sess = tf.compat.v1.get_default_session()
 
         decoder_full_length = np.array([observations.shape[1]] * observations.shape[0], dtype=np.int32)
-        actions, logits, v_value = self.sess.run([self.network.sample_decoder_prediction,
+        actions, logits, v_value = sess.run([self.network.sample_decoder_prediction,
                                              self.network.sample_decoder_logits,
                                              self.network.sample_vf],
                                             feed_dict={self.obs: observations,
@@ -427,13 +427,13 @@ class MetaSeq2SeqPolicy:
     def distribution(self):
         return self._dist
     
-    def get_params(self):
+    def get_params(self, sess):
         """Get the current parameters of the policy."""
         # logging.info('get_params ')
-        with tf.compat.v1.Session() as sess:
-            sess.run(tf.compat.v1.global_variables_initializer())
-            variables = self.core_policy.get_trainable_variables()
-            return {v.name: sess.run(v) for v in variables}
+        # with tf.compat.v1.Session() as sess:
+        sess.run(tf.compat.v1.global_variables_initializer())
+        variables = self.core_policy.get_trainable_variables()
+        return {v.name: sess.run(v) for v in variables}
 
     # def set_params(self, new_params):
     #     """Set the policy parameters to new values."""
@@ -450,16 +450,17 @@ class MetaSeq2SeqPolicy:
             value = new_params[var.name]
             sess.run(var.assign(value))
 
-    def get_random_params(self):
+    def get_random_params(self, sess):
             logging.info('get_random_params ')
         # with tf.compat.v1.Session() as sess:
         #     sess.run(tf.compat.v1.global_variables_initializer())
-            params = self.get_params()
+            params = self.get_params(sess)
             random_params = {}
             # logging.info('get_random_params %s %s', str(len(params)), type(params))
             for key, value in params.items():
-                # np.random.seed(None)
+                np.random.seed(None)
                 random_value = np.random.randn(*value.shape)
                 # logging.info(f"Random value for {value.shape} key {key}")
                 random_params[key] = random_value            
             return random_params
+

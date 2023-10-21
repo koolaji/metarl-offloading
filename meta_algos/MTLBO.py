@@ -47,6 +47,7 @@ class MTLBO(MRLCO):  # Inherit from MRLCO to access its methods
 
 
     def teacher_phase(self, population, iteration, max_iterations):
+        np.random.seed(None)
         logging.info('teacher_phase')
         
         # Identify the teacher (best solution in the population)
@@ -82,7 +83,7 @@ class MTLBO(MRLCO):  # Inherit from MRLCO to access its methods
             
             rand_num = np.random.random()
             teaching_factor = np.random.randint(1, 3)  # Either 1 or 2
-            
+                
             if self.objective_function_list_score[idx] > mean_solution_val:
                 scaled_diff = self.scale_dict(diff, teaching_factor * rand_num)
             else:
@@ -125,6 +126,8 @@ class MTLBO(MRLCO):  # Inherit from MRLCO to access its methods
 
 
     def learner_phase(self, population, iteration, max_iterations):
+        np.random.seed(None)
+
         logging.info('learner_phase')
         
         n = len(population)
@@ -135,6 +138,7 @@ class MTLBO(MRLCO):  # Inherit from MRLCO to access its methods
             student = population[idx]
             
             # Randomly select another learner
+            
             j = np.random.choice([x for x in range(half_n) if x != idx])
             other_learner = population[j]
             
@@ -213,9 +217,10 @@ class MTLBO(MRLCO):  # Inherit from MRLCO to access its methods
         # Combine metrics for the objective function
         # Here, you can assign different coefficients to each metric based on their importance
         combined_metric = mean_reward - self.variance_coefficient * variance + 0.1 * median_reward - 0.05 * skewness_reward
+        combined_metric = mean_reward 
         
         # Store the result in the cache
-        self.history[key] = [-np.mean(combined_metric) , samples_data]
-        logging.info(f'objective_function  {-np.mean(combined_metric)} -- {self.teacher_reward}')
-        return -np.mean(combined_metric), samples_data
+        self.history[key] = [np.mean(combined_metric) , samples_data]
+        logging.info(f'objective_function  {np.mean(combined_metric)} -- {self.teacher_reward}')
+        return np.mean(combined_metric), samples_data
 
