@@ -112,8 +112,8 @@ if __name__ == "__main__":
     # from meta_algos.MRLCO import MRLCO
     from meta_algos.MTLBO import MTLBO
     tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.INFO)
-    logging.basicConfig(level=logging.INFO, filename='meta_train.log',  filemode='a',)
-    logging.root.setLevel(logging.INFO)
+    logging.basicConfig(level=logging.DEBUG, filename='meta_train.log',  filemode='a',)
+    logging.root.setLevel(logging.DEBUG)
     logger.configure(dir="./meta_offloading20_log-inner_step1/", format_strs=['stdout', 'log', 'csv'])
     META_BATCH_SIZE = 10
     logging.debug('starting')
@@ -207,7 +207,8 @@ if __name__ == "__main__":
                       population_size = population_size,
                       batch_size=META_BATCH_SIZE)
 
-    with tf.compat.v1.Session() as sess:
+    with tf.device('/GPU:0'):
+      with tf.compat.v1.Session() as sess:
         sess.run(tf.global_variables_initializer())
         avg_ret, avg_loss, avg_latencies = trainer.train(sess)
         logging.debug("final result %s, %s, %s ", avg_ret, avg_loss, avg_latencies)
