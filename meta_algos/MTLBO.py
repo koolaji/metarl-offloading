@@ -93,11 +93,10 @@ class MTLBO(MRLCO):  # Inherit from MRLCO to access its methods
                 angle = (np.pi / 2) * (iteration / max_iterations)
                 scaled_diff = self.add_dicts(
                     self.scale_dict(diff, w * teaching_factor * rand_num * np.sin(angle)),
-                    self.scale_dict(diff, w * teaching_factor * rand_num * np.cos(angle)),
-                    session=sess
+                    self.scale_dict(diff, w * teaching_factor * rand_num * np.cos(angle))
                 )
 
-            new_solution = self.add_dicts(student, scaled_diff, session=sess)
+            new_solution = self.add_dicts(student, scaled_diff)
             objective_function_new, sample_new = self.objective_function(new_solution, sess)
             if objective_function_new > self.objective_function_list_score[idx]:
                 population[idx] = new_solution
@@ -177,7 +176,7 @@ class MTLBO(MRLCO):  # Inherit from MRLCO to access its methods
             else:
                 scaled_diff = self.scale_dict(diff, rand_num * np.cos(angle))
             
-            new_solution = self.add_dicts(student, scaled_diff, session=sess)
+            new_solution = self.add_dicts(student, scaled_diff)
             objective_function_new , sample_new= self.objective_function(new_solution, sess)
             if objective_function_new > self.objective_function_list_score[idx]:
                 population[idx] = new_solution
@@ -201,7 +200,7 @@ class MTLBO(MRLCO):  # Inherit from MRLCO to access its methods
 
             scaled_diff = self.scale_dict(diff, np.cos(angle))
             
-            new_solution = self.add_dicts(student, scaled_diff, session=sess)
+            new_solution = self.add_dicts(student, scaled_diff)
             
             objective_function_new, sample_new = self.objective_function(new_solution, sess)
             if objective_function_new > self.objective_function_list_score[idx]:

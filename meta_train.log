@@ -9833,3 +9833,131 @@ INFO:root:objective_function variance
 INFO:root:objective_function sess
 INFO:root:objective_function  -0.3555023968219757 -- 0
 INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.35506102442741394 -- 0
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.35574206709861755 -- 0
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.35493937134742737 -- 0
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.35537123680114746 -- 0
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.35543742775917053 -- 0
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3551673889160156 -- 0
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.35496240854263306 -- 0
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3555618226528168 -- 0
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3548325300216675 -- 0
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.35522717237472534 -- 0
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3554669916629791 -- 0
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.35536763072013855 -- 0
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.35503941774368286 -- 0
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.355792760848999 -- 0
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.35482925176620483 -- 0
+INFO:root:teacher_phase, teacher
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.35623684525489807 -- -0.35482925176620483
