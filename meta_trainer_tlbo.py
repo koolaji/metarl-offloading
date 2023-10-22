@@ -71,8 +71,8 @@ class Trainer(object):
             # best_params = tlbo_optimizer.optimize()
             # logging.info("self.policy.set_params")
             # self.policy.set_params(best_params)
-            tlbo.teacher_phase(population=self.population, iteration=itr, max_iterations=self.n_itr)
-            tlbo.learner_phase(population=self.population, iteration=itr, max_iterations=self.n_itr)
+            tlbo.teacher_phase(population=self.population, iteration=itr, max_iterations=self.n_itr, sess=sess)
+            tlbo.learner_phase(population=self.population, iteration=itr, max_iterations=self.n_itr, sess=sess)
             teacher = tlbo.teacher_phase(population=self.population, iteration=itr, max_iterations=self.n_itr)
             # self.policy.set_params(teacher)
             
@@ -111,7 +111,7 @@ if __name__ == "__main__":
     from baselines.vf_baseline import ValueFunctionBaseline
     # from meta_algos.MRLCO import MRLCO
     from meta_algos.MTLBO import MTLBO
-    tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
+    tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.INFO)
     logging.basicConfig(level=logging.INFO, filename='meta_train.log',  filemode='a',)
     logging.root.setLevel(logging.INFO)
     logger.configure(dir="./meta_offloading20_log-inner_step1/", format_strs=['stdout', 'log', 'csv'])
