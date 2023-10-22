@@ -73,7 +73,7 @@ class Trainer(object):
             # self.policy.set_params(best_params)
             tlbo.teacher_phase(population=self.population, iteration=itr, max_iterations=self.n_itr, sess=sess)
             tlbo.learner_phase(population=self.population, iteration=itr, max_iterations=self.n_itr, sess=sess)
-            teacher = tlbo.teacher_phase(population=self.population, iteration=itr, max_iterations=self.n_itr)
+            teacher = tlbo.teacher_phase(population=self.population, iteration=itr, max_iterations=self.n_itr, sess=sess)
             # self.policy.set_params(teacher)
             
             """ ------------------- Logging Stuff --------------------------"""

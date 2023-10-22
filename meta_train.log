@@ -9961,3 +9961,901 @@ INFO:root:objective_function all_rewards
 INFO:root:objective_function variance
 INFO:root:objective_function sess
 INFO:root:objective_function  -0.35623684525489807 -- -0.35482925176620483
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_1/random.20., len(self.encoder_batches), 0
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_2/random.20., len(self.encoder_batches), 1
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_3/random.20., len(self.encoder_batches), 2
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_4/random.20., len(self.encoder_batches), 3
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_5/random.20., len(self.encoder_batches), 4
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_6/random.20., len(self.encoder_batches), 5
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_7/random.20., len(self.encoder_batches), 6
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_8/random.20., len(self.encoder_batches), 7
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_9/random.20., len(self.encoder_batches), 8
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_10/random.20., len(self.encoder_batches), 9
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_11/random.20., len(self.encoder_batches), 10
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_12/random.20., len(self.encoder_batches), 11
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_13/random.20., len(self.encoder_batches), 12
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_14/random.20., len(self.encoder_batches), 13
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_15/random.20., len(self.encoder_batches), 14
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_16/random.20., len(self.encoder_batches), 15
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_17/random.20., len(self.encoder_batches), 16
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_18/random.20., len(self.encoder_batches), 17
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_19/random.20., len(self.encoder_batches), 18
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_21/random.20., len(self.encoder_batches), 19
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_23/random.20., len(self.encoder_batches), 20
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_25/random.20., len(self.encoder_batches), 21
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_1/random.20., len(self.encoder_batches), 0
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_2/random.20., len(self.encoder_batches), 1
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_3/random.20., len(self.encoder_batches), 2
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_4/random.20., len(self.encoder_batches), 3
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_5/random.20., len(self.encoder_batches), 4
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_6/random.20., len(self.encoder_batches), 5
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_7/random.20., len(self.encoder_batches), 6
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_8/random.20., len(self.encoder_batches), 7
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_9/random.20., len(self.encoder_batches), 8
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_10/random.20., len(self.encoder_batches), 9
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_11/random.20., len(self.encoder_batches), 10
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_12/random.20., len(self.encoder_batches), 11
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_13/random.20., len(self.encoder_batches), 12
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_14/random.20., len(self.encoder_batches), 13
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_15/random.20., len(self.encoder_batches), 14
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_16/random.20., len(self.encoder_batches), 15
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_17/random.20., len(self.encoder_batches), 16
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_18/random.20., len(self.encoder_batches), 17
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_19/random.20., len(self.encoder_batches), 18
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_21/random.20., len(self.encoder_batches), 19
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_23/random.20., len(self.encoder_batches), 20
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_25/random.20., len(self.encoder_batches), 21
+INFO:root:start of greedy_solution
+INFO:root:end of greedy_solution
+INFO:root:avg greedy solution: 820.4720901480216
+INFO:root:avg all remote solution: 1285.139463143584
+INFO:root:avg all local solution: 1430.0609198977731
+INFO:root:baseline
+INFO:root:meta_policy
+INFO:root:sampler
+INFO:root:sampler_processor
+INFO:root:tlbo
+INFO:root:trainer
+INFO:root:get_random_params 
+INFO:root:get_random_params 
+INFO:root:get_random_params 
+INFO:root:get_random_params 
+INFO:root:get_random_params 
+INFO:root:get_random_params 
+INFO:root:get_random_params 
+INFO:root:get_random_params 
+INFO:root:get_random_params 
+INFO:root:get_random_params 
+INFO:root:get_random_params 
+INFO:root:get_random_params 
+INFO:root:get_random_params 
+INFO:root:get_random_params 
+INFO:root:get_random_params 
+INFO:root:get_random_params 
+INFO:root:get_random_params 
+INFO:root:get_random_params 
+INFO:root:get_random_params 
+INFO:root:get_random_params 
+INFO:root:Sampling set of tasks/goals for this meta-batch...
+INFO:root:sample_tasks n_tasks = 10 , self.total_task 22
+INFO:root: task_ids [12 16  9 20  1  5 19 10 14  7]
+INFO:root:sampled path length is: 1000
+INFO:root:teacher_phase
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3565405607223511 -- 0
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.35609909892082214 -- 0
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3564418852329254 -- 0
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.356558233499527 -- 0
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3570678234100342 -- 0
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.356597363948822 -- 0
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.356653094291687 -- 0
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.356868177652359 -- 0
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3571303188800812 -- 0
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3569885790348053 -- 0
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3566618263721466 -- 0
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.35703742504119873 -- 0
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3569503128528595 -- 0
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.356680303812027 -- 0
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3559514880180359 -- 0
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3574005961418152 -- 0
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3577665388584137 -- 0
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3558586537837982 -- 0
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3572610914707184 -- 0
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.35668233036994934 -- 0
+INFO:root:teacher_phase, teacher
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.35749146342277527 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3565317988395691 -- -0.3558586537837982
+INFO:root:teacher_phase0 -- -0.3565317988395691 -- -0.3565405607223511 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.35695725679397583 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3563165068626404 -- -0.3558586537837982
+INFO:root:teacher_phase2 -- -0.3563165068626404 -- -0.3564418852329254 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3572602868080139 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3568759858608246 -- -0.3558586537837982
+INFO:root:teacher_phase4 -- -0.3568759858608246 -- -0.3570678234100342 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3562043011188507 -- -0.3558586537837982
+INFO:root:teacher_phase5 -- -0.3562043011188507 -- -0.356597363948822 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3575460910797119 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.35620105266571045 -- -0.3558586537837982
+INFO:root:teacher_phase7 -- -0.35620105266571045 -- -0.356868177652359 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3565189242362976 -- -0.3558586537837982
+INFO:root:teacher_phase8 -- -0.3565189242362976 -- -0.3571303188800812 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.35717546939849854 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.35720837116241455 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3573124408721924 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3566846549510956 -- -0.3558586537837982
+INFO:root:teacher_phase12 -- -0.3566846549510956 -- -0.3569503128528595 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3565720319747925 -- -0.3558586537837982
+INFO:root:teacher_phase13 -- -0.3565720319747925 -- -0.356680303812027 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3571454584598541 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3574454188346863 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.35659074783325195 -- -0.3558586537837982
+INFO:root:teacher_phase16 -- -0.35659074783325195 -- -0.3577665388584137 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3565828204154968 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.35730424523353577 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.35731223225593567 -- -0.3558586537837982
+INFO:root:learner_phase
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.357107549905777 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.35677406191825867 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.35697388648986816 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3567059338092804 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.35660281777381897 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.35709795355796814 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3569849729537964 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3567938208580017 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.35735654830932617 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.35692664980888367 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3569933772087097 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.35735389590263367 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.35715097188949585 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.35746726393699646 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3570393919944763 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3563844561576843 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3572143018245697 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.35651183128356934 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3565594255924225 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3563847541809082 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.35731855034828186 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3573050796985626 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.35729870200157166 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.357372522354126 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.35684019327163696 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3576110303401947 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.35692211985588074 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3572976887226105 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3574260175228119 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.35666516423225403 -- -0.3558586537837982
+INFO:root:First Group learner_phase9 -- -0.35666516423225403 -- -0.3569885790348053 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.35732972621917725 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.35710400342941284 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.356634259223938 -- -0.3558586537837982
+INFO:root:Second Group learner_phase12 -- -0.356634259223938 -- -0.3566846549510956 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3566474914550781 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3571241796016693 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3572012186050415 -- -0.3558586537837982
+INFO:root:Second Group learner_phase15 -- -0.3572012186050415 -- -0.3574005961418152 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3574901223182678 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.356694757938385 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3561864495277405 -- -0.3558586537837982
+INFO:root:Second Group learner_phase18 -- -0.3561864495277405 -- -0.3572610914707184 -- -0.3558586537837982
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.35705387592315674 -- -0.3558586537837982
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_1/random.20., len(self.encoder_batches), 0
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_2/random.20., len(self.encoder_batches), 1
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_3/random.20., len(self.encoder_batches), 2
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_4/random.20., len(self.encoder_batches), 3
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_5/random.20., len(self.encoder_batches), 4
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_6/random.20., len(self.encoder_batches), 5
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_7/random.20., len(self.encoder_batches), 6
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_8/random.20., len(self.encoder_batches), 7
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_9/random.20., len(self.encoder_batches), 8
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_10/random.20., len(self.encoder_batches), 9
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_11/random.20., len(self.encoder_batches), 10
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_12/random.20., len(self.encoder_batches), 11
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_13/random.20., len(self.encoder_batches), 12
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_14/random.20., len(self.encoder_batches), 13
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_15/random.20., len(self.encoder_batches), 14
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_16/random.20., len(self.encoder_batches), 15
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_17/random.20., len(self.encoder_batches), 16
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_18/random.20., len(self.encoder_batches), 17
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_19/random.20., len(self.encoder_batches), 18
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_21/random.20., len(self.encoder_batches), 19
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_23/random.20., len(self.encoder_batches), 20
+INFO:root:graph_file_path == ./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_25/random.20., len(self.encoder_batches), 21
+INFO:root:start of greedy_solution
+INFO:root:end of greedy_solution
+INFO:root:avg greedy solution: 820.4720901480216
+INFO:root:avg all remote solution: 1285.139463143584
+INFO:root:avg all local solution: 1430.0609198977731
+INFO:root:baseline
+INFO:root:meta_policy
+INFO:root:sampler
+INFO:root:sampler_processor
+INFO:root:tlbo
+INFO:root:trainer
+INFO:root:get_random_params 
+INFO:root:get_random_params 
+INFO:root:get_random_params 
+INFO:root:get_random_params 
+INFO:root:get_random_params 
+INFO:root:get_random_params 
+INFO:root:get_random_params 
+INFO:root:get_random_params 
+INFO:root:get_random_params 
+INFO:root:get_random_params 
+INFO:root:get_random_params 
+INFO:root:get_random_params 
+INFO:root:get_random_params 
+INFO:root:get_random_params 
+INFO:root:get_random_params 
+INFO:root:get_random_params 
+INFO:root:get_random_params 
+INFO:root:get_random_params 
+INFO:root:get_random_params 
+INFO:root:get_random_params 
+INFO:root:Sampling set of tasks/goals for this meta-batch...
+INFO:root:sample_tasks n_tasks = 10 , self.total_task 22
+INFO:root: task_ids [11  8  3 20 14 13  1 19 12 21]
+INFO:root:sampled path length is: 1000
+INFO:root:teacher_phase
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3502415418624878 -- 0
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.34923553466796875 -- 0
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3495255708694458 -- 0
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.35003721714019775 -- 0
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.34983450174331665 -- 0
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.34974053502082825 -- 0
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.34961655735969543 -- 0
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.35034143924713135 -- 0
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3497368097305298 -- 0
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3489610552787781 -- 0
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.34987708926200867 -- 0
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3495703637599945 -- 0
+INFO:root:objective_function 
