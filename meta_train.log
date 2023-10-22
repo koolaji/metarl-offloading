@@ -10859,3 +10859,19 @@ INFO:root:objective_function variance
 INFO:root:objective_function sess
 INFO:root:objective_function  -0.3495703637599945 -- 0
 INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.34954702854156494 -- 0
+INFO:root:objective_function 
+INFO:root:objective_function set_params
+INFO:root:objective_function paths
+INFO:root:objective_function samples_data
+INFO:root:objective_function all_rewards
+INFO:root:objective_function variance
+INFO:root:objective_function sess
+INFO:root:objective_function  -0.3493936061859131 -- 0
+INFO:root:objective_function 
