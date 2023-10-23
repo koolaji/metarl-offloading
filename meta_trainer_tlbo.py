@@ -10,7 +10,6 @@ import warnings
 warnings.filterwarnings("ignore", category=UserWarning, module="gym")
 from samplers.vectorized_env_executor import  MetaIterativeEnvExecutor
 
-
 class Trainer(object):
     def __init__(self, 
                  tlbo,
@@ -23,7 +22,6 @@ class Trainer(object):
                  start_itr=0,
                  inner_batch_size=500,
                  save_interval=100,
-                 population_size = 25,
                  batch_size=10):
         self.tlbo = tlbo
         self.env = env
@@ -35,9 +33,7 @@ class Trainer(object):
         self.inner_batch_size = inner_batch_size
         self.greedy_finish_time = greedy_finish_time
         self.save_interval = save_interval
-        self.population_size = population_size
         self.batch_size = batch_size
-        self.population = 0
     def train(self, sess):
         """
         Implement the TLBO training process for task offloading problem
@@ -47,19 +43,29 @@ class Trainer(object):
         avg_loss = []
         avg_latencies = []
 
-        self.population = [self.policy.get_random_params(sess) for _ in range(self.population_size)]        
+        # self.population = [self.policy.get_random_params(sess) for _ in range(self.population_size)]        
+        self.population = []
+        self.population_index = []
+        task_ids = self.sampler.update_tasks()
+        logging.info(" task_ids %s", task_ids)
+        paths = self.sampler.obtain_samples(log=False, log_prefix='')
+        logging.info("sampled path length is: %s", len(paths[0]))
+
+        # """ ----------------- Processing Samples ---------------------"""
+        # logger.info("Processing samples...")
+        self.samples_data = self.sampler_processor.process_samples(paths, log=False, log_prefix='')
+        for _ in range(1, self.batch_size):
+            random_policy_index = self.policy.select_random_policy(batch_size=self.batch_size)
+            print(random_policy_index)
+            random_params = self.policy.get_params(sess, index=random_policy_index )
+            self.population.append(random_params)
+            self.population_index.append(random_policy_index)
         for itr in range(self.start_itr, self.n_itr):
             logging.debug("\n ---------------- Iteration %d ----------------" % itr)
             logging.debug("Sampling set of tasks/goals for this meta-batch...")
-            logging.info("Sampling set of tasks/goals for this meta-batch...")
-            task_ids = self.sampler.update_tasks()
-            logging.info(" task_ids %s", task_ids)
-            paths = self.sampler.obtain_samples(log=False, log_prefix='')
-            logging.info("sampled path length is: %s", len(paths[0]))
-
-            # """ ----------------- Processing Samples ---------------------"""
-            # logger.info("Processing samples...")
-            samples_data = self.sampler_processor.process_samples(paths, log=False, log_prefix='')
+            # logging.info("Sampling set of tasks/goals for this meta-batch...")
+            greedy_run_time = [self.greedy_finish_time[x] for x in task_ids]
+            logger.logkv('Average greedy latency,', np.mean(greedy_run_time))
 
             # """ ------------------- TLBO Optimization --------------------"""
             # logging.info(" policy_params")
@@ -71,9 +77,9 @@ class Trainer(object):
             # best_params = tlbo_optimizer.optimize()
             # logging.info("self.policy.set_params")
             # self.policy.set_params(best_params)
-            tlbo.teacher_phase(population=self.population, iteration=itr, max_iterations=self.n_itr, sess=sess)
-            tlbo.learner_phase(population=self.population, iteration=itr, max_iterations=self.n_itr, sess=sess)
-            teacher = tlbo.teacher_phase(population=self.population, iteration=itr, max_iterations=self.n_itr, sess=sess)
+            tlbo.teacher_phase(population=self.population, iteration=itr, max_iterations=self.n_itr, sess=sess, population_index=self.population_index)
+            tlbo.learner_phase(population=self.population, iteration=itr, max_iterations=self.n_itr, sess=sess, population_index=self.population_index)
+            teacher = tlbo.teacher_phase(population=self.population, iteration=itr, max_iterations=self.n_itr, sess=sess, population_index=self.population_index)
             # self.policy.set_params(teacher)
             
             """ ------------------- Logging Stuff --------------------------"""
@@ -112,8 +118,8 @@ if __name__ == "__main__":
     # from meta_algos.MRLCO import MRLCO
     from meta_algos.MTLBO import MTLBO
     tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.INFO)
-    logging.basicConfig(level=logging.DEBUG, filename='meta_train.log',  filemode='a',)
-    logging.root.setLevel(logging.DEBUG)
+    logging.basicConfig(level=logging.INFO, filename='meta_train.log',  filemode='a',)
+    logging.root.setLevel(logging.INFO)
     logger.configure(dir="./meta_offloading20_log-inner_step1/", format_strs=['stdout', 'log', 'csv'])
     META_BATCH_SIZE = 10
     logging.debug('starting')
@@ -136,21 +142,21 @@ if __name__ == "__main__":
                                     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_8/random.20.",
                                     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_9/random.20.",
                                     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_10/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_11/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_12/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_13/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_14/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_15/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_16/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_17/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_18/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_19/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_11/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_12/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_13/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_14/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_15/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_16/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_17/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_18/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_19/random.20.",
                                     # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_20/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_21/random.20.",
+                                    #"./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_21/random.20.",
                                     # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_22/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_23/random.20.",
+                                    #"./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_23/random.20.",
                                     # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_24/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_25/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_25/random.20.",
                                 ],
                                 time_major=False)
     logging.info('start of greedy_solution')
@@ -184,15 +190,14 @@ if __name__ == "__main__":
                                                    positive_adv=False)
 
     
-    population_size = 20
     logging.info('tlbo')
-    tlbo = MTLBO (population_size = population_size, 
-                 policy=meta_policy, 
+    tlbo = MTLBO (policy=meta_policy, 
                  env=env, 
                  sampler=sampler, 
                  sampler_processor=sampler_processor,
                  batch_size=META_BATCH_SIZE,
-                 inner_batch_size=1000,)
+                 inner_batch_size=1000,
+                 population_index=[])
     logging.info('trainer')
     trainer = Trainer(
                       tlbo=tlbo,
@@ -204,10 +209,9 @@ if __name__ == "__main__":
                       greedy_finish_time= greedy_finish_time,
                       start_itr=0,
                       inner_batch_size=1000,
-                      population_size = population_size,
                       batch_size=META_BATCH_SIZE)
 
-    with tf.device('/GPU:0'):
+    with tf.device('/device:XLA_GPU:0'):
       with tf.compat.v1.Session() as sess:
         sess.run(tf.global_variables_initializer())
         avg_ret, avg_loss, avg_latencies = trainer.train(sess)

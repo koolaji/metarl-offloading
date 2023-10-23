@@ -5,16 +5,17 @@ import json
 import tensorflow as tf
 from .MRLCO import MRLCO
 import scipy.stats as stats
-class MTLBO(MRLCO):  # Inherit from MRLCO to access its methods
-    def __init__(self, population_size, policy, env, sampler, sampler_processor, 
-                 batch_size, inner_batch_size, clip_value=0.2, inner_lr=0.1):
+import re
+# class MTLBO(MRLCO):  # Inherit from MRLCO to access its methods
+class MTLBO():  # Inherit from MRLCO to access its methods
+    def __init__(self, policy, env, sampler, sampler_processor, 
+                 batch_size, inner_batch_size, population_index):
             
-        super().__init__(meta_batch_size=batch_size, meta_sampler=sampler, 
-                         meta_sampler_process=sampler_processor, policy=policy)
+        # super().__init__(meta_batch_size=batch_size, meta_sampler=sampler, 
+        #                  meta_sampler_process=sampler_processor, policy=policy)
         
-        self.sess = tf.compat.v1.Session()  
-        self.sess.run(tf.compat.v1.global_variables_initializer())  
-        self.population_size = population_size
+        # self.sess = tf.compat.v1.Session()  
+        # self.sess.run(tf.compat.v1.global_variables_initializer())  
         self.policy = policy
         self.env = env
         self.sampler = sampler
@@ -44,16 +45,20 @@ class MTLBO(MRLCO):  # Inherit from MRLCO to access its methods
         # actions = np.squeeze(actions)
 
         # The actual computation for the surrogate objective will be done elsewhere (e.g., in a method where you have access to task_id)
+    def standardize_keys(self, individual):
+        standardized_individual = {}
+        for key, value in individual.items():
+            standardized_key = key.replace(key.split('/')[0], 'standard_task')
+            standardized_individual[standardized_key] = value
+        return standardized_individual
 
-
-    def teacher_phase(self, population, iteration, max_iterations, sess):
-        np.random.seed(None)
+    def teacher_phase(self, population, iteration, max_iterations, sess, population_index):
         logging.info('teacher_phase')
         
         # Identify the teacher (best solution in the population)
         if len(self.objective_function_list_score) != len(population):
             for idx, student in enumerate(population):
-                score, sample = self.objective_function(student, sess)
+                score, sample = self.objective_function(student, sess, population_index[idx])
                 self.objective_function_list_score.append(score)
                 self.objective_function_list_sample.append(sample)
         
@@ -64,15 +69,19 @@ class MTLBO(MRLCO):  # Inherit from MRLCO to access its methods
         self.teacher_sample = self.objective_function_list_sample [max_index]
 
 
-        logging.info('teacher_phase, teacher')
+        # logging.info('teacher_phase, teacher')
         
         # Compute the mean solution
-        mean_solution = {}
-        keys = population[0].keys()
+        # mean_solution = {}
+        # keys = population[0].keys()
         
-        for key in keys:
-            mean_solution[key] = np.mean([individual[key] for individual in population], axis=0)
-        mean_solution_val, _ = self.objective_function(mean_solution, sess)
+
+        # standardized_population = [self.standardize_keys(individual) for individual in population]
+        # mean_solution = {}
+        # keys = standardized_population[0].keys()  # Assuming all individuals have the same keys after standardization
+        # for key in keys:
+        #     mean_solution[key] = np.mean([individual[key] for individual in standardized_population], axis=0)
+        mean_solution_val = np.mean(self.objective_function_list_score)
 
         # Calculate w based on the current iteration
         w_start = 0.9  # or another value you choose
@@ -97,7 +106,7 @@ class MTLBO(MRLCO):  # Inherit from MRLCO to access its methods
                 )
 
             new_solution = self.add_dicts(student, scaled_diff)
-            objective_function_new, sample_new = self.objective_function(new_solution, sess)
+            objective_function_new, sample_new = self.objective_function(new_solution, sess, 0)
             if objective_function_new > self.objective_function_list_score[idx]:
                 population[idx] = new_solution
                 logging.info(f'teacher_phase{idx} -- {objective_function_new} -- {self.objective_function_list_score[idx]} -- {self.teacher_reward}')
@@ -109,25 +118,42 @@ class MTLBO(MRLCO):  # Inherit from MRLCO to access its methods
 
 
 
-    def subtract_dicts(self,dict1, dict2):
-        print('subtract_dicts')
+    def subtract_dicts(self, dict1, dict2):
         result = {}
         for key in dict1:
-            result[key] = dict1[key] - dict2[key]
+            # Remove the task policy name from the key
+            processed_key = re.sub(r'task_[0-9]_policy/', '', key)
+            # Now, find the matching key in dict2
+            matching_key = next((k for k in dict2 if re.sub(r'task_[0-9]_policy/', '', k) == processed_key), None)
+            if matching_key:
+                result[key] = dict1[key] - dict2[matching_key]
+            else:
+                print(f"No matching key found for {key} in dict2")
         return result
 
     def scale_dict(self, dict1, scalar):
-        print('scale_dict')
         result = {}
         for key in dict1:
-            result[key] = dict1[key] * scalar
+            # Remove the task policy name from the key
+            processed_key = re.sub(r'task_[0-9]_policy/', '', key)
+            result[processed_key] = dict1[key] * scalar
         return result
+    
     def add_dicts(self, dict1, dict2):
-        print('add_dicts')
         result = {}
-        for key in dict1:
-            result[key] = dict1[key] + dict2[key]
+        # Create a mapping of processed keys to original keys for dict1
+        dict1_key_mapping = {re.sub(r'task_[0-9]_policy/', '', key): key for key in dict1.keys()}
+        # Create a mapping of processed keys to original keys for dict2
+        dict2_key_mapping = {re.sub(r'task_[0-9]_policy/', '', key): key for key in dict2.keys()}
+        
+        # Now go through all the keys in dict1_key_mapping and dict2_key_mapping
+        for processed_key in set(dict1_key_mapping.keys()) | set(dict2_key_mapping.keys()):
+            dict1_value = dict1.get(dict1_key_mapping.get(processed_key), 0)  # Get value from dict1, or 0 if key not present
+            dict2_value = dict2.get(dict2_key_mapping.get(processed_key), 0)  # Get value from dict2, or 0 if key not present
+            result[processed_key] = dict1_value + dict2_value
+        
         return result
+    
     # def add_dicts(self, dict1, dict2, session):
     #     result = {}
     #     for key in dict1:
@@ -147,8 +173,7 @@ class MTLBO(MRLCO):  # Inherit from MRLCO to access its methods
     #     return result
 
 
-    def learner_phase(self, population, iteration, max_iterations, sess):
-        np.random.seed(None)
+    def learner_phase(self, population, iteration, max_iterations, sess, population_index):
 
         logging.info('learner_phase')
         
@@ -171,13 +196,13 @@ class MTLBO(MRLCO):  # Inherit from MRLCO to access its methods
             # Adjusting the behavior based on the current iteration
             angle = (np.pi / 2) * (iteration / max_iterations)
             
-            if self.objective_function(student, sess) < self.objective_function(other_learner, sess):
+            if self.objective_function_list_score[idx] < self.objective_function_list_score[j]:
                 scaled_diff = self.scale_dict(diff, rand_num)
             else:
                 scaled_diff = self.scale_dict(diff, rand_num * np.cos(angle))
             
             new_solution = self.add_dicts(student, scaled_diff)
-            objective_function_new , sample_new= self.objective_function(new_solution, sess)
+            objective_function_new , sample_new= self.objective_function(new_solution, sess, 0)
             if objective_function_new > self.objective_function_list_score[idx]:
                 population[idx] = new_solution
                 logging.info(f'First Group learner_phase{idx} -- {objective_function_new} -- {self.objective_function_list_score[idx]} -- {self.teacher_reward}')
@@ -202,7 +227,7 @@ class MTLBO(MRLCO):  # Inherit from MRLCO to access its methods
             
             new_solution = self.add_dicts(student, scaled_diff)
             
-            objective_function_new, sample_new = self.objective_function(new_solution, sess)
+            objective_function_new, sample_new = self.objective_function(new_solution, sess, 0)
             if objective_function_new > self.objective_function_list_score[idx]:
                 population[idx] = new_solution
                 logging.info(f'Second Group learner_phase{idx} -- {objective_function_new} -- {self.objective_function_list_score[idx]} -- {self.teacher_reward}')
@@ -246,43 +271,67 @@ class MTLBO(MRLCO):  # Inherit from MRLCO to access its methods
     #     logging.info(f'objective_function  {np.mean(combined_metric)} -- {self.teacher_reward}')
     #     return np.mean(combined_metric), samples_data
 
-    def objective_function(self, policy_params, sess):
-        with tf.device('/device:XLA_GPU:0'):
+    # def objective_function(self, policy_params, sess):
+    #     # with tf.device('/device:XLA_GPU:0'):
             
-                # Convert policy_params to a string
-                # key = json.dumps(policy_params, sort_keys=True, default=str)
+    #             # Convert policy_params to a string
+    #             # key = json.dumps(policy_params, sort_keys=True, default=str)
 
-                # Check if the result is already in the cache
-                # if key in self.history:
-                #     return self.history[key][0], self.history[key][1]
+    #             # Check if the result is already in the cache
+    #             # if key in self.history:
+    #             #     return self.history[key][0], self.history[key][1]
 
-                # If not, compute the result
-                logging.info('objective_function ')
-                self.policy.set_params(policy_params, sess=sess)
-                logging.info('objective_function set_params')
-                paths = self.sampler.obtain_samples(log=False, log_prefix='')
-                logging.info('objective_function paths')
-                samples_data = self.sampler_processor.process_samples(paths, log=False, log_prefix='')
-                logging.info('objective_function samples_data')
+    #             # If not, compute the result
+    #             # logging.info('objective_function ')
+    #             self.policy.set_params(policy_params, sess=sess)
+    #             # logging.info('objective_function set_params')
+    #             paths = self.sampler.obtain_samples(log=False, log_prefix='')
+    #             # logging.info('objective_function paths')
+    #             samples_data = self.sampler_processor.process_samples(paths, log=False, log_prefix='')
+    #             # logging.info('objective_function samples_data')
 
-                all_rewards = [data['rewards'] for data in samples_data]
-                logging.info('objective_function all_rewards')
+    #             all_rewards = [data['rewards'] for data in samples_data]
+    #             # logging.info('objective_function all_rewards')
                 
-                rewards_placeholder = tf.placeholder(tf.float32, shape=[None, 20])
-                mean_reward = tf.reduce_mean(rewards_placeholder)
-                variance = tf.math.reduce_variance(rewards_placeholder)
-                logging.info('objective_function variance')
-                # For median and skewness, you might need to implement custom TensorFlow operations or use an external library.
+    #             rewards_placeholder = tf.placeholder(tf.float32, shape=[None, 20])
+    #             mean_reward = tf.reduce_mean(rewards_placeholder)
+    #             variance = tf.math.reduce_variance(rewards_placeholder)
+    #             # logging.info('objective_function variance')
+    #             # For median and skewness, you might need to implement custom TensorFlow operations or use an external library.
 
-                # Combine metrics for the objective function
-                combined_metric = mean_reward - self.variance_coefficient * variance
-                # Add other metrics as needed...
+    #             # Combine metrics for the objective function
+    #             combined_metric = mean_reward - self.variance_coefficient * variance
+    #             # Add other metrics as needed...
 
-                with tf.Session() as sess:
-                    combined_metric_val = sess.run(combined_metric, feed_dict={rewards_placeholder: np.concatenate(all_rewards, axis=0)})
-                logging.info('objective_function sess')
-                # Store the result in the cache
-                # self.history[key] = [combined_metric_val, samples_data]
-                logging.info(f'objective_function  {combined_metric_val} -- {self.teacher_reward}')
-                print(f'objective_function  {combined_metric_val} -- {self.teacher_reward}')
-                return combined_metric_val, samples_data
+    #             # with tf.Session() as sess:
+    #             combined_metric_val = sess.run(combined_metric, feed_dict={rewards_placeholder: np.concatenate(all_rewards, axis=0)})
+    #             # logging.info('objective_function sess')
+    #             # Store the result in the cache
+    #             # self.history[key] = [combined_metric_val, samples_data]
+    #             logging.info(f'objective_function  {combined_metric_val} -- {self.teacher_reward}')
+    #             # print(f'objective_function  {combined_metric_val} -- {self.teacher_reward}')
+    #             return combined_metric_val, samples_data
+    def objective_function(self, policy_params, sess, index):
+        print('objective_function')
+        # Set the parameters of the random policy
+        self.policy.set_params(policy_params, sess=sess, index=index)
+
+        # Obtain samples using the sampler
+        paths = self.sampler.obtain_samples(log=False, log_prefix='')
+        
+        # Process the samples
+        samples_data = self.sampler_processor.process_samples(paths, log=False, log_prefix='')
+        
+        # Here you can extract and process the data points from samples_data as needed.
+        # For example, to compute the mean reward:
+        all_rewards = np.concatenate([data['rewards'] for data in samples_data], axis=0)
+        mean_reward = np.mean(all_rewards)
+        
+        # And to compute the variance:
+        variance = np.var(all_rewards)
+        
+        # Combine metrics for the objective function
+        # (assuming you want to minimize variance and maximize mean reward)
+        combined_metric = mean_reward - self.variance_coefficient * variance
+        
+        return combined_metric, samples_data[index]

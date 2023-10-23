@@ -13,7 +13,7 @@ from policies.distributions.categorical_pd import CategoricalPd
 import utils as U
 from utils.utils import zipsame
 import logging
-
+import re
 
 tf.get_logger().setLevel('WARNING')
 
@@ -385,6 +385,7 @@ class MetaSeq2SeqPolicy:
         self.meta_policies = []
 
         self.assign_old_eq_new_tasks = []
+        self.selected_indices = set()
         
 
         for i in range(meta_batch_size):
@@ -427,22 +428,22 @@ class MetaSeq2SeqPolicy:
     def distribution(self):
         return self._dist
     
-    def get_params(self, sess):
-        """Get the current parameters of the policy."""
-        # logging.info('get_params ')
-        # with tf.compat.v1.Session() as sess:
-        sess.run(tf.compat.v1.global_variables_initializer())
-        variables = self.core_policy.get_trainable_variables()
-        return {v.name: sess.run(v) for v in variables}
+    # def get_params(self, sess):
+    #     """Get the current parameters of the policy."""
+    #     # logging.info('get_params ')
+    #     # with tf.compat.v1.Session() as sess:
+    #     sess.run(tf.compat.v1.global_variables_initializer())
+    #     variables = self.core_policy.get_trainable_variables()
+    #     return {v.name: sess.run(v) for v in variables}
 
-    def set_params(self, new_params, sess):
-            """Set the policy parameters to new values."""
-        #with tf.compat.v1.Session() as sess:
-            sess = sess or  tf.compat.v1.get_default_session()
-            sess.run(tf.compat.v1.global_variables_initializer())
-            for var in self.core_policy.get_trainable_variables():
-                value = new_params[var.name]
-                var.load(value, sess)
+    # def set_params(self, new_params, sess):
+    #         """Set the policy parameters to new values."""
+    #     #with tf.compat.v1.Session() as sess:
+    #         sess = sess or  tf.compat.v1.get_default_session()
+    #         sess.run(tf.compat.v1.global_variables_initializer())
+    #         for var in self.core_policy.get_trainable_variables():
+    #             value = new_params[var.name]
+    #             var.load(value, sess)
 
     #def set_params(self, new_params, sess=None):
     #    """Set the policy parameters to new values."""
@@ -451,17 +452,107 @@ class MetaSeq2SeqPolicy:
     #        value = new_params[var.name]
     #        sess.run(var.assign(value))
 
-    def get_random_params(self, sess):
-            logging.info('get_random_params ')
-        # with tf.compat.v1.Session() as sess:
-        #     sess.run(tf.compat.v1.global_variables_initializer())
-            params = self.get_params(sess)
-            random_params = {}
-            # logging.info('get_random_params %s %s', str(len(params)), type(params))
-            for key, value in params.items():
-                np.random.seed(None)
-                random_value = np.random.randn(*value.shape)
-                # logging.info(f"Random value for {value.shape} key {key}")
-                random_params[key] = random_value            
-            return random_params
+    # def get_random_params(self, sess):
+    # #         logging.info('get_random_params ')
+    # #     # with tf.compat.v1.Session() as sess:
+    # #     #     sess.run(tf.compat.v1.global_variables_initializer())
+    # #         params = self.get_params(sess)
+    # #         random_params = {}
+    # #         # logging.info('get_random_params %s %s', str(len(params)), type(params))
+    # #         for key, value in params.items():
+    # #             np.random.seed(None)
+    # #             random_value = np.random.randn(*value.shape)
+    # #             # logging.info(f"Random value for {value.shape} key {key}")
+    # #             random_params[key] = random_value            
+    # #         return random_params
+    #     # Randomly select an index from the list of meta_policies
+    #     random_index = np.random.randint(0, len(self.meta_policy.meta_policies))
+    #     # Return the randomly selected policy
+    #     return self.meta_policy.meta_policies[random_index], random_index
 
+    def set_params(self, new_params, index, sess=None):
+        """Set the policy parameters to new values for a specific policy."""
+        sess = sess or tf.compat.v1.get_default_session()
+        # Get the specific policy using the provided index
+        specific_policy = self.meta_policies[index]
+        
+        # Compile a regular expression pattern to match the prefix
+        prefix_pattern = re.compile(r'^task_[0-9]_policy/')
+        
+        # Loop through each key-value pair in new_params
+        for key, value in new_params.items():
+            # Remove the prefix from the key to get the variable name
+            var_name = prefix_pattern.sub('', key)  # This line replaces the prefix with an empty string
+            
+            # Locate the variable within the specific policy
+            var = next((v for v in specific_policy.network.get_trainable_variables() if prefix_pattern.sub('', v.name) == var_name), None)
+            if var is not None:
+                # Ensure the shapes match before assignment
+                assert var.get_shape() == value.shape, f"Shape mismatch: {var.get_shape()} vs {value.shape}"
+                sess.run(var.assign(value))
+            else:
+                print(f"Variable {var_name} not found in specific_policy")
+            
+    def select_random_policy(self, batch_size):
+        # Get the set of all indices
+        all_indices = set(range(1, batch_size))
+        # Compute the set of available indices by removing the selected indices from all indices
+        available_indices = all_indices - self.selected_indices
+        # If all indices have been selected, reset the selected indices set
+        if not available_indices:
+            self.selected_indices = set()
+            available_indices = all_indices
+        
+        # Now, select a random index from the available indices
+        random_index = np.random.choice(list(available_indices))
+        # Add the selected index to the selected_indices set
+        self.selected_indices.add(random_index)
+        
+        # Return the randomly selected index
+        return random_index
+    
+
+    def get_params(self, sess, index):
+        """Get the current parameters of the policy."""
+        # logging.info('get_params ')
+        # with tf.compat.v1.Session() as sess:
+        sess.run(tf.compat.v1.global_variables_initializer())
+        variables = self.meta_policies[index].network.get_trainable_variables()
+        return {v.name: sess.run(v) for v in variables}
+
+    # def get_random_params(self, policy, sess):
+    #     # Assuming get_params is a method that retrieves the current parameters of a policy
+    #     current_params = policy.get_params(sess)
+    #     random_params = {}
+    #     for key, value in current_params.items():
+    #         np.random.seed(None)  # Resetting the random seed at each iteration may not be necessary
+    #         random_value = np.random.randn(*value.shape)
+    #         random_params[key] = random_value
+    #     return random_params
+    
+    # def evaluate_policy(self, policy_index, environment):
+    #     """Evaluate the policy with the given index on the provided environment."""
+    #     # Get the policy from the meta_policies list using the index
+    #     policy = self.meta_policies[policy_index]
+        
+    #     # Reset the environment to start a new evaluation episode
+    #     state = environment.reset()
+        
+    #     # Initialize a variable to keep track of the cumulative reward
+    #     cumulative_reward = 0
+        
+    #     # Assume the environment has a method `is_done` to check if the episode is over
+    #     while not environment.is_done():
+    #         # Get the action from the policy (you'll need to implement a method to do this)
+    #         action, _, _ = policy.get_actions(state)
+            
+    #         # Assume the environment has a method `step` to execute the action and return a reward
+    #         next_state, reward, _ = environment.step(action)
+            
+    #         # Update the cumulative reward
+    #         cumulative_reward += reward
+            
+    #         # Update the state for the next iteration
+    #         state = next_state
+        
+    #     return cumulative_reward
