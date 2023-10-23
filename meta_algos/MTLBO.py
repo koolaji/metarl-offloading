@@ -45,12 +45,12 @@ class MTLBO():  # Inherit from MRLCO to access its methods
         # actions = np.squeeze(actions)
 
         # The actual computation for the surrogate objective will be done elsewhere (e.g., in a method where you have access to task_id)
-    def standardize_keys(self, individual):
-        standardized_individual = {}
-        for key, value in individual.items():
-            standardized_key = key.replace(key.split('/')[0], 'standard_task')
-            standardized_individual[standardized_key] = value
-        return standardized_individual
+    # def standardize_keys(self, individual):
+    #     standardized_individual = {}
+    #     for key, value in individual.items():
+    #         standardized_key = key.replace(key.split('/')[0], 'task_0_policy')
+    #         standardized_individual[standardized_key] = value
+    #     return standardized_individual
 
     def teacher_phase(self, population, iteration, max_iterations, sess, population_index):
         logging.info('teacher_phase')
@@ -122,9 +122,9 @@ class MTLBO():  # Inherit from MRLCO to access its methods
         result = {}
         for key in dict1:
             # Remove the task policy name from the key
-            processed_key = re.sub(r'task_[0-9]_policy/', '', key)
+            processed_key = re.sub(r'task_[0-9]{1,2}_policy/', '', key)
             # Now, find the matching key in dict2
-            matching_key = next((k for k in dict2 if re.sub(r'task_[0-9]_policy/', '', k) == processed_key), None)
+            matching_key = next((k for k in dict2 if re.sub(r'task_[0-9]{1,2}_policy/', '', k) == processed_key), None)
             if matching_key:
                 result[key] = dict1[key] - dict2[matching_key]
             else:
@@ -135,16 +135,16 @@ class MTLBO():  # Inherit from MRLCO to access its methods
         result = {}
         for key in dict1:
             # Remove the task policy name from the key
-            processed_key = re.sub(r'task_[0-9]_policy/', '', key)
+            processed_key = re.sub(r'task_[0-9]{1,2}_policy/', '', key)
             result[processed_key] = dict1[key] * scalar
         return result
     
     def add_dicts(self, dict1, dict2):
         result = {}
         # Create a mapping of processed keys to original keys for dict1
-        dict1_key_mapping = {re.sub(r'task_[0-9]_policy/', '', key): key for key in dict1.keys()}
+        dict1_key_mapping = {re.sub(r'task_[0-9]{1,2}_policy/', '', key): key for key in dict1.keys()}
         # Create a mapping of processed keys to original keys for dict2
-        dict2_key_mapping = {re.sub(r'task_[0-9]_policy/', '', key): key for key in dict2.keys()}
+        dict2_key_mapping = {re.sub(r'task_[0-9]{1,2}_policy/', '', key): key for key in dict2.keys()}
         
         # Now go through all the keys in dict1_key_mapping and dict2_key_mapping
         for processed_key in set(dict1_key_mapping.keys()) | set(dict2_key_mapping.keys()):
@@ -315,7 +315,7 @@ class MTLBO():  # Inherit from MRLCO to access its methods
         print('objective_function')
         # Set the parameters of the random policy
         self.policy.set_params(policy_params, sess=sess, index=index)
-
+        print('objective_function set_params')    
         # Obtain samples using the sampler
         paths = self.sampler.obtain_samples(log=False, log_prefix='')
         

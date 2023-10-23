@@ -85,7 +85,7 @@ class Trainer(object):
             """ ------------------- Logging Stuff --------------------------"""
             paths = self.sampler.obtain_samples(log=False, log_prefix='')
             samples_data = self.sampler_processor.process_samples(paths, log="all", log_prefix='')
-            samples_data = teacher
+            # samples_data = teacher
 
             all_latency = [data['finish_time'] for data in samples_data]
             latency = np.concatenate(all_latency, axis=-1)
@@ -121,7 +121,7 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, filename='meta_train.log',  filemode='a',)
     logging.root.setLevel(logging.INFO)
     logger.configure(dir="./meta_offloading20_log-inner_step1/", format_strs=['stdout', 'log', 'csv'])
-    META_BATCH_SIZE = 10
+    META_BATCH_SIZE = 20
     logging.debug('starting')
     
     resource_cluster = Resources(mec_process_capable=(10.0 * 1024 * 1024),
@@ -142,19 +142,19 @@ if __name__ == "__main__":
                                     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_8/random.20.",
                                     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_9/random.20.",
                                     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_10/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_11/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_12/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_13/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_14/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_15/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_16/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_17/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_18/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_19/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_20/random.20.",
-                                    #"./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_21/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_11/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_12/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_13/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_14/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_15/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_16/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_17/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_18/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_19/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_20/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_21/random.20.",
                                     # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_22/random.20.",
-                                    #"./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_23/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_23/random.20.",
                                     # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_24/random.20.",
                                     # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_25/random.20.",
                                 ],

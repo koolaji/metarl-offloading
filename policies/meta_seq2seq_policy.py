@@ -470,28 +470,28 @@ class MetaSeq2SeqPolicy:
     #     # Return the randomly selected policy
     #     return self.meta_policy.meta_policies[random_index], random_index
 
-    def set_params(self, new_params, index, sess=None):
-        """Set the policy parameters to new values for a specific policy."""
-        sess = sess or tf.compat.v1.get_default_session()
-        # Get the specific policy using the provided index
-        specific_policy = self.meta_policies[index]
+    # def set_params(self, new_params, index, sess=None):
+    #     """Set the policy parameters to new values for a specific policy."""
+    #     # sess = sess or tf.compat.v1.get_default_session()
+    #     # Get the specific policy using the provided index
+    #     specific_policy = self.meta_policies[index]
         
-        # Compile a regular expression pattern to match the prefix
-        prefix_pattern = re.compile(r'^task_[0-9]_policy/')
+    #     # Compile a regular expression pattern to match the prefix
+    #     prefix_pattern = re.compile(r'^task_[0-9]_policy/')
         
-        # Loop through each key-value pair in new_params
-        for key, value in new_params.items():
-            # Remove the prefix from the key to get the variable name
-            var_name = prefix_pattern.sub('', key)  # This line replaces the prefix with an empty string
+    #     # Loop through each key-value pair in new_params
+    #     for key, value in new_params.items():
+    #         # Remove the prefix from the key to get the variable name
+    #         var_name = prefix_pattern.sub('', key)  # This line replaces the prefix with an empty string
             
-            # Locate the variable within the specific policy
-            var = next((v for v in specific_policy.network.get_trainable_variables() if prefix_pattern.sub('', v.name) == var_name), None)
-            if var is not None:
-                # Ensure the shapes match before assignment
-                assert var.get_shape() == value.shape, f"Shape mismatch: {var.get_shape()} vs {value.shape}"
-                sess.run(var.assign(value))
-            else:
-                print(f"Variable {var_name} not found in specific_policy")
+    #         # Locate the variable within the specific policy
+    #         var = next((v for v in specific_policy.network.get_trainable_variables() if prefix_pattern.sub('', v.name) == var_name), None)
+    #         if var is not None:
+    #             # Ensure the shapes match before assignment
+    #             assert var.get_shape() == value.shape, f"Shape mismatch: {var.get_shape()} vs {value.shape}"
+    #             sess.run(var.assign(value))
+    #         else:
+    #             print(f"Variable {var_name} not found in specific_policy")
             
     def select_random_policy(self, batch_size):
         # Get the set of all indices
@@ -519,6 +519,46 @@ class MetaSeq2SeqPolicy:
         sess.run(tf.compat.v1.global_variables_initializer())
         variables = self.meta_policies[index].network.get_trainable_variables()
         return {v.name: sess.run(v) for v in variables}
+    
+    def set_params(self, new_params, index, sess=None):
+        """Set the policy parameters to new values for a specific policy."""
+        # Get the specific policy using the provided index
+        specific_policy = self.meta_policies[index]
+
+        # Define the new prefix based on the provided index
+        new_prefix = f'task_{index}_policy/'
+        print(new_prefix)
+        # Add the new prefix to keys that don't already have it
+        updated_params = {new_prefix + re.sub(r'^task_[0-9]{1,2}_policy/', '', key): value for key, value in new_params.items()}
+        # updated_params = {new_prefix + key if not key.startswith(new_prefix) else key: value for key, value in new_params.items()}
+
+        # Prepare a list to hold the assignment operations
+        assign_ops = []
+
+        # Get the list of trainable variables
+        trainable_vars = {var.name: var for var in specific_policy.network.get_trainable_variables()}
+
+        # Loop through each key-value pair in updated_params
+        for key, value in updated_params.items():
+            # Locate the variable within the specific policy
+            var = trainable_vars.get(key, None)
+            if var is not None:
+                # Create the assignment operation and add it to the list
+                assign_ops.append(tf.assign(var, value))
+            else:
+                for i in trainable_vars:
+                    print(i)
+                # If the variable is not found, raise an error
+                raise ValueError(f"Variable {key} not found in specific_policy")
+
+        # Now perform all the assignments in one operation
+        sess.run(assign_ops)
+
+
+        # # Now perform all the assignments in one operation
+        # assign_ops = [var.assign(value) for var, value in zip(vars_to_update, values_to_assign)]
+        # sess.run(assign_ops)
+
 
     # def get_random_params(self, policy, sess):
     #     # Assuming get_params is a method that retrieves the current parameters of a policy
