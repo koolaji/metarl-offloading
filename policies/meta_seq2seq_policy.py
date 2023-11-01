@@ -527,7 +527,7 @@ class MetaSeq2SeqPolicy:
 
         # Define the new prefix based on the provided index
         new_prefix = f'task_{index}_policy/'
-        print(new_prefix)
+        # print(new_prefix)
         # Add the new prefix to keys that don't already have it
         updated_params = {new_prefix + re.sub(r'^task_[0-9]{1,2}_policy/', '', key): value for key, value in new_params.items()}
         # updated_params = {new_prefix + key if not key.startswith(new_prefix) else key: value for key, value in new_params.items()}
@@ -549,7 +549,7 @@ class MetaSeq2SeqPolicy:
                 for i in trainable_vars:
                     print(i)
                 # If the variable is not found, raise an error
-                raise ValueError(f"Variable {key} not found in specific_policy")
+                raise ValueError(f"Variable {key} not found in specific_policy{index}")
 
         # Now perform all the assignments in one operation
         sess.run(assign_ops)

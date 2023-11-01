@@ -56,15 +56,16 @@ class Trainer(object):
         self.samples_data = self.sampler_processor.process_samples(paths, log=False, log_prefix='')
         for _ in range(1, self.batch_size):
             random_policy_index = self.policy.select_random_policy(batch_size=self.batch_size)
-            print(random_policy_index)
-            random_params = self.policy.get_params(sess, index=random_policy_index )
+            print(_)
+            # random_params = self.policy.get_params(sess, index=random_policy_index )
+            random_params = self.policy.get_params(sess, index=_ )
             self.population.append(random_params)
             self.population_index.append(random_policy_index)
         for itr in range(self.start_itr, self.n_itr):
             logging.debug("\n ---------------- Iteration %d ----------------" % itr)
             logging.debug("Sampling set of tasks/goals for this meta-batch...")
             # logging.info("Sampling set of tasks/goals for this meta-batch...")
-            greedy_run_time = [self.greedy_finish_time[x] for x in task_ids]
+            greedy_run_time = [self.greedy_finish_time[x] for x in task_ids[:4]]
             logger.logkv('Average greedy latency,', np.mean(greedy_run_time))
 
             # """ ------------------- TLBO Optimization --------------------"""
@@ -87,16 +88,16 @@ class Trainer(object):
             samples_data = self.sampler_processor.process_samples(paths, log="all", log_prefix='')
             # samples_data = teacher
 
-            all_latency = [data['finish_time'] for data in samples_data]
+            all_latency = [data['finish_time'] for data in samples_data[:4]]
             latency = np.concatenate(all_latency, axis=-1)
             avg_latency = np.mean(latency)
 
             # Assuming samples_data is a list of dictionaries
-            all_rewards = [data['rewards'] for data in samples_data]
+            all_rewards = [data['rewards'] for data in samples_data[:4]]
             rewards = np.concatenate(all_rewards, axis=0)
             logging.info(f'objective_function len samples_data = {np.mean(rewards)}')
             logger.logkv('iteration', itr)
-            logger.logkv('Average reward, ', np.mean(rewards))
+            logger.logkv('Average reward, ', "{:.4f}".format(-np.mean(rewards)))
             logger.logkv('Average latency,', "{:.4f}".format(avg_latency))
             logger.dumpkvs()
             avg_ret.append(np.mean(rewards))
@@ -121,7 +122,7 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, filename='meta_train.log',  filemode='a',)
     logging.root.setLevel(logging.INFO)
     logger.configure(dir="./meta_offloading20_log-inner_step1/", format_strs=['stdout', 'log', 'csv'])
-    META_BATCH_SIZE = 20
+    META_BATCH_SIZE = 5
     logging.debug('starting')
     
     resource_cluster = Resources(mec_process_capable=(10.0 * 1024 * 1024),
@@ -137,21 +138,21 @@ if __name__ == "__main__":
                                     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_3/random.20.",
                                     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_4/random.20.",
                                     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_5/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_6/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_7/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_8/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_9/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_10/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_11/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_12/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_13/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_14/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_15/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_16/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_17/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_18/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_19/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_20/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_6/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_7/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_8/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_9/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_10/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_11/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_12/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_13/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_14/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_15/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_16/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_17/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_18/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_19/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_20/random.20.",
                                     # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_21/random.20.",
                                     # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_22/random.20.",
                                     # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_23/random.20.",
@@ -205,7 +206,7 @@ if __name__ == "__main__":
                       sampler=sampler,
                       sampler_processor=sampler_processor,
                       policy=meta_policy,
-                      n_itr=2000,
+                      n_itr=10,
                       greedy_finish_time= greedy_finish_time,
                       start_itr=0,
                       inner_batch_size=1000,
