@@ -86,8 +86,8 @@ class OffloadingEnvironment(MetaEnv):
 
     def sample_tasks(self, n_tasks):
         logging.info('sample_tasks n_tasks = %s , self.total_task %s',str(n_tasks) ,str(self.total_task))
-        # return np.random.choice(np.arange(self.total_task), n_tasks, replace=False)
-        return [i for i in range(self.total_task)]
+        return np.random.choice(np.arange(self.total_task), n_tasks, replace=False)
+        # return [i for i in range(self.total_task)]
     
     def set_task(self, task):
         self.task_id = task

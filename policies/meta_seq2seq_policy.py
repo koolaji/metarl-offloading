@@ -401,6 +401,7 @@ class MetaSeq2SeqPolicy:
 
         self._dist = CategoricalPd(vocab_size)
         logging.debug('END MetaSeq2SeqPolicy')
+        self.assign_ops_dict = {}
 
 
     def get_actions(self, observations):
@@ -420,7 +421,7 @@ class MetaSeq2SeqPolicy:
         return meta_actions, meta_logits, meta_v_values
 
     def async_parameters(self):
-        # async_parameters.
+        logging.info('MetaSeq2SeqPolicy async_parameters')
         for i in range(self.meta_batch_size):
             self.assign_old_eq_new_tasks[i]()
 
@@ -520,51 +521,76 @@ class MetaSeq2SeqPolicy:
         variables = self.meta_policies[index].network.get_trainable_variables()
         return {v.name: sess.run(v) for v in variables}
     
+    # def set_params(self, new_params, index, sess=None):
+    #     """Set the policy parameters to new values for a specific policy."""
+    #     # Get the specific policy using the provided index
+    #     specific_policy = self.meta_policies[index]
+
+    #     # Define the new prefix based on the provided index
+    #     new_prefix = f'task_{index}_policy/'
+    #     # print(new_prefix)
+    #     # Add the new prefix to keys that don't already have it
+    #     updated_params = {new_prefix + re.sub(r'^task_[0-9]{1,2}_policy/', '', key): value for key, value in new_params.items()}
+    #     # updated_params = {new_prefix + key if not key.startswith(new_prefix) else key: value for key, value in new_params.items()}
+
+    #     # Prepare a list to hold the assignment operations
+    #     assign_ops = []
+
+    #     # Get the list of trainable variables
+    #     trainable_vars = {var.name: var for var in specific_policy.network.get_trainable_variables()}
+
+    #     # Loop through each key-value pair in updated_params
+    #     for key, value in updated_params.items():
+    #         # Locate the variable within the specific policy
+    #         var = trainable_vars.get(key, None)
+    #         if var is not None:
+    #             # Create the assignment operation and add it to the list
+    #             assign_ops.append(tf.assign(var, value))
+    #         else:
+    #             for i in trainable_vars:
+    #                 print(i)
+    #             # If the variable is not found, raise an error
+    #             raise ValueError(f"Variable {key} not found in specific_policy{index}")
+
+    #     # Now perform all the assignments in one operation
+    #     sess.run(assign_ops)
     def set_params(self, new_params, index, sess=None):
-        """Set the policy parameters to new values for a specific policy."""
-        # Get the specific policy using the provided index
+        self.assign_ops_dict = {}
         specific_policy = self.meta_policies[index]
-
-        # Define the new prefix based on the provided index
         new_prefix = f'task_{index}_policy/'
-        # print(new_prefix)
-        # Add the new prefix to keys that don't already have it
         updated_params = {new_prefix + re.sub(r'^task_[0-9]{1,2}_policy/', '', key): value for key, value in new_params.items()}
-        # updated_params = {new_prefix + key if not key.startswith(new_prefix) else key: value for key, value in new_params.items()}
-
-        # Prepare a list to hold the assignment operations
-        assign_ops = []
-
-        # Get the list of trainable variables
         trainable_vars = {var.name: var for var in specific_policy.network.get_trainable_variables()}
 
-        # Loop through each key-value pair in updated_params
-        for key, value in updated_params.items():
-            # Locate the variable within the specific policy
-            var = trainable_vars.get(key, None)
-            if var is not None:
-                # Create the assignment operation and add it to the list
-                assign_ops.append(tf.assign(var, value))
-            else:
-                for i in trainable_vars:
-                    print(i)
-                # If the variable is not found, raise an error
-                raise ValueError(f"Variable {key} not found in specific_policy{index}")
+        # Check if assignment operations for this index already exist
+        if index not in self.assign_ops_dict:
+            # Create assignment operations and store them in the dictionary
+            assign_ops = []
+            for key in updated_params.keys():
+                var = trainable_vars.get(key, None)
+                if var is not None:
+                    placeholder = tf.placeholder(var.dtype, shape=var.get_shape())  # create a placeholder
+                    assign_op = tf.assign(var, placeholder)  # create assign op using the placeholder
+                    assign_ops.append((assign_op, placeholder))
+                else:
+                    raise ValueError(f"Variable {key} not found in specific_policy{index}")
+            self.assign_ops_dict[index] = assign_ops
 
-        # Now perform all the assignments in one operation
-        sess.run(assign_ops)
-
+        # Now use the stored assignment operations
+        assign_ops = self.assign_ops_dict[index]
+        feed_dict = {placeholder: updated_params[key] for (assign_op, placeholder), key in zip(assign_ops, updated_params.keys())}
+        sess.run([assign_op for assign_op, placeholder in assign_ops], feed_dict=feed_dict)  # perform all assignments in one operation
+        
 
         # # Now perform all the assignments in one operation
         # assign_ops = [var.assign(value) for var, value in zip(vars_to_update, values_to_assign)]
         # sess.run(assign_ops)
 
 
-    # def get_random_params(self, policy, sess):
+    # def get_random_params(self, policy):
     #     # Assuming get_params is a method that retrieves the current parameters of a policy
-    #     current_params = policy.get_params(sess)
+    #     # current_params = policy.get_params(sess)
     #     random_params = {}
-    #     for key, value in current_params.items():
+    #     for key, value in policy:
     #         np.random.seed(None)  # Resetting the random seed at each iteration may not be necessary
     #         random_value = np.random.randn(*value.shape)
     #         random_params[key] = random_value

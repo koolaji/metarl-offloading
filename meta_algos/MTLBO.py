@@ -27,22 +27,19 @@ class MTLBO():
         self.objective_function_list_score=list(range(self.batch_size-1))
         self.objective_function_list_sample=list(range(self.batch_size-1))
         self.avg_rewards=0
+        self.max=batch_size-1
 
     def teacher_phase(self, population, iteration, max_iterations, sess, population_index):
         logging.info('teacher_phase')        
-        # if len(self.objective_function_list_score) != len(population):
         for idx, student in enumerate(population):
-            self.avg_rewards, sample, score = self.objective_function(student, sess, population_index[idx])
+            self.avg_rewards, sample, score = self.objective_function(student, sess, idx)
             self.objective_function_list_score[idx]=score
             self.objective_function_list_sample[idx]=sample
-        # self.teacher = population[0]
-        # self.teacher_reward = self.objective_function_list_score[0]
-        # self.teacher_sample = self.objective_function_list_sample [0]
-            if   score < self.teacher_reward:
-                self.teacher = student
-                self.teacher_reward = score
-                self.teacher_sample = sample
-                logging.info(f'teacher_phase{idx} Teacher changed{self.teacher_reward}')
+        if   score < self.teacher_reward:
+            self.teacher = student
+            self.teacher_reward = score
+            self.teacher_sample = sample
+            logging.info(f'teacher_phase{idx} Teacher changed{self.teacher_reward}')
         
         # max_value, max_index = max((value, index) for index, value in enumerate(self.objective_function_list_score))
         # print(len(self.objective_function_list_score), max_value, max_index)
@@ -112,23 +109,21 @@ class MTLBO():
                 # logging.info(f'teacher_phase second part')
             
             
-            avg_rewards, sample_new, objective_function_new = self.objective_function(new_solution, sess, 4)
+            avg_rewards, sample_new, objective_function_new = self.objective_function(new_solution, sess, self.max)
             # print(objective_function_new,self.objective_function_list_score[idx],idx)
             if avg_rewards < self.avg_rewards:
                     population[idx] = new_solution
-                    # logging.info(f'teacher_phase{idx} -- {objective_function_new} -- {self.objective_function_list_score[idx]} -- {self.teacher_reward}')
+                    avg_rewards, sample_new, objective_function_new = self.objective_function(new_solution, sess=sess, index=idx)
                     self.objective_function_list_score[idx] = objective_function_new
                     self.objective_function_list_sample[idx] = sample_new
                     self.avg_rewards = avg_rewards
-                    # logging.info("set_params %s", idx)
-                    self.objective_function(new_solution, sess=sess, index=idx)
+                    logging.info(f'teacher_phase{idx} -- {objective_function_new} -- {self.objective_function_list_score[idx]} -- {self.teacher_reward}')
             elif objective_function_new < self.objective_function_list_score[idx]:
                     population[idx] = new_solution
-                    # logging.info(f'teacher_phase{idx} -- {objective_function_new} -- {self.objective_function_list_score[idx]} -- {self.teacher_reward}')
+                    avg_rewards, sample_new, objective_function_new = self.objective_function(new_solution, sess=sess, index=idx)
                     self.objective_function_list_score[idx] = objective_function_new
                     self.objective_function_list_sample[idx] = sample_new
-                    # logging.info("set_params %s", idx)
-                    self.objective_function(new_solution, sess=sess, index=idx)
+                    logging.info(f'teacher_phase{idx} -- {objective_function_new} -- {self.objective_function_list_score[idx]} -- {self.teacher_reward}')
             if  self.objective_function_list_score[idx] < self.teacher_reward:
                 self.teacher = population[idx]
                 self.teacher_reward = self.objective_function_list_score[idx]
@@ -194,11 +189,14 @@ class MTLBO():
 
     def learner_phase(self, population, iteration, max_iterations, sess, population_index):
         logging.info('learner_phase')
-        n = len(population)
-        half_n = n // 2        
-        for idx in range(half_n):  
+        average = sum(self.objective_function_list_score) / len(population)
+
+        # Create two lists for values above and below the average
+        above_average = [i for i, x in enumerate(self.objective_function_list_score) if x >= average]
+        below_average = [i for i, x in enumerate(self.objective_function_list_score) if x < average]
+        for idx in below_average:  
             student = population[idx]
-            j = np.random.choice([x for x in range(half_n) if x != idx])
+            j = np.random.choice([x for x in below_average if x != idx])
             other_learner = population[j]
             diff = self.subtract_dicts(other_learner, student)
             rand_num = np.random.random()            
@@ -210,165 +208,66 @@ class MTLBO():
                 scaled_diff = self.scale_dict(diff, rand_num * np.cos(angle))
             
             new_solution = scaled_diff
-            avg_rewards, sample_new, objective_function_new = self.objective_function(new_solution, sess, 4)
-            # print(objective_function_new,self.objective_function_list_score[idx],idx)
+            avg_rewards, sample_new, objective_function_new = self.objective_function(new_solution, sess, self.max)
             if avg_rewards < self.avg_rewards:
                     population[idx] = new_solution
-                    logging.info(f'learner_phase{idx} -- {objective_function_new} -- {self.objective_function_list_score[idx]} -- {self.teacher_reward}')
+                    avg_rewards, sample_new, objective_function_new = self.objective_function(new_solution, sess=sess, index=idx)
                     self.objective_function_list_score[idx] = objective_function_new
                     self.objective_function_list_sample[idx] = sample_new
                     self.avg_rewards = avg_rewards
-                    self.objective_function(new_solution, sess=sess, index=idx)
-                    logging.info(f'teacher_phase{idx} Teacher changed')
+                    logging.info(f'learner_phase{idx} loop1 -- {objective_function_new} -- {self.objective_function_list_score[idx]} -- {self.teacher_reward}')
             elif objective_function_new < self.objective_function_list_score[idx]:
                     population[idx] = new_solution
-                    logging.info(f'learner_phase{idx} -- {objective_function_new} -- {self.objective_function_list_score[idx]} -- {self.teacher_reward}')
+                    avg_rewards, sample_new, objective_function_new = self.objective_function(new_solution, sess=sess, index=idx)
                     self.objective_function_list_score[idx] = objective_function_new
                     self.objective_function_list_sample[idx] = sample_new
-                    self.objective_function(new_solution, sess=sess, index=idx)
+                    logging.info(f'learner_phase loop1 {idx} -- {objective_function_new} -- {self.objective_function_list_score[idx]} -- {self.teacher_reward}')
             if   self.objective_function_list_score[idx] < self.teacher_reward:
                 self.teacher = population[idx]
                 self.teacher_reward = self.objective_function_list_score[idx]
                 self.teacher_sample = self.objective_function_list_sample [idx]
-                logging.info(f'teacher_phase{idx} Teacher changed{self.teacher_reward}')
+                logging.info(f'learner_phase loop1{idx} Teacher changed{self.teacher_reward}')
 
-        for idx in range(half_n, n):  
+        for idx in above_average:  
             student = population[idx]
             diff = self.subtract_dicts(self.teacher, student)
             rand_num = np.random.random()            
             angle = (np.pi / 2) * (iteration / max_iterations)
             scaled_diff = self.scale_dict(diff, np.cos(angle))
             new_solution = self.add_dicts(student, scaled_diff)
-            avg_rewards, sample_new, objective_function_new = self.objective_function(new_solution, sess, 4)
+            avg_rewards, sample_new, objective_function_new = self.objective_function(new_solution, sess, self.max)
             # print(objective_function_new,self.objective_function_list_score[idx],idx)
             if avg_rewards < self.avg_rewards:
                     population[idx] = new_solution
-                    logging.info(f'teacher_phase{idx} -- {objective_function_new} -- {self.objective_function_list_score[idx]} -- {self.teacher_reward}')
+                    avg_rewards, sample_new, objective_function_new = self.objective_function(new_solution, sess=sess, index=idx)
                     self.objective_function_list_score[idx] = objective_function_new
                     self.objective_function_list_sample[idx] = sample_new
                     self.avg_rewards = avg_rewards
-                    self.objective_function(new_solution, sess=sess, index=idx)
+                    logging.info(f'learner_phase loop2 {idx} -- {objective_function_new} -- {self.objective_function_list_score[idx]} -- {self.teacher_reward}')
             elif objective_function_new < self.objective_function_list_score[idx]:
                     population[idx] = new_solution
-                    logging.info(f'teacher_phase{idx} -- {objective_function_new} -- {self.objective_function_list_score[idx]} -- {self.teacher_reward}')
+                    avg_rewards, sample_new, objective_function_new = self.objective_function(new_solution, sess=sess, index=idx)
                     self.objective_function_list_score[idx] = objective_function_new
                     self.objective_function_list_sample[idx] = sample_new
-                    self.objective_function(new_solution, sess=sess, index=idx)
+                    logging.info(f'learner_phase loop2 {idx} -- {objective_function_new} -- {self.objective_function_list_score[idx]} -- {self.teacher_reward}')
             if   self.objective_function_list_score[idx] < self.teacher_reward:
                 self.teacher = population[idx]
                 self.teacher_reward = self.objective_function_list_score[idx]
                 self.teacher_sample = self.objective_function_list_sample [idx]
-                logging.info(f'teacher_phase{idx} Teacher changed{self.teacher_reward}')
+                logging.info(f'learner_phase loop2 {idx} Teacher changed{self.teacher_reward}')
 
-
-    # def objective_function(self, policy_params, sess, index):
-    #     # print('objective_function')
-    #     self.policy.set_params(policy_params, sess=sess, index=index)
-    #     # print('objective_function set_params')    
-    #     paths = self.sampler.obtain_samples(log=False, log_prefix='')
-    #     samples_data = self.sampler_processor.process_samples(paths, log=False, log_prefix='')
-    #     # all_rewards = np.concatenate([data['rewards'] for data in samples_data], axis=0)
-    #     # mean_reward = np.mean(all_rewards)
-        
-    #     # variance = np.var(all_rewards)
-    #     # combined_metric = mean_reward - self.variance_coefficient * variance
-    #     # ret = np.array([])
-    #     # for i in range(0,5):
-    #     #     ret = np.concatenate((ret, np.linalg.norm(samples_data[i]['rewards'], axis=-1)), axis=-1)
-    #     # for i in range(0,5):
-    #     #     print("linalg","sum","avg")
-    #     #     print(np.linalg.norm(samples_data[i]['rewards'], axis=-1) ,np.sum(samples_data[i]['rewards'], axis=-1),np.mean(samples_data[i]['rewards'], axis=-1))
-             
-
-    #     # avg_reward = np.mean(ret)
-    #     # # avg_reward = np.linalg.norm(samples_data['rewards'])
-    #     # # avg_reward=0
-    #     # # for i in range(1, 5):
-    #     # #     avg_reward = avg_reward +np.sum(samples_data[i]['rewards'])
-    #     # return avg_reward, samples_data[index], np.linalg.norm(samples_data[index]['rewards'], axis=-1)
-    
-
-
-    #     ### momentom 
-
-
-
-    #         # List to store mean rewards and variances for each dataset
-    #     mean_rewards = []
-    #     variances = []
-        
-    #     # Loop over each dataset (assuming each dataset is represented by a 'data' in samples_data)
-    #     for data in samples_data:
-    #         rewards = data['rewards']
-    #         mean_rewards.append(np.mean(rewards))
-    #         variances.append(np.var(rewards))            
-    #     # Compute global mean reward and global mean variance
-    #     combined_metric = np.mean(mean_rewards)
-    #     global_mean_variance = np.mean(variances)
-        
-    #     # Combined metric considering global mean reward and global mean variance
-    #     # combined_metric = global_mean_reward - self.variance_coefficient * global_mean_variance
-        
-    #     return -combined_metric, samples_data[index], -np.mean(samples_data[index]['rewards'])
-    def objective_function(self, policy_params, sess, index):
+    def objective_function(self, policy_params, sess, index, samples=None):
         self.policy.set_params(policy_params, sess=sess, index=index)
         paths = self.sampler.obtain_samples(log=False, log_prefix='')
-        samples_data = self.sampler_processor.process_samples(paths, log=False, log_prefix='')
-
-        # List to store mean rewards and variances for each dataset
-        mean_rewards = []
-        variances = []
-        
-        # Define weights for datasets (assuming equal importance for now)
-        weights = [1.0 for _ in samples_data]
-
-        # Loop over each dataset
-        for data, weight in zip(samples_data, weights):
-            rewards = data['rewards']
-            # mean_rewards.append(np.mean(rewards) * weight)
-            mean_rewards.append(np.mean(rewards))
-            variances.append(np.var(rewards))
-
-
-        # Compute global mean reward and global mean variance
-        global_mean_reward = np.mean(mean_rewards)
-        global_mean_variance = np.mean(variances)
-
-        # Introduce a penalty term for extreme variances
-        variance_penalty = np.sum([max(0, var - global_mean_variance) for var in variances])
-
-        # Compute the momentum term (difference in rewards between consecutive iterations)
-        # For simplicity, let's assume the previous rewards are stored in a list called self.prev_rewards
-        if hasattr(self, 'prev_rewards'):
-            momentum_term = np.mean(mean_rewards) - np.mean(self.prev_rewards)
-        else:
-            momentum_term = 0
-
-        # Update the previous rewards
-        self.prev_rewards = mean_rewards
-
-        # Combined metric considering global mean reward, variance penalty, and momentum
-        combined_metric = global_mean_reward - self.variance_coefficient * variance_penalty + momentum_term
+        samples_data = self.sampler_processor.process_samples(paths, log="all", log_prefix='')
         logging.info("################# %s ##################", index)      
-        logging.info("4 %s",-np.mean(samples_data[4]['rewards']))        
+        # logging.info("1 %s",-np.mean(samples_data[1]['rewards']))        
         for i in range(len(self.objective_function_list_score)):
             logging.info(f"{-np.mean(samples_data[i]['rewards'])},{i},{index},{self.objective_function_list_score[i]}")  
- 
-        logging.info("################# %s  teacher %s ##################",-combined_metric, self.teacher_reward)  
-        # plt.figure(figsize=(14, 10))
+        ret = np.array([])
+        for i in range(len(samples_data)):
+                ret = np.concatenate((ret, np.sum(samples_data[i]['rewards'], axis=-1)), axis=-1)
 
-        # for i in range(len(samples_data)):
-        #     plt.plot(samples_data[i]['rewards'], label=f'Set {i}')
-        # plt.title('Rewards for 5 Sets')
-        # plt.xlabel('Reward Index')
-        # plt.ylabel('Reward Value')
-        # plt.legend()
-        # plt.grid(True)
-        # plt.subplots_adjust(bottom=0.15, top=0.95)  # Adjusting the spacing
+        avg_reward = np.mean(ret)
 
-        # # Save the plot to a file
-        # plt.savefig('plot/rewards_plot.png')  # Modify the path as needed
-
-        # plt.show()
-        # plt.close() 
-        return -global_mean_reward, samples_data[index], -mean_rewards[index]
+        return -avg_reward, samples_data[index], -np.mean(samples_data[index]['rewards'])
