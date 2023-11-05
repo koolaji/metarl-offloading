@@ -17,7 +17,6 @@ class MTLBO():
         self.env = env
         self.sampler = sampler
         self.sampler_processor = sampler_processor
-        self.history = {}
         self.variance_coefficient = 0.1
         self.batch_size = batch_size
         self.inner_batch_size = inner_batch_size
@@ -28,17 +27,24 @@ class MTLBO():
         self.objective_function_list_sample=list(range(self.batch_size-1))
         self.avg_rewards=0
         self.max=batch_size-1
+        self.change = False
+        self.resault_stat ={}
 
-    def teacher_phase(self, population, iteration, max_iterations, sess, population_index):
+    def teacher_phase(self, population, iteration, max_iterations, sess):
+        self.change = False
         logging.info('teacher_phase')        
         for idx, student in enumerate(population):
-            self.avg_rewards, sample, score = self.objective_function(student, sess, idx)
+            avg_rewards, sample, score = self.objective_function(student, sess, idx)
             self.objective_function_list_score[idx]=score
             self.objective_function_list_sample[idx]=sample
-        if   score < self.teacher_reward:
+        if iteration == 0:
+                    self.avg_rewards = avg_rewards
+        if self.teacher_reward == 999999:
             self.teacher = student
             self.teacher_reward = score
             self.teacher_sample = sample
+        if   (avg_rewards < self.avg_rewards  and self.objective_function_list_score[idx] < self.teacher_reward): 
+
             logging.info(f'teacher_phase{idx} Teacher changed{self.teacher_reward}')
         
         # max_value, max_index = max((value, index) for index, value in enumerate(self.objective_function_list_score))
@@ -48,39 +54,8 @@ class MTLBO():
         # self.teacher_sample = self.objective_function_list_sample [max_index]
         
         mean_solution_val = np.mean(self.objective_function_list_score)
-
-        mean_solution_sample = {}
-
-        all_keys = set()
-        for pop in population:
-            all_keys.update(pop.keys())
-
-        # Extract the base keys (without prefix) from the unique keys
-        base_keys = set([re.sub(r'task_[0-9]{1,2}_policy/', '', key) for key in all_keys])
-
-        for base_key in base_keys:
-            # Find all matching keys in the entire population for the current base_key
-            matching_keys = [k for k in all_keys if re.sub(r'task_[0-9]{1,2}_policy/', '', k) == base_key]
-            
-            # Extract values for all matching keys from all dictionaries in the population
-            values_list = []
-            for key in matching_keys:
-                values_list.extend([d[key] for d in population if key in d])
-            
-            # Compute the mean for the current base_key
-            if isinstance(values_list[0], (list, np.ndarray)):
-                mean_values = np.mean(values_list, axis=0).tolist()  # Compute mean along the first axis
-            else:
-                mean_values = np.mean(values_list)
-            
-            mean_solution_sample[base_key] = mean_values
-
-            # Log the result
-            # logging.info(f"Key: {base_key}, {np.array(mean_solution_sample[base_key]).shape}")
-
-
-
-
+        self.resault_stat = self.calculate_statistics_tensors(population)
+        mean_solution_sample = self.resault_stat['mean']
         w_start = 0.9  # or another value you choose
         w_end = 0.02    # or another value you choose
         w = w_start - (w_start - w_end) * (iteration / max_iterations)
@@ -111,26 +86,75 @@ class MTLBO():
             
             avg_rewards, sample_new, objective_function_new = self.objective_function(new_solution, sess, self.max)
             # print(objective_function_new,self.objective_function_list_score[idx],idx)
-            if avg_rewards < self.avg_rewards:
-                    population[idx] = new_solution
-                    avg_rewards, sample_new, objective_function_new = self.objective_function(new_solution, sess=sess, index=idx)
-                    self.objective_function_list_score[idx] = objective_function_new
-                    self.objective_function_list_sample[idx] = sample_new
+            if avg_rewards < self.avg_rewards and self.objective_function_list_score[idx] < self.teacher_reward:
+                    self.change =True
+                    # population[idx] = new_solution
+                    # avg_rewards, sample_new, objective_function_new = self.objective_function(new_solution, sess=sess, index=idx)
+                    # logging.info(f'teacher_phase avg_rewards {idx} new = {objective_function_new} old = {self.objective_function_list_score[idx]} teacher = {self.teacher_reward}')
+                    # self.objective_function_list_score[idx] = objective_function_new
+                    # self.objective_function_list_sample[idx] = sample_new
                     self.avg_rewards = avg_rewards
-                    logging.info(f'teacher_phase{idx} -- {objective_function_new} -- {self.objective_function_list_score[idx]} -- {self.teacher_reward}')
+                    # if  :
+                    self.change =True
+                    self.teacher = population[idx]
+                    self.teacher_reward = self.objective_function_list_score[idx]
+                    self.teacher_sample = self.objective_function_list_sample [idx]
+                    logging.info(f'learner_phase loop {idx} Teacher changed {self.teacher_reward} self.avg_rewards {self.avg_rewards}')
             elif objective_function_new < self.objective_function_list_score[idx]:
+                    self.change = True
                     population[idx] = new_solution
                     avg_rewards, sample_new, objective_function_new = self.objective_function(new_solution, sess=sess, index=idx)
+                    logging.info(f'teacher_phase {idx} new = {objective_function_new} old = {self.objective_function_list_score[idx]} teacher = {self.teacher_reward}')
                     self.objective_function_list_score[idx] = objective_function_new
                     self.objective_function_list_sample[idx] = sample_new
-                    logging.info(f'teacher_phase{idx} -- {objective_function_new} -- {self.objective_function_list_score[idx]} -- {self.teacher_reward}')
-            if  self.objective_function_list_score[idx] < self.teacher_reward:
-                self.teacher = population[idx]
-                self.teacher_reward = self.objective_function_list_score[idx]
-                self.teacher_sample = self.objective_function_list_sample [idx]
-                logging.info(f'teacher_phase{idx} Teacher changed{self.teacher_reward}')
 
-        return self.teacher_sample
+
+        return self.teacher
+
+
+    def calculate_statistics_tensors(self,population):
+        mean_solution_sample = {}
+        max_solution_sample = {}
+        min_solution_sample = {}
+        stats_solution_sample={}
+        all_keys = set()
+        for pop in population:
+            all_keys.update(pop.keys())
+
+        # Extract the base keys (without prefix) from the unique keys
+        base_keys = set([re.sub(r'task_[0-9]{1,2}_policy/', '', key) for key in all_keys])
+
+        for base_key in base_keys:
+            # Find all matching keys in the entire population for the current base_key
+            matching_keys = [k for k in all_keys if re.sub(r'task_[0-9]{1,2}_policy/', '', k) == base_key]
+            
+            # Extract values for all matching keys from all dictionaries in the population
+            values_list = []
+            for key in matching_keys:
+                values_list.extend([d[key] for d in population if key in d])
+            
+            # Compute the mean for the current base_key
+            if isinstance(values_list[0], (list, np.ndarray)):
+                mean_values = np.mean(values_list, axis=0).tolist()  # Compute mean along the first axis
+                max_values = np.max(values_list, axis=0).tolist()  # Compute mean along the first axis
+                min_values = np.min(values_list, axis=0).tolist()  # Compute mean along the first axis
+            else:
+                mean_values = np.mean(values_list)
+                max_values = np.max(values_list)
+                min_values = np.min(values_list)
+            
+            mean_solution_sample[base_key] = mean_values
+            max_solution_sample[base_key]  = max_values
+            min_solution_sample[base_key]  = min_values
+        stats_solution_sample['mean'] = mean_solution_sample
+        stats_solution_sample['max']  = max_solution_sample
+        stats_solution_sample['min']  = min_solution_sample
+
+        return stats_solution_sample
+
+
+
+
 
     def subtract_dicts(self, dict1, dict2):
         result = {}
@@ -187,7 +211,7 @@ class MTLBO():
         return result
 
 
-    def learner_phase(self, population, iteration, max_iterations, sess, population_index):
+    def learner_phase(self, population, iteration, max_iterations, sess):
         logging.info('learner_phase')
         average = sum(self.objective_function_list_score) / len(population)
 
@@ -201,32 +225,38 @@ class MTLBO():
             diff = self.subtract_dicts(other_learner, student)
             rand_num = np.random.random()            
             angle = (np.pi / 2) * (iteration / max_iterations)
-            
             if self.objective_function_list_score[idx] < self.objective_function_list_score[j]:
                 scaled_diff = self.add_dicts(diff, self.scale_dict(diff, np.cos(angle)))
             else:
+                max_solution_sample = self.resault_stat['max']
+                min_solution_sample = self.resault_stat['min']
+                rand_num = (np.random.random() -0.5) * 2
+                diff = self.subtract_dicts(max_solution_sample, min_solution_sample)
                 scaled_diff = self.scale_dict(diff, rand_num * np.cos(angle))
             
             new_solution = scaled_diff
             avg_rewards, sample_new, objective_function_new = self.objective_function(new_solution, sess, self.max)
-            if avg_rewards < self.avg_rewards:
-                    population[idx] = new_solution
-                    avg_rewards, sample_new, objective_function_new = self.objective_function(new_solution, sess=sess, index=idx)
-                    self.objective_function_list_score[idx] = objective_function_new
-                    self.objective_function_list_sample[idx] = sample_new
+            if avg_rewards < self.avg_rewards and self.objective_function_list_score[idx] < self.teacher_reward:
+                    self.change = True
+                    # population[idx] = new_solution
+                    # avg_rewards, sample_new, objective_function_new = self.objective_function(new_solution, sess=sess, index=idx)
+                    # logging.info(f'learner_phase avg_rewards loop {idx} new = {objective_function_new} old = {self.objective_function_list_score[idx]} teacher = {self.teacher_reward}')
+                    # self.objective_function_list_score[idx] = objective_function_new
+                    # self.objective_function_list_sample[idx] = sample_new
                     self.avg_rewards = avg_rewards
-                    logging.info(f'learner_phase{idx} loop1 -- {objective_function_new} -- {self.objective_function_list_score[idx]} -- {self.teacher_reward}')
+                    # if   self.objective_function_list_score[idx] < self.teacher_reward:
+                    self.teacher = population[idx]
+                    self.teacher_reward = self.objective_function_list_score[idx]
+                    self.teacher_sample = self.objective_function_list_sample [idx]
+                    logging.info(f'learner_phase loop {idx} Teacher changed {self.teacher_reward} self.avg_rewards {self.avg_rewards}')
             elif objective_function_new < self.objective_function_list_score[idx]:
+                    self.change = True
                     population[idx] = new_solution
                     avg_rewards, sample_new, objective_function_new = self.objective_function(new_solution, sess=sess, index=idx)
+                    logging.info(f'learner_phase loop {idx} new = {objective_function_new} old = {self.objective_function_list_score[idx]} teacher = {self.teacher_reward}')
                     self.objective_function_list_score[idx] = objective_function_new
                     self.objective_function_list_sample[idx] = sample_new
-                    logging.info(f'learner_phase loop1 {idx} -- {objective_function_new} -- {self.objective_function_list_score[idx]} -- {self.teacher_reward}')
-            if   self.objective_function_list_score[idx] < self.teacher_reward:
-                self.teacher = population[idx]
-                self.teacher_reward = self.objective_function_list_score[idx]
-                self.teacher_sample = self.objective_function_list_sample [idx]
-                logging.info(f'learner_phase loop1{idx} Teacher changed{self.teacher_reward}')
+
 
         for idx in above_average:  
             student = population[idx]
@@ -237,37 +267,44 @@ class MTLBO():
             new_solution = self.add_dicts(student, scaled_diff)
             avg_rewards, sample_new, objective_function_new = self.objective_function(new_solution, sess, self.max)
             # print(objective_function_new,self.objective_function_list_score[idx],idx)
-            if avg_rewards < self.avg_rewards:
-                    population[idx] = new_solution
-                    avg_rewards, sample_new, objective_function_new = self.objective_function(new_solution, sess=sess, index=idx)
-                    self.objective_function_list_score[idx] = objective_function_new
-                    self.objective_function_list_sample[idx] = sample_new
+            if avg_rewards < self.avg_rewards and self.objective_function_list_score[idx] < self.teacher_reward:
+                    self.change = True
+                    # population[idx] = new_solution
+                    # avg_rewards, sample_new, objective_function_new = self.objective_function(new_solution, sess=sess, index=idx)
+                    # logging.info(f'learner_phase avg_rewards loop {idx} new = {objective_function_new} old = {self.objective_function_list_score[idx]} teacher = {self.teacher_reward}')
+                    # self.objective_function_list_score[idx] = objective_function_new
+                    # self.objective_function_list_sample[idx] = sample_new
                     self.avg_rewards = avg_rewards
-                    logging.info(f'learner_phase loop2 {idx} -- {objective_function_new} -- {self.objective_function_list_score[idx]} -- {self.teacher_reward}')
+                    # if   self.objective_function_list_score[idx] < self.teacher_reward:
+                    #     self.change = True
+                    self.teacher = population[idx]
+                    self.teacher_reward = self.objective_function_list_score[idx]
+                    self.teacher_sample = self.objective_function_list_sample [idx]
+                    logging.info(f'learner_phase loop {idx} Teacher changed {self.teacher_reward} self.avg_rewards {self.avg_rewards}')
             elif objective_function_new < self.objective_function_list_score[idx]:
+                    self.change = True
                     population[idx] = new_solution
                     avg_rewards, sample_new, objective_function_new = self.objective_function(new_solution, sess=sess, index=idx)
+                    logging.info(f'learner_phase loop {idx} new = {objective_function_new} old = {self.objective_function_list_score[idx]} teacher = {self.teacher_reward}')
                     self.objective_function_list_score[idx] = objective_function_new
                     self.objective_function_list_sample[idx] = sample_new
-                    logging.info(f'learner_phase loop2 {idx} -- {objective_function_new} -- {self.objective_function_list_score[idx]} -- {self.teacher_reward}')
-            if   self.objective_function_list_score[idx] < self.teacher_reward:
-                self.teacher = population[idx]
-                self.teacher_reward = self.objective_function_list_score[idx]
-                self.teacher_sample = self.objective_function_list_sample [idx]
-                logging.info(f'learner_phase loop2 {idx} Teacher changed{self.teacher_reward}')
 
+        return self.teacher
     def objective_function(self, policy_params, sess, index, samples=None):
         self.policy.set_params(policy_params, sess=sess, index=index)
         paths = self.sampler.obtain_samples(log=False, log_prefix='')
         samples_data = self.sampler_processor.process_samples(paths, log="all", log_prefix='')
-        logging.info("################# %s ##################", index)      
+        # logging.info("################# %s ##################", index)      
         # logging.info("1 %s",-np.mean(samples_data[1]['rewards']))        
-        for i in range(len(self.objective_function_list_score)):
-            logging.info(f"{-np.mean(samples_data[i]['rewards'])},{i},{index},{self.objective_function_list_score[i]}")  
+        # for i in range(len(self.objective_function_list_score)):
+        #     logging.info(f"{-np.mean(samples_data[i]['rewards'])},{i},{index},{self.objective_function_list_score[i]}")  
         ret = np.array([])
-        for i in range(len(samples_data)):
+        if index == self.batch_size-1:
+            for i in range(len(samples_data)):
                 ret = np.concatenate((ret, np.sum(samples_data[i]['rewards'], axis=-1)), axis=-1)
-
+        else:
+            for i in range(len(samples_data)-1):
+                ret = np.concatenate((ret, np.sum(samples_data[i]['rewards'], axis=-1)), axis=-1)
         avg_reward = np.mean(ret)
-
+        
         return -avg_reward, samples_data[index], -np.mean(samples_data[index]['rewards'])

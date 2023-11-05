@@ -61,7 +61,7 @@ class OffloadingEnvironment(MetaEnv):
         self.min_running_time_batches = []
         self.graph_file_paths = graph_file_paths
         for graph_file_path in graph_file_paths:
-            logging.debug('graph_file_path == %s, len(self.encoder_batches), %s',graph_file_path, str(len(self.encoder_batches)))
+            logging.info('graph_file_path == %s, len(self.encoder_batches), %s',graph_file_path, str(len(self.encoder_batches)))
             encoder_batches, encoder_lengths, task_graph_batches, decoder_full_lengths, max_running_time_batches, \
             min_running_time_batches = self.generate_point_batch_for_random_graphs(batch_size, graph_number,
                                                                                    graph_file_path, time_major)

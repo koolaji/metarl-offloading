@@ -517,7 +517,7 @@ class MetaSeq2SeqPolicy:
         """Get the current parameters of the policy."""
         # logging.info('get_params ')
         # with tf.compat.v1.Session() as sess:
-        sess.run(tf.compat.v1.global_variables_initializer())
+        # sess.run(tf.compat.v1.global_variables_initializer())
         variables = self.meta_policies[index].network.get_trainable_variables()
         return {v.name: sess.run(v) for v in variables}
     
@@ -622,3 +622,40 @@ class MetaSeq2SeqPolicy:
     #         state = next_state
         
     #     return cumulative_reward
+
+
+    def set_params_core(self, new_params, sess=None):
+        # sess = sess or tf.compat.v1.get_default_session()
+
+        # Remove any existing 'task_[0-9]{1,2}_policy/' prefix and add 'core_policy/' prefix
+        new_params_prefixed = {
+            'core_policy/' + re.sub(r'^task_[0-9]{1,2}_policy/', '', key): value
+            for key, value in new_params.items()
+        }
+
+        # Initialize assign_ops_dict_core if it doesn't exist
+        if not hasattr(self, 'assign_ops_dict_core'):
+            self.assign_ops_dict_core = []
+
+        # Create assignment operations if assign_ops_dict_core is empty
+        if not self.assign_ops_dict_core:
+            assign_ops = []
+            for var in self.core_policy.get_trainable_variables():
+                placeholder = tf.placeholder(var.dtype, shape=var.get_shape())  # create a placeholder
+                assign_op = tf.assign(var, placeholder)  # create assign op using the placeholder
+                assign_ops.append((assign_op, placeholder))
+            self.assign_ops_dict_core = assign_ops  # Store the assignment operations
+
+        # Prepare the feed_dict with the correct variable names and corresponding new values
+        feed_dict = {}
+        for (assign_op, placeholder), var in zip(self.assign_ops_dict_core, self.core_policy.get_trainable_variables()):
+            var_name = var.name
+            # Use the new_params_prefixed dictionary for the feed_dict
+            if var_name in new_params_prefixed:
+                feed_dict[placeholder] = new_params_prefixed[var_name]
+            else:
+                raise KeyError(f"Variable {var_name} not found in new_params_prefixed. Make sure new_params contains this key.")
+
+        # Execute the assignment operations with the prepared feed_dict
+        sess.run([assign_op for assign_op, _ in self.assign_ops_dict_core], feed_dict=feed_dict)
+
