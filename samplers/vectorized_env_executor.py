@@ -33,7 +33,7 @@ class MetaIterativeEnvExecutor(object):
                 env.set_task(task)
     def reset(self):
         logging.debug('Start MetaIterativeEnvExecutor reset')
-        print('MetaIterativeEnvExecutor')
+        # print('MetaIterativeEnvExecutor')
         obses = [env.reset() for env in self.envs]
         self.ts[:] = 0
         return obses
