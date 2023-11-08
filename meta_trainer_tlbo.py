@@ -44,7 +44,8 @@ class Trainer(object):
         avg_latencies = []
 
         self.population = []
-
+        improve =0
+        not_improve = 0
         for itr in range(self.start_itr, self.n_itr):
             gc.collect()
             self.population = []
@@ -64,14 +65,35 @@ class Trainer(object):
             # logging.info("Sampling set of tasks/goals for this meta-batch...")
             greedy_run_time = [self.greedy_finish_time[x] for x in task_ids[:self.batch_size-1]]
             logger.logkv('Average greedy latency,', np.mean(greedy_run_time))
+            new_start=True
             for i in range(10):
-                tlbo.teacher_phase(population=self.population, iteration=i, max_iterations=10, sess=sess)
+                tlbo.teacher_phase(population=self.population, iteration=i, max_iterations=10, sess=sess, new_start=new_start)
                 tlbo.learner_phase(population=self.population, iteration=i, max_iterations=10, sess=sess)   
-                if (not tlbo.change) and tlbo.teacher != []:
-                    break
-            """ ------------------- Logging Stuff --------------------------"""
+                # if (not tlbo.change) and tlbo.teacher != []:
+                #     break
+                new_start= False
             paths = self.sampler.obtain_samples(log=False, log_prefix='')
             new_samples_data = self.sampler_processor.process_samples(paths, log="all", log_prefix='')
+
+            latency = np.array([])
+            for i in range(len(new_samples_data)-1):
+                latency = np.concatenate((latency, new_samples_data[i]['finish_time']), axis=-1)
+
+            old_avg_latency = np.mean(latency)
+            self.policy.set_params_core(tlbo.teacher, sess)
+            self.policy.async_parameters()
+            paths = self.sampler.obtain_samples(log=False, log_prefix='')
+            new_samples_data = self.sampler_processor.process_samples(paths, log="all", log_prefix='')
+            latency = np.array([])
+            for i in range(len(new_samples_data)-1):
+                latency = np.concatenate((latency, new_samples_data[i]['finish_time']), axis=-1)
+
+            new_avg_latency = np.mean(latency)
+            if new_avg_latency < old_avg_latency :
+                improve = improve + 1
+            else:
+                not_improve = not_improve +1 
+            print(f"improve = {improve} --  not_improve = {not_improve}")
             """ ------------------- Logging Stuff --------------------------"""
 
             ret = np.array([])
@@ -115,7 +137,7 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, filename='meta_train.log',  filemode='a',)
     logging.root.setLevel(logging.INFO)
     logger.configure(dir="./meta_offloading20_log-inner_step1/", format_strs=['stdout', 'log', 'csv'])
-    META_BATCH_SIZE = 5
+    META_BATCH_SIZE = 6
     logging.debug('starting')
     
     resource_cluster = Resources(mec_process_capable=(10.0 * 1024 * 1024),
@@ -133,18 +155,18 @@ if __name__ == "__main__":
                                     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_6/random.20.",
                                     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_7/random.20.",
                                     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_9/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_10/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_11/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_13/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_14/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_15/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_17/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_18/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_19/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_21/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_22/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_23/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_25/random.20.",
+                                #     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_10/random.20.",
+                                #     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_11/random.20.",
+                                #     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_13/random.20.",
+                                #     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_14/random.20.",
+                                #     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_15/random.20.",
+                                #     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_17/random.20.",
+                                #     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_18/random.20.",
+                                #     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_19/random.20.",
+                                #     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_21/random.20.",
+                                #     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_22/random.20.",
+                                #     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_23/random.20.",
+                                #     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_25/random.20.",
                                 ],
                                 time_major=False)
     logging.info('start of greedy_solution')
@@ -168,7 +190,7 @@ if __name__ == "__main__":
         rollouts_per_meta_task=1,  
         meta_batch_size=META_BATCH_SIZE,
         max_path_length=20000,
-        parallel=True,
+        parallel=False,
     )
     logging.info('sampler_processor')
     sampler_processor = Seq2SeqMetaSamplerProcessor(baseline=baseline,
@@ -179,13 +201,16 @@ if __name__ == "__main__":
 
     
     logging.info('tlbo')
-    tlbo = MTLBO (policy=meta_policy, 
-                 env=env, 
-                 sampler=sampler, 
-                 sampler_processor=sampler_processor,
-                 batch_size=META_BATCH_SIZE,
-                 inner_batch_size=1000,
-                 population_index=[])
+    tlbo = MTLBO(
+        policy=meta_policy,
+        env=env,
+        sampler=sampler,
+        sampler_processor=sampler_processor,
+        batch_size=META_BATCH_SIZE,
+        inner_batch_size=1000,
+        reward_weight=0.5,    # Provide a float value here
+        latency_weight=0.5   # Provide a float value here
+    )
     logging.info('trainer')
     trainer = Trainer(
                       tlbo=tlbo,
