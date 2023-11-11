@@ -18,7 +18,6 @@ class MTLBO():
         self.env = env
         self.sampler = sampler
         self.sampler_processor = sampler_processor
-        self.variance_coefficient = 0.1
         self.batch_size = batch_size
         self.inner_batch_size = inner_batch_size
         self.teacher_reward = 999999
@@ -26,10 +25,12 @@ class MTLBO():
         self.teacher_sample = []
         self.objective_function_list_score=list(range(self.batch_size-1))
         self.objective_function_list_sample=list(range(self.batch_size-1))
-        self.avg_rewards=0
+        self.avg_rewards=9999999
         self.max=batch_size-1
         self.change = False
         self.resault_stat ={}
+        self.w_start = 0.9  
+        self.w_end = 0.01  
         
 
     def teacher_phase(self, population, iteration, max_iterations, sess, new_start):
@@ -40,40 +41,24 @@ class MTLBO():
                 avg_rewards, sample, score = self.objective_function(student, sess, idx)
                 self.objective_function_list_score[idx]=score
                 self.objective_function_list_sample[idx]=sample
-            # if   (score < self.teacher_reward): #  and self.objective_function_list_score[idx] < self.teacher_reward): 
-            #         self.change =True
-            #         self.teacher_reward = score
-            #         self.teacher_sample = sample
-            #         self.avg_rewards = avg_rewards
-            #         self.teacher = student
-            #         logging.info(f'teacher_phase{idx} Teacher changed{self.teacher_reward} {self.avg_rewards}')
-            self.resault_stat = self.calculate_statistics_tensors(population)
-            mean_solution_sample = self.resault_stat['mean']
-            self.avg_rewards = avg_rewards
-            min_solution_sample = self.resault_stat['min']
-            avg_rewards, sample_new, objective_function_new = self.objective_function(min_solution_sample, sess=sess, index=self.max)
-            self.teacher = min_solution_sample
-            self.teacher_reward = objective_function_new
-            self.teacher_sample = sample_new
-            logging.info(f'learner_phase loop {iteration} Teacher changed {self.teacher_reward} self.avg_rewards {self.avg_rewards}')
-        mean_solution_val = np.mean(self.objective_function_list_score)
+                if avg_rewards < self.avg_rewards :
+                    self.resault_stat = self.calculate_statistics_tensors(population)
+                    sample_new, objective_function_new = self.update_teacher(iteration, sess, avg_rewards, population)
+
         self.resault_stat = self.calculate_statistics_tensors(population)
+        mean_solution_val = np.mean(self.objective_function_list_score)
         mean_solution_sample = self.resault_stat['mean']
-        w_start = 0.9  # or another value you choose
-        w_end = 0.02    # or another value you choose
-        w = w_start - (w_start - w_end) * (iteration / max_iterations)
-        # _, sample_mean, _ = self.objective_function(mean_solution_sample, sess, 0)
+  
+        w = self.w_start - (self.w_start - self.w_end) * (iteration / max_iterations)
         for idx, student in enumerate(population):
             teaching_factor = round(1 + np.random.rand())
-            logging.info(f'teacher_phase subtract_dicts{iteration}')
-            # teaching_factor = np.random.randint(1, 3)  # Either 1 or 2
-            
+            # logging.info(f'teacher_phase subtract_dicts{iteration}')
+
             if self.objective_function_list_score[idx] < mean_solution_val:
                 scaled_diff = self.scale_dict(student, w)
                 teacher_diff = self.subtract_dicts(self.teacher,student)
                 teacher_diff = self.scale_dict(teacher_diff, np.random.random())
                 new_solution = self.add_dicts(scaled_diff, teacher_diff)
-                # logging.info(f'teacher_phase first part')
             else:
                 tf_mean = self.scale_dict(mean_solution_sample,teaching_factor )
                 diff = self.subtract_dicts(self.teacher ,tf_mean ) 
@@ -83,32 +68,36 @@ class MTLBO():
                                (student ,self.scale_dict(self.subtract_dicts
                                                          (mean_solution_sample,  student  ),rand_num)),np.sin(angle))
                 x_new_second = self.scale_dict(diff, np.cos(angle))
-                new_solution = self.add_dicts(x_new_first, x_new_second)
-                # logging.info(f'teacher_phase second part')
-            
+                new_solution = self.add_dicts(x_new_first, x_new_second)            
             
             avg_rewards, sample_new, objective_function_new = self.objective_function(new_solution, sess, self.max)
-            # print(objective_function_new,self.objective_function_list_score[idx],idx)
-            if avg_rewards < self.avg_rewards : #and self.objective_function_list_score[idx] < self.teacher_reward:
-                    self.change =True
-                    self.avg_rewards = avg_rewards
-                    min_solution_sample = self.resault_stat['min']
-                    avg_rewards, sample_new, objective_function_new = self.objective_function(min_solution_sample, sess=sess, index=self.max)
-                    self.teacher = min_solution_sample
-                    self.teacher_reward = objective_function_new
-                    self.teacher_sample = sample_new
-                    logging.info(f'learner_phase loop {iteration} Teacher changed {self.teacher_reward} self.avg_rewards {self.avg_rewards}')
-            if objective_function_new < self.objective_function_list_score[idx]:
-                    self.change = True
-                    population[idx] = new_solution
-                    #avg_rewards, sample_new, objective_function_new = self.objective_function(new_solution, sess=sess, index=idx)
-                    logging.info(f'teacher_phase {iteration} new = {objective_function_new} old = {self.objective_function_list_score[idx]} teacher = {self.teacher_reward} self.avg_rewards {self.avg_rewards}')
-                    self.objective_function_list_score[idx] = objective_function_new
-                    self.objective_function_list_sample[idx] = sample_new
-                    self.policy.set_params(new_solution, sess=sess, index=idx)
+            if avg_rewards < self.avg_rewards :
+                    sample_new, objective_function_new = self.update_teacher(iteration, sess, avg_rewards, population)
+            if objective_function_new > self.objective_function_list_score[idx]:
+                    self.update_student(population, iteration, sess, idx, sample_new, objective_function_new, new_solution)
 
 
         return self.teacher
+
+    def update_student(self, population, iteration, sess, idx, sample_new, objective_function_new, new_solution):
+        self.change = True
+        population[idx] = new_solution
+        # logging.info(f'{iteration} new = {objective_function_new} old = {self.objective_function_list_score[idx]} teacher = {self.teacher_reward} self.avg_rewards {self.avg_rewards}')
+        self.objective_function_list_score[idx] = objective_function_new
+        self.objective_function_list_sample[idx] = sample_new
+        self.policy.set_params(new_solution, sess=sess, index=idx)
+
+    def update_teacher(self, iteration, sess, avg_rewards,population ):
+        self.change =True
+        self.avg_rewards = avg_rewards
+        min_solution_sample = self.resault_stat['min']
+        avg_rewards, sample_new, objective_function_new = self.objective_function(min_solution_sample, sess=sess, index=self.max)
+        self.teacher = self.calculate_weighted_teacher(population)
+        # self.teacher = min_solution_sample
+        self.teacher_reward = objective_function_new
+        # self.teacher_sample = sample_new
+        logging.info(f'{iteration} Teacher changed {self.teacher_reward} self.avg_rewards {self.avg_rewards}')
+        return sample_new,objective_function_new
 
 
     def calculate_statistics_tensors(self,population):
@@ -119,24 +108,18 @@ class MTLBO():
         all_keys = set()
         for pop in population:
             all_keys.update(pop.keys())
-
-        # Extract the base keys (without prefix) from the unique keys
         base_keys = set([re.sub(r'task_[0-9]{1,2}_policy/', '', key) for key in all_keys])
 
         for base_key in base_keys:
-            # Find all matching keys in the entire population for the current base_key
-            matching_keys = [k for k in all_keys if re.sub(r'task_[0-9]{1,2}_policy/', '', k) == base_key]
-            
-            # Extract values for all matching keys from all dictionaries in the population
+            matching_keys = [k for k in all_keys if re.sub(r'task_[0-9]{1,2}_policy/', '', k) == base_key]            
             values_list = []
             for key in matching_keys:
                 values_list.extend([d[key] for d in population if key in d])
             
-            # Compute the mean for the current base_key
             if isinstance(values_list[0], (list, np.ndarray)):
-                mean_values = np.mean(values_list, axis=0).tolist()  # Compute mean along the first axis
-                max_values = np.max(values_list, axis=0).tolist()  # Compute mean along the first axis
-                min_values = np.min(values_list, axis=0).tolist()  # Compute mean along the first axis
+                mean_values = np.mean(values_list, axis=0).tolist()  
+                max_values = np.max(values_list, axis=0).tolist()  
+                min_values = np.min(values_list, axis=0).tolist()  
             else:
                 mean_values = np.mean(values_list)
                 max_values = np.max(values_list)
@@ -150,23 +133,53 @@ class MTLBO():
         stats_solution_sample['min']  = min_solution_sample
 
         return stats_solution_sample
+    
+    def calculate_weighted_teacher(self, population):
+        weighted_teacher = {}
+        for index, policy in enumerate(population):
+            for key in policy:
+                if key not in weighted_teacher:
+                    weighted_teacher[key] = 0  # Initialize if not present
+                # Add the weighted value for each key
+                weight = self.get_weight_for_policy(index) 
+                weighted_teacher[key] += (weight * np.array(policy[key]))
+        return weighted_teacher
+    
 
+    def get_weight_for_policy(self, policy_index):
+        """
+        Calculate the weight for a given policy based on its performance score.
+        This example uses the reciprocal of the score for weighting.
+        
+        :param policy_index: Index of the policy in the population list.
+        :return: Weight for the policy.
+        """
+        # Ensure that policy_index is an integer to be used as a list index
+        if not isinstance(policy_index, int):
+            raise TypeError("policy_index must be an integer")
 
+        # Use the policy_index to access the performance score from the list
+        performance_metric = self.objective_function_list_score[policy_index]
 
+        # Invert the score for weighting
+        weight = performance_metric / (sum(self.objective_function_list_score))  # Adding 1 to avoid division by zero
+        # print(f'{self.objective_function_list_score[policy_index]} , {weight} , {policy_index}')
+
+        # Normalize weights if necessary
+        # Here you would calculate the sum of all inverted scores and divide by it
+
+        return weight
 
 
     def subtract_dicts(self, dict1, dict2):
         result = {}
         if not dict2:
-            logging.info("subtract_dicts: dict2 is empty.")
+            # logging.info("subtract_dicts: dict2 is empty.")
             return result
         for key in dict1:
-            # Remove the task policy name from the key
             processed_key = re.sub(r'task_[0-9]{1,2}_policy/', '', key)
-            # Now, find the matching key in dict2
             matching_key = next((k for k in dict2 if re.sub(r'task_[0-9]{1,2}_policy/', '', k) == processed_key), None)
             if matching_key:
-                # Convert lists to numpy arrays and perform subtraction
                 result[key] = (np.array(dict1[key]) - np.array(dict2[matching_key])).tolist()
             else:
                 logging.info(f"Keys in dict2: {dict2.keys()}")
@@ -178,12 +191,8 @@ class MTLBO():
     def scale_dict(self, dict1, scalar):
         result = {}
         for key in dict1:
-            # Remove the task policy name from the key
             processed_key = re.sub(r'task_[0-9]{1,2}_policy/', '', key)
             result[processed_key] = (np.array(dict1[key]) * scalar).tolist()            
-            # logging.info(f"type {type(scalar)}{ np.array(dict1[key]).shape} {processed_key}, {np.array(result[processed_key]).shape}")
-            # logging.info(f"Type of dict1[{key}]: {type(dict1[key])}")
-            # logging.info(f"Value of dict1[{key}]: {dict1[key]}")
         return result
     
     def add_dicts(self, dict1, dict2):
@@ -195,7 +204,6 @@ class MTLBO():
             dict1_value = dict1.get(dict1_key_mapping.get(processed_key), None)
             dict2_value = dict2.get(dict2_key_mapping.get(processed_key), None)
 
-            # Ensure both values are numpy arrays of the same shape
             if dict1_value is None:
                 dict1_value = np.zeros_like(dict2_value)
             elif dict2_value is None:
@@ -205,8 +213,6 @@ class MTLBO():
                 dict2_value = np.array(dict2_value)
 
             result[processed_key] = (dict1_value + dict2_value).tolist()
-            # logging.info(f"{np.array(result[processed_key]).shape}, {processed_key}")
-
         return result
 
 
@@ -214,16 +220,10 @@ class MTLBO():
         logging.info('learner_phase')
         sorted_indices = sorted(range(len(self.objective_function_list_score)), key=lambda i: self.objective_function_list_score[i], reverse=True)
 
-        # Split the sorted indices into top and bottom classes
-        midpoint = len(sorted_indices) // 2  # Find the midpoint
-        above_average = sorted_indices[:midpoint]  # Top half indices
-        below_average = sorted_indices[midpoint:]  # Bottom half indices
-                # Check if there is at least one member in each group
-        if not above_average or not below_average:
-            print(f'above_average{above_average}')
-            print(f'below_average{below_average}')
-            print("Population does not have a split above and below the average.")
-            os.exit(1)
+        midpoint = len(sorted_indices) // 2  
+        above_average = sorted_indices[:midpoint] 
+        below_average = sorted_indices[midpoint:]  
+
         for idx in below_average:  
             student = population[idx]
             try:
@@ -246,24 +246,10 @@ class MTLBO():
             
             new_solution = scaled_diff
             avg_rewards, sample_new, objective_function_new = self.objective_function(new_solution, sess, self.max)
-            if avg_rewards < self.avg_rewards:# and self.objective_function_list_score[idx] < self.teacher_reward:
-                    self.change =True
-                    self.avg_rewards = avg_rewards
-                    min_solution_sample = self.resault_stat['min']
-                    avg_rewards, sample_new, objective_function_new = self.objective_function(min_solution_sample, sess=sess, index=self.max)
-                    self.teacher = min_solution_sample
-                    self.teacher_reward = objective_function_new
-                    self.teacher_sample = sample_new
-                    logging.info(f'learner_phase loop {iteration} Teacher changed {self.teacher_reward} self.avg_rewards {self.avg_rewards} self.avg_rewards {self.avg_rewards}')
-            if objective_function_new < self.objective_function_list_score[idx]:
-                    self.change = True
-                    population[idx] = new_solution
-                    #avg_rewards, sample_new, objective_function_new = self.objective_function(new_solution, sess=sess, index=idx)
-                    logging.info(f'learner_phase loop {iteration} new = {objective_function_new} old = {self.objective_function_list_score[idx]} teacher = {self.teacher_reward} ')
-                    self.objective_function_list_score[idx] = objective_function_new
-                    self.objective_function_list_sample[idx] = sample_new
-                    self.policy.set_params(new_solution, sess=sess, index=idx)
-
+            if avg_rewards < self.avg_rewards:
+                sample_new, objective_function_new = self.update_teacher(iteration, sess, avg_rewards, population)
+            if objective_function_new > self.objective_function_list_score[idx]:
+                self.update_student(population, iteration, sess, idx, sample_new, objective_function_new, new_solution)
 
         for idx in above_average:  
             student = population[idx]
@@ -273,27 +259,14 @@ class MTLBO():
             scaled_diff = self.scale_dict(diff, np.cos(angle))
             new_solution = self.add_dicts(student, scaled_diff)
             avg_rewards, sample_new, objective_function_new = self.objective_function(new_solution, sess, self.max)
-            # print(objective_function_new,self.objective_function_list_score[idx],idx)
-            if avg_rewards < self.avg_rewards: # and self.objective_function_list_score[idx] < self.teacher_reward:
-                    self.change =True
-                    self.avg_rewards = avg_rewards
-                    min_solution_sample = self.resault_stat['min']
-                    avg_rewards, sample_new, objective_function_new = self.objective_function(min_solution_sample, sess=sess, index=self.max)
-                    self.teacher = min_solution_sample
-                    self.teacher_reward = objective_function_new
-                    self.teacher_sample = sample_new
-                    logging.info(f'learner_phase loop {iteration} Teacher changed {self.teacher_reward} self.avg_rewards {self.avg_rewards}')
-            if objective_function_new < self.objective_function_list_score[idx]:
-                    self.change = True
-                    population[idx] = new_solution
-                    #avg_rewards, sample_new, objective_function_new = self.objective_function(new_solution, sess=sess, index=idx)
-                    logging.info(f'learner_phase loop {iteration} new = {objective_function_new} old = {self.objective_function_list_score[idx]} teacher = {self.teacher_reward}')
-                    self.objective_function_list_score[idx] = objective_function_new
-                    self.objective_function_list_sample[idx] = sample_new
-                    self.policy.set_params(new_solution, sess=sess, index=idx)
+            if avg_rewards < self.avg_rewards: 
+                sample_new, objective_function_new = self.update_teacher(iteration, sess, avg_rewards, population)
+            if objective_function_new > self.objective_function_list_score[idx]:
+                self.update_student(population, iteration, sess, idx, sample_new, objective_function_new, new_solution)
 
         return self.teacher
-    def objective_function(self, policy_params, sess, index, samples=None):
+    
+    def objective_function(self, policy_params, sess, index):
         self.policy.set_params(policy_params, sess=sess, index=index)
         paths = self.sampler.obtain_samples(log=False, log_prefix='')
         samples_data = self.sampler_processor.process_samples(paths, log="all", log_prefix='')
