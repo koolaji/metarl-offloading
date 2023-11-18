@@ -85,7 +85,7 @@ class Trainer(object):
                 new_start =False
             self.policy.set_params_core(tlbo.teacher, sess)
             self.policy.async_parameters()
-            policy_losses, value_losses = self.tlbo.UpdatePPOTarget(new_samples_data, batch_size=self.inner_batch_size )
+            # policy_losses, value_losses = self.tlbo.UpdatePPOTarget(new_samples_data, batch_size=self.inner_batch_size )
 
             """ ------------------- Logging Stuff --------------------------"""
             paths = self.sampler.obtain_samples(log=False, log_prefix='')
@@ -156,7 +156,7 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, filename='meta_train.log',  filemode='a',)
     logging.root.setLevel(logging.INFO)
     logger.configure(dir="./meta_offloading20_log-inner_step1/", format_strs=['stdout', 'log', 'csv'])
-    META_BATCH_SIZE = 10
+    META_BATCH_SIZE = 5
     logging.debug('starting')
     
     resource_cluster = Resources(mec_process_capable=(10.0 * 1024 * 1024),
