@@ -34,6 +34,7 @@ class Trainer(object):
         self.greedy_finish_time = greedy_finish_time
         self.save_interval = save_interval
         self.batch_size = batch_size
+        self.teacher = ''
     def train(self, sess):
         """
         Implement the TLBO training process for task offloading problem
@@ -74,15 +75,18 @@ class Trainer(object):
             old_avg_reward = -np.mean(ret)
             old_avg_latency = np.mean(latency)
             new_start =True
-            tlbo.avg_rewards = 9999999
+            # tlbo.avg_rewards = 9999999
+            # self.teacher_reward = 999999999
             for i in range(10):
                 tlbo.teacher_phase(population=self.population, iteration=i, max_iterations=10, sess=sess, new_start=new_start)
                 tlbo.learner_phase(population=self.population, iteration=i, max_iterations=10, sess=sess)   
-                if (not tlbo.change) and tlbo.teacher != []:
-                    break
+                # if (not tlbo.change) and tlbo.teacher != []:
+                #     break
                 new_start =False
             self.policy.set_params_core(tlbo.teacher, sess)
             self.policy.async_parameters()
+            policy_losses, value_losses = self.tlbo.UpdatePPOTarget(new_samples_data, batch_size=self.inner_batch_size )
+
             """ ------------------- Logging Stuff --------------------------"""
             paths = self.sampler.obtain_samples(log=False, log_prefix='')
             new_samples_data = self.sampler_processor.process_samples(paths, log="all", log_prefix='')
@@ -97,6 +101,8 @@ class Trainer(object):
             print(f'old_avg_reward {old_avg_reward } old_avg_latency {old_avg_latency} ')
             print(f'new_avg_reward {new_avg_reward } new_avg_latency {new_avg_latency} ')
             print(f'diff_avg_reward {new_avg_reward -  old_avg_reward } diff_avg_latency {new_avg_latency - old_avg_latency} ')
+            if not self.teacher:
+                self.teacher = tlbo.teacher
             if new_avg_latency < old_avg_latency :
                 improve = improve +1 
                 self.teacher = tlbo.teacher
@@ -104,11 +110,11 @@ class Trainer(object):
                 not_improve = not_improve + 1
                 # for i in range(len(new_samples_data)-1):
                 #     random_params = self.policy.set_params(sess=sess, new_params=self.population[i], index=i )
-                self.policy.set_params_core(self.teacher, sess)
-                self.policy.async_parameters()
+                # self.policy.set_params_core(self.teacher, sess)
+                # self.policy.async_parameters()
             print(f' improve = {improve} not_improve {not_improve}')
-            paths = self.sampler.obtain_samples(log=False, log_prefix='')
-            new_samples_data = self.sampler_processor.process_samples(paths, log="all", log_prefix='')
+            # paths = self.sampler.obtain_samples(log=False, log_prefix='')
+            # new_samples_data = self.sampler_processor.process_samples(paths, log="all", log_prefix='')
             ret = np.array([])
             for i in range(len(new_samples_data)-1):
                 ret = np.concatenate((ret, np.sum(new_samples_data[i]['rewards'], axis=-1)), axis=-1)
@@ -150,7 +156,7 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, filename='meta_train.log',  filemode='a',)
     logging.root.setLevel(logging.INFO)
     logger.configure(dir="./meta_offloading20_log-inner_step1/", format_strs=['stdout', 'log', 'csv'])
-    META_BATCH_SIZE = 6
+    META_BATCH_SIZE = 10
     logging.debug('starting')
     
     resource_cluster = Resources(mec_process_capable=(10.0 * 1024 * 1024),
