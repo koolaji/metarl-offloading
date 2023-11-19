@@ -23,118 +23,19 @@ class MTLBO():
         self.teacher_reward = 999999
         self.teacher = []
         self.teacher_sample = []
-        self.objective_function_list_score=list(range(self.batch_size-1))
-        self.objective_function_list_sample=list(range(self.batch_size-1))
+        self.objective_function_list_score=list(range(self.batch_size))
+        self.objective_function_list_sample=list(range(self.batch_size))
         self.avg_rewards=9999999
-        self.max=batch_size-1
         self.change = False
         self.resault_stat ={}
         self.w_start = 0.9  
         self.w_end = 0.01
-        outer_lr=1e-4
-        inner_lr=0.1
-        num_inner_grad_steps=4
-        clip_value = 0.2
-        vf_coef=0.5
-        max_grad_norm=0.5 
-        self.outer_lr = outer_lr
-        self.inner_lr = inner_lr
-        self.num_inner_grad_steps=num_inner_grad_steps
-        self.policy = policy
-        self.meta_sampler = sampler
-        self.meta_sampler_process = sampler_processor
-        self.meta_batch_size = batch_size
-        self.update_numbers = 1
-
-        #self.optimizer = MpiAdamOptimizer(MPI.COMM_WORLD, learning_rate=self.lr, epsilon=1e-5)
-        #self.inner_optimizer = tf.compat.v1.train.GradientDescentOptimizer(learning_rate=self.inner_lr)
-        self.inner_optimizer = tf.compat.v1.train.AdamOptimizer(learning_rate=self.inner_lr)
-        self.outer_optimizer = tf.compat.v1.train.AdamOptimizer(learning_rate=self.outer_lr)
-        self.clip_value = clip_value
-        self.vf_coef = vf_coef
-        self.max_grad_norm = max_grad_norm
-
-        # initialize the place hoder for each task place holder.
-        self.new_logits = []
-        self.decoder_inputs =[]
-        self.old_logits = []
-        self.actions = []
-        self.obs = []
-        self.vpred = []
-        self.decoder_full_length = []
-
-        self.old_v =[]
-        self.advs = []
-        self.r = []
-
-        self.surr_obj = []
-        self.vf_loss = []
-        self.total_loss = []
-        self._train = []
-
-        self.build_graph()
-
-    def build_graph(self):
-        # build inner update for each tasks
-        for i in range(self.meta_batch_size):
-            self.new_logits.append(self.policy.meta_policies[i].network.decoder_logits)
-            self.decoder_inputs.append(self.policy.meta_policies[i].decoder_inputs)
-            self.old_logits.append(tf.compat.v1.placeholder(dtype=tf.float32, shape=[None, None, self.policy.action_dim], name='old_logits_ph_task_'+str(i)))
-            self.actions.append(self.policy.meta_policies[i].decoder_targets)
-            self.obs.append(self.policy.meta_policies[i].obs)
-            self.vpred.append(self.policy.meta_policies[i].vf)
-            self.decoder_full_length.append(self.policy.meta_policies[i].decoder_full_length)
-
-            self.old_v.append(tf.compat.v1.placeholder(dtype=tf.float32, shape=[None, None], name='old_v_ph_task_'+str(i)))
-            self.advs.append(tf.compat.v1.placeholder(dtype=tf.float32, shape=[None, None], name='advs_ph_task'+str(i)))
-            self.r.append(tf.compat.v1.placeholder(dtype=tf.float32, shape=[None, None], name='r_ph_task_'+str(i)))
-
-            with tf.compat.v1.variable_scope("inner_update_parameters_task_"+str(i)) as scope:
-                likelihood_ratio = self.policy.distribution.likelihood_ratio_sym(self.actions[i], self.old_logits[i], self.new_logits[i])
-
-                clipped_obj = tf.minimum(likelihood_ratio * self.advs[i] ,
-                                         tf.clip_by_value(likelihood_ratio,
-                                                          1.0 - self.clip_value,
-                                                          1.0 + self.clip_value) * self.advs[i])
-                self.surr_obj.append(-tf.reduce_mean(clipped_obj))
-
-                vpredclipped = self.vpred[i] + tf.clip_by_value(self.vpred[i] - self.old_v[i], -self.clip_value, self.clip_value)
-                vf_losses1 = tf.square(self.vpred[i] - self.r[i])
-                vf_losses2 = tf.square(vpredclipped - self.r[i])
-
-                self.vf_loss.append( .5 * tf.reduce_mean(tf.maximum(vf_losses1, vf_losses2)) )
-
-                self.total_loss.append( self.surr_obj[i] + self.vf_coef * self.vf_loss[i])
-
-                params = self.policy.meta_policies[i].network.get_trainable_variables()
-
-                grads_and_var = self.inner_optimizer.compute_gradients(self.total_loss[i], params)
-                grads, var = zip(*grads_and_var)
-
-                if self.max_grad_norm is not None:
-                    # Clip the gradients (normalize)
-                    grads, _grad_norm = tf.clip_by_global_norm(grads, self.max_grad_norm)
-                grads_and_var = list(zip(grads, var))
-
-                self._train.append(self.inner_optimizer.apply_gradients(grads_and_var))
-
-        # Outer update for the parameters
-        # feed in the parameters of inner policy network and update outer parameters.
-        with tf.compat.v1.variable_scope("outer_update_parameters") as scope:
-            core_network_parameters = self.policy.core_policy.get_trainable_variables()
-            self.grads_placeholders = []
-
-            for i, var in enumerate(core_network_parameters):
-                self.grads_placeholders.append(tf.compat.v1.placeholder(shape=var.shape, dtype=var.dtype, name="grads_"+str(i)))
-
-            outer_grads_and_var = list(zip(self.grads_placeholders, core_network_parameters))
-
-            self._outer_train = self.outer_optimizer.apply_gradients(outer_grads_and_var)
         
     def teacher_phase(self, population, iteration, max_iterations, sess, new_start):
         self.change = False
         logging.info('teacher_phase')
-        if new_start:        
+        if new_start:
+            self.avg_rewards=9999999        
             for idx, student in enumerate(population):
                 avg_rewards, sample, score = self.objective_function(student, sess, idx)
                 self.objective_function_list_score[idx]=score
@@ -150,7 +51,6 @@ class MTLBO():
         w = self.w_start - (self.w_start - self.w_end) * (iteration / max_iterations)
         for idx, student in enumerate(population):
             teaching_factor = round(1 + np.random.rand())
-            # logging.info(f'teacher_phase subtract_dicts{iteration}')
 
             if self.objective_function_list_score[idx] < mean_solution_val:
                 scaled_diff = self.scale_dict(student, w)
@@ -168,7 +68,7 @@ class MTLBO():
                 x_new_second = self.scale_dict(diff, np.cos(angle))
                 new_solution = self.add_dicts(x_new_first, x_new_second)            
             
-            avg_rewards, sample_new, objective_function_new = self.objective_function(new_solution, sess, self.max)
+            avg_rewards, sample_new, objective_function_new = self.objective_function(new_solution, sess, idx)
             if avg_rewards < self.avg_rewards :
                     sample_new, objective_function_new = self.update_teacher(iteration, sess, avg_rewards, population)
             if objective_function_new < self.objective_function_list_score[idx]:
@@ -186,7 +86,7 @@ class MTLBO():
         self.change =True
         self.avg_rewards = avg_rewards
         solution_sample = self.calculate_weighted_teacher(population)
-        avg_rewards, sample_new, objective_function_new = self.objective_function(solution_sample, sess=sess, index=self.max)
+        avg_rewards, sample_new, objective_function_new = self.objective_function(solution_sample, sess=sess, index=self.batch_size-1)
         # if objective_function_new < self.teacher_reward :
         self.teacher = solution_sample
         self.teacher_reward = objective_function_new
@@ -259,19 +159,45 @@ class MTLBO():
         for index, policy in enumerate(population):
             for key in policy:
                 if key not in weighted_teacher:
-                    weighted_teacher[key] = 0  # Initialize if not present
-                # Add the weighted value for each key
+                    weighted_teacher[key] = 0 
                 weight = self.get_weight_for_policy(index) 
                 weighted_teacher[key] += (weight * np.array(policy[key]))
         return weighted_teacher
     
 
+    # def get_weight_for_policy(self, policy_index):
+    #     if not isinstance(policy_index, int):
+    #         raise TypeError("policy_index must be an integer")
+    #     performance_metric = self.objective_function_list_score[policy_index]
+    #     weight = performance_metric / (sum(self.objective_function_list_score)) 
+    #     return weight
     def get_weight_for_policy(self, policy_index):
         if not isinstance(policy_index, int):
             raise TypeError("policy_index must be an integer")
-        performance_metric = self.objective_function_list_score[policy_index]
-        weight = performance_metric / (sum(self.objective_function_list_score))  # Adding 1 to avoid division by zero
+
+        # Ensure that the sum of scores is not zero to avoid division by zero
+        sum_of_scores = sum(self.objective_function_list_score)
+        if sum_of_scores == 0:
+            sum_of_scores = 1e-6  # small epsilon value to avoid division by zero
+
+        # Shift rewards to ensure they are positive if they can be negative
+        min_reward = min(self.objective_function_list_score)
+        if min_reward < 0:
+            shift_value = abs(min_reward)
+            adjusted_scores = [score + shift_value for score in self.objective_function_list_score]
+            performance_metric = adjusted_scores[policy_index]
+        else:
+            performance_metric = self.objective_function_list_score[policy_index]
+
+        # Calculate weight
+        weight = performance_metric / sum_of_scores
+
+        # Optionally, you can apply a softmax for scaling if the range of rewards is very large
+        # softmax_scores = np.exp(adjusted_scores) / np.sum(np.exp(adjusted_scores), axis=0)
+        # weight = softmax_scores[policy_index]
+
         return weight
+
 
 
     def subtract_dicts(self, dict1, dict2):
@@ -324,9 +250,11 @@ class MTLBO():
         midpoint = len(sorted_indices) // 2  
         above_average = sorted_indices[:midpoint] 
         below_average = sorted_indices[midpoint:]  
-
+        exploration_rate = 0.1
         for idx in below_average:  
             student = population[idx]
+            if np.random.rand() < exploration_rate:
+                student = {k: v + np.random.normal(0, 0.1, np.shape(v)) for k, v in student.items()}
             try:
                 j = np.random.choice([x for x in below_average if x != idx])
             except:
@@ -345,7 +273,7 @@ class MTLBO():
                 scaled_diff = self.scale_dict(diff, rand_num * np.cos(angle))
             
             new_solution = scaled_diff
-            avg_rewards, sample_new, objective_function_new = self.objective_function(new_solution, sess, self.max)
+            avg_rewards, sample_new, objective_function_new = self.objective_function(new_solution, sess, idx)
             if avg_rewards < self.avg_rewards:
                 sample_new, objective_function_new = self.update_teacher(iteration, sess, avg_rewards, population)
             if objective_function_new < self.objective_function_list_score[idx]:
@@ -353,12 +281,14 @@ class MTLBO():
 
         for idx in above_average:  
             student = population[idx]
+            if np.random.rand() < exploration_rate:
+                student = {k: v + np.random.normal(0, 0.1, np.shape(v)) for k, v in student.items()}
             diff = self.subtract_dicts(self.teacher, student)
             rand_num = np.random.random()            
             angle = (np.pi / 2) * (iteration / max_iterations)
             scaled_diff = self.scale_dict(diff, np.cos(angle))
             new_solution = self.add_dicts(student, scaled_diff)
-            avg_rewards, sample_new, objective_function_new = self.objective_function(new_solution, sess, self.max)
+            avg_rewards, sample_new, objective_function_new = self.objective_function(new_solution, sess, idx)
             if avg_rewards < self.avg_rewards: 
                 sample_new, objective_function_new = self.update_teacher(iteration, sess, avg_rewards, population)
             if objective_function_new < self.objective_function_list_score[idx]:
@@ -376,72 +306,13 @@ class MTLBO():
         # for i in range(len(self.objective_function_list_score)):
         #     logging.info(f"{-np.mean(samples_data[i]['rewards'])},{i},{index},{self.objective_function_list_score[i]}")  
         ret = np.array([])
-        if index == self.batch_size-1:
-            for i in range(len(samples_data)):
+        if index == self.batch_size:
+            for i in range(self.batch_size):
                 ret = np.concatenate((ret, np.sum(samples_data[i]['rewards'], axis=-1)), axis=-1)
         else:
-            for i in range(len(samples_data)-1):
+            for i in range(self.batch_size):
                 ret = np.concatenate((ret, np.sum(samples_data[i]['rewards'], axis=-1)), axis=-1)
         avg_reward = np.mean(ret)
         
         return -avg_reward, samples_data[index], -np.mean(samples_data[index]['rewards'])
     
-    def UpdatePPOTarget(self, task_samples, batch_size=50):
-        total_policy_losses = []
-        total_value_losses = []
-        for i in range(self.meta_batch_size):
-            policy_losses, value_losses = self.UpdatePPOTargetPerTask(task_samples[i], i, batch_size)
-            total_policy_losses.append(policy_losses)
-            total_value_losses.append(value_losses)
-
-        return total_policy_losses, total_value_losses
-
-    def UpdatePPOTargetPerTask(self, task_samples, task_id, batch_size=50):
-        policy_losses = []
-        value_losses = []
-
-        batch_number = int(task_samples['observations'].shape[0] / batch_size)
-        self.update_numbers = batch_number
-        #:q!
-        # print("update number is: ", self.update_numbers)
-        #observations = task_samples['observations']
-
-        shift_actions = np.column_stack(
-                    (np.zeros(task_samples['actions'].shape[0], dtype=np.int32), task_samples['actions'][:, 0:-1]))
-
-        observations_batchs = np.split(np.array(task_samples['observations']), batch_number)
-        actions_batchs = np.split(np.array(task_samples['actions']), batch_number)
-        shift_action_batchs = np.split(np.array(shift_actions), batch_number)
-
-        old_logits_batchs = np.split(np.array(task_samples["logits"], dtype=np.float32 ), batch_number)
-        advs_batchs = np.split(np.array(task_samples['advantages'], dtype=np.float32), batch_number)
-        oldvpred = np.split(np.array(task_samples['values'], dtype=np.float32), batch_number)
-        returns = np.split(np.array(task_samples['returns'], dtype=np.float32), batch_number)
-
-        sess = tf.compat.v1.get_default_session()
-
-        vf_loss = 0.0
-        pg_loss = 0.0
-        # copy_policy.set_weights(self.policy.get_weights())
-        for i in range(self.num_inner_grad_steps):
-            # action, old_logits, _ = copy_policy(observations)
-            for old_logits, old_v, observations, actions, shift_actions, advs, r in zip(old_logits_batchs, oldvpred, observations_batchs, actions_batchs,
-                                                                                        shift_action_batchs, advs_batchs, returns):
-                decoder_full_length = np.array([observations.shape[1]] * observations.shape[0], dtype=np.int32)
-
-                feed_dict = {self.old_logits[task_id]: old_logits, self.old_v[task_id]: old_v, self.obs[task_id]: observations, self.actions[task_id]: actions,
-                            self.decoder_inputs[task_id]: shift_actions,
-                             self.decoder_full_length[task_id]: decoder_full_length, self.advs[task_id]: advs, self.r[task_id]: r}
-
-                _, value_loss, policy_loss = sess.run([self._train[task_id], self.vf_loss[task_id], self.surr_obj[task_id]], feed_dict=feed_dict)
-
-                vf_loss += value_loss
-                pg_loss += policy_loss
-
-            vf_loss = vf_loss / float(self.num_inner_grad_steps)
-            pg_loss = pg_loss / float(self.num_inner_grad_steps)
-
-            value_losses.append(vf_loss)
-            policy_losses.append(pg_loss)
-
-        return policy_losses, value_losses

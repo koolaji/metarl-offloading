@@ -82,8 +82,6 @@ class Seq2SeqNetwork:
         self.is_attention = hparams.is_attention
 
         self.unit_type = hparams.unit_type
-
-        # default setting
         self.mode = tf.contrib.learn.ModeKeys.TRAIN
 
         self.num_layers = hparams.num_layers
@@ -105,7 +103,6 @@ class Seq2SeqNetwork:
                 [self.n_features,
                  self.encoder_hidden_unit],
                 -1.0, 1.0), dtype=tf.float32)
-            # using a fully connected layer as embeddings
             self.encoder_embeddings = tf.contrib.layers.fully_connected(self.encoder_inputs,
                                                                         self.encoder_hidden_unit,
                                                                         activation_fn = None,
@@ -120,7 +117,6 @@ class Seq2SeqNetwork:
             self.output_layer = tf.compat.v1.layers.Dense(self.n_features, use_bias=False, name="output_projection")
             self.encoder_outputs, self.encoder_state = self.create_encoder(hparams)
 
-            # training decoder
             self.decoder_outputs, self.decoder_state = self.create_decoder(hparams, self.encoder_outputs,
                                                                            self.encoder_state, model="train")
             self.decoder_logits = self.decoder_outputs.rnn_output
@@ -286,25 +282,44 @@ class Seq2SeqPolicy:
         self.decoder_full_length = tf.compat.v1.placeholder(shape=[None], dtype=tf.int32,
                                                             name="decoder_full_length"+name)
 
-        self.action_dim = vocab_size # number of possible action in our case means two action (local or MEC) 
+        self.action_dim = vocab_size 
         self.name = name
+        # hparams = tf.contrib.training.HParams(
+        #     unit_type="lstm", 
+        #     encoder_units=encoder_units,
+        #     decoder_units=decoder_units,
+
+        #     n_features=vocab_size,
+        #     time_major=False,
+        #     is_attention=True,
+        #     forget_bias=1.0,
+        #     dropout=0,
+        #     num_gpus=1,
+        #     num_layers=2,
+        #     num_residual_layers=0,
+        #     start_token=0,
+        #     end_token=2,
+        #     is_bidencoder=False
+        # )
+        unit_type="peephole_lstm"
         hparams = tf.contrib.training.HParams(
-            unit_type="lstm", # layer_norm_lstm or Gru
-            encoder_units=encoder_units,
-            decoder_units=decoder_units,
+            unit_type=unit_type, 
+            encoder_units=256,
+            decoder_units=256,
 
             n_features=vocab_size,
             time_major=False,
             is_attention=True,
             forget_bias=1.0,
-            dropout=0,
+            dropout=0.1,
             num_gpus=1,
-            num_layers=2,
-            num_residual_layers=0,
+            num_layers=3,
+            num_residual_layers=2,
             start_token=0,
             end_token=2,
-            is_bidencoder=False
+            is_bidencoder=True
         )
+        
         self.network = Seq2SeqNetwork(hparams=hparams, reuse=tf.compat.v1.AUTO_REUSE,
                  encoder_inputs=self.obs,
                  decoder_inputs=self.decoder_inputs,
@@ -406,7 +421,8 @@ class MetaSeq2SeqPolicy:
 
     def get_actions(self, observations):
         logging.debug('Start MetaSeq2SeqPolicy get_actions')
-        assert len(observations) == self.meta_batch_size
+        # print()
+        # assert len(observations) == self.meta_batch_size
 
         meta_actions = []
         meta_logits = []
@@ -428,132 +444,23 @@ class MetaSeq2SeqPolicy:
     @property
     def distribution(self):
         return self._dist
-    
-    # def get_params(self, sess):
-    #     """Get the current parameters of the policy."""
-    #     # logging.info('get_params ')
-    #     # with tf.compat.v1.Session() as sess:
-    #     sess.run(tf.compat.v1.global_variables_initializer())
-    #     variables = self.core_policy.get_trainable_variables()
-    #     return {v.name: sess.run(v) for v in variables}
-
-    # def set_params(self, new_params, sess):
-    #         """Set the policy parameters to new values."""
-    #     #with tf.compat.v1.Session() as sess:
-    #         sess = sess or  tf.compat.v1.get_default_session()
-    #         sess.run(tf.compat.v1.global_variables_initializer())
-    #         for var in self.core_policy.get_trainable_variables():
-    #             value = new_params[var.name]
-    #             var.load(value, sess)
-
-    #def set_params(self, new_params, sess=None):
-    #    """Set the policy parameters to new values."""
-    #    sess = sess or  tf.compat.v1.get_default_session()
-    #    for var in self.core_policy.get_trainable_variables():
-    #        value = new_params[var.name]
-    #        sess.run(var.assign(value))
-
-    # def get_random_params(self, sess):
-    # #         logging.info('get_random_params ')
-    # #     # with tf.compat.v1.Session() as sess:
-    # #     #     sess.run(tf.compat.v1.global_variables_initializer())
-    # #         params = self.get_params(sess)
-    # #         random_params = {}
-    # #         # logging.info('get_random_params %s %s', str(len(params)), type(params))
-    # #         for key, value in params.items():
-    # #             np.random.seed(None)
-    # #             random_value = np.random.randn(*value.shape)
-    # #             # logging.info(f"Random value for {value.shape} key {key}")
-    # #             random_params[key] = random_value            
-    # #         return random_params
-    #     # Randomly select an index from the list of meta_policies
-    #     random_index = np.random.randint(0, len(self.meta_policy.meta_policies))
-    #     # Return the randomly selected policy
-    #     return self.meta_policy.meta_policies[random_index], random_index
-
-    # def set_params(self, new_params, index, sess=None):
-    #     """Set the policy parameters to new values for a specific policy."""
-    #     # sess = sess or tf.compat.v1.get_default_session()
-    #     # Get the specific policy using the provided index
-    #     specific_policy = self.meta_policies[index]
-        
-    #     # Compile a regular expression pattern to match the prefix
-    #     prefix_pattern = re.compile(r'^task_[0-9]_policy/')
-        
-    #     # Loop through each key-value pair in new_params
-    #     for key, value in new_params.items():
-    #         # Remove the prefix from the key to get the variable name
-    #         var_name = prefix_pattern.sub('', key)  # This line replaces the prefix with an empty string
-            
-    #         # Locate the variable within the specific policy
-    #         var = next((v for v in specific_policy.network.get_trainable_variables() if prefix_pattern.sub('', v.name) == var_name), None)
-    #         if var is not None:
-    #             # Ensure the shapes match before assignment
-    #             assert var.get_shape() == value.shape, f"Shape mismatch: {var.get_shape()} vs {value.shape}"
-    #             sess.run(var.assign(value))
-    #         else:
-    #             print(f"Variable {var_name} not found in specific_policy")
-            
+               
     def select_random_policy(self, batch_size):
-        # Get the set of all indices
         all_indices = set(range(1, batch_size))
-        # Compute the set of available indices by removing the selected indices from all indices
         available_indices = all_indices - self.selected_indices
-        # If all indices have been selected, reset the selected indices set
         if not available_indices:
             self.selected_indices = set()
             available_indices = all_indices
-        
-        # Now, select a random index from the available indices
         random_index = np.random.choice(list(available_indices))
-        # Add the selected index to the selected_indices set
         self.selected_indices.add(random_index)
-        
-        # Return the randomly selected index
         return random_index
     
 
     def get_params(self, sess, index):
         """Get the current parameters of the policy."""
-        # logging.info('get_params ')
-        # with tf.compat.v1.Session() as sess:
-        # sess.run(tf.compat.v1.global_variables_initializer())
         variables = self.meta_policies[index].network.get_trainable_variables()
         return {v.name: sess.run(v) for v in variables}
     
-    # def set_params(self, new_params, index, sess=None):
-    #     """Set the policy parameters to new values for a specific policy."""
-    #     # Get the specific policy using the provided index
-    #     specific_policy = self.meta_policies[index]
-
-    #     # Define the new prefix based on the provided index
-    #     new_prefix = f'task_{index}_policy/'
-    #     # print(new_prefix)
-    #     # Add the new prefix to keys that don't already have it
-    #     updated_params = {new_prefix + re.sub(r'^task_[0-9]{1,2}_policy/', '', key): value for key, value in new_params.items()}
-    #     # updated_params = {new_prefix + key if not key.startswith(new_prefix) else key: value for key, value in new_params.items()}
-
-    #     # Prepare a list to hold the assignment operations
-    #     assign_ops = []
-
-    #     # Get the list of trainable variables
-    #     trainable_vars = {var.name: var for var in specific_policy.network.get_trainable_variables()}
-
-    #     # Loop through each key-value pair in updated_params
-    #     for key, value in updated_params.items():
-    #         # Locate the variable within the specific policy
-    #         var = trainable_vars.get(key, None)
-    #         if var is not None:
-    #             # Create the assignment operation and add it to the list
-    #             assign_ops.append(tf.assign(var, value))
-    #         else:
-    #             for i in trainable_vars:
-    #                 print(i)
-    #             # If the variable is not found, raise an error
-    #             raise ValueError(f"Variable {key} not found in specific_policy{index}")
-
-    #     # Now perform all the assignments in one operation
-    #     sess.run(assign_ops)
     def set_params(self, new_params, index, sess=None):
         self.assign_ops_dict = {}
         specific_policy = self.meta_policies[index]
@@ -561,101 +468,43 @@ class MetaSeq2SeqPolicy:
         updated_params = {new_prefix + re.sub(r'^task_[0-9]{1,2}_policy/', '', key): value for key, value in new_params.items()}
         trainable_vars = {var.name: var for var in specific_policy.network.get_trainable_variables()}
 
-        # Check if assignment operations for this index already exist
         if index not in self.assign_ops_dict:
-            # Create assignment operations and store them in the dictionary
             assign_ops = []
             for key in updated_params.keys():
                 var = trainable_vars.get(key, None)
                 if var is not None:
-                    placeholder = tf.placeholder(var.dtype, shape=var.get_shape())  # create a placeholder
-                    assign_op = tf.assign(var, placeholder)  # create assign op using the placeholder
+                    placeholder = tf.placeholder(var.dtype, shape=var.get_shape())  
+                    assign_op = tf.assign(var, placeholder)  
                     assign_ops.append((assign_op, placeholder))
                 else:
                     raise ValueError(f"Variable {key} not found in specific_policy{index}")
             self.assign_ops_dict[index] = assign_ops
-
-        # Now use the stored assignment operations
         assign_ops = self.assign_ops_dict[index]
         feed_dict = {placeholder: updated_params[key] for (assign_op, placeholder), key in zip(assign_ops, updated_params.keys())}
-        sess.run([assign_op for assign_op, placeholder in assign_ops], feed_dict=feed_dict)  # perform all assignments in one operation
+        sess.run([assign_op for assign_op, placeholder in assign_ops], feed_dict=feed_dict)  
         
-
-        # # Now perform all the assignments in one operation
-        # assign_ops = [var.assign(value) for var, value in zip(vars_to_update, values_to_assign)]
-        # sess.run(assign_ops)
-
-
-    # def get_random_params(self, policy):
-    #     # Assuming get_params is a method that retrieves the current parameters of a policy
-    #     # current_params = policy.get_params(sess)
-    #     random_params = {}
-    #     for key, value in policy:
-    #         np.random.seed(None)  # Resetting the random seed at each iteration may not be necessary
-    #         random_value = np.random.randn(*value.shape)
-    #         random_params[key] = random_value
-    #     return random_params
-    
-    # def evaluate_policy(self, policy_index, environment):
-    #     """Evaluate the policy with the given index on the provided environment."""
-    #     # Get the policy from the meta_policies list using the index
-    #     policy = self.meta_policies[policy_index]
-        
-    #     # Reset the environment to start a new evaluation episode
-    #     state = environment.reset()
-        
-    #     # Initialize a variable to keep track of the cumulative reward
-    #     cumulative_reward = 0
-        
-    #     # Assume the environment has a method `is_done` to check if the episode is over
-    #     while not environment.is_done():
-    #         # Get the action from the policy (you'll need to implement a method to do this)
-    #         action, _, _ = policy.get_actions(state)
-            
-    #         # Assume the environment has a method `step` to execute the action and return a reward
-    #         next_state, reward, _ = environment.step(action)
-            
-    #         # Update the cumulative reward
-    #         cumulative_reward += reward
-            
-    #         # Update the state for the next iteration
-    #         state = next_state
-        
-    #     return cumulative_reward
-
-
     def set_params_core(self, new_params, sess=None):
-        # sess = sess or tf.compat.v1.get_default_session()
-
-        # Remove any existing 'task_[0-9]{1,2}_policy/' prefix and add 'core_policy/' prefix
         new_params_prefixed = {
             'core_policy/' + re.sub(r'^task_[0-9]{1,2}_policy/', '', key): value
             for key, value in new_params.items()
         }
 
-        # Initialize assign_ops_dict_core if it doesn't exist
         if not hasattr(self, 'assign_ops_dict_core'):
             self.assign_ops_dict_core = []
-
-        # Create assignment operations if assign_ops_dict_core is empty
         if not self.assign_ops_dict_core:
             assign_ops = []
             for var in self.core_policy.get_trainable_variables():
-                placeholder = tf.placeholder(var.dtype, shape=var.get_shape())  # create a placeholder
-                assign_op = tf.assign(var, placeholder)  # create assign op using the placeholder
+                placeholder = tf.placeholder(var.dtype, shape=var.get_shape())  
+                assign_op = tf.assign(var, placeholder)  
                 assign_ops.append((assign_op, placeholder))
-            self.assign_ops_dict_core = assign_ops  # Store the assignment operations
+            self.assign_ops_dict_core = assign_ops  
 
-        # Prepare the feed_dict with the correct variable names and corresponding new values
         feed_dict = {}
         for (assign_op, placeholder), var in zip(self.assign_ops_dict_core, self.core_policy.get_trainable_variables()):
             var_name = var.name
-            # Use the new_params_prefixed dictionary for the feed_dict
             if var_name in new_params_prefixed:
                 feed_dict[placeholder] = new_params_prefixed[var_name]
             else:
                 raise KeyError(f"Variable {var_name} not found in new_params_prefixed. Make sure new_params contains this key.")
-
-        # Execute the assignment operations with the prepared feed_dict
         sess.run([assign_op for assign_op, _ in self.assign_ops_dict_core], feed_dict=feed_dict)
 

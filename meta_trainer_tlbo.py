@@ -35,6 +35,7 @@ class Trainer(object):
         self.save_interval = save_interval
         self.batch_size = batch_size
         self.teacher = ''
+        self.avg_rewards= 99999999
     def train(self, sess):
         """
         Implement the TLBO training process for task offloading problem
@@ -56,73 +57,66 @@ class Trainer(object):
             logging.info("sampled path length is: %s", len(paths[0]))
 
             # """ ----------------- Processing Samples ---------------------"""
-            # logger.info("Processing samples...")
             new_samples_data=self.samples_data = self.sampler_processor.process_samples(paths, log=False, log_prefix='')
-            for _ in range(self.batch_size-1):
+            for _ in range(self.batch_size):
                 random_params = self.policy.get_params(sess, index=_ )
                 self.population.append(random_params)
             logging.debug("\n ---------------- Iteration %d ----------------" % itr)
             logging.debug("Sampling set of tasks/goals for this meta-batch...")
-            # logging.info("Sampling set of tasks/goals for this meta-batch...")
-            greedy_run_time = [self.greedy_finish_time[x] for x in task_ids[:self.batch_size-1]]
+            greedy_run_time = [self.greedy_finish_time[x] for x in task_ids[:self.batch_size]]
             logger.logkv('Average greedy latency,', np.mean(greedy_run_time))
 
             latency = np.array([])
             ret = np.array([])
-            for i in range(len(new_samples_data)-1):
+            for i in range(self.batch_size):
                 ret = np.concatenate((ret, np.sum(new_samples_data[i]['rewards'], axis=-1)), axis=-1)
-                latency = np.concatenate((latency, new_samples_data[i]['finish_time']), axis=-1)
             old_avg_reward = -np.mean(ret)
-            old_avg_latency = np.mean(latency)
             new_start =True
-            # tlbo.avg_rewards = 9999999
-            # self.teacher_reward = 999999999
-            for i in range(10):
-                tlbo.teacher_phase(population=self.population, iteration=i, max_iterations=10, sess=sess, new_start=new_start)
-                tlbo.learner_phase(population=self.population, iteration=i, max_iterations=10, sess=sess)   
-                # if (not tlbo.change) and tlbo.teacher != []:
-                #     break
+            for i in range(self.batch_size):
+                tlbo.teacher_phase(population=self.population, iteration=i, max_iterations=self.batch_size, sess=sess, new_start=new_start)
+                tlbo.learner_phase(population=self.population, iteration=i, max_iterations=self.batch_size, sess=sess)   
+                if (not tlbo.change) and tlbo.teacher != []:
+                    break
                 new_start =False
             self.policy.set_params_core(tlbo.teacher, sess)
-            self.policy.async_parameters()
-            # policy_losses, value_losses = self.tlbo.UpdatePPOTarget(new_samples_data, batch_size=self.inner_batch_size )
-
+            for index in range(self.batch_size):
+                self.policy.set_params(tlbo.teacher, sess=sess, index=index)
+            # self.policy.async_parameters()
             """ ------------------- Logging Stuff --------------------------"""
             paths = self.sampler.obtain_samples(log=False, log_prefix='')
             new_samples_data = self.sampler_processor.process_samples(paths, log="all", log_prefix='')
             """ ------------------- Logging Stuff --------------------------"""
             latency = np.array([])
             ret = np.array([])
-            for i in range(len(new_samples_data)-1):
+            for i in range(self.batch_size):
                 ret = np.concatenate((ret, np.sum(new_samples_data[i]['rewards'], axis=-1)), axis=-1)
-                latency = np.concatenate((latency, new_samples_data[i]['finish_time']), axis=-1)
             new_avg_reward = -np.mean(ret)
-            new_avg_latency = np.mean(latency)
-            print(f'old_avg_reward {old_avg_reward } old_avg_latency {old_avg_latency} ')
-            print(f'new_avg_reward {new_avg_reward } new_avg_latency {new_avg_latency} ')
-            print(f'diff_avg_reward {new_avg_reward -  old_avg_reward } diff_avg_latency {new_avg_latency - old_avg_latency} ')
+            print(f'old_avg_reward {old_avg_reward } old_avg_latency {old_avg_reward} ')
+            print(f'new_avg_reward {new_avg_reward } new_avg_latency {new_avg_reward} ')
+            print(f'diff_avg_reward {new_avg_reward -  old_avg_reward } diff_avg_latency {new_avg_reward - old_avg_reward} ')
             if not self.teacher:
                 self.teacher = tlbo.teacher
-            if new_avg_latency < old_avg_latency :
-                improve = improve +1 
-                self.teacher = tlbo.teacher
+            if new_avg_reward < old_avg_reward :
+                improve = improve +1
             else:
                 not_improve = not_improve + 1
-                # for i in range(len(new_samples_data)-1):
-                #     random_params = self.policy.set_params(sess=sess, new_params=self.population[i], index=i )
-                # self.policy.set_params_core(self.teacher, sess)
-                # self.policy.async_parameters()
+            if  new_avg_reward <  self.avg_rewards:
+                self.teacher = tlbo.teacher
+            else:
+                self.policy.set_params_core(self.teacher, sess)
+                for index in range(self.batch_size):
+                    self.policy.set_params(self.teacher, sess=sess, index=index)
             print(f' improve = {improve} not_improve {not_improve}')
             # paths = self.sampler.obtain_samples(log=False, log_prefix='')
             # new_samples_data = self.sampler_processor.process_samples(paths, log="all", log_prefix='')
             ret = np.array([])
-            for i in range(len(new_samples_data)-1):
+            for i in range(self.batch_size):
                 ret = np.concatenate((ret, np.sum(new_samples_data[i]['rewards'], axis=-1)), axis=-1)
 
             avg_reward = np.mean(ret)
 
             latency = np.array([])
-            for i in range(len(new_samples_data)-1):
+            for i in range(self.batch_size):
                 latency = np.concatenate((latency, new_samples_data[i]['finish_time']), axis=-1)
 
             avg_latency = np.mean(latency)
@@ -173,19 +167,19 @@ if __name__ == "__main__":
                                     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_5/random.20.",
                                     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_6/random.20.",
                                     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_7/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_9/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_10/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_11/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_13/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_14/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_15/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_17/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_18/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_19/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_21/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_22/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_23/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_25/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_9/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_10/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_11/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_13/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_14/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_15/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_17/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_18/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_19/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_21/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_22/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_23/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_25/random.20.",
                                 ],
                                 time_major=False)
     logging.info('start of greedy_solution')
