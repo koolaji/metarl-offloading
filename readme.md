@@ -9,13 +9,13 @@ sudo apt-get update && sudo apt-get install cmake libopenmpi-dev python3-dev zli
 
 ### Create Conda Environment
 ```bash 
-conda create --name tf-1.15 anaconda python=3.6
-conda activate tf-1.15
+conda create --name tf-latest anaconda python=3.8
+conda activate tf-latest
 ```
 
 ### Install Tensorflow-1.15 GPU or CPU
 ```bash 
-pip install tensorflow-gpu==1.15
+pip install tensorflow
 ```
 
 or
