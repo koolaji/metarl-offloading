@@ -1,15 +1,12 @@
 import logging
-logging.getLogger('tensorflow').disabled = True
 import os
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 import tensorflow as tf
 import numpy as np
-import time
+import gc
 from utils import logger
 import warnings
 warnings.filterwarnings("ignore", category=UserWarning, module="gym")
-from samplers.vectorized_env_executor import  MetaIterativeEnvExecutor
-import gc
+
 class Trainer(object):
     def __init__(self, 
                  tlbo,
@@ -23,11 +20,11 @@ class Trainer(object):
                  inner_batch_size=500,
                  save_interval=10,
                  batch_size=10):
-        self.tlbo = tlbo
-        self.env = env
-        self.sampler = sampler
-        self.sampler_processor = sampler_processor
-        self.policy = policy
+        self.tlbo = tlbo  
+        self.env = env  
+        self.sampler = sampler  
+        self.sampler_processor = sampler_processor 
+        self.policy = policy 
         self.n_itr = n_itr
         self.start_itr = start_itr
         self.inner_batch_size = inner_batch_size
@@ -35,19 +32,19 @@ class Trainer(object):
         self.save_interval = save_interval
         self.batch_size = batch_size
         self.teacher = ''
-        self.avg_rewards= 99999999
-    def train(self, sess):
-        """
-        Implement the TLBO training process for task offloading problem
-        """
+        self.avg_rewards = 99999999
+class Trainer(object):
+    # ... [initialization method __init__ remains unchanged]
+
+    def train(self):
         logging.debug('Start train')
         avg_ret = []
         avg_loss = []
         avg_latencies = []
 
         self.population = []
-        improve =0
-        not_improve =0
+        improve = 0
+        not_improve = 0
         for itr in range(self.start_itr, self.n_itr):
             gc.collect()
             self.population = []
@@ -56,11 +53,13 @@ class Trainer(object):
             paths = self.sampler.obtain_samples(log=False, log_prefix='')
             logging.info("sampled path length is: %s", len(paths[0]))
 
-            # """ ----------------- Processing Samples ---------------------"""
-            new_samples_data=self.samples_data = self.sampler_processor.process_samples(paths, log=False, log_prefix='')
+            # Processing Samples
+            new_samples_data = self.samples_data = self.sampler_processor.process_samples(paths, log=False, log_prefix='')
             for _ in range(self.batch_size):
-                random_params = self.policy.get_params(sess, index=_ )
+                # Adapted for TensorFlow 2 (no session needed)
+                random_params = self.policy.get_params(index=_)
                 self.population.append(random_params)
+
             logging.debug("\n ---------------- Iteration %d ----------------" % itr)
             logging.debug("Sampling set of tasks/goals for this meta-batch...")
             greedy_run_time = [self.greedy_finish_time[x] for x in task_ids[:self.batch_size]]
@@ -71,44 +70,48 @@ class Trainer(object):
             for i in range(self.batch_size):
                 ret = np.concatenate((ret, np.sum(new_samples_data[i]['rewards'], axis=-1)), axis=-1)
             old_avg_reward = -np.mean(ret)
-            new_start =True
+            new_start = True
             for i in range(self.batch_size):
-                tlbo.teacher_phase(population=self.population, iteration=i, max_iterations=self.batch_size, sess=sess, new_start=new_start)
-                tlbo.learner_phase(population=self.population, iteration=i, max_iterations=self.batch_size, sess=sess)   
-                if (not tlbo.change) and tlbo.teacher != []:
+                # Adapted for TensorFlow 2 (no session needed)
+                self.tlbo.teacher_phase(population=self.population, iteration=i, max_iterations=self.batch_size, new_start=new_start)
+                self.tlbo.learner_phase(population=self.population, iteration=i, max_iterations=self.batch_size)   
+                if (not self.tlbo.change) and self.tlbo.teacher != []:
                     break
-                new_start =False
-            self.policy.set_params_core(tlbo.teacher, sess)
+                new_start = False
+
+            # Adapted for TensorFlow 2 (no session needed)
+            self.policy.set_params_core(self.tlbo.teacher)
             for index in range(self.batch_size):
-                self.policy.set_params(tlbo.teacher, sess=sess, index=index)
-            # self.policy.async_parameters()
-            """ ------------------- Logging Stuff --------------------------"""
+                self.policy.set_params(self.tlbo.teacher, index=index)
+
+            # Logging Stuff
             paths = self.sampler.obtain_samples(log=False, log_prefix='')
             new_samples_data = self.sampler_processor.process_samples(paths, log="all", log_prefix='')
-            """ ------------------- Logging Stuff --------------------------"""
+
             latency = np.array([])
             ret = np.array([])
             for i in range(self.batch_size):
                 ret = np.concatenate((ret, np.sum(new_samples_data[i]['rewards'], axis=-1)), axis=-1)
             new_avg_reward = -np.mean(ret)
-            print(f'old_avg_reward {old_avg_reward } old_avg_latency {old_avg_reward} ')
-            print(f'new_avg_reward {new_avg_reward } new_avg_latency {new_avg_reward} ')
-            print(f'diff_avg_reward {new_avg_reward -  old_avg_reward } diff_avg_latency {new_avg_reward - old_avg_reward} ')
+            print(f'old_avg_reward {old_avg_reward} old_avg_latency {old_avg_reward}')
+            print(f'new_avg_reward {new_avg_reward} new_avg_latency {new_avg_reward}')
+            print(f'diff_avg_reward {new_avg_reward - old_avg_reward} diff_avg_latency {new_avg_reward - old_avg_reward}')
             if not self.teacher:
-                self.teacher = tlbo.teacher
-            if new_avg_reward < old_avg_reward :
-                improve = improve +1
+                self.teacher = self.tlbo.teacher
+            if new_avg_reward < old_avg_reward:
+                improve += 1
             else:
-                not_improve = not_improve + 1
-            if  new_avg_reward <  self.avg_rewards:
-                self.teacher = tlbo.teacher
+                not_improve += 1
+            if new_avg_reward < self.avg_rewards:
+                self.teacher = self.tlbo.teacher
             else:
-                self.policy.set_params_core(self.teacher, sess)
+                # Adapted for TensorFlow 2 (no session needed)
+                self.policy.set_params_core(self.teacher)
                 for index in range(self.batch_size):
-                    self.policy.set_params(self.teacher, sess=sess, index=index)
+                    self.policy.set_params(self.teacher, index=index)
+
             print(f' improve = {improve} not_improve {not_improve}')
-            # paths = self.sampler.obtain_samples(log=False, log_prefix='')
-            # new_samples_data = self.sampler_processor.process_samples(paths, log="all", log_prefix='')
+
             ret = np.array([])
             for i in range(self.batch_size):
                 ret = np.concatenate((ret, np.sum(new_samples_data[i]['rewards'], axis=-1)), axis=-1)
@@ -122,19 +125,20 @@ class Trainer(object):
             avg_latency = np.mean(latency)
             avg_latencies.append(avg_latency)
 
-
             logger.logkv('Itr', itr)
             logger.logkv('Average reward, ', avg_reward)
             logger.logkv('Average latency,', avg_latency)
             logger.dumpkvs()
-            avg_ret.append(np.mean(avg_reward))
+            avg_ret.append(avg_reward)
 
             if itr % self.save_interval == 0:
-                self.policy.set_params_core(tlbo.teacher, sess)
-                self.policy.core_policy.save_variables(save_path="./meta_model_inner_step1/meta_model_"+str(itr)+".ckpt")
+                # Saving the model in TensorFlow 2 using the Keras save method
+                self.policy.core_policy.save("./meta_model_inner_step1/meta_model_"+str(itr))
 
-        self.policy.core_policy.save_variables(save_path="./meta_model_inner_step1/meta_model_final.ckpt")
+        # Final model saving using Keras save method
+        self.policy.core_policy.save("./meta_model_inner_step1/meta_model_final")
         return avg_ret, avg_loss, avg_latencies
+
 
 
 if __name__ == "__main__":
@@ -146,8 +150,13 @@ if __name__ == "__main__":
     from baselines.vf_baseline import ValueFunctionBaseline
     # from meta_algos.MRLCO import MRLCO
     from meta_algos.MTLBO import MTLBO
+    import tensorflow as tf
+    import logging
+    import numpy as np
+    from utils import logger
+
     tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.INFO)
-    logging.basicConfig(level=logging.INFO, filename='meta_train.log',  filemode='a',)
+    logging.basicConfig(level=logging.INFO, filename='meta_train.log', filemode='a',)
     logging.root.setLevel(logging.INFO)
     logger.configure(dir="./meta_offloading20_log-inner_step1/", format_strs=['stdout', 'log', 'csv'])
     META_BATCH_SIZE = 5
@@ -166,20 +175,7 @@ if __name__ == "__main__":
                                     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_3/random.20.",
                                     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_5/random.20.",
                                     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_6/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_7/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_9/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_10/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_11/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_13/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_14/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_15/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_17/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_18/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_19/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_21/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_22/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_23/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_25/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_7/random.20."
                                 ],
                                 time_major=False)
     logging.info('start of greedy_solution')
@@ -203,18 +199,17 @@ if __name__ == "__main__":
         rollouts_per_meta_task=1,  
         meta_batch_size=META_BATCH_SIZE,
         max_path_length=20000,
-        parallel=False,
+        parallel=False
     )
     logging.info('sampler_processor')
     sampler_processor = Seq2SeqMetaSamplerProcessor(baseline=baseline,
-                                                   discount=0.99,
-                                                   gae_lambda=0.95,
-                                                   normalize_adv=True,
-                                                   positive_adv=False)
+                                                    discount=0.99,
+                                                    gae_lambda=0.95,
+                                                    normalize_adv=True,
+                                                    positive_adv=False)
 
-    
     logging.info('tlbo')
-    tlbo = MTLBO (policy=meta_policy, 
+    tlbo = MTLBO(policy=meta_policy, 
                  env=env, 
                  sampler=sampler, 
                  sampler_processor=sampler_processor,
@@ -223,21 +218,21 @@ if __name__ == "__main__":
                  population_index=[])
     logging.info('trainer')
     trainer = Trainer(
-                      tlbo=tlbo,
-                      env=env,
-                      sampler=sampler,
-                      sampler_processor=sampler_processor,
-                      policy=meta_policy,
-                      n_itr=2000,
-                      greedy_finish_time= greedy_finish_time,
-                      start_itr=0,
-                      inner_batch_size=1000,
-                      batch_size=META_BATCH_SIZE)
+        tlbo=tlbo,
+        env=env,
+        sampler=sampler,
+        sampler_processor=sampler_processor,
+        policy=meta_policy,
+        n_itr=2000,
+        greedy_finish_time=greedy_finish_time,
+        start_itr=0,
+        inner_batch_size=1000,
+        batch_size=META_BATCH_SIZE)
 
     with tf.device('/device:XLA_GPU:0'):
-      with tf.compat.v1.Session() as sess:
-        sess.run(tf.global_variables_initializer())
-        avg_ret, avg_loss, avg_latencies = trainer.train(sess)
-        logging.debug("final result %s, %s, %s ", avg_ret, avg_loss, avg_latencies)
+        with tf.compat.v1.Session() as sess:
+            sess.run(tf.global_variables_initializer())
+            avg_ret, avg_loss, avg_latencies = trainer.train(sess)
+            logging.debug("final result %s, %s, %s ", avg_ret, avg_loss, avg_latencies)
 
 

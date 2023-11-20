@@ -31,18 +31,18 @@ class MTLBO():
         self.w_start = 0.9  
         self.w_end = 0.01
         
-    def teacher_phase(self, population, iteration, max_iterations, sess, new_start):
+    def teacher_phase(self, population, iteration, max_iterations, new_start):
         self.change = False
         logging.info('teacher_phase')
         if new_start:
             self.avg_rewards=9999999        
             for idx, student in enumerate(population):
-                avg_rewards, sample, score = self.objective_function(student, sess, idx)
+                avg_rewards, sample, score = self.objective_function(student, idx)
                 self.objective_function_list_score[idx]=score
                 self.objective_function_list_sample[idx]=sample
                 if avg_rewards < self.avg_rewards :
                     self.resault_stat = self.calculate_statistics_tensors(population)
-                    sample_new, objective_function_new = self.update_teacher(iteration, sess, avg_rewards, population)
+                    sample_new, objective_function_new = self.update_teacher(iteration, avg_rewards, population)
 
         self.resault_stat = self.calculate_statistics_tensors(population)
         mean_solution_val = np.mean(self.objective_function_list_score)
@@ -68,25 +68,25 @@ class MTLBO():
                 x_new_second = self.scale_dict(diff, np.cos(angle))
                 new_solution = self.add_dicts(x_new_first, x_new_second)            
             
-            avg_rewards, sample_new, objective_function_new = self.objective_function(new_solution, sess, idx)
+            avg_rewards, sample_new, objective_function_new = self.objective_function(new_solution, idx)
             if avg_rewards < self.avg_rewards :
-                    sample_new, objective_function_new = self.update_teacher(iteration, sess, avg_rewards, population)
+                    sample_new, objective_function_new = self.update_teacher(iteration, avg_rewards, population)
             if objective_function_new < self.objective_function_list_score[idx]:
-                    self.update_student(population, iteration, sess, idx, sample_new, objective_function_new, new_solution)
+                    self.update_student(population, iteration, idx, sample_new, objective_function_new, new_solution)
 
-    def update_student(self, population, iteration, sess, idx, sample_new, objective_function_new, new_solution):
+    def update_student(self, population, iteration, idx, sample_new, objective_function_new, new_solution):
         self.change = True
         population[idx] = new_solution
         logging.info(f'{iteration} new = {objective_function_new} old = {self.objective_function_list_score[idx]} teacher = {self.teacher_reward} self.avg_rewards {self.avg_rewards}')
         self.objective_function_list_score[idx] = objective_function_new
         self.objective_function_list_sample[idx] = sample_new
-        self.policy.set_params(new_solution, sess=sess, index=idx)
+        self.policy.set_params(new_solution, index=idx)
 
-    def update_teacher(self, iteration, sess, avg_rewards,population ):
+    def update_teacher(self, iteration, avg_rewards,population ):
         self.change =True
         self.avg_rewards = avg_rewards
         solution_sample = self.calculate_weighted_teacher(population)
-        avg_rewards, sample_new, objective_function_new = self.objective_function(solution_sample, sess=sess, index=self.batch_size-1)
+        avg_rewards, sample_new, objective_function_new = self.objective_function(solution_sample, index=self.batch_size-1)
         # if objective_function_new < self.teacher_reward :
         self.teacher = solution_sample
         self.teacher_reward = objective_function_new
@@ -243,7 +243,7 @@ class MTLBO():
         return result
 
 
-    def learner_phase(self, population, iteration, max_iterations, sess):
+    def learner_phase(self, population, iteration, max_iterations):
         logging.info('learner_phase')
         sorted_indices = sorted(range(len(self.objective_function_list_score)), key=lambda i: self.objective_function_list_score[i], reverse=True)
 
@@ -273,11 +273,11 @@ class MTLBO():
                 scaled_diff = self.scale_dict(diff, rand_num * np.cos(angle))
             
             new_solution = scaled_diff
-            avg_rewards, sample_new, objective_function_new = self.objective_function(new_solution, sess, idx)
+            avg_rewards, sample_new, objective_function_new = self.objective_function(new_solution,  idx)
             if avg_rewards < self.avg_rewards:
-                sample_new, objective_function_new = self.update_teacher(iteration, sess, avg_rewards, population)
+                sample_new, objective_function_new = self.update_teacher(iteration,  avg_rewards, population)
             if objective_function_new < self.objective_function_list_score[idx]:
-                self.update_student(population, iteration, sess, idx, sample_new, objective_function_new, new_solution)
+                self.update_student(population, iteration,  idx, sample_new, objective_function_new, new_solution)
 
         for idx in above_average:  
             student = population[idx]
@@ -288,17 +288,17 @@ class MTLBO():
             angle = (np.pi / 2) * (iteration / max_iterations)
             scaled_diff = self.scale_dict(diff, np.cos(angle))
             new_solution = self.add_dicts(student, scaled_diff)
-            avg_rewards, sample_new, objective_function_new = self.objective_function(new_solution, sess, idx)
+            avg_rewards, sample_new, objective_function_new = self.objective_function(new_solution, idx)
             if avg_rewards < self.avg_rewards: 
-                sample_new, objective_function_new = self.update_teacher(iteration, sess, avg_rewards, population)
+                sample_new, objective_function_new = self.update_teacher(iteration, avg_rewards, population)
             if objective_function_new < self.objective_function_list_score[idx]:
-                self.update_student(population, iteration, sess, idx, sample_new, objective_function_new, new_solution)
+                self.update_student(population, iteration, idx, sample_new, objective_function_new, new_solution)
 
         return self.teacher
     
 
-    def objective_function(self, policy_params, sess, index):
-        self.policy.set_params(policy_params, sess=sess, index=index)
+    def objective_function(self, policy_params, index):
+        self.policy.set_params(policy_params, index=index)
         paths = self.sampler.obtain_samples(log=False, log_prefix='')
         samples_data = self.sampler_processor.process_samples(paths, log=False, log_prefix='')
         # logging.info("################# %s ##################", index)      
