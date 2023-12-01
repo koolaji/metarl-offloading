@@ -56,7 +56,7 @@ class Trainer(object):
             paths = self.sampler.obtain_samples(log=False, log_prefix='')
             logging.info("sampled path length is: %s", len(paths[0]))
 
-            # """ ----------------- Processing Samples ---------------------"""
+        #     # """ ----------------- Processing Samples ---------------------"""
             new_samples_data=self.samples_data = self.sampler_processor.process_samples(paths, log=False, log_prefix='')
             for _ in range(self.batch_size):
                 random_params = self.policy.get_params(sess, index=_ )
@@ -166,7 +166,7 @@ if __name__ == "__main__":
                                     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_3/random.20.",
                                     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_5/random.20.",
                                     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_6/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_7/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_7/random.20.",
                                     # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_9/random.20.",
                                     # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_10/random.20.",
                                     # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_11/random.20.",
@@ -234,8 +234,8 @@ if __name__ == "__main__":
                       inner_batch_size=1000,
                       batch_size=META_BATCH_SIZE)
 
-    with tf.device('/device:XLA_GPU:0'):
-      with tf.compat.v1.Session() as sess:
+    # with tf.device('/device:XLA_GPU:0'):
+    with tf.compat.v1.Session() as sess:
         sess.run(tf.global_variables_initializer())
         avg_ret, avg_loss, avg_latencies = trainer.train(sess)
         logging.debug("final result %s, %s, %s ", avg_ret, avg_loss, avg_latencies)

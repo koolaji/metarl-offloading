@@ -71,7 +71,7 @@ class Seq2SeqNetwork:
                  decoder_inputs,
                  decoder_full_length,
                  decoder_targets):
-        logging.debug('Start Seq2SeqNetwork')
+        logging.info('Start Seq2SeqNetwork')
         self.encoder_hidden_unit = hparams.encoder_units
         self.decoder_hidden_unit = hparams.decoder_units
         self.is_bidencoder = hparams.is_bidencoder
@@ -149,7 +149,7 @@ class Seq2SeqNetwork:
 
     def _build_encoder_cell(self, hparams, num_layers, num_residual_layers, base_gpu=0):
         """Build a multi-layer RNN cell that can be used by encoder."""
-        logging.debug('Start _build_encoder_cell')
+        logging.info('Start _build_encoder_cell')
         return model_helper.create_rnn_cell(
             unit_type=hparams.unit_type,
             num_units=hparams.encoder_units,
@@ -164,7 +164,7 @@ class Seq2SeqNetwork:
 
     def _build_decoder_cell(self, hparams, num_layers, num_residual_layers, base_gpu=0):
         """Build a multi-layer RNN cell that can be used by decoder"""
-        logging.debug('Start _build_decoder_cell')
+        logging.info('Start _build_decoder_cell')
         return model_helper.create_rnn_cell(
             unit_type=hparams.unit_type,
             num_units=hparams.decoder_units,
@@ -273,7 +273,7 @@ class Seq2SeqNetwork:
 class Seq2SeqPolicy:
     def __init__(self, obs_dim, encoder_units,
                  decoder_units, vocab_size, name="pi"):
-        logging.debug('Start Seq2SeqPolicy name=%s' , name)
+        logging.info('Start Seq2SeqPolicy name=%s' , name)
         self.decoder_targets = tf.compat.v1.placeholder(shape=[None, None], dtype=tf.int32,
                                                         name="decoder_targets_ph_"+name)
         self.decoder_inputs = tf.compat.v1.placeholder(shape=[None, None], dtype=tf.int32,
@@ -301,7 +301,7 @@ class Seq2SeqPolicy:
         #     end_token=2,
         #     is_bidencoder=False
         # )
-        unit_type="peephole_lstm"
+        unit_type="lstm"
         hparams = tf.contrib.training.HParams(
             unit_type=unit_type, 
             encoder_units=256,
@@ -311,13 +311,13 @@ class Seq2SeqPolicy:
             time_major=False,
             is_attention=True,
             forget_bias=1.0,
-            dropout=0.1,
+            dropout=0,
             num_gpus=1,
-            num_layers=3,
-            num_residual_layers=2,
+            num_layers=2,
+            num_residual_layers=0,
             start_token=0,
             end_token=2,
-            is_bidencoder=True
+            is_bidencoder=False
         )
         
         self.network = Seq2SeqNetwork(hparams=hparams, reuse=tf.compat.v1.AUTO_REUSE,
@@ -336,14 +336,20 @@ class Seq2SeqPolicy:
     def get_actions(self, observations):
         logging.debug('Start Seq2SeqPolicy get_actions')
         sess = tf.compat.v1.get_default_session()
-
+        # print(observations.mean())
         decoder_full_length = np.array([observations.shape[1]] * observations.shape[0], dtype=np.int32)
-        actions, logits, v_value = sess.run([self.network.sample_decoder_prediction,
-                                             self.network.sample_decoder_logits,
-                                             self.network.sample_vf],
+        #self.greedy_decoder_prediction
+        actions, logits, v_value = sess.run([self.network.greedy_decoder_prediction,
+                                             self.network.greedy_decoder_logits,
+                                             self.network.greedy_vf],
                                             feed_dict={self.obs: observations,
                                                        self.decoder_full_length: decoder_full_length})
-
+        # actions, logits, v_value = sess.run([self.network.sample_decoder_prediction,
+        #                                      self.network.sample_decoder_logits,
+        #                                      self.network.sample_vf],
+        #                                     feed_dict={self.obs: observations,
+        #                                                self.decoder_full_length: decoder_full_length})
+        # print(actions.shape, actions.mean() )
         return actions, logits, v_value
 
     @property
@@ -390,7 +396,7 @@ class Seq2SeqPolicy:
 class MetaSeq2SeqPolicy:
     def __init__(self, meta_batch_size, obs_dim, encoder_units, decoder_units,
                  vocab_size):
-        logging.debug('Start MetaSeq2SeqPolicy')
+        logging.info('Start MetaSeq2SeqPolicy')
         self.meta_batch_size = meta_batch_size
         self.obs_dim = obs_dim
         self.action_dim = vocab_size
