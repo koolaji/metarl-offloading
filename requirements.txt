@@ -1,9 +1,0 @@
-appmap>=1.1.0.dev0
-gym
-graphviz
-pydotplus
-pyprind
-setuptools 
-wheel
-mpi4py
-tensorflow-gpu==1.15
