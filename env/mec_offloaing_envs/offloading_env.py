@@ -1,4 +1,4 @@
-from env.base import MetaEnv
+# from env.base import MetaEnv
 from env.mec_offloaing_envs.offloading_task_graph import OffloadingTaskGraph
 import numpy as np
 import logging
@@ -45,7 +45,7 @@ class Resources(object):
         return _computation_cost(data, self.mec_process_capable)
 
 
-class OffloadingEnvironment(MetaEnv):
+class OffloadingEnvironment(object):
     def __init__(self, resource_cluster, batch_size,
                  graph_number,
                  graph_file_paths, time_major):
