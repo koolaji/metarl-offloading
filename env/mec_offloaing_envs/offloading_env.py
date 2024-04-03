@@ -167,7 +167,7 @@ class OffloadingEnvironment(object):
             else:
                 task_encode_batch = np.array(task_encode_batch)
                 sequence_length = np.asarray([task_encode_batch.shape[1]] * task_encode_batch.shape[0])
-
+                
             decoder_full_lengths.append(sequence_length)
             encoder_lengths.append(sequence_length)
             encoder_batches.append(task_encode_batch)
