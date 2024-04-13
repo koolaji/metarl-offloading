@@ -62,7 +62,7 @@ class LinearBaseline(Baseline):
 
         """
         assert all([target_key in path.keys() for path in paths])
-
+        print("asghar")
         featmat = np.concatenate([self._features(path) for path in paths], axis=0)
         target = np.concatenate([path[target_key] for path in paths], axis=0)
         reg_coeff = self._reg_coeff

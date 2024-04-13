@@ -25,7 +25,7 @@ class Seq2SeqMetaSamplerProcessor(SampleProcessor):
 
         samples_data_meta_batch = []
         all_paths = []
-
+        print("asgharkho")
         for meta_task, paths in paths_meta_batch.items():
 
             # fits baseline, comput advantages and stack path data

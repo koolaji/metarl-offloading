@@ -43,7 +43,9 @@ class Seq2SeSamplerProcessor(SampleProcessor):
         # 2) fit baseline estimator using the path returns and predict the return baselines
         self.baseline.fit(paths, target_key="returns")
         all_path_baselines = [self.baseline.predict(path) for path in paths]
-
+        for path1 in paths:
+            print(path1["value"])
+            print(self.baseline.predict(path1))
         # 3) compute advantages and adjusted rewards
         paths = self._compute_advantages(paths, all_path_baselines)
 
