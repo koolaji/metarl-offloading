@@ -88,9 +88,8 @@ class Seq2SeqMetaSampler(Sampler):
             t = time.time()
             # obs_per_task = np.split(np.asarray(obses), self.meta_batch_size)
             obs_per_task = np.array(obses)
-            policy.train(obs_per_task)
+
             actions, logits, values = policy.get_actions(obs_per_task)
-            
             policy_time += time.time() - t
 
             # step environments

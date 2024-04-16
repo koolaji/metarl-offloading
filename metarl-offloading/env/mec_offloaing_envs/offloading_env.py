@@ -103,10 +103,7 @@ class OffloadingEnvironment(MetaEnv):
         Returns:
             tasks (list) : an (n_tasks) length list of tasks
         """
-        # return np.random.choice(np.arange(self.total_task), n_tasks, replace=False)
-        print(f'number of tasks = {np.arange(self.total_task)[:n_tasks]}')
-        return np.arange(self.total_task)[:n_tasks]
-
+        return np.random.choice(np.arange(self.total_task), n_tasks, replace=False)
 
     def merge_graphs(self):
         encoder_batchs = []
