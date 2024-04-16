@@ -463,7 +463,7 @@ class Seq2SeqPolicy():
         sess.run(restores)
 
 
-class MetaSeq2SeqPolicy():
+class rdMetaSeq2SeqPolicy():
     def __init__(self, meta_batch_size, obs_dim, encoder_units, decoder_units,
                  vocab_size):
 

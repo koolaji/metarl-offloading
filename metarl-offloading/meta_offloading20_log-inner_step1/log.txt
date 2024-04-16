@@ -1,0 +1,4 @@
+Logging to ./meta_offloading20_log-inner_step1/
+
+ ---------------- Iteration 0 ----------------
+Sampling set of tasks/goals for this meta-batch...
