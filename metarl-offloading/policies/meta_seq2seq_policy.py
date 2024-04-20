@@ -154,15 +154,15 @@ class Seq2SeqNetwork():
                                                                              logits=self.sample_decoder_logits)
 
             # greedy decoder
-            self.greedy_decoder_outputs, self.greedy_decoder_state = self.create_decoder(hparams, self.encoder_outputs,
-                                                                           self.encoder_state, model="greedy")
-            self.greedy_decoder_logits = self.greedy_decoder_outputs.rnn_output
-            self.greedy_pi = tf.nn.softmax(self.greedy_decoder_logits)
-            self.greedy_q = tf.compat.v1.layers.dense(self.greedy_decoder_logits, self.n_features, activation=None, reuse=tf.compat.v1.AUTO_REUSE,
-                                     name="qvalue_layer")
-            self.greedy_vf = tf.reduce_sum(self.greedy_pi * self.greedy_q, axis=-1)
+            # self.greedy_decoder_outputs, self.greedy_decoder_state = self.create_decoder(hparams, self.encoder_outputs,
+            #                                                                self.encoder_state, model="greedy")
+            # self.greedy_decoder_logits = self.greedy_decoder_outputs.rnn_output
+            # self.greedy_pi = tf.nn.softmax(self.greedy_decoder_logits)
+            # self.greedy_q = tf.compat.v1.layers.dense(self.greedy_decoder_logits, self.n_features, activation=None, reuse=tf.compat.v1.AUTO_REUSE,
+            #                          name="qvalue_layer")
+            # self.greedy_vf = tf.reduce_sum(self.greedy_pi * self.greedy_q, axis=-1)
 
-            self.greedy_decoder_prediction = self.greedy_decoder_outputs.sample_id
+            # self.greedy_decoder_prediction = self.greedy_decoder_outputs.sample_id
 
     def predict_training(self, sess, encoder_input_batch, decoder_input, decoder_full_length):
         return sess.run([self.decoder_prediction, self.pi],
@@ -172,33 +172,33 @@ class Seq2SeqNetwork():
                             self.decoder_full_length: decoder_full_length
                         })
 
-    def kl(self, other):
-        a0 = self.decoder_logits - tf.reduce_max(self.decoder_logits, axis=-1, keepdims=True)
-        a1 = other.decoder_logits - tf.reduce_max(other.decoder_logits, axis=-1, keepdims=True)
-        ea0 = tf.exp(a0)
-        ea1 = tf.exp(a1)
-        z0 = tf.reduce_sum(ea0, axis=-1, keepdims=True)
-        z1 = tf.reduce_sum(ea1, axis=-1, keepdims=True)
-        p0 = ea0 / z0
-        return tf.reduce_sum(p0 * (a0 - tf.log(z0) - a1 + tf.log(z1)), axis=-1)
+    # def kl(self, other):
+    #     a0 = self.decoder_logits - tf.reduce_max(self.decoder_logits, axis=-1, keepdims=True)
+    #     a1 = other.decoder_logits - tf.reduce_max(other.decoder_logits, axis=-1, keepdims=True)
+    #     ea0 = tf.exp(a0)
+    #     ea1 = tf.exp(a1)
+    #     z0 = tf.reduce_sum(ea0, axis=-1, keepdims=True)
+    #     z1 = tf.reduce_sum(ea1, axis=-1, keepdims=True)
+    #     p0 = ea0 / z0
+    #     return tf.reduce_sum(p0 * (a0 - tf.log(z0) - a1 + tf.log(z1)), axis=-1)
 
-    def entropy(self):
-        a0 = self.decoder_logits - tf.reduce_max(self.decoder_logits, axis=-1, keepdims=True)
-        ea0 = tf.exp(a0)
-        z0 = tf.reduce_sum(ea0, axis=-1, keepdims=True)
-        p0 = ea0 / z0
-        return tf.reduce_sum(p0 * (tf.log(z0) - a0), axis=-1)
+    # def entropy(self):
+    #     a0 = self.decoder_logits - tf.reduce_max(self.decoder_logits, axis=-1, keepdims=True)
+    #     ea0 = tf.exp(a0)
+    #     z0 = tf.reduce_sum(ea0, axis=-1, keepdims=True)
+    #     p0 = ea0 / z0
+    #     return tf.reduce_sum(p0 * (tf.log(z0) - a0), axis=-1)
 
-    def neglogp(self):
-        # return tf.nn.sparse_softmax_cross_entropy_with_logits(logits=self.logits, labels=x)
-        # Note: we can't use sparse_softmax_cross_entropy_with_logits because
-        #       the implementation does not allow second-order derivatives...
-        return tf.nn.softmax_cross_entropy_with_logits_v2(
-            logits=self.decoder_logits,
-            labels=self.decoder_targets_embeddings)
+    # def neglogp(self):
+    #     # return tf.nn.sparse_softmax_cross_entropy_with_logits(logits=self.logits, labels=x)
+    #     # Note: we can't use sparse_softmax_cross_entropy_with_logits because
+    #     #       the implementation does not allow second-order derivatives...
+    #     return tf.nn.softmax_cross_entropy_with_logits_v2(
+    #         logits=self.decoder_logits,
+    #         labels=self.decoder_targets_embeddings)
 
-    def logp(self):
-        return -self.neglogp()
+    # def logp(self):
+    #     return -self.neglogp()
 
     def _build_encoder_cell(self, hparams, num_layers, num_residual_layers, base_gpu=0):
         """Build a multi-layer RNN cell that can be used by encoder."""
@@ -249,50 +249,42 @@ class Seq2SeqNetwork():
 
         return encoder_outputs, encoder_state
 
-    def create_bidrect_encoder(self, hparams):
-        with tf.compat.v1.variable_scope("encoder", reuse=tf.compat.v1.AUTO_REUSE) as scope:
-            num_bi_layers = int(self.num_layers / 2)
-            num_bi_residual_layers = int(self.num_residual_layers / 2)
-            forward_cell = self._build_encoder_cell(hparams=hparams,
-                                                    num_layers=num_bi_layers,
-                                                    num_residual_layers=num_bi_residual_layers)
-            backward_cell = self._build_encoder_cell(hparams=hparams,
-                                                     num_layers=num_bi_layers,
-                                                     num_residual_layers=num_bi_residual_layers)
+    # def create_bidrect_encoder(self, hparams):
+    #     with tf.compat.v1.variable_scope("encoder", reuse=tf.compat.v1.AUTO_REUSE) as scope:
+    #         num_bi_layers = int(self.num_layers / 2)
+    #         num_bi_residual_layers = int(self.num_residual_layers / 2)
+    #         forward_cell = self._build_encoder_cell(hparams=hparams,
+    #                                                 num_layers=num_bi_layers,
+    #                                                 num_residual_layers=num_bi_residual_layers)
+    #         backward_cell = self._build_encoder_cell(hparams=hparams,
+    #                                                  num_layers=num_bi_layers,
+    #                                                  num_residual_layers=num_bi_residual_layers)
 
-            bi_outputs, bi_state = tf.nn.bidirectional_dynamic_rnn(
-                forward_cell,
-                backward_cell,
-                inputs=self.encoder_embeddings,
-                time_major=self.time_major,
-                swap_memory=True,
-                dtype=tf.float32)
+    #         bi_outputs, bi_state = tf.nn.bidirectional_dynamic_rnn(
+    #             forward_cell,
+    #             backward_cell,
+    #             inputs=self.encoder_embeddings,
+    #             time_major=self.time_major,
+    #             swap_memory=True,
+    #             dtype=tf.float32)
 
-            encoder_outputs = tf.concat(bi_outputs, -1)
+    #         encoder_outputs = tf.concat(bi_outputs, -1)
 
-            if num_bi_layers == 1:
-                encoder_state = bi_state
-            else:
-                encoder_state = []
-                for layer_id in range(num_bi_layers):
-                    encoder_state.append(bi_state[0][layer_id])  # forward
-                    encoder_state.append(bi_state[1][layer_id])  # backward
+    #         if num_bi_layers == 1:
+    #             encoder_state = bi_state
+    #         else:
+    #             encoder_state = []
+    #             for layer_id in range(num_bi_layers):
+    #                 encoder_state.append(bi_state[0][layer_id])  # forward
+    #                 encoder_state.append(bi_state[1][layer_id])  # backward
 
-                encoder_state = tuple(encoder_state)
+    #             encoder_state = tuple(encoder_state)
 
-            return encoder_outputs, encoder_state
+    #         return encoder_outputs, encoder_state
 
     def create_decoder(self, hparams, encoder_outputs, encoder_state, model):
         with tf.compat.v1.variable_scope("decoder", reuse=tf.compat.v1.AUTO_REUSE) as decoder_scope:
-            if model == "greedy":
-                helper = tf.contrib.seq2seq.GreedyEmbeddingHelper(
-                    self.embeddings,
-                    # Batchsize * Start_token
-                    start_tokens=tf.fill([tf.size(self.decoder_full_length)], self.start_token),
-                    end_token=self.end_token
-                )
-
-            elif model == "sample":
+            if model == "sample":
                 helper = FixedSequenceLearningSampleEmbedingHelper(
                     sequence_length=self.decoder_full_length,
                     embedding=self.embeddings,

@@ -52,5 +52,6 @@ class ValueFunctionBaseline(Baseline):
              (np.ndarray): numpy array of the same length as paths["observations"] specifying the reward baseline
 
         """
+        import sys
         baseline = path["values"]
         return baseline

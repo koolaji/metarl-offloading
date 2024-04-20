@@ -1,4 +1,3 @@
-from env.base import MetaEnv
 from env.mec_offloaing_envs.offloading_task_graph import OffloadingTaskGraph
 
 from samplers.vectorized_env_executor import MetaIterativeEnvExecutor
@@ -54,7 +53,7 @@ class Resources(object):
 
         return computation_time
 
-class OffloadingEnvironment(MetaEnv):
+class OffloadingEnvironment(object):
     def __init__(self, resource_cluster, batch_size,
                  graph_number,
                  graph_file_paths, time_major):
@@ -103,34 +102,8 @@ class OffloadingEnvironment(MetaEnv):
         Returns:
             tasks (list) : an (n_tasks) length list of tasks
         """
-        return np.random.choice(np.arange(self.total_task), n_tasks, replace=False)
+        return np.arange(self.total_task)
 
-    def merge_graphs(self):
-        encoder_batchs = []
-        encoder_lengths = []
-        task_graphs_batchs = []
-        decoder_full_lengths =[]
-        max_running_time_batchs = []
-        min_running_time_batchs = []
-
-        for encoder_batch, encoder_length, task_graphs_batch, \
-            decoder_full_length, max_running_time_batch, \
-            min_running_time_batch in zip(self.encoder_batchs, self.encoder_lengths,
-                                          self.task_graphs_batchs, self.decoder_full_lengths,
-                                          self.max_running_time_batchs, self.min_running_time_batchs):
-            encoder_batchs += encoder_batch.tolist()
-            encoder_lengths += encoder_length.tolist()
-            task_graphs_batchs += task_graphs_batch
-            decoder_full_lengths += decoder_full_length.tolist()
-            max_running_time_batchs += max_running_time_batch
-            min_running_time_batchs += min_running_time_batch
-
-        self.encoder_batchs = np.array([encoder_batchs])
-        self.encoder_lengths = np.array([encoder_lengths])
-        self.task_graphs_batchs = [task_graphs_batchs]
-        self.decoder_full_lengths = np.array([decoder_full_lengths])
-        self.max_running_time_batchs = np.array([max_running_time_batchs])
-        self.min_running_time_batchs = np.array([min_running_time_batchs])
 
     def set_task(self, task):
         """
@@ -140,15 +113,6 @@ class OffloadingEnvironment(MetaEnv):
             task: task of the meta-learning environment
         """
         self.task_id = task
-
-    def get_task(self):
-        """
-        Gets the task that the agent is performing in the current environment
-
-        Returns:
-            task: task of the meta-learning environment
-        """
-        return self.graph_file_paths[self.task_id]
 
     def step(self, action):
         """Run one timestep of the environment's dynamics. When end of
@@ -200,9 +164,6 @@ class OffloadingEnvironment(MetaEnv):
         self.resource_cluster.reset()
 
         return np.array(self.encoder_batchs[self.task_id])
-
-    def render(self, mode='human'):
-        pass
 
     def generate_point_batch_for_random_graphs(self, batch_size, graph_number, graph_file_path, time_major):
         encoder_list = []

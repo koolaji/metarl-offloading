@@ -41,29 +41,29 @@ class CategoricalPd(Distribution):
         p0 = ea0 / z0
         return tf.reduce_sum(p0 * (a0 - tf.log(z0) - a1 + tf.log(z1)), axis=-1)
 
-    def kl(self, old_dist_info, new_dist_info):
-        """
-        Compute the KL divergence of two multivariate Gaussian distribution with
-        diagonal covariance matrices
+    # def kl(self, old_dist_info, new_dist_info):
+    #     """
+    #     Compute the KL divergence of two multivariate Gaussian distribution with
+    #     diagonal covariance matrices
 
-       Args:
-            old_dist_info (dict): dict of old distribution parameters as numpy array
-            new_dist_info (dict): dict of new distribution parameters as numpy array
+    #    Args:
+    #         old_dist_info (dict): dict of old distribution parameters as numpy array
+    #         new_dist_info (dict): dict of new distribution parameters as numpy array
 
-        Returns:
-            (numpy array): kl divergence of distributions
-        """
-        old_logits = old_dist_info
-        new_logits = new_dist_info
+    #     Returns:
+    #         (numpy array): kl divergence of distributions
+    #     """
+    #     old_logits = old_dist_info
+    #     new_logits = new_dist_info
 
-        a0 = old_logits - np.amax(old_logits, axis=-1, keepdims=True)
-        a1 = new_logits - np.amax(new_logits, axis=-1, keepdims=True)
-        ea0 = np.exp(a0)
-        ea1 = np.exp(a1)
-        z0 = np.sum(ea0, axis=-1, keepdims=True)
-        z1 = np.sum(ea1, axis=-1, keepdims=True)
-        p0 = ea0 / z0
-        return np.sum(p0 * (a0 - np.log(z0) - a1 + np.log(z1)), axis=-1)
+    #     a0 = old_logits - np.amax(old_logits, axis=-1, keepdims=True)
+    #     a1 = new_logits - np.amax(new_logits, axis=-1, keepdims=True)
+    #     ea0 = np.exp(a0)
+    #     ea1 = np.exp(a1)
+    #     z0 = np.sum(ea0, axis=-1, keepdims=True)
+    #     z1 = np.sum(ea1, axis=-1, keepdims=True)
+    #     p0 = ea0 / z0
+    #     return np.sum(p0 * (a0 - np.log(z0) - a1 + np.log(z1)), axis=-1)
 
     def likelihood_ratio_sym(self, x_var, old_dist_info_vars, new_dist_info_vars):
         """
@@ -105,77 +105,77 @@ class CategoricalPd(Distribution):
 
         return -neg_log
 
-    def log_likelihood(self, xs, logits):
-        """
-        Compute the log likelihood log p(x) of the distribution
+    # def log_likelihood(self, xs, logits):
+    #     """
+    #     Compute the log likelihood log p(x) of the distribution
 
-        Args:
-           x_var (numpy array): variable where to evaluate the log likelihood
-           dist_info_vars (dict) : dict of distribution parameters as numpy array
+    #     Args:
+    #        x_var (numpy array): variable where to evaluate the log likelihood
+    #        dist_info_vars (dict) : dict of distribution parameters as numpy array
 
-        Returns:
-            (numpy array): log likelihood
-        """
-        softmax_pd = np.exp(logits) / sum(np.exp(logits))
+    #     Returns:
+    #         (numpy array): log likelihood
+    #     """
+    #     softmax_pd = np.exp(logits) / sum(np.exp(logits))
 
-        targets_shape = list(np.array(xs).shape)
-        final_shape = targets_shape.append(self._dim)
+    #     targets_shape = list(np.array(xs).shape)
+    #     final_shape = targets_shape.append(self._dim)
 
-        targets = np.array(xs).reshape(-1)
-        one_hot_targets = np.eye(self._dim)[targets].reshape(final_shape)
+    #     targets = np.array(xs).reshape(-1)
+    #     one_hot_targets = np.eye(self._dim)[targets].reshape(final_shape)
 
-        log_p = np.sum(np.log(one_hot_targets *softmax_pd), axis=-1)
+    #     log_p = np.sum(np.log(one_hot_targets *softmax_pd), axis=-1)
 
-        return log_p
+    #     return log_p
 
-    def entropy_sym(self, logits):
-        """
-        Symbolic entropy of the distribution
+    # def entropy_sym(self, logits):
+    #     """
+    #     Symbolic entropy of the distribution
 
-        Args:
-            dist_info (dict) : dict of distribution parameters as tf.Tensor
+    #     Args:
+    #         dist_info (dict) : dict of distribution parameters as tf.Tensor
 
-        Returns:
-            (tf.Tensor): entropy
-        """
+    #     Returns:
+    #         (tf.Tensor): entropy
+    #     """
 
-        a0 = logits - tf.reduce_max(logits, axis=-1, keepdims=True)
-        ea0 = tf.exp(a0)
-        z0 = tf.reduce_sum(ea0, axis=-1, keepdims=True)
-        p0 = ea0 / z0
-        return tf.reduce_sum(p0 * (tf.log(z0) - a0), axis=-1)
+    #     a0 = logits - tf.reduce_max(logits, axis=-1, keepdims=True)
+    #     ea0 = tf.exp(a0)
+    #     z0 = tf.reduce_sum(ea0, axis=-1, keepdims=True)
+    #     p0 = ea0 / z0
+    #     return tf.reduce_sum(p0 * (tf.log(z0) - a0), axis=-1)
 
-    def entropy(self, logits):
-        """
-        Compute the entropy of the distribution
+    # def entropy(self, logits):
+    #     """
+    #     Compute the entropy of the distribution
 
-        Args:
-            dist_info (dict) : dict of distribution parameters as numpy array
+    #     Args:
+    #         dist_info (dict) : dict of distribution parameters as numpy array
 
-        Returns:
-          (numpy array): entropy
-        """
+    #     Returns:
+    #       (numpy array): entropy
+    #     """
 
-        a0 = logits - np.amax(logits, axis=-1, keepdims=True)
-        ea0 = np.exp(a0)
-        z0 = np.sum(ea0, axis=-1, keepdims=True)
-        p0 = ea0 / z0
-        return np.sum(p0 * (tf.log(z0) - a0), axis=-1)
+    #     a0 = logits - np.amax(logits, axis=-1, keepdims=True)
+    #     ea0 = np.exp(a0)
+    #     z0 = np.sum(ea0, axis=-1, keepdims=True)
+    #     p0 = ea0 / z0
+    #     return np.sum(p0 * (tf.log(z0) - a0), axis=-1)
 
-    def sample(self, logits):
-        """
-        Draws a sample from the distribution
+    # def sample(self, logits):
+    #     """
+    #     Draws a sample from the distribution
 
-        Args:
-           dist_info (dict) : dict of distribution parameter instantiations as numpy array
+    #     Args:
+    #        dist_info (dict) : dict of distribution parameter instantiations as numpy array
 
-        Returns:
-           (obj): sample drawn from the corresponding instantiation
-        """
-        u = tf.random_uniform(tf.shape(logits), dtype=logits.dtype)
+    #     Returns:
+    #        (obj): sample drawn from the corresponding instantiation
+    #     """
+    #     u = tf.random_uniform(tf.shape(logits), dtype=logits.dtype)
 
-        return tf.argmax(logits - tf.log(-tf.log(u)), axis=-1)
+    #     return tf.argmax(logits - tf.log(-tf.log(u)), axis=-1)
 
-    @property
-    def dist_info_specs(self):
-        return [("logits", (self.dim,))]
+    # @property
+    # def dist_info_specs(self):
+    #     return [("logits", (self.dim,))]

@@ -63,73 +63,73 @@ class SampleProcessor(object):
         self.normalize_adv = normalize_adv
         self.positive_adv = positive_adv
 
-    def process_samples(self, paths, log=False, log_prefix=''):
-        """
-        Processes sampled paths. This involves:
-            - computing discounted rewards (returns)
-            - fitting baseline estimator using the path returns and predicting the return baselines
-            - estimating the advantages using GAE (+ advantage normalization id desired)
-            - stacking the path data
-            - logging statistics of the paths
+    # def process_samples(self, paths, log=False, log_prefix=''):
+    #     """
+    #     Processes sampled paths. This involves:
+    #         - computing discounted rewards (returns)
+    #         - fitting baseline estimator using the path returns and predicting the return baselines
+    #         - estimating the advantages using GAE (+ advantage normalization id desired)
+    #         - stacking the path data
+    #         - logging statistics of the paths
 
-        Args:
-            paths (list): A list of paths of size (batch_size) x [5] x (max_path_length)
-            log (boolean): indicates whether to log
-            log_prefix (str): prefix for the logging keys
+    #     Args:
+    #         paths (list): A list of paths of size (batch_size) x [5] x (max_path_length)
+    #         log (boolean): indicates whether to log
+    #         log_prefix (str): prefix for the logging keys
 
-        Returns:
-            (dict) : Processed sample data of size [7] x (batch_size x max_path_length)
-        """
-        assert type(paths) == list, 'paths must be a list'
-        assert paths[0].keys() >= {'observations', 'actions', 'rewards'}
-        assert self.baseline, 'baseline must be specified - use self.build_sample_processor(baseline_obj)'
+    #     Returns:
+    #         (dict) : Processed sample data of size [7] x (batch_size x max_path_length)
+    #     """
+    #     assert type(paths) == list, 'paths must be a list'
+    #     assert paths[0].keys() >= {'observations', 'actions', 'rewards'}
+    #     assert self.baseline, 'baseline must be specified - use self.build_sample_processor(baseline_obj)'
 
-        # fits baseline, compute advantages and stack path data
-        samples_data, paths = self._compute_samples_data(paths)
+    #     # fits baseline, compute advantages and stack path data
+    #     samples_data, paths = self._compute_samples_data(paths)
 
-        # 7) log statistics if desired
-        self._log_path_stats(paths, log=log, log_prefix='')
+    #     # 7) log statistics if desired
+    #     self._log_path_stats(paths, log=log, log_prefix='')
 
-        assert samples_data.keys() >= {'observations', 'actions', 'rewards', 'advantages', 'returns'}
-        return samples_data
+    #     assert samples_data.keys() >= {'observations', 'actions', 'rewards', 'advantages', 'returns'}
+    #     return samples_data
 
-    """ helper functions """
+    # """ helper functions """
 
-    def _compute_samples_data(self, paths):
-        assert type(paths) == list
+    # def _compute_samples_data(self, paths):
+    #     assert type(paths) == list
 
-        # 1) compute discounted rewards (returns)
-        for idx, path in enumerate(paths):
-            path["returns"] = utils.discount_cumsum(path["rewards"], self.discount)
+    #     # 1) compute discounted rewards (returns)
+    #     for idx, path in enumerate(paths):
+    #         path["returns"] = utils.discount_cumsum(path["rewards"], self.discount)
 
-        # 2) fit baseline estimator using the path returns and predict the return baselines
-        self.baseline.fit(paths, target_key="returns")
-        all_path_baselines = [self.baseline.predict(path) for path in paths]
+    #     # 2) fit baseline estimator using the path returns and predict the return baselines
+    #     self.baseline.fit(paths, target_key="returns")
+    #     all_path_baselines = [self.baseline.predict(path) for path in paths]
 
-        # 3) compute advantages and adjusted rewards
-        paths = self._compute_advantages(paths, all_path_baselines)
+    #     # 3) compute advantages and adjusted rewards
+    #     paths = self._compute_advantages(paths, all_path_baselines)
 
-        # 4) stack path data
-        observations, actions, rewards, returns, advantages, env_infos, agent_infos = self._stack_path_data(paths)
+    #     # 4) stack path data
+    #     observations, actions, rewards, returns, advantages, env_infos, agent_infos = self._stack_path_data(paths)
 
-        # 5) if desired normalize / shift advantages
-        if self.normalize_adv:
-            advantages = utils.normalize_advantages(advantages)
-        if self.positive_adv:
-            advantages = utils.shift_advantages_to_positive(advantages)
+    #     # 5) if desired normalize / shift advantages
+    #     if self.normalize_adv:
+    #         advantages = utils.normalize_advantages(advantages)
+    #     if self.positive_adv:
+    #         advantages = utils.shift_advantages_to_positive(advantages)
 
-        # 6) create samples_data object
-        samples_data = dict(
-            observations=observations,
-            actions=actions,
-            rewards=rewards,
-            returns=returns,
-            advantages=advantages,
-            env_infos=env_infos,
-            agent_infos=agent_infos,
-        )
+    #     # 6) create samples_data object
+    #     samples_data = dict(
+    #         observations=observations,
+    #         actions=actions,
+    #         rewards=rewards,
+    #         returns=returns,
+    #         advantages=advantages,
+    #         env_infos=env_infos,
+    #         agent_infos=agent_infos,
+    #     )
 
-        return samples_data, paths
+    #     return samples_data, paths
 
     def _log_path_stats(self, paths, log=False, log_prefix=''):
         # compute log stats
@@ -161,12 +161,12 @@ class SampleProcessor(object):
 
         return paths
 
-    def _stack_path_data(self, paths):
-        observations = np.concatenate([path["observations"] for path in paths])
-        actions = np.concatenate([path["actions"] for path in paths])
-        rewards = np.concatenate([path["rewards"] for path in paths])
-        returns = np.concatenate([path["returns"] for path in paths])
-        advantages = np.concatenate([path["advantages"] for path in paths])
-        env_infos = utils.concat_tensor_dict_list([path["env_infos"] for path in paths])
-        agent_infos = utils.concat_tensor_dict_list([path["agent_infos"] for path in paths])
-        return observations, actions, rewards, returns, advantages, env_infos, agent_infos
+    # def _stack_path_data(self, paths):
+    #     observations = np.concatenate([path["observations"] for path in paths])
+    #     actions = np.concatenate([path["actions"] for path in paths])
+    #     rewards = np.concatenate([path["rewards"] for path in paths])
+    #     returns = np.concatenate([path["returns"] for path in paths])
+    #     advantages = np.concatenate([path["advantages"] for path in paths])
+    #     env_infos = utils.concat_tensor_dict_list([path["env_infos"] for path in paths])
+    #     agent_infos = utils.concat_tensor_dict_list([path["agent_infos"] for path in paths])
+    #     return observations, actions, rewards, returns, advantages, env_infos, agent_infos
