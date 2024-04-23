@@ -8,36 +8,57 @@ logging.root.setLevel(logging.INFO)
 import os
 os.environ['CUDA_VISIBLE_DEVICES'] = ''
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+from tensorflow.contrib.seq2seq import AttentionWrapper, LuongAttention
 
 class Seq2SeqPolicy:
-    def __init__(self, input_dim, hidden_dim, output_dim, num_layers, name='core_policy'):
-        self.input_dim = input_dim
-        self.hidden_dim = hidden_dim
-        self.output_dim = output_dim
-        self.num_layers = num_layers
+    def __init__(self, hparams, encoder_inputs, decoder_inputs, targets, encoder_seq_lengths, decoder_seq_lengths, name='pi'):
+        self.encoder_units = hparams.encoder_units
+        self.decoder_units = hparams.decoder_units
+        self.n_features = hparams.n_features
+        self.num_layers = hparams.num_layers
+        self.unit_type = hparams.unit_type
         self.name = name
+        self.encoder_inputs = encoder_inputs
+        self.decoder_inputs = decoder_inputs
+        self.targets = targets
+        self.encoder_seq_lengths = encoder_seq_lengths
+        self.decoder_seq_lengths = decoder_seq_lengths
+        self.is_attention = hparams.is_attention
+        self.forget_bias=hparams.forget_bias
+        self.dropout=hparams.dropout
+        self.num_residual_layers = hparams.num_residual_layers
+
         self._build_model()
 
     def _build_model(self):
-        # Define placeholders
-        self.encoder_inputs = tf.placeholder(tf.float32, [None, None, self.input_dim], name='encoder_inputs')
-        self.decoder_inputs = tf.placeholder(tf.float32, [None, None, self.output_dim], name='decoder_inputs')
-        self.targets = tf.placeholder(tf.float32, [None, None, self.output_dim], name='targets')
-        self.encoder_seq_lengths = tf.placeholder(tf.int32, [None], name='encoder_seq_lengths')
-        self.decoder_seq_lengths = tf.placeholder(tf.int32, [None], name='decoder_seq_lengths')
+        # Dropout rate
+        dropout_rate = self.dropout  
 
         # Encoder
         with tf.variable_scope('encoder'):
-            encoder_cell = tf.nn.rnn_cell.MultiRNNCell([tf.nn.rnn_cell.LSTMCell(self.hidden_dim, reuse=tf.AUTO_REUSE) for _ in range(self.num_layers)])
-            _, encoder_final_state = tf.nn.dynamic_rnn(encoder_cell, self.encoder_inputs, dtype=tf.float32, sequence_length=self.encoder_seq_lengths)
+            if self.unit_type == 'lstm':
+                encoder_cell = tf.nn.rnn_cell.MultiRNNCell([tf.nn.rnn_cell.DropoutWrapper(tf.nn.rnn_cell.LSTMCell(self.decoder_units, reuse=tf.AUTO_REUSE, forget_bias=self.forget_bias), output_keep_prob=1-dropout_rate) for _ in range(self.num_layers)])
+            elif self.unit_type == 'gru':
+                encoder_cell = tf.nn.rnn_cell.MultiRNNCell([tf.nn.rnn_cell.DropoutWrapper(tf.nn.rnn_cell.GRUCell(self.decoder_units, reuse=tf.AUTO_REUSE), output_keep_prob=1-dropout_rate) for _ in range(self.num_layers)])
+            encoder_outputs, encoder_final_state = tf.nn.dynamic_rnn(encoder_cell, self.encoder_inputs, dtype=tf.float32, sequence_length=self.encoder_seq_lengths)
 
         # Decoder
         with tf.variable_scope('decoder'):
-            decoder_cell = tf.nn.rnn_cell.MultiRNNCell([tf.nn.rnn_cell.LSTMCell(self.hidden_dim, reuse=tf.AUTO_REUSE) for _ in range(self.num_layers)])
-            decoder_outputs, _ = tf.nn.dynamic_rnn(decoder_cell, self.decoder_inputs, initial_state=encoder_final_state, dtype=tf.float32, sequence_length=self.decoder_seq_lengths)
+            if self.unit_type == 'lstm':
+                decoder_cell = tf.nn.rnn_cell.MultiRNNCell([tf.nn.rnn_cell.DropoutWrapper(tf.nn.rnn_cell.LSTMCell(self.decoder_units, reuse=tf.AUTO_REUSE,forget_bias=self.forget_bias), output_keep_prob=1-dropout_rate) for _ in range(self.num_layers)])
+            elif self.unit_type == 'gru':
+                decoder_cell = tf.nn.rnn_cell.MultiRNNCell([tf.nn.rnn_cell.DropoutWrapper(tf.nn.rnn_cell.GRUCell(self.decoder_units, reuse=tf.AUTO_REUSE), output_keep_prob=1-dropout_rate) for _ in range(self.num_layers)])
 
+            if self.is_attention:
+                attention_mechanism = LuongAttention(self.decoder_units, encoder_outputs, memory_sequence_length=self.encoder_seq_lengths)
+                decoder_cell = AttentionWrapper(decoder_cell, attention_mechanism, attention_layer_size=self.decoder_units)
+                # Create an AttentionWrapperState as the initial state
+                decoder_initial_state = decoder_cell.zero_state(dtype=tf.float32, batch_size=tf.shape(self.encoder_inputs)[0])
+                decoder_initial_state = decoder_initial_state.clone(cell_state=encoder_final_state)
+
+        decoder_outputs, _ = tf.nn.dynamic_rnn(decoder_cell, self.decoder_inputs, initial_state=decoder_initial_state, dtype=tf.float32, sequence_length=self.decoder_seq_lengths)
         # Output layer
-        self.logits = tf.layers.dense(decoder_outputs, self.output_dim, name='logits')
+        self.logits = tf.layers.dense(decoder_outputs, self.n_features, name='logits')
 
         # Define loss
         self.loss = tf.reduce_mean(tf.square(self.logits - self.targets))
@@ -51,6 +72,7 @@ class Seq2SeqPolicy:
         # Saver
         self.saver = tf.train.Saver()
 
+
     def train(self, session, encoder_inputs, decoder_inputs, targets, encoder_seq_lengths, decoder_seq_lengths):
         feed_dict = {
             self.encoder_inputs: encoder_inputs,
@@ -62,70 +84,85 @@ class Seq2SeqPolicy:
         _, loss = session.run([self.train_op, self.loss], feed_dict=feed_dict)
         return loss
 
-    def save(self, session, save_path):
-        self.saver.save(session, save_path)
-
-    def load(self, session, save_path):
-        self.saver.restore(session, save_path)
-
-def main():
+class Seq2SeqPolicyNetwork(object):
     # Define hyperparameters
-    input_dim = 128
-    hidden_dim = 128
-    output_dim = 2
-    num_layers = 2
-    batch_size = 32
-    max_seq_length = 50
-    num_epochs = 100
+    def __init__(self):
+        self.hparams = tf.contrib.training.HParams(
+            encoder_units = 128,
+            decoder_units = 128,
+            n_features = 2,
+            num_layers = 2,
+            unit_type="lstm",
+            is_attention=True,
+            forget_bias=1.0,
+            dropout=0,
+            num_residual_layers=0,
+            start_token=0,
+            end_token=2,
+            is_bidencoder=False
+        )
+        self.batch_size = 32
+        self.max_seq_length = 50
+        self.num_epochs = 100
+        self.encoder_inputs = tf.placeholder(tf.float32, [None, None, self.hparams.encoder_units], name='encoder_inputs')
+        self.decoder_inputs = tf.placeholder(tf.float32, [None, None, self.hparams.n_features], name='decoder_inputs')
+        self.targets = tf.placeholder(tf.float32, [None, None, self.hparams.n_features], name='targets')
+        self.encoder_seq_lengths = tf.placeholder(tf.int32, [None], name='encoder_seq_lengths')
+        self.decoder_seq_lengths = tf.placeholder(tf.int32, [None], name='decoder_seq_lengths')    
 
-    # Create an instance of Seq2SeqPolicy
-    policy = Seq2SeqPolicy(input_dim, hidden_dim, output_dim, num_layers)
+    def tran(self):
+        policy = Seq2SeqPolicy(
+            self.hparams, 
+            self.encoder_inputs, 
+            self.decoder_inputs, 
+            self.targets, 
+            self.encoder_seq_lengths, 
+            self.decoder_seq_lengths)
+        num_samples = 1000
+        train_input_data = np.random.randn(num_samples, self.max_seq_length, self.hparams.encoder_units)
+        train_decoder_input_data = np.random.randn(num_samples, self.max_seq_length, self.hparams.n_features)
+        train_targets = np.random.randn(num_samples, self.max_seq_length, self.hparams.n_features)
+        train_encoder_seq_lengths = np.random.randint(1, self.max_seq_length + 1, size=num_samples)
+        train_decoder_seq_lengths = np.random.randint(1, self.max_seq_length + 1, size=num_samples)
 
-    # Generate some dummy data for training
-    num_samples = 1000
-    train_input_data = np.random.randn(num_samples, max_seq_length, input_dim)
-    train_decoder_input_data = np.random.randn(num_samples, max_seq_length, output_dim)
-    train_targets = np.random.randn(num_samples, max_seq_length, output_dim)
-    train_encoder_seq_lengths = np.random.randint(1, max_seq_length + 1, size=num_samples)
-    train_decoder_seq_lengths = np.random.randint(1, max_seq_length + 1, size=num_samples)
+        # Training loop
+        with tf.Session() as sess:
+            sess.run(tf.global_variables_initializer())
 
-    # Training loop
-    with tf.Session() as sess:
-        sess.run(tf.global_variables_initializer())
+            for epoch in range(self.num_epochs):
+                total_loss = 0.0
+                for i in range(0, num_samples, self.batch_size):
+                    batch_input_data = train_input_data[i:i+self.batch_size]
+                    batch_decoder_input_data = train_decoder_input_data[i:i+self.batch_size]
+                    batch_targets = train_targets[i:i+self.batch_size]
+                    batch_encoder_seq_lengths = train_encoder_seq_lengths[i:i+self.batch_size]
+                    batch_decoder_seq_lengths = train_decoder_seq_lengths[i:i+self.batch_size]
 
-        for epoch in range(num_epochs):
-            total_loss = 0.0
-            for i in range(0, num_samples, batch_size):
-                batch_input_data = train_input_data[i:i+batch_size]
-                batch_decoder_input_data = train_decoder_input_data[i:i+batch_size]
-                batch_targets = train_targets[i:i+batch_size]
-                batch_encoder_seq_lengths = train_encoder_seq_lengths[i:i+batch_size]
-                batch_decoder_seq_lengths = train_decoder_seq_lengths[i:i+batch_size]
+                    loss = policy.train(sess, batch_input_data, batch_decoder_input_data, batch_targets, batch_encoder_seq_lengths, batch_decoder_seq_lengths)
+                    total_loss += loss
 
-                loss = policy.train(sess, batch_input_data, batch_decoder_input_data, batch_targets, batch_encoder_seq_lengths, batch_decoder_seq_lengths)
-                total_loss += loss
+                avg_loss = total_loss / (num_samples // self.batch_size)
+                print("Epoch {}: Average Loss = {:.4f}".format(epoch+1, avg_loss))
 
-            avg_loss = total_loss / (num_samples // batch_size)
-            print("Epoch {}: Average Loss = {:.4f}".format(epoch+1, avg_loss))
+            # Save the trained model
+            policy.save(sess, 'seq2seq_model.ckpt')
+            print("Model saved.")
 
-        # Save the trained model
-        policy.save(sess, 'seq2seq_model.ckpt')
-        print("Model saved.")
+        # Example of loading the saved model and performing inference
+        with tf.Session() as sess:
+            policy.load(sess, 'seq2seq_model.ckpt')
 
-    # Example of loading the saved model and performing inference
-    with tf.Session() as sess:
-        policy.load(sess, 'seq2seq_model.ckpt')
+            # Generate some new input data for inference
+            new_input_data = np.random.randn(1, self.max_seq_length, self.hparams.encoder_units)
+            new_decoder_input_data = np.random.randn(1, self.max_seq_length, self.hparams.n_features)
+            new_encoder_seq_lengths = np.array([self.max_seq_length])
+            new_decoder_seq_lengths = np.array([self.max_seq_length])
 
-        # Generate some new input data for inference
-        new_input_data = np.random.randn(1, max_seq_length, input_dim)
-        new_decoder_input_data = np.random.randn(1, max_seq_length, output_dim)
-        new_encoder_seq_lengths = np.array([max_seq_length])
-        new_decoder_seq_lengths = np.array([max_seq_length])
-
-        # Perform inference
-        logits = sess.run(policy.logits, feed_dict={policy.encoder_inputs: new_input_data, policy.decoder_inputs: new_decoder_input_data, policy.encoder_seq_lengths: new_encoder_seq_lengths, policy.decoder_seq_lengths: new_decoder_seq_lengths})
-        print("Inference result:")
-        print(logits)
+            # Perform inference
+            logits = sess.run(policy.logits, feed_dict={policy.encoder_inputs: new_input_data, policy.decoder_inputs: new_decoder_input_data, policy.encoder_seq_lengths: new_encoder_seq_lengths, policy.decoder_seq_lengths: new_decoder_seq_lengths})
+            print("Inference result:")
+            print(logits)
 
 if __name__ == "__main__":
-    main()
+    check = Seq2SeqPolicyNetwork()
+    check.tran()
