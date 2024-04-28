@@ -9,7 +9,8 @@ warnings.filterwarnings("ignore", category=UserWarning, module="gym")
 from samplers.vectorized_env_executor import  MetaIterativeEnvExecutor
 
 class Trainer(object):
-    def __init__(self,algo,
+    def __init__(self,
+                # algo,
                 env,
                 sampler,
                 sample_processor,
@@ -19,7 +20,7 @@ class Trainer(object):
                 start_itr=0,
                 inner_batch_size = 500,
                 save_interval = 100):
-        self.algo = algo
+        # self.algo = algo
         self.env = env
         self.sampler = sampler
         self.sampler_processor = sample_processor
@@ -57,13 +58,13 @@ class Trainer(object):
             samples_data = self.sampler_processor.process_samples(paths, log=False, log_prefix='')
 
             """ ------------------- Inner Policy Update --------------------"""
-            policy_losses, value_losses = self.algo.UpdatePPOTarget(samples_data, batch_size=self.inner_batch_size )
+            # policy_losses, value_losses = self.algo.UpdatePPOTarget(samples_data, batch_size=self.inner_batch_size )
 
             #print("task losses: ", losses)
-            print("average task losses: ", np.mean(policy_losses))
-            avg_loss.append(np.mean(policy_losses))
+            # print("average task losses: ", np.mean(policy_losses))
+            # avg_loss.append(np.mean(policy_losses))
 
-            print("average value losses: ", np.mean(value_losses))
+            # print("average value losses: ", np.mean(value_losses))
 
             """ ------------------ Resample from updated sub-task policy ------------"""
             print("Evaluate the one-step update for sub-task policy")
@@ -72,7 +73,7 @@ class Trainer(object):
 
             """ ------------------ Outer Policy Update ---------------------"""
             logger.log("Optimizing policy...")
-            self.algo.UpdateMetaPolicy()
+            # self.algo.UpdateMetaPolicy()
 
             """ ------------------- Logging Stuff --------------------------"""
 
@@ -112,7 +113,7 @@ if __name__ == "__main__":
     from samplers.seq2seq_meta_sampler import Seq2SeqMetaSampler
     from samplers.seq2seq_meta_sampler_process import Seq2SeqMetaSamplerProcessor
     from baselines.vf_baseline import ValueFunctionBaseline
-    from meta_algos.MRLCO import MRLCO
+    # from meta_algos.MRLCO import MRLCO
 
     tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
     logger.configure(dir="./meta_offloading20_log-inner_step1/", format_strs=['stdout', 'log', 'csv'])
@@ -178,16 +179,17 @@ if __name__ == "__main__":
                                                    gae_lambda=0.95,
                                                    normalize_adv=True,
                                                    positive_adv=False)
-    algo = MRLCO(policy=meta_policy,
-                         meta_sampler=sampler,
-                         meta_sampler_process=sample_processor,
-                         inner_lr=5e-4,
-                         outer_lr=5e-4,
-                         meta_batch_size=META_BATCH_SIZE,
-                         num_inner_grad_steps=1,
-                         clip_value = 0.3)
+    # algo = MRLCO(policy=meta_policy,
+    #                      meta_sampler=sampler,
+    #                      meta_sampler_process=sample_processor,
+    #                      inner_lr=5e-4,
+    #                      outer_lr=5e-4,
+    #                      meta_batch_size=META_BATCH_SIZE,
+    #                      num_inner_grad_steps=1,
+    #                      clip_value = 0.3)
 
-    trainer = Trainer(algo = algo,
+    trainer = Trainer(
+                        # algo = algo,
                         env=env,
                         sampler=sampler,
                         sample_processor=sample_processor,

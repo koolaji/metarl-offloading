@@ -10,8 +10,8 @@ os.environ['CUDA_VISIBLE_DEVICES'] = ''
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 from tensorflow.contrib.seq2seq import AttentionWrapper, LuongAttention
 
-class Seq2SeqPolicy:
-    def __init__(self, hparams, encoder_inputs, decoder_inputs, decoder_targets, decoder_full_length, name='pi', reuse=tf.AUTO_REUSE):
+class Seq2SeqNetwork:
+    def __init__(self, name, hparams, reuse, encoder_inputs, decoder_inputs, decoder_full_length, decoder_targets ):
         self.encoder_units = hparams.encoder_units
         self.decoder_units = hparams.decoder_units
         self.n_features = hparams.n_features
@@ -103,9 +103,6 @@ class Seq2SeqPolicy:
                     self.decoder_full_length,
                     time_major=True)
 
-                decoder_inputs_reshaped = tf.transpose(self.decoder_inputs, [1, 0])
-                decoder_full_length_reshaped = self.decoder_full_length
-
                 self.decoder_outputs, self.decoder_state = tf.nn.dynamic_rnn(
                     cell=decoder_cell,
                     sequence_length=self.decoder_full_length,
@@ -127,6 +124,11 @@ class Seq2SeqPolicy:
                                                                                                 output_time_major=True,
                                                                                                 maximum_iterations=self.decoder_full_length[0])
                 self.decoder_logits = self.decoder_outputs.rnn_output
+                self.pi = tf.nn.softmax(self.decoder_logits)
+                self.q = tf.compat.v1.layers.dense(self.decoder_logits, self.n_features, activation=None,
+                                        reuse=tf.compat.v1.AUTO_REUSE, name="qvalue_layer")
+                self.vf = tf.reduce_sum(self.pi * self.q, axis=-1)
+                self.decoder_prediction = self.decoder_outputs.sample_id
 
                 # Ensure that the number of output units in the logits matches the dimensionality of the target data
                 num_output_units = self.n_features  # Assuming self.n_features represents the number of output units
@@ -154,13 +156,19 @@ class Seq2SeqPolicy:
 
     def load(self, session, save_path):
         self.saver.restore(session, save_path)
+        
+    def get_variables(self):
+        return self.network.get_variables()
 
-class Seq2SeqPolicyNetwork(object):
-    def __init__(self, obs_dim=17, name='pi'):
+    def get_trainable_variables(self):
+        return self.network.get_trainable_variables()
+class Seq2SeqPolicy(object):
+    def __init__(self, obs_dim, encoder_units,
+                 decoder_units, vocab_size, name="pi"):
         self.hparams = tf.contrib.training.HParams(
-            encoder_units = 128,
-            decoder_units = 128,
-            n_features = 2,
+            encoder_units = encoder_units,
+            decoder_units = decoder_units,
+            n_features = vocab_size,
             num_layers = 2,
             unit_type="lstm",
             is_attention=True,
@@ -178,16 +186,18 @@ class Seq2SeqPolicyNetwork(object):
         self.decoder_inputs = tf.compat.v1.placeholder(shape=[None, None], dtype=tf.int32, name="decoder_inputs_ph")
         self.decoder_targets = tf.compat.v1.placeholder(shape=[None, None], dtype=tf.int32, name="decoder_targets_ph")
         self.decoder_full_length = tf.compat.v1.placeholder(tf.int32, shape=(None,), name="decoder_full_length")
-
+        self.name=name
         self.obs_dim = obs_dim
 
     def tran(self):
-        self.policy = Seq2SeqPolicy(
-            self.hparams, 
-            self.encoder_inputs, 
-            self.decoder_inputs, 
-            self.decoder_targets, 
-            self.decoder_full_length,
+        self.policy = Seq2SeqNetwork(
+            name=self.name,
+            hparams=self.hparams, 
+            reuse=tf.AUTO_REUSE,
+            encoder_inputs=self.encoder_inputs, 
+            decoder_inputs=self.decoder_inputs, 
+            decoder_targets=self.decoder_targets, 
+            decoder_full_length=self.decoder_full_length,
             )
         num_samples = 1000
         train_input_data = np.random.randn(num_samples, self.max_seq_length, self.obs_dim)
@@ -232,11 +242,15 @@ class Seq2SeqPolicyNetwork(object):
 
         actions, logits, v_value = sess.run([self.policy.decoder_prediction,
                                              self.policy.decoder_logits,
-                                             self.policy.sample_vf],
+                                             self.policy.vf],
                                             feed_dict={self.obs: observations, self.decoder_full_length: decoder_full_length})
 
         return actions, logits, v_value
 
 if __name__ == "__main__":
-    check = Seq2SeqPolicyNetwork()
+    check = Seq2SeqPolicy(
+                 obs_dim=17, 
+                 encoder_units=128,
+                 decoder_units=128, 
+                 vocab_size=2)
     check.tran()

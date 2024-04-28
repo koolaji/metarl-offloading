@@ -14,6 +14,7 @@ import utils as U
 from utils.utils import zipsame
 
 tf.get_logger().setLevel('WARNING')
+from tensorflow.contrib.seq2seq import AttentionWrapper, LuongAttention
 
 class FixedSequenceLearningSampleEmbedingHelper(tf.contrib.seq2seq.SampleEmbeddingHelper):
     def __init__(self, sequence_length, embedding, start_tokens, end_token, softmax_temperature=None, seed=None):
@@ -59,335 +60,305 @@ class FixedSequenceLearningSampleEmbedingHelper(tf.contrib.seq2seq.SampleEmbeddi
             lambda: self._embedding_fn(sample_ids))
         return (finished, next_inputs, state)
 
-
-class Seq2SeqNetwork():
-    def __init__(self, name,
-                 hparams, reuse,
-                 encoder_inputs,
-                 decoder_inputs,
-                 decoder_full_length,
-                 decoder_targets):
-        self.encoder_hidden_unit = hparams.encoder_units
-        self.decoder_hidden_unit = hparams.decoder_units
-        self.is_bidencoder = hparams.is_bidencoder
-        self.reuse = reuse
-
+class Seq2SeqNetwork:
+    def __init__(self, name, hparams, reuse, encoder_inputs, decoder_inputs, decoder_full_length, decoder_targets ):
+        self.encoder_units = hparams.encoder_units
+        self.decoder_units = hparams.decoder_units
         self.n_features = hparams.n_features
-        self.time_major = hparams.time_major
-        self.is_attention = hparams.is_attention
-
-        self.unit_type = hparams.unit_type
-
-        # default setting
-        self.mode = tf.contrib.learn.ModeKeys.TRAIN
-
         self.num_layers = hparams.num_layers
-        self.num_residual_layers = hparams.num_residual_layers
-
-        self.single_cell_fn = None
-        self.start_token = hparams.start_token
-        self.end_token = hparams.end_token
-
+        self.unit_type = hparams.unit_type
+        self.name = name
         self.encoder_inputs = encoder_inputs
         self.decoder_inputs = decoder_inputs
         self.decoder_targets = decoder_targets
-
         self.decoder_full_length = decoder_full_length
+        self.is_attention = hparams.is_attention
+        self.forget_bias=hparams.forget_bias
+        self.dropout=hparams.dropout
+        self.num_residual_layers = hparams.num_residual_layers
+        self.encoder_hidden_unit = hparams.encoder_units
+        self.reuse= reuse
+        self.start_token = hparams.start_token
+        self.end_token = hparams.end_token
+        self._build_model()
 
-        with tf.compat.v1.variable_scope(name, reuse=self.reuse, initializer=tf.glorot_normal_initializer()):
+    def _build_model(self):
+        with tf.compat.v1.variable_scope(self.name, reuse=self.reuse, initializer=tf.glorot_normal_initializer()):
             self.scope = tf.compat.v1.get_variable_scope().name
+            dropout_rate = self.dropout  
             self.embeddings = tf.Variable(tf.random.uniform(
-                [self.n_features,
-                 self.encoder_hidden_unit],
-                -1.0, 1.0), dtype=tf.float32)
+                    [self.n_features, self.encoder_hidden_unit],
+                    -1.0, 1.0), dtype=tf.float32)
+            
+            self.encoder_embeddings = tf.contrib.layers.fully_connected(
+                self.encoder_inputs,
+                self.encoder_hidden_unit,
+                activation_fn=None,
+                scope="encoder_embeddings",
+                reuse=tf.compat.v1.AUTO_REUSE)
 
-            # using a fully connected layer as embeddings
-            self.encoder_embeddings = tf.contrib.layers.fully_connected(self.encoder_inputs,
-                                                                        self.encoder_hidden_unit,
-                                                                        activation_fn = None,
-                                                                        scope="encoder_embeddings",
-                                                                        reuse=tf.compat.v1.AUTO_REUSE)
+            self.decoder_embeddings = tf.nn.embedding_lookup(self.embeddings, self.decoder_inputs)
 
-            self.decoder_embeddings = tf.nn.embedding_lookup(self.embeddings,
-                                                             self.decoder_inputs)
+            self.decoder_targets_embeddings = tf.one_hot(
+                self.decoder_targets,
+                self.n_features,
+                dtype=tf.float32)
 
-            self.decoder_targets_embeddings = tf.one_hot(self.decoder_targets,
-                                                         self.n_features,
-                                                         dtype=tf.float32)
+            self.output_layer = tf.compat.v1.layers.Dense(
+                self.n_features,
+                use_bias=False,
+                name="output_projection")
 
-            self.output_layer = tf.compat.v1.layers.Dense(self.n_features, use_bias=False, name="output_projection")
+            with tf.variable_scope('encoder'):
+                encoder_cell = tf.nn.rnn_cell.MultiRNNCell([
+                    tf.nn.rnn_cell.DropoutWrapper(
+                        tf.nn.rnn_cell.LSTMCell(self.decoder_units, reuse=tf.AUTO_REUSE, forget_bias=self.forget_bias),
+                        output_keep_prob=1 - dropout_rate)
+                    for _ in range(self.num_layers)
+                ]) if self.unit_type == 'lstm' else tf.nn.rnn_cell.MultiRNNCell([
+                    tf.nn.rnn_cell.DropoutWrapper(
+                        tf.nn.rnn_cell.GRUCell(self.decoder_units, reuse=tf.AUTO_REUSE),
+                        output_keep_prob=1 - dropout_rate)
+                    for _ in range(self.num_layers)
+                ])
 
-            if self.is_bidencoder:
-                self.encoder_outputs, self.encoder_state = self.create_bidrect_encoder(hparams)
-            else:
-                self.encoder_outputs, self.encoder_state = self.create_encoder(hparams)
+                # encoder_inputs_reshaped = tf.transpose(self.encoder_inputs, [1, 0, 2])
+                encoder_outputs, encoder_final_state = tf.nn.dynamic_rnn(
+                    cell=encoder_cell,
+                    sequence_length=None,
+                    inputs=self.encoder_embeddings,
+                    dtype=tf.float32,
+                    # time_major=True,
+                    swap_memory=True
+                )
 
-            # training decoder
-            self.decoder_outputs, self.decoder_state = self.create_decoder(hparams, self.encoder_outputs,
-                                                                           self.encoder_state, model="train")
-            self.decoder_logits = self.decoder_outputs.rnn_output
-            self.pi = tf.nn.softmax(self.decoder_logits)
-            self.q = tf.compat.v1.layers.dense(self.decoder_logits, self.n_features, activation=None,
-                                     reuse=tf.compat.v1.AUTO_REUSE, name="qvalue_layer")
-            self.vf = tf.reduce_sum(self.pi * self.q, axis=-1)
+            with tf.variable_scope('decoder'):
+                decoder_cell = tf.nn.rnn_cell.MultiRNNCell([
+                    tf.nn.rnn_cell.DropoutWrapper(
+                        tf.nn.rnn_cell.LSTMCell(self.decoder_units, reuse=tf.AUTO_REUSE, forget_bias=self.forget_bias),
+                        output_keep_prob=1 - dropout_rate)
+                    for _ in range(self.num_layers)
+                ]) if self.unit_type == 'lstm' else tf.nn.rnn_cell.MultiRNNCell([
+                    tf.nn.rnn_cell.DropoutWrapper(
+                        tf.nn.rnn_cell.GRUCell(self.decoder_units, reuse=tf.AUTO_REUSE),
+                        output_keep_prob=1 - dropout_rate)
+                    for _ in range(self.num_layers)
+                ])
 
-            self.decoder_prediction = self.decoder_outputs.sample_id
+                if self.is_attention:
+                    attention_mechanism = LuongAttention(self.decoder_units, encoder_outputs)
+                    decoder_cell = AttentionWrapper(decoder_cell, attention_mechanism, attention_layer_size=self.decoder_units)
+                    decoder_initial_state = decoder_cell.zero_state(dtype=tf.float32, batch_size=tf.shape(self.encoder_inputs)[0])
+                    decoder_initial_state = decoder_initial_state.clone(cell_state=encoder_final_state)
 
-            # sample decoder
-            self.sample_decoder_outputs, self.sample_decoder_state = self.create_decoder(hparams, self.encoder_outputs,
-                                                                           self.encoder_state, model="sample")
-            self.sample_decoder_logits = self.sample_decoder_outputs.rnn_output
-            self.sample_pi = tf.nn.softmax(self.sample_decoder_logits)
-            self.sample_q = tf.compat.v1.layers.dense(self.sample_decoder_logits, self.n_features,
-                                            activation=None, reuse=tf.compat.v1.AUTO_REUSE, name="qvalue_layer")
+                helper = tf.contrib.seq2seq.TrainingHelper(
+                    self.decoder_embeddings,
+                    self.decoder_full_length,
+                    time_major=True)
 
-            self.sample_vf = tf.reduce_sum(self.sample_pi*self.sample_q, axis=-1)
+                # self.decoder_outputs, self.decoder_state = tf.nn.dynamic_rnn(
+                #     cell=decoder_cell,
+                #     sequence_length=self.decoder_full_length,
+                #     inputs=self.decoder_embeddings,
+                #     dtype=tf.float32,
+                #     initial_state=decoder_initial_state,
+                #     time_major=True,
+                #     swap_memory=True
+                # )
 
-            self.sample_decoder_prediction = self.sample_decoder_outputs.sample_id
+                decoder = tf.contrib.seq2seq.BasicDecoder(
+                    cell=decoder_cell,
+                    helper=helper,
+                    initial_state=decoder_initial_state,
+                    output_layer=self.output_layer
+                )
 
-            # Note: we can't use sparse_softmax_cross_entropy_with_logits
-            self.sample_decoder_embeddings = tf.one_hot(self.sample_decoder_prediction,
-                                                        self.n_features,
-                                                        dtype=tf.float32)
+                self.decoder_outputs, self.decoder_state, _ = tf.contrib.seq2seq.dynamic_decode(decoder,
+                                                                                                output_time_major=True,
+                                                                                                maximum_iterations=self.decoder_full_length[0])
+                self.decoder_logits = self.decoder_outputs.rnn_output
+                self.pi = tf.nn.softmax(self.decoder_logits)
+                self.q = tf.compat.v1.layers.dense(self.decoder_logits, self.n_features, activation=None,
+                                        reuse=tf.compat.v1.AUTO_REUSE, name="qvalue_layer")
+                self.vf = tf.reduce_sum(self.pi * self.q, axis=-1)
+                self.decoder_prediction = self.decoder_outputs.sample_id
 
-            self.sample_neglogp = tf.nn.softmax_cross_entropy_with_logits_v2(labels=self.sample_decoder_embeddings,
-                                                                             logits=self.sample_decoder_logits)
+                # Ensure that the number of output units in the logits matches the dimensionality of the target data
+                num_output_units = self.n_features  # Assuming self.n_features represents the number of output units
+                with tf.variable_scope('logits_layer'):
+                    self.logits = tf.layers.dense(self.decoder_logits, num_output_units, name='logits')
+                self.loss = tf.reduce_mean(tf.square(self.logits - self.decoder_logits))
 
-            # greedy decoder
-            # self.greedy_decoder_outputs, self.greedy_decoder_state = self.create_decoder(hparams, self.encoder_outputs,
-            #                                                                self.encoder_state, model="greedy")
-            # self.greedy_decoder_logits = self.greedy_decoder_outputs.rnn_output
-            # self.greedy_pi = tf.nn.softmax(self.greedy_decoder_logits)
-            # self.greedy_q = tf.compat.v1.layers.dense(self.greedy_decoder_logits, self.n_features, activation=None, reuse=tf.compat.v1.AUTO_REUSE,
-            #                          name="qvalue_layer")
-            # self.greedy_vf = tf.reduce_sum(self.greedy_pi * self.greedy_q, axis=-1)
 
-            # self.greedy_decoder_prediction = self.greedy_decoder_outputs.sample_id
 
-    def predict_training(self, sess, encoder_input_batch, decoder_input, decoder_full_length):
-        return sess.run([self.decoder_prediction, self.pi],
-                        feed_dict={
-                            self.encoder_inputs: encoder_input_batch,
-                            self.decoder_inputs: decoder_input,
-                            self.decoder_full_length: decoder_full_length
-                        })
 
-    # def kl(self, other):
-    #     a0 = self.decoder_logits - tf.reduce_max(self.decoder_logits, axis=-1, keepdims=True)
-    #     a1 = other.decoder_logits - tf.reduce_max(other.decoder_logits, axis=-1, keepdims=True)
-    #     ea0 = tf.exp(a0)
-    #     ea1 = tf.exp(a1)
-    #     z0 = tf.reduce_sum(ea0, axis=-1, keepdims=True)
-    #     z1 = tf.reduce_sum(ea1, axis=-1, keepdims=True)
-    #     p0 = ea0 / z0
-    #     return tf.reduce_sum(p0 * (a0 - tf.log(z0) - a1 + tf.log(z1)), axis=-1)
 
-    # def entropy(self):
-    #     a0 = self.decoder_logits - tf.reduce_max(self.decoder_logits, axis=-1, keepdims=True)
-    #     ea0 = tf.exp(a0)
-    #     z0 = tf.reduce_sum(ea0, axis=-1, keepdims=True)
-    #     p0 = ea0 / z0
-    #     return tf.reduce_sum(p0 * (tf.log(z0) - a0), axis=-1)
 
-    # def neglogp(self):
-    #     # return tf.nn.sparse_softmax_cross_entropy_with_logits(logits=self.logits, labels=x)
-    #     # Note: we can't use sparse_softmax_cross_entropy_with_logits because
-    #     #       the implementation does not allow second-order derivatives...
-    #     return tf.nn.softmax_cross_entropy_with_logits_v2(
-    #         logits=self.decoder_logits,
-    #         labels=self.decoder_targets_embeddings)
+                decoder_cell_sample = tf.nn.rnn_cell.MultiRNNCell([
+                    tf.nn.rnn_cell.DropoutWrapper(
+                        tf.nn.rnn_cell.LSTMCell(self.decoder_units, reuse=tf.AUTO_REUSE, forget_bias=self.forget_bias),
+                        output_keep_prob=1 - dropout_rate)
+                    for _ in range(self.num_layers)
+                ]) if self.unit_type == 'lstm' else tf.nn.rnn_cell.MultiRNNCell([
+                    tf.nn.rnn_cell.DropoutWrapper(
+                        tf.nn.rnn_cell.GRUCell(self.decoder_units, reuse=tf.AUTO_REUSE),
+                        output_keep_prob=1 - dropout_rate)
+                    for _ in range(self.num_layers)
+                ])
 
-    # def logp(self):
-    #     return -self.neglogp()
+                if self.is_attention:
+                    attention_mechanism_sample = LuongAttention(self.decoder_units, encoder_outputs)
+                    decoder_cell_sample = AttentionWrapper(decoder_cell_sample, attention_mechanism_sample, attention_layer_size=self.decoder_units)
+                    # decoder_initial_state_sample = (
+                    # decoder_cell.zero_state(tf.size(self.decoder_full_length),
+                    #                         dtype=tf.float32).clone(
+                    #     cell_state=encoder_final_state))
+                    # decoder_initial_state_sample = decoder_cell.zero_state(batch_size=tf.shape(encoder_outputs)[0], dtype=tf.float32)
+                    # decoder_initial_state_sample = decoder_initial_state_sample.clone(cell_state=encoder_final_state)
+                    decoder_initial_state_sample = (
+                    decoder_cell.zero_state(tf.size(self.decoder_full_length),
+                                            dtype=tf.float32).clone(
+                        cell_state=encoder_final_state))
 
-    def _build_encoder_cell(self, hparams, num_layers, num_residual_layers, base_gpu=0):
-        """Build a multi-layer RNN cell that can be used by encoder."""
-        return model_helper.create_rnn_cell(
-            unit_type=hparams.unit_type,
-            num_units=hparams.encoder_units,
-            num_layers=num_layers,
-            num_residual_layers=num_residual_layers,
-            forget_bias=hparams.forget_bias,
-            dropout=hparams.dropout,
-            num_gpus=hparams.num_gpus,
-            mode=self.mode,
-            base_gpu=base_gpu,
-            single_cell_fn=self.single_cell_fn)
-
-    def _build_decoder_cell(self, hparams, num_layers, num_residual_layers, base_gpu=0):
-        """Build a multi-layer RNN cell that can be used by decoder"""
-        return model_helper.create_rnn_cell(
-            unit_type=hparams.unit_type,
-            num_units=hparams.decoder_units,
-            num_layers=num_layers,
-            num_residual_layers=num_residual_layers,
-            forget_bias=hparams.forget_bias,
-            dropout=hparams.dropout,
-            num_gpus=hparams.num_gpus,
-            mode=self.mode,
-            base_gpu=base_gpu,
-            single_cell_fn=self.single_cell_fn)
-
-    def create_encoder(self, hparams):
-        # Build RNN cell
-        with tf.compat.v1.variable_scope("encoder", reuse=tf.compat.v1.AUTO_REUSE) as scope:
-            encoder_cell = self._build_encoder_cell(hparams=hparams,
-                                                    num_layers=self.num_layers,
-                                                    num_residual_layers=self.num_residual_layers)
-
-            # encoder_cell = tf.contrib.rnn.GRUCell(self.encoder_hidden_unit)
-            # currently only consider the normal dynamic rnn
-            encoder_outputs, encoder_state = tf.nn.dynamic_rnn(
-                cell=encoder_cell,
-                sequence_length = None,
-                inputs=self.encoder_embeddings,
-                dtype=tf.float32,
-                time_major=self.time_major,
-                swap_memory=True,
-                scope=scope
-            )
-
-        return encoder_outputs, encoder_state
-
-    # def create_bidrect_encoder(self, hparams):
-    #     with tf.compat.v1.variable_scope("encoder", reuse=tf.compat.v1.AUTO_REUSE) as scope:
-    #         num_bi_layers = int(self.num_layers / 2)
-    #         num_bi_residual_layers = int(self.num_residual_layers / 2)
-    #         forward_cell = self._build_encoder_cell(hparams=hparams,
-    #                                                 num_layers=num_bi_layers,
-    #                                                 num_residual_layers=num_bi_residual_layers)
-    #         backward_cell = self._build_encoder_cell(hparams=hparams,
-    #                                                  num_layers=num_bi_layers,
-    #                                                  num_residual_layers=num_bi_residual_layers)
-
-    #         bi_outputs, bi_state = tf.nn.bidirectional_dynamic_rnn(
-    #             forward_cell,
-    #             backward_cell,
-    #             inputs=self.encoder_embeddings,
-    #             time_major=self.time_major,
-    #             swap_memory=True,
-    #             dtype=tf.float32)
-
-    #         encoder_outputs = tf.concat(bi_outputs, -1)
-
-    #         if num_bi_layers == 1:
-    #             encoder_state = bi_state
-    #         else:
-    #             encoder_state = []
-    #             for layer_id in range(num_bi_layers):
-    #                 encoder_state.append(bi_state[0][layer_id])  # forward
-    #                 encoder_state.append(bi_state[1][layer_id])  # backward
-
-    #             encoder_state = tuple(encoder_state)
-
-    #         return encoder_outputs, encoder_state
-
-    def create_decoder(self, hparams, encoder_outputs, encoder_state, model):
-        with tf.compat.v1.variable_scope("decoder", reuse=tf.compat.v1.AUTO_REUSE) as decoder_scope:
-            if model == "sample":
-                helper = FixedSequenceLearningSampleEmbedingHelper(
+                helper_sample = FixedSequenceLearningSampleEmbedingHelper(
                     sequence_length=self.decoder_full_length,
                     embedding=self.embeddings,
                     start_tokens=tf.fill([tf.size(self.decoder_full_length)], self.start_token),
                     end_token=self.end_token
                 )
+                decoder_sample = tf.contrib.seq2seq.BasicDecoder(
+                    cell=decoder_cell_sample,
+                    helper=helper_sample,
+                    initial_state=decoder_initial_state_sample,
+                    output_layer=self.output_layer
+                )
+                
+                self.sample_decoder_outputs, self.sample_decoder_state, _ = tf.contrib.seq2seq.dynamic_decode(
+                    decoder=decoder_sample,  # Pass the tensor representing decoder inputs
+                    output_time_major=True,
+                    maximum_iterations=self.decoder_full_length[0]
+)
+                self.sample_decoder_logits = self.sample_decoder_outputs.rnn_output
+                self.sample_pi = tf.nn.softmax(self.sample_decoder_logits)
+                self.sample_q = tf.compat.v1.layers.dense(self.sample_decoder_logits, self.n_features,
+                                                activation=None, reuse=tf.compat.v1.AUTO_REUSE, name="qvalue_layer")
 
-            elif model == "train":
-                helper = tf.contrib.seq2seq.TrainingHelper(
-                    self.decoder_embeddings,
-                    self.decoder_full_length,
-                    time_major=self.time_major)
-            else:
-                helper = tf.contrib.seq2seq.TrainingHelper(
-                    self.decoder_embeddings,
-                    self.decoder_full_length,
-                    time_major=self.time_major)
+                self.sample_vf = tf.reduce_sum(self.sample_pi*self.sample_q, axis=-1)
 
-            if self.is_attention:
-                decoder_cell = self._build_decoder_cell(hparams=hparams,
-                                                        num_layers=self.num_layers,
-                                                        num_residual_layers=self.num_residual_layers)
-                # decoder_cell = tf.contrib.rnn.GRUCell(self.decoder_hidden_unit)
-                if self.time_major:
-                    # [batch_size, max_time, num_nunits]
-                    attention_states = tf.transpose(encoder_outputs, [1, 0, 2])
-                else:
-                    attention_states = encoder_outputs
+                self.sample_decoder_prediction = self.sample_decoder_outputs.sample_id
 
-                attention_mechanism = tf.contrib.seq2seq.LuongAttention(
-                    self.decoder_hidden_unit, attention_states)
+                # Note: we can't use sparse_softmax_cross_entropy_with_logits
+                self.sample_decoder_embeddings = tf.one_hot(self.sample_decoder_prediction,
+                                                            self.n_features,
+                                                            dtype=tf.float32)
 
-                decoder_cell = tf.contrib.seq2seq.AttentionWrapper(
-                    decoder_cell, attention_mechanism,
-                    attention_layer_size=self.decoder_hidden_unit)
+                self.sample_neglogp = tf.nn.softmax_cross_entropy_with_logits_v2(labels=self.sample_decoder_embeddings,
+                                                                                logits=self.sample_decoder_logits)
+            # Ensure that the optimizer is minimizing the correct loss
+            self.optimizer = tf.train.AdamOptimizer()
+            self.train_op = self.optimizer.minimize(self.loss)
+            self.saver = tf.train.Saver()
 
-                decoder_initial_state = (
-                    decoder_cell.zero_state(tf.size(self.decoder_full_length),
-                                            dtype=tf.float32).clone(
-                        cell_state=encoder_state))
-            else:
-                decoder_cell = self._build_decoder_cell(hparams=hparams,
-                                                        num_layers=self.num_layers,
-                                                        num_residual_layers=self.num_residual_layers)
+    def train(self, session, encoder_inputs, decoder_inputs, decoder_targets, decoder_full_length):
+        feed_dict = {
+            self.encoder_inputs: encoder_inputs,
+            self.decoder_inputs: decoder_inputs,
+            self.decoder_targets: decoder_targets,
+            self.decoder_full_length: decoder_full_length
+        }
+        _, logits, loss = session.run([self.train_op, self.logits, self.loss], feed_dict=feed_dict)
+        return loss
 
-                decoder_initial_state = encoder_state
+    def save(self, session, save_path):
+        self.saver.save(session, save_path)
 
-            decoder = tf.contrib.seq2seq.BasicDecoder(
-                cell=decoder_cell,
-                helper=helper,
-                initial_state=decoder_initial_state,
-                output_layer=self.output_layer)
-
-            outputs, last_state, _ = tf.contrib.seq2seq.dynamic_decode(decoder,
-                                                                       output_time_major=self.time_major,
-                                                                       maximum_iterations=self.decoder_full_length[0])
-        return outputs, last_state
-
+    def load(self, session, save_path):
+        self.saver.restore(session, save_path)
+        
     def get_variables(self):
         return tf.compat.v1.get_collection(tf.compat.v1.GraphKeys.GLOBAL_VARIABLES, self.scope)
 
     def get_trainable_variables(self):
         return tf.compat.v1.get_collection(tf.compat.v1.GraphKeys.TRAINABLE_VARIABLES, self.scope)
-
-
-class Seq2SeqPolicy():
+class Seq2SeqPolicy(object):
     def __init__(self, obs_dim, encoder_units,
                  decoder_units, vocab_size, name="pi"):
-        self.decoder_targets = tf.compat.v1.placeholder(shape=[None, None], dtype=tf.int32, name="decoder_targets_ph_"+name)
-        self.decoder_inputs = tf.compat.v1.placeholder(shape=[None, None], dtype=tf.int32, name="decoder_inputs_ph"+name)
-        self.obs = tf.compat.v1.placeholder(shape=[None, None, obs_dim], dtype=tf.float32, name="obs_ph"+name)
-        self.decoder_full_length = tf.compat.v1.placeholder(shape=[None], dtype=tf.int32, name="decoder_full_length"+name)
-
-        self.action_dim = vocab_size
-        self.name = name
-
-        hparams = tf.contrib.training.HParams(
+        self.hparams = tf.contrib.training.HParams(
+            encoder_units = encoder_units,
+            decoder_units = decoder_units,
+            n_features = vocab_size,
+            num_layers = 2,
             unit_type="lstm",
-            encoder_units=encoder_units,
-            decoder_units=decoder_units,
-
-            n_features=vocab_size,
-            time_major=False,
             is_attention=True,
             forget_bias=1.0,
             dropout=0,
-            num_gpus=1,
-            num_layers=2,
             num_residual_layers=0,
             start_token=0,
             end_token=2,
             is_bidencoder=False
         )
-
-        self.network = Seq2SeqNetwork( hparams = hparams, reuse=tf.compat.v1.AUTO_REUSE,
+        self.batch_size = 50
+        self.max_seq_length = 50
+        self.num_epochs = 100
+        self.decoder_targets = tf.compat.v1.placeholder(shape=[None, None], dtype=tf.int32, name="decoder_targets_ph_"+name)
+        self.decoder_inputs = tf.compat.v1.placeholder(shape=[None, None], dtype=tf.int32, name="decoder_inputs_ph"+name)
+        self.obs = tf.compat.v1.placeholder(shape=[None, None, obs_dim], dtype=tf.float32, name="obs_ph"+name)
+        self.decoder_full_length = tf.compat.v1.placeholder(shape=[None], dtype=tf.int32, name="decoder_full_length"+name)
+        self.name=name
+        self.obs_dim = obs_dim
+        # self.network = Seq2SeqNetwork(
+        #     name=self.name,
+        #     hparams=self.hparams, 
+        #     reuse=tf.AUTO_REUSE,
+        #     encoder_inputs=self.obs, 
+        #     decoder_inputs=self.decoder_inputs, 
+        #     decoder_targets=self.decoder_targets, 
+        #     decoder_full_length=self.decoder_full_length,
+        #     )
+        self.network = Seq2SeqNetwork( hparams = self.hparams, reuse=tf.compat.v1.AUTO_REUSE,
                  encoder_inputs=self.obs,
                  decoder_inputs=self.decoder_inputs,
                  decoder_full_length=self.decoder_full_length,
                  decoder_targets=self.decoder_targets,name = name)
 
         self.vf = self.network.vf
+    def tran(self):
 
-        self._dist = CategoricalPd(vocab_size)
+        num_samples = 1000
+        train_input_data = np.random.randn(num_samples, self.max_seq_length, self.obs_dim)
+        train_decoder_input_data = np.random.randint(0, self.hparams.n_features, size=(num_samples, self.max_seq_length))
+        train_targets = np.random.randint(0, self.hparams.n_features, size=(num_samples, self.max_seq_length))
+        train_decoder_full_length = np.random.randint(1, self.max_seq_length + 1, size=(num_samples,))
+
+        with tf.Session() as sess:
+            sess.run(tf.global_variables_initializer())
+            for epoch in range(self.num_epochs):
+                total_loss = 0.0
+                for i in range(0, num_samples, self.batch_size):
+                    batch_input_data = train_input_data[i:i+self.batch_size]
+                    batch_decoder_input_data = train_decoder_input_data[i:i+self.batch_size]
+                    batch_targets = train_targets[i:i+self.batch_size]
+                    batch_decoder_full_length = train_decoder_full_length[i:i+self.batch_size]
+                    # print(batch_input_data.shape, batch_decoder_input_data.shape, batch_targets.shape, batch_decoder_full_length.shape)
+                    loss = self.network.train(sess, batch_input_data, batch_decoder_input_data, batch_targets, batch_decoder_full_length)
+                    total_loss += loss
+                avg_loss = total_loss / (num_samples // self.batch_size)
+                print("Epoch {}: Average Loss = {:.15f}".format(epoch+1, avg_loss))
+            self.policy.save(sess, 'seq2seq_model.ckpt')
+            print("Model saved.")
+        # with tf.Session() as sess:
+        #     self.policy.load(sess, 'seq2seq_model.ckpt')
+        #     new_input_data = np.random.randn(self.max_seq_length, self.obs_dim)
+        #     new_decoder_input_data = np.random.randint(0, self.hparams.n_features, size=(num_samples, self.max_seq_length))
+        #     new_decoder_full_length = np.random.randint(1, self.max_seq_length + 1, size=(num_samples,))
+        #     logits = sess.run(
+        #         self.policy.logits, 
+        #         feed_dict={self.policy.encoder_inputs: new_input_data, 
+        #                    self.policy.decoder_inputs: new_decoder_input_data, 
+        #                    self.policy.decoder_full_length: new_decoder_full_length
+        #                    })
+        #     print("Inference result:")
+        #     print(logits)
 
     def get_actions(self, observations):
         sess = tf.compat.v1.get_default_session()
@@ -400,46 +371,12 @@ class Seq2SeqPolicy():
                                             feed_dict={self.obs: observations, self.decoder_full_length: decoder_full_length})
 
         return actions, logits, v_value
-
-    @property
-    def distribution(self):
-        return self._dist
-
+    
     def get_variables(self):
         return self.network.get_variables()
 
     def get_trainable_variables(self):
         return self.network.get_trainable_variables()
-
-    def save_variables(self, save_path, sess=None):
-        sess = sess or tf.compat.v1.get_default_session()
-        variables = self.get_variables()
-
-        ps = sess.run(variables)
-        save_dict = {v.name: value for v, value in zip(variables, ps)}
-
-        dirname = os.path.dirname(save_path)
-        if any(dirname):
-            os.makedirs(dirname, exist_ok=True)
-
-        joblib.dump(save_dict, save_path)
-
-    def load_variables(self, load_path, sess=None):
-        sess = sess or tf.compat.v1.get_default_session()
-        variables = self.get_variables()
-
-        loaded_params = joblib.load(os.path.expanduser(load_path))
-        restores = []
-
-        if isinstance(loaded_params, list):
-            assert len(loaded_params) == len(variables), 'number of variables loaded mismatches len(variables)'
-            for d, v in zip(loaded_params, variables):
-                restores.append(v.assign(d))
-        else:
-            for v in variables:
-                restores.append(v.assign(loaded_params[v.name]))
-
-        sess.run(restores)
 
 
 class MetaSeq2SeqPolicy():
