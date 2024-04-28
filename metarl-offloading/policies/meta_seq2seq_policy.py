@@ -148,13 +148,13 @@ class Seq2SeqNetwork:
                 if self.is_attention:
                     attention_mechanism = LuongAttention(self.decoder_units, encoder_outputs)
                     decoder_cell = AttentionWrapper(decoder_cell, attention_mechanism, attention_layer_size=self.decoder_units)
-                    decoder_initial_state = decoder_cell.zero_state(dtype=tf.float32, batch_size=tf.shape(self.encoder_inputs)[0])
+                    decoder_initial_state = decoder_cell.zero_state(dtype=tf.float32, batch_size=tf.shape(self.decoder_full_length))
                     decoder_initial_state = decoder_initial_state.clone(cell_state=encoder_final_state)
 
                 helper = tf.contrib.seq2seq.TrainingHelper(
                     self.decoder_embeddings,
                     self.decoder_full_length,
-                    time_major=True)
+                    time_major=False)
 
                 # self.decoder_outputs, self.decoder_state = tf.nn.dynamic_rnn(
                 #     cell=decoder_cell,
@@ -174,7 +174,7 @@ class Seq2SeqNetwork:
                 )
 
                 self.decoder_outputs, self.decoder_state, _ = tf.contrib.seq2seq.dynamic_decode(decoder,
-                                                                                                output_time_major=True,
+                                                                                                output_time_major=False,
                                                                                                 maximum_iterations=self.decoder_full_length[0])
                 self.decoder_logits = self.decoder_outputs.rnn_output
                 self.pi = tf.nn.softmax(self.decoder_logits)
@@ -235,9 +235,9 @@ class Seq2SeqNetwork:
                 
                 self.sample_decoder_outputs, self.sample_decoder_state, _ = tf.contrib.seq2seq.dynamic_decode(
                     decoder=decoder_sample,  # Pass the tensor representing decoder inputs
-                    output_time_major=True,
+                    output_time_major=False,
                     maximum_iterations=self.decoder_full_length[0]
-)
+                )
                 self.sample_decoder_logits = self.sample_decoder_outputs.rnn_output
                 self.sample_pi = tf.nn.softmax(self.sample_decoder_logits)
                 self.sample_q = tf.compat.v1.layers.dense(self.sample_decoder_logits, self.n_features,
