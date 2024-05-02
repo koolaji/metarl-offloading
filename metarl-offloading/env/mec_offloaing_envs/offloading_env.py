@@ -102,7 +102,8 @@ class OffloadingEnvironment(object):
         Returns:
             tasks (list) : an (n_tasks) length list of tasks
         """
-        return np.arange(self.total_task)
+        # return np.arange(self.total_task)
+        return np.random.choice(np.arange(self.total_task), n_tasks, replace=False)
 
 
     def set_task(self, task):

@@ -152,7 +152,6 @@ class SampleProcessor(object):
 
         for idx, path in enumerate(paths):
             path_baselines = np.append(all_path_baselines[idx], 0)
-            print(path_baselines[1:].shape,path_baselines[:-1].shape , path["rewards"].shape)
             deltas = path["rewards"] + \
                      self.discount * path_baselines[1:] - \
                      path_baselines[:-1]
