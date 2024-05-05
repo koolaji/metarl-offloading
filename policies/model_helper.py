@@ -14,7 +14,8 @@ def _single_cell(unit_type, num_units, forget_bias, dropout, mode,
   if unit_type == "lstm":
     single_cell = tf.contrib.rnn.BasicLSTMCell(
         num_units,
-        forget_bias=forget_bias)
+        forget_bias=forget_bias,
+        activation=tf.sigmoid)
   elif unit_type == "gru":
     single_cell = tf.contrib.rnn.GRUCell(num_units)
   elif unit_type == "layer_norm_lstm":

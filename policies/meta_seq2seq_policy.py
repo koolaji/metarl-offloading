@@ -100,13 +100,20 @@ class Seq2SeqNetwork():
                 [self.n_features,
                  self.encoder_hidden_unit],
                 -1.0, 1.0), dtype=tf.float32)
-
+            initializer = tf.contrib.layers.variance_scaling_initializer() #
+            regularizer = tf.contrib.layers.l2_regularizer(scale=0.01)
             # using a fully connected layer as embeddings
             self.encoder_embeddings = tf.contrib.layers.fully_connected(self.encoder_inputs,
                                                                         self.encoder_hidden_unit,
                                                                         activation_fn = None,
-                                                                        scope="encoder_embeddings",
-                                                                        reuse=tf.compat.v1.AUTO_REUSE)
+                                                                        weights_initializer=initializer,
+                                                                        weights_regularizer=regularizer,
+                                                                        biases_initializer=tf.zeros_initializer(),                                                                        scope="encoder_embeddings",
+                                                                                reuse=tf.compat.v1.AUTO_REUSE)
+            self.encoder_embeddings = tf.layers.batch_normalization( self.encoder_embeddings, training=True)
+
+            # Add dropout regularization
+            self.encoder_embeddings = tf.layers.dropout( self.encoder_embeddings, rate=0.5, training=True)
 
             self.decoder_embeddings = tf.nn.embedding_lookup(self.embeddings,
                                                              self.decoder_inputs)
@@ -128,6 +135,9 @@ class Seq2SeqNetwork():
             self.decoder_logits = self.decoder_outputs.rnn_output
             self.pi = tf.nn.softmax(self.decoder_logits)
             self.q = tf.compat.v1.layers.dense(self.decoder_logits, self.n_features, activation=None,
+                                    #  kernel_initializer=initializer,
+                                     kernel_regularizer=regularizer,
+                                     bias_initializer=tf.zeros_initializer(),                                                     
                                      reuse=tf.compat.v1.AUTO_REUSE, name="qvalue_layer")
             self.vf = tf.reduce_sum(self.pi * self.q, axis=-1)
 
@@ -139,6 +149,9 @@ class Seq2SeqNetwork():
             self.sample_decoder_logits = self.sample_decoder_outputs.rnn_output
             self.sample_pi = tf.nn.softmax(self.sample_decoder_logits)
             self.sample_q = tf.compat.v1.layers.dense(self.sample_decoder_logits, self.n_features,
+                                            # kernel_initializer=initializer,
+                                            kernel_regularizer=regularizer,
+                                            bias_initializer=tf.zeros_initializer(),                                                             
                                             activation=None, reuse=tf.compat.v1.AUTO_REUSE, name="qvalue_layer")
 
             self.sample_vf = tf.reduce_sum(self.sample_pi*self.sample_q, axis=-1)
@@ -159,6 +172,9 @@ class Seq2SeqNetwork():
             self.greedy_decoder_logits = self.greedy_decoder_outputs.rnn_output
             self.greedy_pi = tf.nn.softmax(self.greedy_decoder_logits)
             self.greedy_q = tf.compat.v1.layers.dense(self.greedy_decoder_logits, self.n_features, activation=None, reuse=tf.compat.v1.AUTO_REUSE,
+                                    #  kernel_initializer=initializer,
+                                     kernel_regularizer=regularizer,
+                                     bias_initializer=tf.zeros_initializer(),      
                                      name="qvalue_layer")
             self.greedy_vf = tf.reduce_sum(self.greedy_pi * self.greedy_q, axis=-1)
 
@@ -371,17 +387,16 @@ class Seq2SeqPolicy():
 
         hparams = tf.contrib.training.HParams(
             unit_type="lstm",
-            encoder_units=encoder_units,
-            decoder_units=decoder_units,
-
+            encoder_units=128,
+            decoder_units=128,
             n_features=vocab_size,
             time_major=False,
             is_attention=True,
-            forget_bias=1.0,
+            forget_bias=0,
             dropout=0,
             num_gpus=1,
             num_layers=2,
-            num_residual_layers=0,
+            num_residual_layers=1,
             start_token=0,
             end_token=2,
             is_bidencoder=False
