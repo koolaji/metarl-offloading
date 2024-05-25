@@ -54,6 +54,7 @@ class MRLCO():
 
     def build_graph(self):
         # build inner update for each tasks
+        # print(f"inner_lr = {self.inner_lr}, outer_lr {self.outer_lr}")
         for i in range(self.meta_batch_size):
             self.new_logits.append(self.policy.meta_policies[i].network.decoder_logits)
             self.decoder_inputs.append(self.policy.meta_policies[i].decoder_inputs)
@@ -130,6 +131,7 @@ class MRLCO():
             _ = sess.run(self._outer_train, feed_dict=update_feed_dict)
 
         # print("async core policy to meta-policy")
+        self.policy.async_parameters()
 
     def UpdatePPOTarget(self, task_samples, batch_size=50):
         total_policy_losses = []

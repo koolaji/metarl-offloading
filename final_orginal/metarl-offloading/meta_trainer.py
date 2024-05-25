@@ -1,24 +1,27 @@
 import logging
-logging.getLogger('tensorflow').disabled = True
 import warnings
-warnings.filterwarnings("ignore", category=UserWarning, module="gym")
 import tensorflow as tf
 import numpy as np
 import time
 from utils import logger
 import os
+
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+logging.getLogger('tensorflow').disabled = True
+warnings.filterwarnings("ignore", category=UserWarning, module="gym")
+
+
 class Trainer(object):
-    def __init__(self,algo,
-                env,
-                sampler,
-                sample_processor,
-                policy,
-                n_itr,
-                greedy_finish_time,
-                start_itr=0,
-                inner_batch_size = 500,
-                save_interval = 100):
+    def __init__(self, algo,
+                 env,
+                 sampler,
+                 sample_processor,
+                 policy,
+                 n_itr,
+                 greedy_finish_time,
+                 start_itr=0,
+                 inner_batch_size=500,
+                 save_interval=100):
         self.algo = algo
         self.env = env
         self.sampler = sampler
@@ -29,7 +32,8 @@ class Trainer(object):
         self.inner_batch_size = inner_batch_size
         self.greedy_finish_time = greedy_finish_time
         self.save_interval = save_interval
-        self.policy_losses= 100000
+        self.policy_losses = 100000
+        self.avg_latency = 100000
 
     def train(self):
         """
@@ -51,19 +55,19 @@ class Trainer(object):
             #print("sampled path length is: ", len(paths[0]))
 
             greedy_run_time = [self.greedy_finish_time[x] for x in task_ids]
-            # logger.logkv('Average greedy latency,', np.mean(greedy_run_time))
+            logger.logkv('Average greedy latency,', np.mean(greedy_run_time))
 
             """ ----------------- Processing Samples ---------------------"""
             # logger.log("Processing samples...")
             samples_data = self.sampler_processor.process_samples(paths, log=False, log_prefix='')
 
             """ ------------------- Inner Policy Update --------------------"""
-            policy_losses, value_losses = self.algo.UpdatePPOTarget(samples_data, batch_size=self.inner_batch_size )
+            policy_losses, value_losses = self.algo.UpdatePPOTarget(samples_data, batch_size=self.inner_batch_size)
 
             #print("task losses: ", losses)
             # print("average task losses: ", np.mean(policy_losses))
             avg_loss.append(np.mean(policy_losses))
-            
+
             # print("average value losses: ", np.mean(value_losses))
 
             """ ------------------ Resample from updated sub-task policy ------------"""
@@ -74,9 +78,6 @@ class Trainer(object):
             """ ------------------ Outer Policy Update ---------------------"""
             # logger.log("Optimizing policy...")
             self.algo.UpdateMetaPolicy()
-            if   np.mean(policy_losses) <  self.policy_losses:
-                    self.policy.async_parameters()
-                    self.policy_losses = np.mean(policy_losses)
 
             """ ------------------- Logging Stuff --------------------------"""
 
@@ -92,19 +93,24 @@ class Trainer(object):
 
             avg_latency = np.mean(latency)
             avg_latencies.append(avg_latency)
+            # if   np.mean(policy_losses) <  self.policy_losses:
+            #         self.policy_losses = np.mean(policy_losses)
+            #         self.avg_latency = avg_latency
+            # print("policy_losses",self.policy_losses)
+            # print("avg_latency",self.avg_latency)
 
+            logger.logkv('Itr', itr)
+            logger.logkv('Average reward, ', avg_reward)
+            logger.logkv('Average latency,', avg_latency)
+            logger.logkv("average task losses: ", np.mean(policy_losses))
+            logger.logkv("average value losses: ", np.mean(value_losses))
 
-            # logger.logkv('Itr', itr)
-            # logger.logkv('Average reward, ', avg_reward)
-            # logger.logkv('Average latency,', avg_latency)
-            # logger.logkv("average task losses: ", np.mean(policy_losses))
-            # logger.logkv("average value losses: ", np.mean(value_losses))
-
-            # logger.dumpkvs()
+            logger.dumpkvs()
             avg_ret.append(avg_reward)
 
             if itr % self.save_interval == 0:
-                self.policy.core_policy.save_variables(save_path="./meta_model_inner_step1/meta_model_"+str(itr)+".ckpt")
+                self.policy.core_policy.save_variables(
+                    save_path="./meta_model_inner_step1/meta_model_" + str(itr) + ".ckpt")
 
         self.policy.core_policy.save_variables(save_path="./meta_model_inner_step1/meta_model_final.ckpt")
 
@@ -121,15 +127,14 @@ class TLBO:
         self.population = np.random.uniform(bounds[:, 0], bounds[:, 1], (population_size, dim))
         self.fitness = np.zeros(population_size)
 
-    def evaluate_population(self):
+    def evaluate_population(self, sess):
         for i in range(self.population_size):
             inner_lr, outer_lr = self.population[i]
             self.trainer.algo.inner_lr = inner_lr
             self.trainer.algo.outer_lr = outer_lr
+            self.trainer.algo.build_graph()
 
-            with tf.compat.v1.Session() as sess:
-                sess.run(tf.global_variables_initializer())            
-                avg_ret, avg_loss, avg_latencies = self.trainer.train()
+            avg_ret, avg_loss, avg_latencies = self.trainer.train()
             self.fitness[i] = np.mean(avg_loss)  # Assuming we want to minimize the loss
 
     def teacher_phase(self):
@@ -157,14 +162,15 @@ class TLBO:
             new_solution = np.clip(new_solution, self.bounds[:, 0], self.bounds[:, 1])
             self.population[i] = new_solution
 
-    def optimize(self):
-        self.evaluate_population()
+    def optimize(self, sess):
+        self.evaluate_population(sess=sess)
 
         for _ in range(self.iterations):
+            print(f"\n\n{_}\n\n")
             self.teacher_phase()
-            self.evaluate_population()
+            self.evaluate_population(sess=sess)
             self.learner_phase()
-            self.evaluate_population()
+            self.evaluate_population(sess=sess)
 
         best_index = np.argmin(self.fitness)
         best_solution = self.population[best_index]
@@ -227,24 +233,25 @@ if __name__ == "__main__":
 
     baseline = ValueFunctionBaseline()
     hparams = tf.contrib.training.HParams(
-            unit_type="lstm",
-            encoder_units=128,
-            decoder_units=128,
-
-            n_features=2,
-            time_major=False,
-            is_attention=True,
-            forget_bias=1.0,
-            dropout=0,
-            num_gpus=1,
-            num_layers=2,
-            num_residual_layers=0,
-            start_token=0,
-            end_token=2,
-            is_bidencoder=False
-        )
-    meta_policy = MetaSeq2SeqPolicy(meta_batch_size=META_BATCH_SIZE, obs_dim=17, encoder_units=128, decoder_units=128,
-                                    vocab_size=2, hparams=hparams)
+        unit_type="lstm",
+        num_units=128,
+        encoder_units=128,
+        decoder_hidden_unit=128,
+        n_features=2,
+        is_attention=True,
+        forget_bias=1.0,
+        dropout=0,
+        num_gpus=1,
+        num_layers=2,
+        num_residual_layers=0,
+        start_token=0,
+        end_token=2,
+        reuse=tf.compat.v1.AUTO_REUSE,
+        mode=tf.contrib.learn.ModeKeys.TRAIN,
+        single_cell_fn=None,
+        residual_fn=None,
+    )
+    meta_policy = MetaSeq2SeqPolicy(meta_batch_size=META_BATCH_SIZE, obs_dim=17, vocab_size=2, hparams=hparams)
 
     sampler = Seq2SeqMetaSampler(
         env=env,
@@ -261,23 +268,23 @@ if __name__ == "__main__":
                                                    normalize_adv=True,
                                                    positive_adv=False)
     algo = MRLCO(policy=meta_policy,
-                         meta_sampler=sampler,
-                         meta_sampler_process=sample_processor,
-                         inner_lr=5e-4,
-                         outer_lr=5e-4,
-                         meta_batch_size=META_BATCH_SIZE,
-                         num_inner_grad_steps=1,
-                         clip_value = 0.3)
+                 meta_sampler=sampler,
+                 meta_sampler_process=sample_processor,
+                 inner_lr=5e-4,
+                 outer_lr=5e-4,
+                 meta_batch_size=META_BATCH_SIZE,
+                 num_inner_grad_steps=1,
+                 clip_value=0.3)
 
-    trainer = Trainer(algo = algo,
-                        env=env,
-                        sampler=sampler,
-                        sample_processor=sample_processor,
-                        policy=meta_policy,
-                        n_itr=10,
-                        greedy_finish_time= greedy_finish_time,
-                        start_itr=0,
-                        inner_batch_size=1000)
+    trainer = Trainer(algo=algo,
+                      env=env,
+                      sampler=sampler,
+                      sample_processor=sample_processor,
+                      policy=meta_policy,
+                      n_itr=1,
+                      greedy_finish_time=greedy_finish_time,
+                      start_itr=0,
+                      inner_batch_size=1000)
 
     # with tf.compat.v1.Session() as sess:
     #     sess.run(tf.global_variables_initializer())
@@ -285,6 +292,7 @@ if __name__ == "__main__":
 
     bounds = np.array([[1e-5, 1e-2], [1e-5, 1e-2]])
     tlbo = TLBO(population_size=10, dim=2, bounds=bounds, iterations=20, trainer=trainer)
-
-    best_inner_lr, best_outer_lr = tlbo.optimize()
-    print(f"Optimal inner_lr: {best_inner_lr}, outer_lr: {best_outer_lr}")
+    with tf.compat.v1.Session() as sess:
+        sess.run(tf.global_variables_initializer())
+        best_inner_lr, best_outer_lr = tlbo.optimize(sess)
+        print(f"Optimal inner_lr: {best_inner_lr}, outer_lr: {best_outer_lr}")
