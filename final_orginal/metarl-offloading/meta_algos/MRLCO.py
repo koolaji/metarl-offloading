@@ -7,8 +7,8 @@ class MRLCO():
     def __init__(self,
                  policy,
                  meta_batch_size,
-                 meta_sampler,
-                 meta_sampler_process,
+                #  meta_sampler,
+                #  meta_sampler_process,
                  outer_lr,
                  inner_lr,
                  num_inner_grad_steps,
@@ -19,8 +19,8 @@ class MRLCO():
         self.inner_lr = inner_lr
         self.num_inner_grad_steps=num_inner_grad_steps
         self.policy = policy
-        self.meta_sampler = meta_sampler
-        self.meta_sampler_process = meta_sampler_process
+        # self.meta_sampler = meta_sampler
+        # self.meta_sampler_process = meta_sampler_process
         self.meta_batch_size = meta_batch_size
         self.update_numbers = 1
 

@@ -1,33 +1,17 @@
 Logging to ./meta_offloading20_log-inner_step1/
---------------------------------------
-| Average greedy latency, | 828      |
-| Average latency,        | 1.17e+03 |
-| Average reward,         | -8.31    |
-| AverageDiscountedReturn | -7.64    |
-| AverageReturn           | -8.31    |
-| EnvExecTime             | 0.0521   |
-| Itr                     | 0        |
-| MaxReturn               | -5.01    |
-| MinReturn               | -12.8    |
-| NumTrajs                | 1000     |
-| PolicyExecTime          | 0.154    |
-| StdReturn               | 1.16     |
-| average task losses:    | -6.1e-09 |
-| average value losses:   | 7.99     |
---------------------------------------
---------------------------------------
-| Average greedy latency, | 828      |
-| Average latency,        | 1.08e+03 |
-| Average reward,         | -7.66    |
-| AverageDiscountedReturn | -7.07    |
-| AverageReturn           | -7.66    |
-| EnvExecTime             | 0.0575   |
-| Itr                     | 0        |
-| MaxReturn               | -4.89    |
-| MinReturn               | -11.3    |
-| NumTrajs                | 1000     |
-| PolicyExecTime          | 0.157    |
-| StdReturn               | 1.15     |
-| average task losses:    | 5.34e-09 |
-| average value losses:   | 8.02     |
---------------------------------------
+---------------------------------------
+| Average greedy latency, | 828       |
+| Average latency,        | 1.08e+03  |
+| Average reward,         | -7.63     |
+| AverageDiscountedReturn | -7.05     |
+| AverageReturn           | -7.63     |
+| EnvExecTime             | 0.0571    |
+| Itr                     | 0         |
+| MaxReturn               | -4.66     |
+| MinReturn               | -11.7     |
+| NumTrajs                | 1000      |
+| PolicyExecTime          | 0.162     |
+| StdReturn               | 1.13      |
+| average task losses:    | -1.22e-08 |
+| average value losses:   | 8.54      |
+---------------------------------------

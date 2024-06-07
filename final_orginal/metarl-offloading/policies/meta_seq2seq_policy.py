@@ -3,8 +3,6 @@ import joblib
 
 import numpy as np
 import tensorflow as tf
-import policies.model_helper as model_helper
-
 from tensorflow.python.ops import control_flow_ops
 from tensorflow.python.ops import math_ops
 from tensorflow.python.framework import ops
@@ -101,6 +99,58 @@ class FixedSequenceLearningSampleEmbeddingHelper(tf.contrib.seq2seq.SampleEmbedd
         return finished, next_inputs, state
 
 
+def _single_cell(hparams, residual_connection=False, residual_fn=None):
+    """Create an instance of a single RNN cell."""
+    # dropout (= 1 - keep_prob) is set to 0 during eval and infer
+    dropout = hparams.dropout if hparams.mode == tf.contrib.learn.ModeKeys.TRAIN else 0.0
+
+    # Cell Type
+    if hparams.unit_type == "lstm":
+        single_cell = tf.contrib.rnn.BasicLSTMCell(
+            hparams.num_units,
+            forget_bias=hparams.forget_bias)
+    elif hparams.unit_type == "gru":
+        single_cell = tf.contrib.rnn.GRUCell(hparams.num_units)
+    elif hparams.unit_type == "layer_norm_lstm":
+        single_cell = tf.contrib.rnn.LayerNormBasicLSTMCell(
+            hparams.num_units,
+            forget_bias=hparams.forget_bias,
+            layer_norm=True)
+    elif hparams.unit_type == "nas":
+        single_cell = tf.contrib.rnn.NASCell(hparams.num_units)
+    else:
+        raise ValueError("Unknown unit type %s!" % hparams.unit_type)
+
+    if dropout > 0.0:
+        single_cell = tf.contrib.rnn.DropoutWrapper(
+            cell=single_cell, input_keep_prob=(1.0 - dropout))
+
+    # Residual
+    if residual_connection:
+        single_cell = tf.contrib.rnn.ResidualWrapper(
+            single_cell, residual_fn=residual_fn)
+
+    return single_cell
+
+
+def create_rnn_cell(hparams, residual_fn=None, single_cell_fn=None):
+    if not hparams.single_cell_fn:
+        single_cell_fn = _single_cell
+
+    cell_list = []
+    for i in range(hparams.num_layers):
+        single_cell = single_cell_fn(
+            hparams,
+            residual_connection=(i >= hparams.num_layers - hparams.num_residual_layers),
+            residual_fn=residual_fn
+        )
+        cell_list.append(single_cell)
+    if len(cell_list) == 1:
+        return cell_list[0]
+    else:
+        return tf.contrib.rnn.MultiRNNCell(cell_list)
+
+
 class Seq2SeqNetwork:
     def __init__(self, name,
                  hparams,
@@ -150,10 +200,9 @@ class Seq2SeqNetwork:
             self.sample_vf = tf.reduce_sum(self.sample_pi * self.sample_q, axis=-1)
             self.sample_decoder_prediction = self.sample_decoder_outputs.sample_id
 
-
     def create_encoder(self, hparams):
         with tf.compat.v1.variable_scope("encoder", reuse=tf.compat.v1.AUTO_REUSE) as scope:
-            encoder_cell = self.create_rnn_cell(hparams=hparams,)
+            encoder_cell = create_rnn_cell(hparams=hparams,)
             encoder_outputs, encoder_state = tf.nn.dynamic_rnn(
                 cell=encoder_cell,
                 sequence_length = None,
@@ -180,7 +229,7 @@ class Seq2SeqNetwork:
                     self.decoder_embeddings,
                     self.decoder_full_length,
                     time_major=False)
-            decoder_cell = self.create_rnn_cell(hparams=hparams)
+            decoder_cell = create_rnn_cell(hparams=hparams)
             attention_states = encoder_outputs
             attention_mechanism = tf.contrib.seq2seq.LuongAttention(
                 self.hparams.decoder_hidden_unit, attention_states)
@@ -199,57 +248,7 @@ class Seq2SeqNetwork:
                                                                        output_time_major=False,
                                                                        maximum_iterations=self.decoder_full_length[0])
         return outputs, last_state
-    def _single_cell(self, hparams, residual_connection=False, residual_fn=None):
-        """Create an instance of a single RNN cell."""
-        # dropout (= 1 - keep_prob) is set to 0 during eval and infer
-        dropout = hparams.dropout if hparams.mode == tf.contrib.learn.ModeKeys.TRAIN else 0.0
 
-        # Cell Type
-        if hparams.unit_type == "lstm":
-            single_cell = tf.contrib.rnn.BasicLSTMCell(
-                hparams.num_units,
-                forget_bias=hparams.forget_bias)
-        elif hparams.unit_type == "gru":
-            single_cell = tf.contrib.rnn.GRUCell(hparams.num_units)
-        elif hparams.unit_type == "layer_norm_lstm":
-            single_cell = tf.contrib.rnn.LayerNormBasicLSTMCell(
-                hparams.num_units,
-                forget_bias=hparams.forget_bias,
-                layer_norm=True)
-        elif hparams.unit_type == "nas":
-            single_cell = tf.contrib.rnn.NASCell(hparams.num_units)
-        else:
-            raise ValueError("Unknown unit type %s!" % hparams.unit_type)
-
-        if dropout > 0.0:
-            single_cell = tf.contrib.rnn.DropoutWrapper(
-                cell=single_cell, input_keep_prob=(1.0 - dropout))
-
-        # Residual
-        if residual_connection:
-            single_cell = tf.contrib.rnn.ResidualWrapper(
-                single_cell, residual_fn=residual_fn)
-
-        return single_cell
-
-
-    def create_rnn_cell(self, hparams, residual_fn=None, single_cell_fn=None):
-        if not hparams.single_cell_fn:
-            single_cell_fn = self._single_cell
-
-        cell_list = []
-        for i in range(hparams.num_layers):
-            single_cell = single_cell_fn(
-                hparams,
-                residual_connection=(i >= hparams.num_layers - hparams.num_residual_layers),
-                residual_fn=residual_fn
-            )
-            cell_list.append(single_cell)
-        if len(cell_list) == 1:
-            return cell_list[0]
-        else:
-            return tf.contrib.rnn.MultiRNNCell(cell_list)
-        
     def get_variables(self):
         return tf.compat.v1.get_collection(tf.compat.v1.GraphKeys.GLOBAL_VARIABLES, self.scope)
 
