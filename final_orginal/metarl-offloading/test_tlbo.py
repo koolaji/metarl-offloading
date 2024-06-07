@@ -338,21 +338,25 @@ class Seq2SeqPolicy():
 class MetaSeq2SeqPolicy():
     def __init__(self, meta_batch_size, obs_dim, vocab_size, hparams):
         self.meta_batch_size = meta_batch_size
-        # self.obs_dim = obs_dim
+        self.obs_dim = obs_dim
         self.action_dim = vocab_size
-        self.core_policy = Seq2SeqPolicy(obs_dim, vocab_size, hparams=hparams, name='core_policy')
+        self.hparams =hparams
+        self.build_network()
+    
+    def build_network(self):
+        self.core_policy = Seq2SeqPolicy(self.obs_dim, self.action_dim, hparams=self.hparams, name='core_policy')
         self.meta_policies = []
         self.assign_old_eq_new_tasks = []
-        for i in range(meta_batch_size):
+        for i in range(self.meta_batch_size):
             self.meta_policies.append(
-                Seq2SeqPolicy(obs_dim, vocab_size, hparams=hparams, name="task_" + str(i) + "_policy"))
+                Seq2SeqPolicy(self.obs_dim, self.action_dim, hparams=self.hparams, name="task_" + str(i) + "_policy"))
             self.assign_old_eq_new_tasks.append(
                 U.function([], [], updates=[tf.compat.v1.assign(oldv, newv)
                                             for (oldv, newv) in
                                             zipsame(self.meta_policies[i].get_variables(),
                                                     self.core_policy.get_variables())])
             )
-        self._dist = CategoricalPd(vocab_size)
+        self._dist = CategoricalPd(self.action_dim)
 
     def get_actions(self, observations):
         assert len(observations) == self.meta_batch_size
@@ -407,73 +411,58 @@ class MRLCO():
         self.clip_value = clip_value
         self.vf_coef = vf_coef
         self.max_grad_norm = max_grad_norm
+        self.new_logits = [0.0] * self.meta_batch_size
+        self.decoder_inputs = [0.0] * self.meta_batch_size
+        self.old_logits = [0.0] * self.meta_batch_size
+        self.actions = [0.0] * self.meta_batch_size
+        self.obs = [0.0] * self.meta_batch_size
+        self.vpred = [0.0] * self.meta_batch_size
+        self.decoder_full_length = [0.0] * self.meta_batch_size
 
-        self.new_logits = []
-        self.decoder_inputs = []
-        self.old_logits = []
-        self.actions = []
-        self.obs = []
-        self.vpred = []
-        self.decoder_full_length = []
+        self.old_v = [0.0] * self.meta_batch_size
+        self.advs = [0.0] * self.meta_batch_size
+        self.r = [0.0] * self.meta_batch_size        
+        for i in range(int(self.meta_batch_size)):
+            self.new_logits[i] = self.policy.meta_policies[i].network.decoder_logits
+            self.decoder_inputs[i] = self.policy.meta_policies[i].decoder_inputs
+            self.old_logits[i] = tf.compat.v1.placeholder(dtype=tf.float32, shape=[None, None, self.policy.action_dim], name='old_logits_ph_task_'+str(i))
+            self.actions[i] = self.policy.meta_policies[i].decoder_targets
+            self.obs[i] = self.policy.meta_policies[i].obs
+            self.vpred[i] = self.policy.meta_policies[i].vf
+            self.decoder_full_length[i] = self.policy.meta_policies[i].decoder_full_length
 
-        self.old_v = []
-        self.advs = []
-        self.r = []
-
-        self.surr_obj = []
-        self.vf_loss = []
-        self.total_loss = []
-        self._train = []
-
+            self.old_v[i] = tf.compat.v1.placeholder(dtype=tf.float32, shape=[None, None], name='old_v_ph_task_'+str(i))
+            self.advs[i] = tf.compat.v1.placeholder(dtype=tf.float32, shape=[None, None], name='advs_ph_task'+str(i))
+            self.r[i] = tf.compat.v1.placeholder(dtype=tf.float32, shape=[None, None], name='r_ph_task_'+str(i))
         self.build_graph()
 
     def build_graph(self):
-        for i in range(self.meta_batch_size):
-            self.new_logits.append(self.policy.meta_policies[i].network.decoder_logits)
-            self.decoder_inputs.append(self.policy.meta_policies[i].decoder_inputs)
-            self.old_logits.append(tf.compat.v1.placeholder(dtype=tf.float32, shape=[None, None, self.policy.action_dim], name='old_logits_ph_task_'+str(i)))
-            self.actions.append(self.policy.meta_policies[i].decoder_targets)
-            self.obs.append(self.policy.meta_policies[i].obs)
-            self.vpred.append(self.policy.meta_policies[i].vf)
-            self.decoder_full_length.append(self.policy.meta_policies[i].decoder_full_length)
-
-            self.old_v.append(tf.compat.v1.placeholder(dtype=tf.float32, shape=[None, None], name='old_v_ph_task_'+str(i)))
-            self.advs.append(tf.compat.v1.placeholder(dtype=tf.float32, shape=[None, None], name='advs_ph_task'+str(i)))
-            self.r.append(tf.compat.v1.placeholder(dtype=tf.float32, shape=[None, None], name='r_ph_task_'+str(i)))
-
+        self.surr_obj = [0.0] * self.meta_batch_size
+        self.vf_loss = [0.0] * self.meta_batch_size
+        self.total_loss = [0.0] * self.meta_batch_size
+        self._train = [0.0] * self.meta_batch_size
+        for i in range(int(self.meta_batch_size)):
             with tf.compat.v1.variable_scope("inner_update_parameters_task_"+str(i)) as scope:
                 likelihood_ratio = self.policy._dist.likelihood_ratio_sym(self.actions[i], self.old_logits[i], self.new_logits[i])
-                tf.print("Likelihood Ratio:", likelihood_ratio, output_stream=sys.stdout)
-
                 clipped_obj = tf.minimum(likelihood_ratio * self.advs[i], tf.clip_by_value(likelihood_ratio, 1.0 - self.clip_value, 1.0 + self.clip_value) * self.advs[i])
-                tf.print("Clipped Objective:", clipped_obj, output_stream=sys.stdout)
-                self.surr_obj.append(-tf.reduce_mean(clipped_obj))
-                tf.print("Surrogate Objective:", self.surr_obj[-1], output_stream=sys.stdout)
-
+                self.surr_obj[i] = -tf.reduce_mean(clipped_obj)
                 vpredclipped = self.vpred[i] + tf.clip_by_value(self.vpred[i] - self.old_v[i], -self.clip_value, self.clip_value)
                 vf_losses1 = tf.square(self.vpred[i] - self.r[i])
                 vf_losses2 = tf.square(vpredclipped - self.r[i])
-                tf.print("Value Function Losses:", vf_losses1, vf_losses2, output_stream=sys.stdout)
-
-                self.vf_loss.append(0.5 * tf.reduce_mean(tf.maximum(vf_losses1, vf_losses2)))
-                tf.print("Value Function Loss:", self.vf_loss[-1], output_stream=sys.stdout)
-
-                self.total_loss.append(self.surr_obj[i] + self.vf_coef * self.vf_loss[i])
-                tf.print("Total Loss:", self.total_loss[-1], output_stream=sys.stdout)
-
+                self.vf_loss[i] = 0.5 * tf.reduce_mean(tf.maximum(vf_losses1, vf_losses2))
+                self.total_loss[i] = self.surr_obj[i] + self.vf_coef * self.vf_loss[i]
                 params = self.policy.meta_policies[i].network.get_trainable_variables()
                 grads_and_var = self.inner_optimizer.compute_gradients(self.total_loss[i], params)
                 grads, var = zip(*grads_and_var)
-
                 if self.max_grad_norm is not None:
                     grads, _grad_norm = tf.clip_by_global_norm(grads, self.max_grad_norm)
                 grads_and_var = list(zip(grads, var))
 
-                self._train.append(self.inner_optimizer.apply_gradients(grads_and_var))
+                self._train[i] = self.inner_optimizer.apply_gradients(grads_and_var)
 
         with tf.compat.v1.variable_scope("outer_update_parameters") as scope:
             core_network_parameters = self.policy.core_policy.get_trainable_variables()
-            self.grads_placeholders = []
+            self.grads_placeholders = [] 
 
             for i, var in enumerate(core_network_parameters):
                 self.grads_placeholders.append(tf.compat.v1.placeholder(shape=var.shape, dtype=var.dtype, name="grads_"+str(i)))
@@ -486,7 +475,7 @@ class MRLCO():
         # get the parameters value of the policy network
         # sess = tf.compat.v1.get_default_session()
 
-        for i in range(self.meta_batch_size):
+        for i in range(int(self.meta_batch_size)):
             params_symbol = self.policy.meta_policies[i].get_trainable_variables()
             core_params_symble = self.policy.core_policy.get_trainable_variables()
             params = sess.run(params_symbol)
@@ -503,7 +492,7 @@ class MRLCO():
             _ = sess.run(self._outer_train, feed_dict=update_feed_dict)
 
         # print("async core policy to meta-policy")
-        self.policy.async_parameters()
+        # self.policy.async_parameters()
 
     def UpdatePPOTarget(self, task_samples, sess, batch_size=50):
         total_policy_losses = []
@@ -542,7 +531,7 @@ class MRLCO():
         vf_loss = 0.0
         pg_loss = 0.0
         # copy_policy.set_weights(self.policy.get_weights())
-        for i in range(self.num_inner_grad_steps):
+        for i in range(int(self.num_inner_grad_steps)):
             # action, old_logits, _ = copy_policy(observations)
             for old_logits, old_v, observations, actions, shift_actions, advs, r in zip(old_logits_batchs, oldvpred, observations_batchs, actions_batchs,
                                                                                         shift_action_batchs, advs_batchs, returns):
@@ -596,7 +585,7 @@ class Trainer(object):
             samples_data = self.sampler_processor.process_samples(paths, log=False, log_prefix='')            
             policy_losses, value_losses = self.algo.UpdatePPOTarget(samples_data, batch_size=self.inner_batch_size, sess=self.sess)
             avg_loss.append(np.mean(policy_losses))
-            self.algo.UpdateMetaPolicy(sess)
+            self.algo.UpdateMetaPolicy(sess=self.sess)
             latency = np.array([])
             for i in range(len(samples_data)):
                 latency = np.concatenate((latency, samples_data[i]['finish_time']), axis=-1)
@@ -613,21 +602,29 @@ class TLBO:
         self.trainer = trainer
         self.population = np.random.uniform(bounds[:, 0], bounds[:, 1], (population_size, dim))
         self.fitness = np.zeros(population_size)
+        self.teacher = 1000000
 
     def evaluate_population(self, sess, weight_loss=0.5, weight_reward=0.5):
         for i in range(self.population_size):
-            inner_lr, outer_lr, num_units, dropout, forget_bias, num_layers = self.population[i]
+            # inner_lr, outer_lr, num_units, encoder_units, decoder_hidden_unit, dropout, forget_bias, num_layers = self.population[i]
+            inner_lr, outer_lr, num_inner_grad_steps, inner_batch_size = self.population[i]
+
+
+            # self.trainer.policy.hparams.num_units = int(num_units)
+            # self.trainer.policy.hparams.encoder_units = int(encoder_units)
+            # self.trainer.policy.hparams.decoder_hidden_unit = int(encoder_units)
+            # self.trainer.policy.hparams.dropout = dropout
+            # self.trainer.policy.hparams.forget_bias = forget_bias
+            # self.trainer.policy.hparams.num_layers = int(num_layers)
 
             # Set trainer hyperparameters:
             self.trainer.algo.inner_lr = inner_lr
             self.trainer.algo.outer_lr = outer_lr
-            self.trainer.algo.build_graph()
+            self.trainer.algo.num_inner_grad_steps = num_inner_grad_steps
+            self.trainer.algo.inner_batch_size = inner_batch_size
+            # self.trainer.policy.build_network()
+            # self.trainer.algo.build_graph()
 
-            # Update LSTM hparams:
-            self.trainer.policy.core_policy.network.hparams.num_units = int(num_units)
-            self.trainer.policy.core_policy.network.hparams.dropout = dropout
-            self.trainer.policy.core_policy.network.hparams.forget_bias = forget_bias
-            self.trainer.policy.core_policy.network.hparams.num_layers = int(num_layers)
 
             # Train the model and get average loss
             avg_loss = np.mean(self.trainer.train()) 
@@ -636,7 +633,8 @@ class TLBO:
             avg_reward = np.mean([np.sum(path["rewards"]) for path in samples_data])
 
             self.fitness[i] = -(-weight_loss * avg_loss + weight_reward * avg_reward)  # Combine loss and reward
-            print(i, self.fitness[i], inner_lr, outer_lr, num_units, dropout, forget_bias, num_layers)
+            # print(i, np.argmin(self.fitness), self.fitness[i], inner_lr, outer_lr, num_units, dropout, forget_bias, num_layers)
+            print(i, np.argmin(self.fitness), self.fitness[i], inner_lr, outer_lr, num_inner_grad_steps, inner_batch_size, self.teacher)
 
 
 
@@ -644,44 +642,63 @@ class TLBO:
         best_index = np.argmin(self.fitness)
         best_solution = self.population[best_index]
         mean_solution = np.mean(self.population, axis=0)
-
+        new_solution_list = [0.0] * self.population_size
         for i in range(self.population_size):
             tf = np.random.randint(1, 3)
             new_solution = self.population[i] + np.random.rand(self.dim) * (best_solution - tf * mean_solution)
             new_solution = np.clip(new_solution, self.bounds[:, 0], self.bounds[:, 1])
-            self.population[i] = new_solution
-
+            new_solution_list[i]=new_solution
+        tmp_solution = self.population.copy()
+        tmp_fitness = self.fitness.copy()
+        self.population=new_solution_list.copy()
+        self.evaluate_population(sess=sess)
+        for i in range(self.population_size):
+            if tmp_fitness[i] < self.fitness[i]:
+                self.fitness[i] = tmp_fitness[i]
+                self.population[i] = tmp_solution[i]
+                print(f"index {i} rejected  {tmp_fitness[i]} -- {tmp_solution[i]} -- {self.fitness[i]}")
     def learner_phase(self):
+        new_solution_list = [0.0] * self.population_size
         for i in range(self.population_size):
             j = i
             while j == i:
                 j = np.random.randint(self.population_size)
 
             if self.fitness[i] < self.fitness[j]:
-                new_solution = self.population[i] + np.random.rand(self.dim) * (self.population[i] - self.population[j])
+                new_solution_list[i] = self.population[i] + np.random.rand(self.dim) * (self.population[i] - self.population[j])
             else:
-                new_solution = self.population[i] + np.random.rand(self.dim) * (self.population[j] - self.population[i])
+                new_solution_list[i] = self.population[i] + np.random.rand(self.dim) * (self.population[j] - self.population[i])
 
-            new_solution = np.clip(new_solution, self.bounds[:, 0], self.bounds[:, 1])
-            self.population[i] = new_solution
+            new_solution_list[i] = np.clip(new_solution_list[i], self.bounds[:, 0], self.bounds[:, 1])
+        tmp_solution=self.population.copy()
+        tmp_fitness = self.fitness.copy()
+        self.population=new_solution_list.copy()
+        self.evaluate_population(sess=sess)
+        for i in range(self.population_size):
+            if tmp_fitness[i] < self.fitness[i]:
+                self.fitness[i] = tmp_fitness[i]
+                self.population[i] = tmp_solution[i]
+                print(f"index {i} rejected  {tmp_fitness[i]} -- {tmp_solution[i]} -- {self.fitness[i]}")
 
     def optimize(self, sess):
         self.evaluate_population(sess=sess)
-
         for _ in range(self.iterations):
             print(f"\n\n{_}\n\n")
             self.teacher_phase()
-            self.evaluate_population(sess=sess)
             self.learner_phase()
-            self.evaluate_population(sess=sess)
-
+            best_index = np.argmin(self.fitness)
+            if self.fitness[best_index] < self.teacher :
+                # self.trainer.policy.async_parameters()
+                self.teacher = self.fitness[best_index]
+                print(f"\n\n New_teacher == {self.teacher}\n\n")
+                self.trainer.policy.core_policy.save_variables(save_path="./meta_model_inner_step1/meta_model_final.ckpt")
         best_index = np.argmin(self.fitness)
         best_solution = self.population[best_index]
         return best_solution
 
 
 if __name__ == "__main__":
-    META_BATCH_SIZE = 3
+    META_BATCH_SIZE = 1
 
     resource_cluster = Resources(mec_process_capable=(10.0 * 1024 * 1024),
                                  mobile_process_capable=(1.0 * 1024 * 1024),
@@ -692,8 +709,8 @@ if __name__ == "__main__":
                                 graph_number=100,
                                 graph_file_paths=[
                                     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_1/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_2/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_3/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_2/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_3/random.20.",
                                     # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_5/random.20.",
                                     # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_6/random.20.",
                                     # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_7/random.20.",
@@ -766,14 +783,18 @@ if __name__ == "__main__":
                         sess=sess)
 
         bounds = np.array([
-            [1e-7, 1e-2],     # inner_lr range
-            [1e-7, 1e-2],     # outer_lr range
-            [64, 256],        # num_units range 
-            [0.0, 0.5],       # dropout range
-            [0.5, 2.0],       # forget_bias range 
-            [1, 5]           # num_layers range
-        ])     
-        tlbo = TLBO(population_size=10, dim=6, bounds=bounds, iterations=20, trainer=trainer)
+            [1e-20, 5e-4],     # inner_lr range
+            [1e-20, 5e-4],     # outer_lr range
+            # [64, 256],        # num_units range 
+            # [64, 256],        # encoder_units range 
+            # [64, 256],        # decoder_hidden_unit range 
+            # [0.0, 0.5],       # dropout range
+            # [0.5, 2.0],       # forget_bias range 
+            # [1, 5]           # num_layers range
+            [10, 1000], # num_inner_grad_steps
+            [10, 2000], # inner_batch_size
+        ])      
+        tlbo = TLBO(population_size=15, dim=4, bounds=bounds, iterations=100, trainer=trainer)
         sess.run(tf.global_variables_initializer())
-        best_inner_lr, best_outer_lr = tlbo.optimize(sess)
-        print(f"Optimal inner_lr: {best_inner_lr}, outer_lr: {best_outer_lr}")
+        inner_lr, outer_lr, num_inner_grad_steps, inner_batch_size = tlbo.optimize(sess)
+        print(f"inner_lr = {inner_lr} ,outer_lr = {outer_lr}, num_inner_grad_steps = {num_inner_grad_steps}, inner_batch_size = {inner_batch_size}")
