@@ -1,2 +1,0 @@
-Average greedy latency,,NumTrajs,Average latency,,MinReturn,average task losses: ,Itr,average value losses: ,EnvExecTime,PolicyExecTime,StdReturn,AverageDiscountedReturn,AverageReturn,MaxReturn,Average reward, 
-827.8765279039657,1000,1077.0631130916868,-11.727685553535656,-1.2207030941624453e-08,0,8.537089347839355,0.057131052017211914,0.1622922420501709,1.1304050166529305,-7.05068780759576,-7.629444652249607,-4.657192177845063,-7.629444652249606
