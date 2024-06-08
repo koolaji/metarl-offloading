@@ -8,6 +8,7 @@ from tensorflow.contrib.distributions import Categorical
 from policies.distributions.categorical_pd import CategoricalPd
 import joblib
 import os
+import glob
 
 class Trainer():
     def __init__(self,algo,
@@ -41,23 +42,23 @@ class Trainer():
         avg_latencies = []
         for itr in range(self.start_itr, self.n_itr):
             itr_start_time = time.time()
-            logger.log("\n ---------------- Iteration %d ----------------" % itr)
-            logger.log("Sampling set of tasks/goals for this meta-batch...")
+            # logger.log("\n ---------------- Iteration %d ----------------" % itr)
+            # logger.log("Sampling set of tasks/goals for this meta-batch...")
 
             paths = self.sampler.obtain_samples(log=True, log_prefix='')
 
             """ ----------------- Processing Samples ---------------------"""
-            logger.log("Processing samples...")
+            # logger.log("Processing samples...")
             samples_data = self.sampler_processor.process_samples(paths, log='all', log_prefix='')
 
             """ ------------------- Inner Policy Update --------------------"""
             policy_losses, value_losses = self.algo.UpdatePPOTarget(samples_data, batch_size=self.batch_size)
 
             #print("task losses: ", losses)
-            print("average policy losses: ", np.mean(policy_losses))
+            # print("average policy losses: ", np.mean(policy_losses))
             avg_pg_loss.append(np.mean(policy_losses))
 
-            print("average value losses: ", np.mean(value_losses))
+            # print("average value losses: ", np.mean(value_losses))
             avg_vf_loss.append(np.mean(value_losses))
 
             """ ------------------- Logging Stuff --------------------------"""
@@ -486,14 +487,39 @@ if __name__ == "__main__":
                       sampler=sampler,
                       sample_processor=sample_processor,
                       policy=policy,
-                      n_itr=21,
+                      n_itr=2,
                       start_itr=0,
                       batch_size=500,
                       num_inner_grad_steps=3)
 
-    with tf.Session() as sess:
-        sess.run(tf.compat.v1.global_variables_initializer())
-        policy.load_variables(load_path="./meta_model_inner_step1/meta_model_0.ckpt")
-        avg_ret, avg_pg_loss, avg_vf_loss, avg_latencies = trainer.train()
+    # checkpoint_directory = "./meta_model_inner_step1"
+
+    # Find all .ckpt files in the directory
+    import re
+    checkpoint_files = glob.glob("meta_model_inner_step1/meta_model_*.ckpt")
+
+    def extract_number(filename):
+        # Extract the number from the filename
+        number = re.search(r'\d+', os.path.basename(filename))
+        return int(number.group()) if number else 0
+    checkpoint_files.sort(key=extract_number)
+    # Loop through the found checkpoint files
+    for checkpoint_file in checkpoint_files:
+        with tf.compat.v1.Session() as sess:  # Use tf.compat.v1.Session for TensorFlow 1.x
+            sess.run(tf.compat.v1.global_variables_initializer())
+
+            # Load variables from the current checkpoint file
+            load_path = checkpoint_file  
+            policy.load_variables(load_path)
+            print(checkpoint_file)
+            # Train and evaluate on this checkpoint
+            avg_ret, avg_pg_loss, avg_vf_loss, avg_latencies = trainer.train()
+
+            # (Optionally) Log or store the results for this checkpoint
+            # print(f"Results for checkpoint {checkpoint_file}:")
+            # print(f"  Average Return: {avg_ret}")
+            # print(f"  Average PG Loss: {avg_pg_loss}")
+            # print(f"  Average VF Loss: {avg_vf_loss}")
+            # print(f"  Average Latencies: {avg_latencies}")
 
 

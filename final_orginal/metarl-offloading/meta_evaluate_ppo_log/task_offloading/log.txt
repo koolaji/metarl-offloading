@@ -1,232 +1,43 @@
 Logging to ./meta_evaluate_ppo_log/task_offloading
-
- ---------------- Iteration 0 ----------------
-Sampling set of tasks/goals for this meta-batch...
-Processing samples...
 -------------------------------
-| Average latency, | 969      |
-| Average reward,  | -6.47    |
-| EnvExecTime      | 0.0549   |
+| Average latency, | 870      |
+| Average reward,  | -5.81    |
+| EnvExecTime      | 0.121    |
 | Itr              | 0        |
-| PolicyExecTime   | 0.254    |
+| PolicyExecTime   | 0.621    |
 -------------------------------
-
- ---------------- Iteration 1 ----------------
-Sampling set of tasks/goals for this meta-batch...
-Processing samples...
 -------------------------------
-| Average latency, | 1.31e+03 |
-| Average reward,  | -8.74    |
-| EnvExecTime      | 0.0498   |
-| Itr              | 1        |
-| PolicyExecTime   | 0.159    |
+| Average latency, | 870      |
+| Average reward,  | -5.81    |
+| EnvExecTime      | 0.114    |
+| Itr              | 0        |
+| PolicyExecTime   | 0.578    |
 -------------------------------
-
- ---------------- Iteration 2 ----------------
-Sampling set of tasks/goals for this meta-batch...
-Processing samples...
 -------------------------------
-| Average latency, | 1.42e+03 |
-| Average reward,  | -9.51    |
-| EnvExecTime      | 0.051    |
-| Itr              | 2        |
-| PolicyExecTime   | 0.157    |
+| Average latency, | 863      |
+| Average reward,  | -5.75    |
+| EnvExecTime      | 0.11     |
+| Itr              | 0        |
+| PolicyExecTime   | 0.568    |
 -------------------------------
-
- ---------------- Iteration 3 ----------------
-Sampling set of tasks/goals for this meta-batch...
-Processing samples...
 -------------------------------
-| Average latency, | 1.43e+03 |
-| Average reward,  | -9.55    |
-| EnvExecTime      | 0.0507   |
-| Itr              | 3        |
-| PolicyExecTime   | 0.166    |
+| Average latency, | 861      |
+| Average reward,  | -5.74    |
+| EnvExecTime      | 0.115    |
+| Itr              | 0        |
+| PolicyExecTime   | 0.583    |
 -------------------------------
-
- ---------------- Iteration 4 ----------------
-Sampling set of tasks/goals for this meta-batch...
-Processing samples...
 -------------------------------
-| Average latency, | 1.4e+03  |
-| Average reward,  | -9.35    |
-| EnvExecTime      | 0.05     |
-| Itr              | 4        |
-| PolicyExecTime   | 0.163    |
+| Average latency, | 858      |
+| Average reward,  | -5.73    |
+| EnvExecTime      | 0.106    |
+| Itr              | 0        |
+| PolicyExecTime   | 0.575    |
 -------------------------------
-
- ---------------- Iteration 5 ----------------
-Sampling set of tasks/goals for this meta-batch...
-Processing samples...
 -------------------------------
-| Average latency, | 1.35e+03 |
-| Average reward,  | -9.06    |
-| EnvExecTime      | 0.0505   |
-| Itr              | 5        |
-| PolicyExecTime   | 0.162    |
--------------------------------
-
- ---------------- Iteration 6 ----------------
-Sampling set of tasks/goals for this meta-batch...
-Processing samples...
--------------------------------
-| Average latency, | 1.35e+03 |
-| Average reward,  | -9.06    |
-| EnvExecTime      | 0.0499   |
-| Itr              | 6        |
-| PolicyExecTime   | 0.155    |
--------------------------------
-
- ---------------- Iteration 7 ----------------
-Sampling set of tasks/goals for this meta-batch...
-Processing samples...
--------------------------------
-| Average latency, | 1.35e+03 |
-| Average reward,  | -9.01    |
-| EnvExecTime      | 0.0503   |
-| Itr              | 7        |
-| PolicyExecTime   | 0.154    |
--------------------------------
-
- ---------------- Iteration 8 ----------------
-Sampling set of tasks/goals for this meta-batch...
-Processing samples...
--------------------------------
-| Average latency, | 1.34e+03 |
-| Average reward,  | -8.93    |
-| EnvExecTime      | 0.0507   |
-| Itr              | 8        |
-| PolicyExecTime   | 0.158    |
--------------------------------
-
- ---------------- Iteration 9 ----------------
-Sampling set of tasks/goals for this meta-batch...
-Processing samples...
--------------------------------
-| Average latency, | 1.32e+03 |
-| Average reward,  | -8.85    |
-| EnvExecTime      | 0.0517   |
-| Itr              | 9        |
-| PolicyExecTime   | 0.155    |
--------------------------------
-
- ---------------- Iteration 10 ----------------
-Sampling set of tasks/goals for this meta-batch...
-Processing samples...
--------------------------------
-| Average latency, | 1.32e+03 |
-| Average reward,  | -8.81    |
-| EnvExecTime      | 0.0514   |
-| Itr              | 10       |
-| PolicyExecTime   | 0.154    |
--------------------------------
-
- ---------------- Iteration 11 ----------------
-Sampling set of tasks/goals for this meta-batch...
-Processing samples...
--------------------------------
-| Average latency, | 1.31e+03 |
-| Average reward,  | -8.72    |
-| EnvExecTime      | 0.0514   |
-| Itr              | 11       |
-| PolicyExecTime   | 0.161    |
--------------------------------
-
- ---------------- Iteration 12 ----------------
-Sampling set of tasks/goals for this meta-batch...
-Processing samples...
--------------------------------
-| Average latency, | 1.3e+03  |
-| Average reward,  | -8.66    |
-| EnvExecTime      | 0.0515   |
-| Itr              | 12       |
-| PolicyExecTime   | 0.161    |
--------------------------------
-
- ---------------- Iteration 13 ----------------
-Sampling set of tasks/goals for this meta-batch...
-Processing samples...
--------------------------------
-| Average latency, | 1.29e+03 |
-| Average reward,  | -8.63    |
-| EnvExecTime      | 0.0516   |
-| Itr              | 13       |
-| PolicyExecTime   | 0.163    |
--------------------------------
-
- ---------------- Iteration 14 ----------------
-Sampling set of tasks/goals for this meta-batch...
-Processing samples...
--------------------------------
-| Average latency, | 1.28e+03 |
-| Average reward,  | -8.53    |
-| EnvExecTime      | 0.0529   |
-| Itr              | 14       |
-| PolicyExecTime   | 0.156    |
--------------------------------
-
- ---------------- Iteration 15 ----------------
-Sampling set of tasks/goals for this meta-batch...
-Processing samples...
--------------------------------
-| Average latency, | 1.27e+03 |
-| Average reward,  | -8.46    |
-| EnvExecTime      | 0.0543   |
-| Itr              | 15       |
-| PolicyExecTime   | 0.152    |
--------------------------------
-
- ---------------- Iteration 16 ----------------
-Sampling set of tasks/goals for this meta-batch...
-Processing samples...
--------------------------------
-| Average latency, | 1.26e+03 |
-| Average reward,  | -8.4     |
-| EnvExecTime      | 0.0523   |
-| Itr              | 16       |
-| PolicyExecTime   | 0.154    |
--------------------------------
-
- ---------------- Iteration 17 ----------------
-Sampling set of tasks/goals for this meta-batch...
-Processing samples...
--------------------------------
-| Average latency, | 1.24e+03 |
-| Average reward,  | -8.3     |
-| EnvExecTime      | 0.0529   |
-| Itr              | 17       |
-| PolicyExecTime   | 0.154    |
--------------------------------
-
- ---------------- Iteration 18 ----------------
-Sampling set of tasks/goals for this meta-batch...
-Processing samples...
--------------------------------
-| Average latency, | 1.24e+03 |
-| Average reward,  | -8.29    |
-| EnvExecTime      | 0.0528   |
-| Itr              | 18       |
-| PolicyExecTime   | 0.152    |
--------------------------------
-
- ---------------- Iteration 19 ----------------
-Sampling set of tasks/goals for this meta-batch...
-Processing samples...
--------------------------------
-| Average latency, | 1.22e+03 |
-| Average reward,  | -8.15    |
-| EnvExecTime      | 0.0585   |
-| Itr              | 19       |
-| PolicyExecTime   | 0.156    |
--------------------------------
-
- ---------------- Iteration 20 ----------------
-Sampling set of tasks/goals for this meta-batch...
-Processing samples...
--------------------------------
-| Average latency, | 1.2e+03  |
-| Average reward,  | -8.04    |
-| EnvExecTime      | 0.0549   |
-| Itr              | 20       |
-| PolicyExecTime   | 0.162    |
+| Average latency, | 867      |
+| Average reward,  | -5.78    |
+| EnvExecTime      | 0.113    |
+| Itr              | 0        |
+| PolicyExecTime   | 0.55     |
 -------------------------------

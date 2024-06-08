@@ -791,7 +791,7 @@ if __name__ == "__main__":
                         sampler=sampler,
                         sampler_processor=sampler_processor,
                         policy=meta_policy,
-                        n_itr=1,
+                        n_itr=10,
                         start_itr=0,
                         inner_batch_size=1000, 
                         sess=sess,
