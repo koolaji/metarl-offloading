@@ -563,25 +563,27 @@ class Trainer(object):
                  policy,
                  n_itr,
                  sess,
+                 greedy_finish_time,
                  start_itr=0,
                  inner_batch_size=500,
-                 save_interval=100):
+                 ):
         self.algo = algo
         self.policy = policy
         self.n_itr = n_itr
         self.start_itr = start_itr
         self.inner_batch_size = inner_batch_size
-        self.save_interval = save_interval
         self.policy_losses = 100000
         self.avg_latency = 100000
         self.sampler = sampler
         self.sampler_processor = sampler_processor
-        self.sess =sess
+        self.sess = sess
+        self.greedy_finish_time = greedy_finish_time
     def train(self):
         avg_loss = []
         for itr in range(self.start_itr, self.n_itr):
             task_ids = self.sampler.update_tasks()
-            paths = self.sampler.obtain_samples(log=False, log_prefix='')            
+            paths = self.sampler.obtain_samples(log=False, log_prefix='') 
+            greedy_run_time = [self.greedy_finish_time[x] for x in task_ids]
             samples_data = self.sampler_processor.process_samples(paths, log=False, log_prefix='')            
             policy_losses, value_losses = self.algo.UpdatePPOTarget(samples_data, batch_size=self.inner_batch_size, sess=self.sess)
             avg_loss.append(np.mean(policy_losses))
@@ -590,7 +592,9 @@ class Trainer(object):
             for i in range(len(samples_data)):
                 latency = np.concatenate((latency, samples_data[i]['finish_time']), axis=-1)
             avg_latency = np.mean(latency)
-            print(avg_latency)            
+            greedy_latency = np.mean(greedy_run_time)
+            diff_latency = greedy_latency -  avg_latency
+            print(f"avg_latency == {avg_latency} -- greedy == {np.mean(greedy_run_time)} -- diff == {diff_latency} -- taskid == {task_ids}")            
         return avg_loss
 
 class TLBO:
@@ -634,7 +638,7 @@ class TLBO:
 
             self.fitness[i] = -(-weight_loss * avg_loss + weight_reward * avg_reward)  # Combine loss and reward
             # print(i, np.argmin(self.fitness), self.fitness[i], inner_lr, outer_lr, num_units, dropout, forget_bias, num_layers)
-            print(i, np.argmin(self.fitness), self.fitness[i], inner_lr, outer_lr, num_inner_grad_steps, inner_batch_size, self.teacher)
+            # print(i, np.argmin(self.fitness), self.fitness[i], inner_lr, outer_lr, num_inner_grad_steps, inner_batch_size, self.teacher)
 
 
 
@@ -656,7 +660,7 @@ class TLBO:
             if tmp_fitness[i] < self.fitness[i]:
                 self.fitness[i] = tmp_fitness[i]
                 self.population[i] = tmp_solution[i]
-                print(f"index {i} rejected  {tmp_fitness[i]} -- {tmp_solution[i]} -- {self.fitness[i]}")
+                # print(f"index {i} rejected  {tmp_fitness[i]} -- {tmp_solution[i]} -- {self.fitness[i]}")
     def learner_phase(self):
         new_solution_list = [0.0] * self.population_size
         for i in range(self.population_size):
@@ -678,7 +682,7 @@ class TLBO:
             if tmp_fitness[i] < self.fitness[i]:
                 self.fitness[i] = tmp_fitness[i]
                 self.population[i] = tmp_solution[i]
-                print(f"index {i} rejected  {tmp_fitness[i]} -- {tmp_solution[i]} -- {self.fitness[i]}")
+                # print(f"index {i} rejected  {tmp_fitness[i]} -- {tmp_solution[i]} -- {self.fitness[i]}")
 
     def optimize(self, sess):
         self.evaluate_population(sess=sess)
@@ -691,7 +695,9 @@ class TLBO:
                 # self.trainer.policy.async_parameters()
                 self.teacher = self.fitness[best_index]
                 print(f"\n\n New_teacher == {self.teacher}\n\n")
-                self.trainer.policy.core_policy.save_variables(save_path="./meta_model_inner_step1/meta_model_final.ckpt")
+            self.trainer.policy.core_policy.save_variables(
+                    save_path="./meta_model_inner_step1/meta_model_" + str(_) + ".ckpt")
+        self.trainer.policy.core_policy.save_variables(save_path="./meta_model_inner_step1/meta_model_final.ckpt")
         best_index = np.argmin(self.fitness)
         best_solution = self.population[best_index]
         return best_solution
@@ -709,26 +715,35 @@ if __name__ == "__main__":
                                 graph_number=100,
                                 graph_file_paths=[
                                     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_1/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_2/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_3/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_5/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_6/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_7/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_9/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_10/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_11/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_13/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_14/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_15/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_17/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_18/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_19/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_21/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_22/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_23/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_25/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_2/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_3/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_5/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_6/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_7/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_9/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_10/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_11/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_13/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_14/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_15/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_17/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_18/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_19/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_21/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_22/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_23/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_25/random.20.",
                                 ],
                                 time_major=False)
+    action, greedy_finish_time = env.greedy_solution()
+    print("avg greedy solution: ", np.mean(greedy_finish_time))
+    print()
+    finish_time = env.get_all_mec_execute_time()
+    print("avg all remote solution: ", np.mean(finish_time))
+    print()
+    finish_time = env.get_all_locally_execute_time()
+    print("avg all local solution: ", np.mean(finish_time))
+    print()
     hparams = tf.contrib.training.HParams(
         unit_type="lstm",
         num_units=128,
@@ -780,7 +795,8 @@ if __name__ == "__main__":
                         n_itr=1,
                         start_itr=0,
                         inner_batch_size=1000, 
-                        sess=sess)
+                        sess=sess,
+                        greedy_finish_time=greedy_finish_time)
 
         bounds = np.array([
             [1e-20, 5e-4],     # inner_lr range
@@ -791,8 +807,10 @@ if __name__ == "__main__":
             # [0.0, 0.5],       # dropout range
             # [0.5, 2.0],       # forget_bias range 
             # [1, 5]           # num_layers range
-            [10, 1000], # num_inner_grad_steps
-            [10, 2000], # inner_batch_size
+            [10, 200], # num_inner_grad_steps
+            [10, 200], # inner_batch_size
+            # [10, 1000], # num_inner_grad_steps
+            # [10, 2000], # inner_batch_size
         ])      
         tlbo = TLBO(population_size=15, dim=4, bounds=bounds, iterations=100, trainer=trainer)
         sess.run(tf.global_variables_initializer())

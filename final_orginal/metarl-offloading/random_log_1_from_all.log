@@ -1,0 +1,1460 @@
+/home/mehrdad/anaconda3/envs/tf-1.15-cpu/lib/python3.6/site-packages/gym/core.py:27: UserWarning: [33mWARN: Gym minimally supports python 3.6 as the python foundation not longer supports the version, please update your version to 3.7+[0m
+  "Gym minimally supports python 3.6 as the python foundation not longer supports the version, please update your version to 3.7+"
+WARNING:tensorflow:
+The TensorFlow contrib module will not be included in TensorFlow 2.0.
+For more information, please see:
+  * https://github.com/tensorflow/community/blob/master/rfcs/20180907-contrib-sunset.md
+  * https://github.com/tensorflow/addons
+  * https://github.com/tensorflow/io (for I/O related ops)
+If you depend on functionality not listed there, please file an issue.
+
+WARNING:tensorflow:From /home/mehrdad/anaconda3/envs/tf-1.15-cpu/lib/python3.6/site-packages/tensorflow_core/contrib/layers/python/layers/layers.py:1866: Layer.apply (from tensorflow.python.keras.engine.base_layer) is deprecated and will be removed in a future version.
+Instructions for updating:
+Please use `layer.__call__` method instead.
+WARNING:tensorflow:From test_tlbo.py:116: BasicLSTMCell.__init__ (from tensorflow.python.ops.rnn_cell_impl) is deprecated and will be removed in a future version.
+Instructions for updating:
+This class is equivalent as tf.keras.layers.LSTMCell, and will be replaced by that in Tensorflow 2.0.
+WARNING:tensorflow:From test_tlbo.py:156: MultiRNNCell.__init__ (from tensorflow.python.ops.rnn_cell_impl) is deprecated and will be removed in a future version.
+Instructions for updating:
+This class is equivalent as tf.keras.layers.StackedRNNCells, and will be replaced by that in Tensorflow 2.0.
+WARNING:tensorflow:From test_tlbo.py:218: dynamic_rnn (from tensorflow.python.ops.rnn) is deprecated and will be removed in a future version.
+Instructions for updating:
+Please use `keras.layers.RNN(cell)`, which is equivalent to this API
+WARNING:tensorflow:From /home/mehrdad/anaconda3/envs/tf-1.15-cpu/lib/python3.6/site-packages/tensorflow_core/python/ops/rnn_cell_impl.py:735: Layer.add_variable (from tensorflow.python.keras.engine.base_layer) is deprecated and will be removed in a future version.
+Instructions for updating:
+Please use `layer.add_weight` method instead.
+WARNING:tensorflow:From /home/mehrdad/anaconda3/envs/tf-1.15-cpu/lib/python3.6/site-packages/tensorflow_core/python/ops/rnn_cell_impl.py:739: calling Zeros.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+Instructions for updating:
+Call initializer instance with the dtype argument instead of passing it to the constructor
+WARNING:tensorflow:From /home/mehrdad/anaconda3/envs/tf-1.15-cpu/lib/python3.6/site-packages/tensorflow_core/contrib/seq2seq/python/ops/decoder.py:420: where (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+WARNING:tensorflow:From test_tlbo.py:194: dense (from tensorflow.python.layers.core) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use keras.layers.Dense instead.
+WARNING:tensorflow:From test_tlbo.py:71: Categorical.__init__ (from tensorflow.python.ops.distributions.categorical) is deprecated and will be removed after 2019-01-01.
+Instructions for updating:
+The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.distributions`.
+WARNING:tensorflow:From /home/mehrdad/anaconda3/envs/tf-1.15-cpu/lib/python3.6/site-packages/tensorflow_core/python/ops/distributions/categorical.py:242: Distribution.__init__ (from tensorflow.python.ops.distributions.distribution) is deprecated and will be removed after 2019-01-01.
+Instructions for updating:
+The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.distributions`.
+WARNING:tensorflow:From /home/mehrdad/anaconda3/envs/tf-1.15-cpu/lib/python3.6/site-packages/tensorflow_core/python/ops/distributions/categorical.py:278: multinomial (from tensorflow.python.ops.random_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use `tf.random.categorical` instead.
+2024-06-08 09:54:24.927685: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcuda.so.1
+2024-06-08 09:54:24.945434: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:983] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2024-06-08 09:54:24.945549: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1618] Found device 0 with properties: 
+name: NVIDIA GeForce RTX 3060 Laptop GPU major: 8 minor: 6 memoryClockRate(GHz): 1.425
+pciBusID: 0000:01:00.0
+2024-06-08 09:54:24.945622: W tensorflow/stream_executor/platform/default/dso_loader.cc:55] Could not load dynamic library 'libcudart.so.10.0'; dlerror: libcudart.so.10.0: cannot open shared object file: No such file or directory
+2024-06-08 09:54:24.945754: W tensorflow/stream_executor/platform/default/dso_loader.cc:55] Could not load dynamic library 'libcublas.so.10.0'; dlerror: libcublas.so.10.0: cannot open shared object file: No such file or directory
+2024-06-08 09:54:24.945861: W tensorflow/stream_executor/platform/default/dso_loader.cc:55] Could not load dynamic library 'libcufft.so.10.0'; dlerror: libcufft.so.10.0: cannot open shared object file: No such file or directory
+2024-06-08 09:54:24.945970: W tensorflow/stream_executor/platform/default/dso_loader.cc:55] Could not load dynamic library 'libcurand.so.10.0'; dlerror: libcurand.so.10.0: cannot open shared object file: No such file or directory
+2024-06-08 09:54:24.946074: W tensorflow/stream_executor/platform/default/dso_loader.cc:55] Could not load dynamic library 'libcusolver.so.10.0'; dlerror: libcusolver.so.10.0: cannot open shared object file: No such file or directory
+2024-06-08 09:54:24.946105: W tensorflow/stream_executor/platform/default/dso_loader.cc:55] Could not load dynamic library 'libcusparse.so.10.0'; dlerror: libcusparse.so.10.0: cannot open shared object file: No such file or directory
+2024-06-08 09:54:24.946210: W tensorflow/stream_executor/platform/default/dso_loader.cc:55] Could not load dynamic library 'libcudnn.so.7'; dlerror: libcudnn.so.7: cannot open shared object file: No such file or directory
+2024-06-08 09:54:24.946214: W tensorflow/core/common_runtime/gpu/gpu_device.cc:1641] Cannot dlopen some GPU libraries. Please make sure the missing libraries mentioned above are installed properly if you would like to use GPU. Follow the guide at https://www.tensorflow.org/install/gpu for how to download and setup the required libraries for your platform.
+Skipping registering GPU devices...
+2024-06-08 09:54:24.946686: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2024-06-08 09:54:24.955233: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2918400000 Hz
+2024-06-08 09:54:24.956599: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x561d2b25ed20 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2024-06-08 09:54:24.956616: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+2024-06-08 09:54:25.015797: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:983] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2024-06-08 09:54:25.016055: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x561d2b0f8a40 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+2024-06-08 09:54:25.016076: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): NVIDIA GeForce RTX 3060 Laptop GPU, Compute Capability 8.6
+2024-06-08 09:54:25.016152: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1159] Device interconnect StreamExecutor with strength 1 edge matrix:
+2024-06-08 09:54:25.016156: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1165]      
+WARNING:tensorflow:From test_tlbo.py:816: The name tf.global_variables_initializer is deprecated. Please use tf.compat.v1.global_variables_initializer instead.
+
+avg greedy solution:  822.6256388679877
+
+avg all remote solution:  1288.099251163834
+
+avg all local solution:  1430.6968247202826
+
+avg_latency == 961.2185113804001 -- greedy == 796.2377573818479 -- diff == -164.98075399855213 -- taskid == [18]
+avg_latency == 995.9327961495536 -- greedy == 782.6501557886941 -- diff == -213.28264036085955 -- taskid == [2]
+avg_latency == 1195.8149282134602 -- greedy == 917.1303515739442 -- diff == -278.6845766395161 -- taskid == [13]
+avg_latency == 1132.3394899499347 -- greedy == 882.3567571518762 -- diff == -249.98273279805846 -- taskid == [12]
+avg_latency == 1174.948980898966 -- greedy == 927.7099499083928 -- diff == -247.23903099057327 -- taskid == [14]
+avg_latency == 1011.3017346233366 -- greedy == 845.9735073446545 -- diff == -165.3282272786821 -- taskid == [16]
+avg_latency == 1123.9184830127035 -- greedy == 917.1303515739442 -- diff == -206.78813143875936 -- taskid == [13]
+avg_latency == 1115.7797526401657 -- greedy == 917.1303515739442 -- diff == -198.64940106622157 -- taskid == [13]
+avg_latency == 860.9547775981223 -- greedy == 796.2377573818479 -- diff == -64.71702021627436 -- taskid == [18]
+avg_latency == 839.7630872288023 -- greedy == 801.0064184761047 -- diff == -38.75666875269758 -- taskid == [8]
+avg_latency == 804.1379024263246 -- greedy == 801.0064184761047 -- diff == -3.131483950219831 -- taskid == [8]
+avg_latency == 766.8447636725698 -- greedy == 801.0064184761047 -- diff == 34.16165480353493 -- taskid == [8]
+avg_latency == 733.4586009391511 -- greedy == 796.2377573818479 -- diff == 62.77915644269683 -- taskid == [18]
+avg_latency == 734.3132334738459 -- greedy == 795.3708558062144 -- diff == 61.05762233236851 -- taskid == [7]
+avg_latency == 711.7826900688581 -- greedy == 795.3708558062144 -- diff == 83.58816573735635 -- taskid == [7]
+
+
+0
+
+
+avg_latency == 999.4513433192117 -- greedy == 845.9735073446545 -- diff == -153.47783597455714 -- taskid == [16]
+avg_latency == 959.2451551276752 -- greedy == 830.3707428888592 -- diff == -128.87441223881592 -- taskid == [5]
+avg_latency == 735.6178520807812 -- greedy == 801.0064184761047 -- diff == 65.38856639532355 -- taskid == [8]
+avg_latency == 1087.2694437076705 -- greedy == 899.1789614620208 -- diff == -188.0904822456497 -- taskid == [15]
+avg_latency == 833.7956121408598 -- greedy == 795.2533080208642 -- diff == -38.542304119995606 -- taskid == [17]
+avg_latency == 957.2783894545964 -- greedy == 827.8765279039657 -- diff == -129.40186155063077 -- taskid == [0]
+avg_latency == 1108.0590750808033 -- greedy == 917.1303515739442 -- diff == -190.92872350685911 -- taskid == [13]
+avg_latency == 815.3991900600433 -- greedy == 779.0424737050193 -- diff == -36.35671635502399 -- taskid == [11]
+avg_latency == 1108.6413830336162 -- greedy == 927.7099499083928 -- diff == -180.9314331252234 -- taskid == [14]
+avg_latency == 1099.0688182861738 -- greedy == 917.1303515739442 -- diff == -181.93846671222968 -- taskid == [13]
+avg_latency == 747.2484482673236 -- greedy == 801.0064184761047 -- diff == 53.7579702087811 -- taskid == [8]
+avg_latency == 1162.5157547669821 -- greedy == 927.7099499083928 -- diff == -234.80580485858934 -- taskid == [14]
+avg_latency == 757.1689120068005 -- greedy == 784.7890609698977 -- diff == 27.620148963097222 -- taskid == [9]
+avg_latency == 1006.7170468309403 -- greedy == 845.9735073446545 -- diff == -160.74353948628573 -- taskid == [16]
+avg_latency == 744.6666050681796 -- greedy == 784.7890609698977 -- diff == 40.122455901718126 -- taskid == [9]
+avg_latency == 838.1571955909184 -- greedy == 779.0424737050193 -- diff == -59.11472188589903 -- taskid == [11]
+avg_latency == 784.550395550796 -- greedy == 803.3178474461694 -- diff == 18.76745189537337 -- taskid == [10]
+avg_latency == 716.5808202114105 -- greedy == 784.7890609698977 -- diff == 68.20824075848725 -- taskid == [9]
+avg_latency == 1121.910769452463 -- greedy == 927.7099499083928 -- diff == -194.2008195440702 -- taskid == [14]
+avg_latency == 824.8718292579379 -- greedy == 779.0424737050193 -- diff == -45.829355552918514 -- taskid == [11]
+avg_latency == 715.4998778675352 -- greedy == 784.7890609698977 -- diff == 69.28918310236247 -- taskid == [9]
+avg_latency == 722.5137824768884 -- greedy == 801.0064184761047 -- diff == 78.4926359992163 -- taskid == [8]
+avg_latency == 816.8211829953876 -- greedy == 779.0424737050193 -- diff == -37.77870929036828 -- taskid == [11]
+avg_latency == 813.1660237661634 -- greedy == 779.0424737050193 -- diff == -34.1235500611441 -- taskid == [11]
+avg_latency == 700.2364294926098 -- greedy == 784.7890609698977 -- diff == 84.55263147728795 -- taskid == [9]
+avg_latency == 842.3222144454003 -- greedy == 795.2533080208642 -- diff == -47.06890642453607 -- taskid == [17]
+avg_latency == 787.2736599820819 -- greedy == 803.3178474461694 -- diff == 16.044187464087486 -- taskid == [10]
+avg_latency == 731.8059152204651 -- greedy == 801.0064184761047 -- diff == 69.20050325563966 -- taskid == [8]
+avg_latency == 862.2561346100807 -- greedy == 795.2533080208642 -- diff == -67.00282658921651 -- taskid == [17]
+avg_latency == 1020.3316950063161 -- greedy == 827.8765279039657 -- diff == -192.4551671023504 -- taskid == [0]
+
+
+ New_teacher == 2377.0905621981938
+
+
+
+
+1
+
+
+avg_latency == 839.8650946490698 -- greedy == 795.2533080208642 -- diff == -44.61178662820555 -- taskid == [17]
+avg_latency == 1148.5583652860778 -- greedy == 927.7099499083928 -- diff == -220.848415377685 -- taskid == [14]
+avg_latency == 986.5010101379122 -- greedy == 827.8765279039657 -- diff == -158.62448223394654 -- taskid == [0]
+avg_latency == 990.088559062222 -- greedy == 830.3707428888592 -- diff == -159.71781617336273 -- taskid == [5]
+avg_latency == 974.7842500188827 -- greedy == 830.3707428888592 -- diff == -144.4135071300235 -- taskid == [5]
+avg_latency == 755.0202398543358 -- greedy == 795.3708558062144 -- diff == 40.35061595187858 -- taskid == [7]
+avg_latency == 845.601056811319 -- greedy == 795.2533080208642 -- diff == -50.34774879045483 -- taskid == [17]
+avg_latency == 1119.616893973705 -- greedy == 899.1789614620208 -- diff == -220.43793251168415 -- taskid == [15]
+avg_latency == 829.268205773122 -- greedy == 795.2533080208642 -- diff == -34.01489775225775 -- taskid == [17]
+avg_latency == 870.2605274708611 -- greedy == 808.106911553519 -- diff == -62.15361591734211 -- taskid == [1]
+avg_latency == 987.9549553356171 -- greedy == 845.9735073446545 -- diff == -141.98144799096258 -- taskid == [16]
+avg_latency == 865.6335785514559 -- greedy == 775.9840780457088 -- diff == -89.64950050574714 -- taskid == [3]
+avg_latency == 797.6865174378804 -- greedy == 803.3178474461694 -- diff == 5.6313300082889555 -- taskid == [10]
+avg_latency == 756.7141935405322 -- greedy == 801.0064184761047 -- diff == 44.29222493557256 -- taskid == [8]
+avg_latency == 1136.4608774968965 -- greedy == 899.1789614620208 -- diff == -237.28191603487574 -- taskid == [15]
+avg_latency == 885.1214139369284 -- greedy == 808.106911553519 -- diff == -77.01450238340942 -- taskid == [1]
+avg_latency == 1007.1074012094498 -- greedy == 845.9735073446545 -- diff == -161.13389386479525 -- taskid == [16]
+avg_latency == 1138.3457277238574 -- greedy == 917.1303515739442 -- diff == -221.21537614991325 -- taskid == [13]
+avg_latency == 1149.196250379372 -- greedy == 927.7099499083928 -- diff == -221.48630047097924 -- taskid == [14]
+avg_latency == 809.0418441341673 -- greedy == 803.3178474461694 -- diff == -5.7239966879978965 -- taskid == [10]
+avg_latency == 1140.4350477758953 -- greedy == 927.7099499083928 -- diff == -212.72509786750254 -- taskid == [14]
+avg_latency == 998.8680776663916 -- greedy == 827.8765279039657 -- diff == -170.99154976242596 -- taskid == [0]
+avg_latency == 808.1115938041415 -- greedy == 788.8247370971952 -- diff == -19.28685670694631 -- taskid == [4]
+avg_latency == 1009.1407362777575 -- greedy == 830.3707428888592 -- diff == -178.76999338889823 -- taskid == [5]
+avg_latency == 750.2414227808272 -- greedy == 784.7890609698977 -- diff == 34.54763818907054 -- taskid == [9]
+avg_latency == 1152.8718227500096 -- greedy == 927.7099499083928 -- diff == -225.16187284161686 -- taskid == [14]
+avg_latency == 806.2444061727524 -- greedy == 782.6501557886941 -- diff == -23.59425038405834 -- taskid == [2]
+avg_latency == 746.7129541097096 -- greedy == 795.3708558062144 -- diff == 48.65790169650484 -- taskid == [7]
+avg_latency == 1148.0451586809158 -- greedy == 899.1789614620208 -- diff == -248.86619721889508 -- taskid == [15]
+avg_latency == 1163.907460292162 -- greedy == 927.7099499083928 -- diff == -236.19751038376933 -- taskid == [14]
+
+
+2
+
+
+avg_latency == 998.6445707985333 -- greedy == 827.8765279039657 -- diff == -170.76804289456766 -- taskid == [0]
+avg_latency == 861.3114131480626 -- greedy == 775.9840780457088 -- diff == -85.3273351023538 -- taskid == [3]
+avg_latency == 740.1340361722538 -- greedy == 784.7890609698977 -- diff == 44.65502479764393 -- taskid == [9]
+avg_latency == 1099.410411191327 -- greedy == 882.3567571518762 -- diff == -217.05365403945086 -- taskid == [12]
+avg_latency == 858.7809899928093 -- greedy == 795.2533080208642 -- diff == -63.52768197194507 -- taskid == [17]
+avg_latency == 990.6623819952011 -- greedy == 827.8765279039657 -- diff == -162.78585409123548 -- taskid == [0]
+avg_latency == 964.3260958539418 -- greedy == 827.8765279039657 -- diff == -136.44956794997609 -- taskid == [0]
+avg_latency == 761.8660756352152 -- greedy == 801.0064184761047 -- diff == 39.1403428408895 -- taskid == [8]
+avg_latency == 1087.1285636820112 -- greedy == 882.3567571518762 -- diff == -204.771806530135 -- taskid == [12]
+avg_latency == 853.7466787954738 -- greedy == 779.0424737050193 -- diff == -74.70420509045448 -- taskid == [11]
+avg_latency == 745.108747055585 -- greedy == 796.2377573818479 -- diff == 51.129010326262915 -- taskid == [18]
+avg_latency == 1153.5167811032431 -- greedy == 927.7099499083928 -- diff == -225.80683119485036 -- taskid == [14]
+avg_latency == 806.290071347727 -- greedy == 788.7067359668185 -- diff == -17.583335380908466 -- taskid == [6]
+avg_latency == 859.1540817789214 -- greedy == 775.9840780457088 -- diff == -83.17000373321264 -- taskid == [3]
+avg_latency == 1142.8600282606806 -- greedy == 927.7099499083928 -- diff == -215.15007835228778 -- taskid == [14]
+avg_latency == 756.0795860622814 -- greedy == 795.3708558062144 -- diff == 39.29126974393307 -- taskid == [7]
+avg_latency == 1152.6702662464822 -- greedy == 917.1303515739442 -- diff == -235.5399146725381 -- taskid == [13]
+avg_latency == 731.4627416518347 -- greedy == 796.2377573818479 -- diff == 64.77501573001325 -- taskid == [18]
+avg_latency == 1137.9695208593778 -- greedy == 917.1303515739442 -- diff == -220.83916928543363 -- taskid == [13]
+avg_latency == 995.914449842562 -- greedy == 830.3707428888592 -- diff == -165.54370695370278 -- taskid == [5]
+avg_latency == 763.5862179114342 -- greedy == 784.7890609698977 -- diff == 21.202843058463486 -- taskid == [9]
+avg_latency == 995.0539216274126 -- greedy == 830.3707428888592 -- diff == -164.68317873855335 -- taskid == [5]
+avg_latency == 750.1727733005523 -- greedy == 801.0064184761047 -- diff == 50.83364517555242 -- taskid == [8]
+avg_latency == 716.0199637053763 -- greedy == 801.0064184761047 -- diff == 84.98645477072841 -- taskid == [8]
+avg_latency == 1151.1400727929524 -- greedy == 927.7099499083928 -- diff == -223.43012288455964 -- taskid == [14]
+avg_latency == 866.6023074015618 -- greedy == 795.2533080208642 -- diff == -71.34899938069759 -- taskid == [17]
+avg_latency == 1014.9788435683523 -- greedy == 845.9735073446545 -- diff == -169.00533622369778 -- taskid == [16]
+avg_latency == 746.8858498913629 -- greedy == 784.7890609698977 -- diff == 37.90321107853481 -- taskid == [9]
+avg_latency == 705.2806398658753 -- greedy == 784.7890609698977 -- diff == 79.50842110402243 -- taskid == [9]
+avg_latency == 745.3609535848209 -- greedy == 801.0064184761047 -- diff == 55.64546489128384 -- taskid == [8]
+
+
+ New_teacher == 2350.8158709992776
+
+
+
+
+3
+
+
+avg_latency == 1158.247542194121 -- greedy == 927.7099499083928 -- diff == -230.53759228572824 -- taskid == [14]
+avg_latency == 713.0194425305504 -- greedy == 796.2377573818479 -- diff == 83.21831485129758 -- taskid == [18]
+avg_latency == 713.7310681423323 -- greedy == 801.0064184761047 -- diff == 87.2753503337724 -- taskid == [8]
+avg_latency == 855.1370477368899 -- greedy == 795.2533080208642 -- diff == -59.88373971602573 -- taskid == [17]
+avg_latency == 989.903040133817 -- greedy == 827.8765279039657 -- diff == -162.02651222985128 -- taskid == [0]
+avg_latency == 875.5879412154469 -- greedy == 808.106911553519 -- diff == -67.48102966192789 -- taskid == [1]
+avg_latency == 836.6435902763503 -- greedy == 795.2533080208642 -- diff == -41.39028225548611 -- taskid == [17]
+avg_latency == 814.1929313135691 -- greedy == 795.2533080208642 -- diff == -18.939623292704937 -- taskid == [17]
+avg_latency == 980.0463545798301 -- greedy == 830.3707428888592 -- diff == -149.67561169097087 -- taskid == [5]
+avg_latency == 1121.7626155545643 -- greedy == 927.7099499083928 -- diff == -194.05266564617148 -- taskid == [14]
+avg_latency == 794.3858075733185 -- greedy == 788.8247370971952 -- diff == -5.561070476123291 -- taskid == [4]
+avg_latency == 731.4057213004385 -- greedy == 801.0064184761047 -- diff == 69.60069717566626 -- taskid == [8]
+avg_latency == 856.2714361417088 -- greedy == 779.0424737050193 -- diff == -77.22896243668947 -- taskid == [11]
+avg_latency == 859.484732850102 -- greedy == 795.2533080208642 -- diff == -64.23142482923777 -- taskid == [17]
+avg_latency == 764.3249656947818 -- greedy == 795.3708558062144 -- diff == 31.04589011143264 -- taskid == [7]
+avg_latency == 791.4222728953225 -- greedy == 788.8247370971952 -- diff == -2.5975357981272964 -- taskid == [4]
+avg_latency == 1030.6204425667354 -- greedy == 845.9735073446545 -- diff == -184.64693522208086 -- taskid == [16]
+avg_latency == 1152.157885418279 -- greedy == 899.1789614620208 -- diff == -252.9789239562582 -- taskid == [15]
+avg_latency == 1002.8070584554672 -- greedy == 830.3707428888592 -- diff == -172.43631556660796 -- taskid == [5]
+avg_latency == 993.9205634283065 -- greedy == 827.8765279039657 -- diff == -166.04403552434087 -- taskid == [0]
+avg_latency == 992.3904093579837 -- greedy == 830.3707428888592 -- diff == -162.01966646912445 -- taskid == [5]
+avg_latency == 955.590382548046 -- greedy == 830.3707428888592 -- diff == -125.21963965918678 -- taskid == [5]
+avg_latency == 828.7001842562812 -- greedy == 788.7067359668185 -- diff == -39.99344828946266 -- taskid == [6]
+avg_latency == 888.4806326021603 -- greedy == 808.106911553519 -- diff == -80.3737210486413 -- taskid == [1]
+avg_latency == 749.4354139602524 -- greedy == 795.3708558062144 -- diff == 45.93544184596203 -- taskid == [7]
+avg_latency == 1143.5458693949972 -- greedy == 899.1789614620208 -- diff == -244.36690793297646 -- taskid == [15]
+avg_latency == 856.694755514499 -- greedy == 775.9840780457088 -- diff == -80.71067746879021 -- taskid == [3]
+avg_latency == 722.0166715097428 -- greedy == 784.7890609698977 -- diff == 62.772389460154955 -- taskid == [9]
+avg_latency == 699.4795133494648 -- greedy == 796.2377573818479 -- diff == 96.75824403238312 -- taskid == [18]
+avg_latency == 849.210330341775 -- greedy == 775.9840780457088 -- diff == -73.22625229606626 -- taskid == [3]
+
+
+ New_teacher == 2287.8564092300317
+
+
+
+
+4
+
+
+avg_latency == 792.9660131311689 -- greedy == 788.8247370971952 -- diff == -4.141276033973668 -- taskid == [4]
+avg_latency == 1167.2600944153785 -- greedy == 917.1303515739442 -- diff == -250.12974284143434 -- taskid == [13]
+avg_latency == 1163.2431271455903 -- greedy == 927.7099499083928 -- diff == -235.5331772371975 -- taskid == [14]
+avg_latency == 775.6694750226158 -- greedy == 788.7067359668185 -- diff == 13.037260944202785 -- taskid == [6]
+avg_latency == 1027.5112737200193 -- greedy == 845.9735073446545 -- diff == -181.53776637536475 -- taskid == [16]
+avg_latency == 982.7934934336798 -- greedy == 830.3707428888592 -- diff == -152.4227505448206 -- taskid == [5]
+avg_latency == 859.6487662975038 -- greedy == 795.2533080208642 -- diff == -64.3954582766396 -- taskid == [17]
+avg_latency == 869.3298040241514 -- greedy == 808.106911553519 -- diff == -61.22289247063236 -- taskid == [1]
+avg_latency == 1133.0993430946623 -- greedy == 927.7099499083928 -- diff == -205.38939318626956 -- taskid == [14]
+avg_latency == 697.5343353968484 -- greedy == 784.7890609698977 -- diff == 87.25472557304931 -- taskid == [9]
+avg_latency == 776.8364816308022 -- greedy == 788.7067359668185 -- diff == 11.870254336016387 -- taskid == [6]
+avg_latency == 986.251348383086 -- greedy == 830.3707428888592 -- diff == -155.88060549422676 -- taskid == [5]
+avg_latency == 1004.6193750879153 -- greedy == 845.9735073446545 -- diff == -158.64586774326074 -- taskid == [16]
+avg_latency == 978.4849339799472 -- greedy == 845.9735073446545 -- diff == -132.51142663529265 -- taskid == [16]
+avg_latency == 800.1317405183382 -- greedy == 782.6501557886941 -- diff == -17.48158472964417 -- taskid == [2]
+avg_latency == 878.5486410730498 -- greedy == 808.106911553519 -- diff == -70.44172951953078 -- taskid == [1]
+avg_latency == 842.030867442417 -- greedy == 808.106911553519 -- diff == -33.923955888898035 -- taskid == [1]
+avg_latency == 1142.6682283189637 -- greedy == 927.7099499083928 -- diff == -214.95827841057087 -- taskid == [14]
+avg_latency == 1128.9373412719317 -- greedy == 917.1303515739442 -- diff == -211.80698969798755 -- taskid == [13]
+avg_latency == 977.8130391008104 -- greedy == 827.8765279039657 -- diff == -149.93651119684478 -- taskid == [0]
+avg_latency == 798.1215444259916 -- greedy == 803.3178474461694 -- diff == 5.196303020177766 -- taskid == [10]
+avg_latency == 768.953383788395 -- greedy == 803.3178474461694 -- diff == 34.36446365777442 -- taskid == [10]
+avg_latency == 1084.4406429443084 -- greedy == 882.3567571518762 -- diff == -202.08388579243217 -- taskid == [12]
+avg_latency == 972.056502708653 -- greedy == 827.8765279039657 -- diff == -144.1799748046874 -- taskid == [0]
+avg_latency == 739.3365429230417 -- greedy == 795.3708558062144 -- diff == 56.034312883172674 -- taskid == [7]
+avg_latency == 698.994657182489 -- greedy == 795.3708558062144 -- diff == 96.37619862372537 -- taskid == [7]
+avg_latency == 875.2883821028846 -- greedy == 808.106911553519 -- diff == -67.1814705493656 -- taskid == [1]
+avg_latency == 969.9164811567307 -- greedy == 827.8765279039657 -- diff == -142.03995325276503 -- taskid == [0]
+avg_latency == 847.080891022001 -- greedy == 775.9840780457088 -- diff == -71.0968129762922 -- taskid == [3]
+avg_latency == 1131.9387727353778 -- greedy == 927.7099499083928 -- diff == -204.22882282698504 -- taskid == [14]
+
+
+5
+
+
+avg_latency == 796.8773442040851 -- greedy == 803.3178474461694 -- diff == 6.440503242084219 -- taskid == [10]
+avg_latency == 870.8478022006989 -- greedy == 808.106911553519 -- diff == -62.74089064717987 -- taskid == [1]
+avg_latency == 983.2312110530717 -- greedy == 830.3707428888592 -- diff == -152.86046816421242 -- taskid == [5]
+avg_latency == 768.3071497604507 -- greedy == 782.6501557886941 -- diff == 14.343006028243394 -- taskid == [2]
+avg_latency == 699.3498318893024 -- greedy == 795.3708558062144 -- diff == 96.02102391691199 -- taskid == [7]
+avg_latency == 775.9227170615877 -- greedy == 788.7067359668185 -- diff == 12.784018905230823 -- taskid == [6]
+avg_latency == 708.4274380986213 -- greedy == 801.0064184761047 -- diff == 92.57898037748339 -- taskid == [8]
+avg_latency == 1089.7139381473678 -- greedy == 882.3567571518762 -- diff == -207.3571809954916 -- taskid == [12]
+avg_latency == 858.7724753256797 -- greedy == 808.106911553519 -- diff == -50.66556377216068 -- taskid == [1]
+avg_latency == 1010.2294496627127 -- greedy == 845.9735073446545 -- diff == -164.25594231805815 -- taskid == [16]
+avg_latency == 852.7309489683288 -- greedy == 795.2533080208642 -- diff == -57.47764094746458 -- taskid == [17]
+avg_latency == 826.2639350252016 -- greedy == 795.2533080208642 -- diff == -31.01062700433738 -- taskid == [17]
+avg_latency == 843.4845926646369 -- greedy == 779.0424737050193 -- diff == -64.44211895961757 -- taskid == [11]
+avg_latency == 1131.901671274853 -- greedy == 917.1303515739442 -- diff == -214.77131970090886 -- taskid == [13]
+avg_latency == 817.3012425001826 -- greedy == 779.0424737050193 -- diff == -38.25876879516329 -- taskid == [11]
+avg_latency == 721.6902811413493 -- greedy == 801.0064184761047 -- diff == 79.31613733475547 -- taskid == [8]
+avg_latency == 1129.9465713946345 -- greedy == 899.1789614620208 -- diff == -230.7676099326137 -- taskid == [15]
+avg_latency == 778.5734541241238 -- greedy == 788.7067359668185 -- diff == 10.133281842694714 -- taskid == [6]
+avg_latency == 769.5748478148189 -- greedy == 803.3178474461694 -- diff == 33.74299963135047 -- taskid == [10]
+avg_latency == 838.1128287580625 -- greedy == 775.9840780457088 -- diff == -62.128750712353735 -- taskid == [3]
+avg_latency == 988.1709904144559 -- greedy == 830.3707428888592 -- diff == -157.80024752559666 -- taskid == [5]
+avg_latency == 693.8370349914416 -- greedy == 801.0064184761047 -- diff == 107.16938348466317 -- taskid == [8]
+avg_latency == 1088.3637390625 -- greedy == 882.3567571518762 -- diff == -206.00698191062372 -- taskid == [12]
+avg_latency == 1127.0669135647365 -- greedy == 917.1303515739442 -- diff == -209.93656199079237 -- taskid == [13]
+avg_latency == 686.0821117117746 -- greedy == 795.3708558062144 -- diff == 109.28874409443983 -- taskid == [7]
+avg_latency == 772.7082631106514 -- greedy == 788.7067359668185 -- diff == 15.998472856167155 -- taskid == [6]
+avg_latency == 772.4769025426183 -- greedy == 788.8247370971952 -- diff == 16.347834554576934 -- taskid == [4]
+avg_latency == 754.9120129725047 -- greedy == 782.6501557886941 -- diff == 27.738142816189338 -- taskid == [2]
+avg_latency == 759.295192706912 -- greedy == 788.7067359668185 -- diff == 29.41154325990658 -- taskid == [6]
+avg_latency == 838.8663014688764 -- greedy == 775.9840780457088 -- diff == -62.8822234231676 -- taskid == [3]
+
+
+ New_teacher == 2272.976778890342
+
+
+
+
+6
+
+
+avg_latency == 746.9626941019603 -- greedy == 782.6501557886941 -- diff == 35.68746168673374 -- taskid == [2]
+avg_latency == 723.0084705288615 -- greedy == 782.6501557886941 -- diff == 59.64168525983257 -- taskid == [2]
+avg_latency == 768.8981578554154 -- greedy == 803.3178474461694 -- diff == 34.41968959075393 -- taskid == [10]
+avg_latency == 745.1282907255854 -- greedy == 788.7067359668185 -- diff == 43.57844524123311 -- taskid == [6]
+avg_latency == 690.7851858280183 -- greedy == 784.7890609698977 -- diff == 94.00387514187946 -- taskid == [9]
+avg_latency == 857.3449251953806 -- greedy == 808.106911553519 -- diff == -49.238013641861585 -- taskid == [1]
+avg_latency == 679.6436131481034 -- greedy == 801.0064184761047 -- diff == 121.36280532800129 -- taskid == [8]
+avg_latency == 1121.5562648821149 -- greedy == 917.1303515739442 -- diff == -204.42591330817072 -- taskid == [13]
+avg_latency == 1083.390518454933 -- greedy == 882.3567571518762 -- diff == -201.03376130305685 -- taskid == [12]
+avg_latency == 844.483922052833 -- greedy == 795.2533080208642 -- diff == -49.2306140319688 -- taskid == [17]
+avg_latency == 852.0831712119784 -- greedy == 808.106911553519 -- diff == -43.97625965845941 -- taskid == [1]
+avg_latency == 760.9906283914838 -- greedy == 803.3178474461694 -- diff == 42.32721905468554 -- taskid == [10]
+avg_latency == 741.7627714558873 -- greedy == 782.6501557886941 -- diff == 40.88738433280673 -- taskid == [2]
+avg_latency == 831.1225047504561 -- greedy == 795.2533080208642 -- diff == -35.86919672959186 -- taskid == [17]
+avg_latency == 1128.7934111691202 -- greedy == 899.1789614620208 -- diff == -229.61444970709942 -- taskid == [15]
+avg_latency == 829.0827085482462 -- greedy == 775.9840780457088 -- diff == -53.09863050253739 -- taskid == [3]
+avg_latency == 682.09024708598 -- greedy == 796.2377573818479 -- diff == 114.14751029586796 -- taskid == [18]
+avg_latency == 757.7516159894399 -- greedy == 803.3178474461694 -- diff == 45.5662314567295 -- taskid == [10]
+avg_latency == 676.4819383298466 -- greedy == 795.3708558062144 -- diff == 118.88891747636785 -- taskid == [7]
+avg_latency == 831.9412946760995 -- greedy == 795.2533080208642 -- diff == -36.68798665523525 -- taskid == [17]
+avg_latency == 688.5322489659582 -- greedy == 784.7890609698977 -- diff == 96.25681200393956 -- taskid == [9]
+avg_latency == 824.995523804106 -- greedy == 775.9840780457088 -- diff == -49.01144575839726 -- taskid == [3]
+avg_latency == 986.7673984077862 -- greedy == 845.9735073446545 -- diff == -140.7938910631317 -- taskid == [16]
+avg_latency == 690.1482312100682 -- greedy == 801.0064184761047 -- diff == 110.85818726603657 -- taskid == [8]
+avg_latency == 1142.0491594021526 -- greedy == 927.7099499083928 -- diff == -214.33920949375977 -- taskid == [14]
+avg_latency == 685.15505804927 -- greedy == 796.2377573818479 -- diff == 111.08269933257793 -- taskid == [18]
+avg_latency == 770.9337756570408 -- greedy == 788.7067359668185 -- diff == 17.772960309777773 -- taskid == [6]
+avg_latency == 988.2900220992905 -- greedy == 845.9735073446545 -- diff == -142.31651475463593 -- taskid == [16]
+avg_latency == 691.793251249327 -- greedy == 801.0064184761047 -- diff == 109.21316722677773 -- taskid == [8]
+avg_latency == 753.5524694574765 -- greedy == 788.7067359668185 -- diff == 35.15426650934205 -- taskid == [6]
+
+
+ New_teacher == 2229.0741904588085
+
+
+
+
+7
+
+
+avg_latency == 860.3650839297294 -- greedy == 808.106911553519 -- diff == -52.25817237621038 -- taskid == [1]
+avg_latency == 827.9571785397529 -- greedy == 775.9840780457088 -- diff == -51.97310049404416 -- taskid == [3]
+avg_latency == 759.5790727257048 -- greedy == 803.3178474461694 -- diff == 43.73877472046456 -- taskid == [10]
+avg_latency == 676.2242611880439 -- greedy == 801.0064184761047 -- diff == 124.78215728806083 -- taskid == [8]
+avg_latency == 670.2008510290009 -- greedy == 796.2377573818479 -- diff == 126.03690635284704 -- taskid == [18]
+avg_latency == 826.3979115133558 -- greedy == 779.0424737050193 -- diff == -47.35543780833643 -- taskid == [11]
+avg_latency == 1113.0041624943594 -- greedy == 917.1303515739442 -- diff == -195.87381092041528 -- taskid == [13]
+avg_latency == 761.9942375043597 -- greedy == 788.8247370971952 -- diff == 26.83049959283551 -- taskid == [4]
+avg_latency == 835.0021843701362 -- greedy == 795.2533080208642 -- diff == -39.748876349271995 -- taskid == [17]
+avg_latency == 751.6534716476713 -- greedy == 788.7067359668185 -- diff == 37.053264319147274 -- taskid == [6]
+avg_latency == 668.5014694116728 -- greedy == 796.2377573818479 -- diff == 127.73628797017511 -- taskid == [18]
+avg_latency == 817.1352133735248 -- greedy == 775.9840780457088 -- diff == -41.151135327816064 -- taskid == [3]
+avg_latency == 981.4792129554068 -- greedy == 845.9735073446545 -- diff == -135.50570561075222 -- taskid == [16]
+avg_latency == 1123.799170419325 -- greedy == 927.7099499083928 -- diff == -196.08922051093225 -- taskid == [14]
+avg_latency == 776.6655569107874 -- greedy == 788.8247370971952 -- diff == 12.159180186407866 -- taskid == [4]
+avg_latency == 860.2266020634241 -- greedy == 808.106911553519 -- diff == -52.119690509905126 -- taskid == [1]
+avg_latency == 831.7270357396535 -- greedy == 795.2533080208642 -- diff == -36.47372771878929 -- taskid == [17]
+avg_latency == 1085.1140614545686 -- greedy == 899.1789614620208 -- diff == -185.93509999254786 -- taskid == [15]
+avg_latency == 970.2830557607377 -- greedy == 845.9735073446545 -- diff == -124.3095484160832 -- taskid == [16]
+avg_latency == 822.6227475350108 -- greedy == 779.0424737050193 -- diff == -43.580273829991484 -- taskid == [11]
+avg_latency == 1063.6064049412319 -- greedy == 882.3567571518762 -- diff == -181.24964778935566 -- taskid == [12]
+avg_latency == 965.0624585110529 -- greedy == 827.8765279039657 -- diff == -137.18593060708724 -- taskid == [0]
+avg_latency == 1078.814692662607 -- greedy == 899.1789614620208 -- diff == -179.6357312005863 -- taskid == [15]
+avg_latency == 763.3482588189534 -- greedy == 788.7067359668185 -- diff == 25.358477147865187 -- taskid == [6]
+avg_latency == 716.9514522007262 -- greedy == 784.7890609698977 -- diff == 67.83760876917154 -- taskid == [9]
+avg_latency == 683.0395681001118 -- greedy == 784.7890609698977 -- diff == 101.74949286978597 -- taskid == [9]
+avg_latency == 763.8250535782541 -- greedy == 803.3178474461694 -- diff == 39.492793867915225 -- taskid == [10]
+avg_latency == 745.2384407889638 -- greedy == 803.3178474461694 -- diff == 58.079406657205595 -- taskid == [10]
+avg_latency == 1065.525233403996 -- greedy == 882.3567571518762 -- diff == -183.16847625211983 -- taskid == [12]
+avg_latency == 1039.8194346763748 -- greedy == 882.3567571518762 -- diff == -157.46267752449864 -- taskid == [12]
+
+
+ New_teacher == 2189.382611079892
+
+
+
+
+8
+
+
+avg_latency == 753.7911442629679 -- greedy == 803.3178474461694 -- diff == 49.52670318320145 -- taskid == [10]
+avg_latency == 681.7738359925135 -- greedy == 796.2377573818479 -- diff == 114.46392138933447 -- taskid == [18]
+avg_latency == 853.4197829436303 -- greedy == 808.106911553519 -- diff == -45.31287139011124 -- taskid == [1]
+avg_latency == 683.9207762124879 -- greedy == 784.7890609698977 -- diff == 100.86828475740981 -- taskid == [9]
+avg_latency == 1115.8926407460756 -- greedy == 917.1303515739442 -- diff == -198.76228917213143 -- taskid == [13]
+avg_latency == 974.8841655035699 -- greedy == 827.8765279039657 -- diff == -147.0076375996042 -- taskid == [0]
+avg_latency == 753.312584837641 -- greedy == 788.7067359668185 -- diff == 35.394151129177544 -- taskid == [6]
+avg_latency == 674.6849664614678 -- greedy == 796.2377573818479 -- diff == 121.55279092038018 -- taskid == [18]
+avg_latency == 752.9860243102073 -- greedy == 803.3178474461694 -- diff == 50.331823135962054 -- taskid == [10]
+avg_latency == 731.1335600004196 -- greedy == 803.3178474461694 -- diff == 72.18428744574976 -- taskid == [10]
+avg_latency == 826.6095773947716 -- greedy == 779.0424737050193 -- diff == -47.56710368975223 -- taskid == [11]
+avg_latency == 745.773339029748 -- greedy == 788.7067359668185 -- diff == 42.9333969370706 -- taskid == [6]
+avg_latency == 830.3516888522557 -- greedy == 795.2533080208642 -- diff == -35.09838083139152 -- taskid == [17]
+avg_latency == 689.3677713257789 -- greedy == 801.0064184761047 -- diff == 111.63864715032582 -- taskid == [8]
+avg_latency == 1098.3894448310714 -- greedy == 899.1789614620208 -- diff == -199.21048336905062 -- taskid == [15]
+avg_latency == 1108.555675586319 -- greedy == 917.1303515739442 -- diff == -191.42532401237486 -- taskid == [13]
+avg_latency == 974.3345608761788 -- greedy == 827.8765279039657 -- diff == -146.45803297221312 -- taskid == [0]
+avg_latency == 688.3622413140843 -- greedy == 801.0064184761047 -- diff == 112.64417716202047 -- taskid == [8]
+avg_latency == 750.4634139905793 -- greedy == 788.7067359668185 -- diff == 38.24332197623926 -- taskid == [6]
+avg_latency == 665.6741282925061 -- greedy == 796.2377573818479 -- diff == 130.56362908934182 -- taskid == [18]
+avg_latency == 737.4112669068201 -- greedy == 782.6501557886941 -- diff == 45.238888881874004 -- taskid == [2]
+avg_latency == 978.9432513746262 -- greedy == 845.9735073446545 -- diff == -132.9697440299717 -- taskid == [16]
+avg_latency == 657.6402684951373 -- greedy == 796.2377573818479 -- diff == 138.5974888867106 -- taskid == [18]
+avg_latency == 636.5535610556466 -- greedy == 796.2377573818479 -- diff == 159.68419632620135 -- taskid == [18]
+avg_latency == 754.5197456863132 -- greedy == 803.3178474461694 -- diff == 48.798101759856195 -- taskid == [10]
+avg_latency == 727.8734606091771 -- greedy == 782.6501557886941 -- diff == 54.77669517951699 -- taskid == [2]
+avg_latency == 757.8963075496266 -- greedy == 788.8247370971952 -- diff == 30.928429547568612 -- taskid == [4]
+avg_latency == 842.6216004501615 -- greedy == 808.106911553519 -- diff == -34.5146888966425 -- taskid == [1]
+avg_latency == 678.274253784929 -- greedy == 795.3708558062144 -- diff == 117.09660202128543 -- taskid == [7]
+avg_latency == 733.4500395984786 -- greedy == 782.6501557886941 -- diff == 49.200116190215454 -- taskid == [2]
+
+
+ New_teacher == 2160.647433208535
+
+
+
+
+9
+
+
+avg_latency == 710.1754182087763 -- greedy == 782.6501557886941 -- diff == 72.47473757991781 -- taskid == [2]
+avg_latency == 992.406863049044 -- greedy == 845.9735073446545 -- diff == -146.43335570438944 -- taskid == [16]
+avg_latency == 754.2049922089168 -- greedy == 803.3178474461694 -- diff == 49.112855237252575 -- taskid == [10]
+avg_latency == 661.5585118003982 -- greedy == 796.2377573818479 -- diff == 134.67924558144978 -- taskid == [18]
+avg_latency == 710.4901356422151 -- greedy == 782.6501557886941 -- diff == 72.16002014647893 -- taskid == [2]
+avg_latency == 819.8198775121144 -- greedy == 775.9840780457088 -- diff == -43.83579946640566 -- taskid == [3]
+avg_latency == 1132.2222133896826 -- greedy == 927.7099499083928 -- diff == -204.51226348128978 -- taskid == [14]
+avg_latency == 680.6302819035393 -- greedy == 784.7890609698977 -- diff == 104.15877906635842 -- taskid == [9]
+avg_latency == 743.9703117888452 -- greedy == 788.7067359668185 -- diff == 44.73642417797339 -- taskid == [6]
+avg_latency == 972.1963391180719 -- greedy == 827.8765279039657 -- diff == -144.31981121410627 -- taskid == [0]
+avg_latency == 1085.1598772274426 -- greedy == 882.3567571518762 -- diff == -202.80312007556643 -- taskid == [12]
+avg_latency == 1126.3489696276392 -- greedy == 917.1303515739442 -- diff == -209.21861805369508 -- taskid == [13]
+avg_latency == 681.8950269706045 -- greedy == 801.0064184761047 -- diff == 119.11139150550025 -- taskid == [8]
+avg_latency == 998.0377756244932 -- greedy == 845.9735073446545 -- diff == -152.06426827983864 -- taskid == [16]
+avg_latency == 752.9775280892237 -- greedy == 788.7067359668185 -- diff == 35.72920787759483 -- taskid == [6]
+avg_latency == 746.7275860905647 -- greedy == 782.6501557886941 -- diff == 35.92256969812934 -- taskid == [2]
+avg_latency == 966.943135421208 -- greedy == 830.3707428888592 -- diff == -136.57239253234877 -- taskid == [5]
+avg_latency == 756.4942102663857 -- greedy == 788.8247370971952 -- diff == 32.330526830809504 -- taskid == [4]
+avg_latency == 733.6752452326093 -- greedy == 788.8247370971952 -- diff == 55.14949186458591 -- taskid == [4]
+avg_latency == 716.6819057267053 -- greedy == 788.8247370971952 -- diff == 72.14283137048994 -- taskid == [4]
+avg_latency == 1080.976441439969 -- greedy == 882.3567571518762 -- diff == -198.6196842880928 -- taskid == [12]
+avg_latency == 1053.3268246205196 -- greedy == 882.3567571518762 -- diff == -170.97006746864338 -- taskid == [12]
+avg_latency == 950.0307699123383 -- greedy == 830.3707428888592 -- diff == -119.66002702347907 -- taskid == [5]
+avg_latency == 736.6621214721135 -- greedy == 788.7067359668185 -- diff == 52.044614494705 -- taskid == [6]
+avg_latency == 678.2130699077334 -- greedy == 795.3708558062144 -- diff == 117.15778589848105 -- taskid == [7]
+avg_latency == 734.7394738882881 -- greedy == 782.6501557886941 -- diff == 47.91068190040596 -- taskid == [2]
+avg_latency == 821.4578912234579 -- greedy == 775.9840780457088 -- diff == -45.47381317774909 -- taskid == [3]
+avg_latency == 689.3698374903541 -- greedy == 801.0064184761047 -- diff == 111.63658098575058 -- taskid == [8]
+avg_latency == 741.9540996820042 -- greedy == 788.8247370971952 -- diff == 46.87063741519103 -- taskid == [4]
+avg_latency == 720.828309967872 -- greedy == 788.8247370971952 -- diff == 67.99642712932325 -- taskid == [4]
+
+
+10
+
+
+avg_latency == 972.8436891281538 -- greedy == 830.3707428888592 -- diff == -142.47294623929452 -- taskid == [5]
+avg_latency == 800.337659992109 -- greedy == 775.9840780457088 -- diff == -24.353581946400254 -- taskid == [3]
+avg_latency == 967.3433033459664 -- greedy == 827.8765279039657 -- diff == -139.46677544200077 -- taskid == [0]
+avg_latency == 670.9806879945619 -- greedy == 795.3708558062144 -- diff == 124.39016781165253 -- taskid == [7]
+avg_latency == 844.3362230271339 -- greedy == 795.2533080208642 -- diff == -49.08291500626967 -- taskid == [17]
+avg_latency == 666.590985260473 -- greedy == 801.0064184761047 -- diff == 134.41543321563177 -- taskid == [8]
+avg_latency == 947.7663074800628 -- greedy == 830.3707428888592 -- diff == -117.39556459120354 -- taskid == [5]
+avg_latency == 660.0108838135446 -- greedy == 801.0064184761047 -- diff == 140.9955346625601 -- taskid == [8]
+avg_latency == 639.7315557939256 -- greedy == 801.0064184761047 -- diff == 161.2748626821791 -- taskid == [8]
+avg_latency == 956.0858662878037 -- greedy == 827.8765279039657 -- diff == -128.20933838383803 -- taskid == [0]
+avg_latency == 997.4760364470072 -- greedy == 845.9735073446545 -- diff == -151.5025291023527 -- taskid == [16]
+avg_latency == 671.7783058983939 -- greedy == 796.2377573818479 -- diff == 124.45945148345402 -- taskid == [18]
+avg_latency == 736.5296358732222 -- greedy == 782.6501557886941 -- diff == 46.120519915471846 -- taskid == [2]
+avg_latency == 832.5663713711874 -- greedy == 795.2533080208642 -- diff == -37.313063350323205 -- taskid == [17]
+avg_latency == 851.1661067806652 -- greedy == 808.106911553519 -- diff == -43.05919522714623 -- taskid == [1]
+avg_latency == 818.96804647992 -- greedy == 779.0424737050193 -- diff == -39.925572774900616 -- taskid == [11]
+avg_latency == 721.8901810162818 -- greedy == 782.6501557886941 -- diff == 60.759974772412306 -- taskid == [2]
+avg_latency == 979.5427368580954 -- greedy == 845.9735073446545 -- diff == -133.56922951344086 -- taskid == [16]
+avg_latency == 743.1121349582672 -- greedy == 788.8247370971952 -- diff == 45.71260213892799 -- taskid == [4]
+avg_latency == 653.9908886376652 -- greedy == 796.2377573818479 -- diff == 142.24686874418273 -- taskid == [18]
+avg_latency == 836.5196036819185 -- greedy == 808.106911553519 -- diff == -28.4126921283995 -- taskid == [1]
+avg_latency == 965.9952343228475 -- greedy == 845.9735073446545 -- diff == -120.02172697819299 -- taskid == [16]
+avg_latency == 731.151084199742 -- greedy == 788.7067359668185 -- diff == 57.5556517670766 -- taskid == [6]
+avg_latency == 711.0800960891179 -- greedy == 788.7067359668185 -- diff == 77.62663987770065 -- taskid == [6]
+avg_latency == 808.529940117223 -- greedy == 775.9840780457088 -- diff == -32.54586207151419 -- taskid == [3]
+avg_latency == 845.0845829749107 -- greedy == 808.106911553519 -- diff == -36.97767142139173 -- taskid == [1]
+avg_latency == 748.8769910356931 -- greedy == 803.3178474461694 -- diff == 54.44085641047627 -- taskid == [10]
+avg_latency == 838.5123884425572 -- greedy == 795.2533080208642 -- diff == -43.25908042169294 -- taskid == [17]
+avg_latency == 728.4400582608359 -- greedy == 782.6501557886941 -- diff == 54.210097527858125 -- taskid == [2]
+avg_latency == 1124.5255302201817 -- greedy == 917.1303515739442 -- diff == -207.39517864623758 -- taskid == [13]
+
+
+ New_teacher == 2138.9632920457866
+
+
+
+
+11
+
+
+avg_latency == 744.1432221887317 -- greedy == 788.7067359668185 -- diff == 44.56351377808687 -- taskid == [6]
+avg_latency == 834.8760239261492 -- greedy == 808.106911553519 -- diff == -26.76911237263016 -- taskid == [1]
+avg_latency == 1068.0135250826154 -- greedy == 882.3567571518762 -- diff == -185.6567679307392 -- taskid == [12]
+avg_latency == 808.2247573065622 -- greedy == 808.106911553519 -- diff == -0.11784575304318423 -- taskid == [1]
+avg_latency == 723.2430911219733 -- greedy == 788.7067359668185 -- diff == 65.46364484484525 -- taskid == [6]
+avg_latency == 793.7747619497435 -- greedy == 775.9840780457088 -- diff == -17.790683904034722 -- taskid == [3]
+avg_latency == 953.1588103749956 -- greedy == 827.8765279039657 -- diff == -125.28228247102993 -- taskid == [0]
+avg_latency == 810.4043125623158 -- greedy == 795.2533080208642 -- diff == -15.151004541451584 -- taskid == [17]
+avg_latency == 786.0691725724357 -- greedy == 795.2533080208642 -- diff == 9.184135448428492 -- taskid == [17]
+avg_latency == 811.7853821119172 -- greedy == 779.0424737050193 -- diff == -32.74290840689787 -- taskid == [11]
+avg_latency == 1101.7371863033022 -- greedy == 917.1303515739442 -- diff == -184.60683472935807 -- taskid == [13]
+avg_latency == 661.4313745562281 -- greedy == 796.2377573818479 -- diff == 134.80638282561983 -- taskid == [18]
+avg_latency == 681.1481114108902 -- greedy == 784.7890609698977 -- diff == 103.64094955900748 -- taskid == [9]
+avg_latency == 735.470305620752 -- greedy == 788.7067359668185 -- diff == 53.23643034606653 -- taskid == [6]
+avg_latency == 673.2711410144806 -- greedy == 801.0064184761047 -- diff == 127.73527746162415 -- taskid == [8]
+avg_latency == 662.3050518048832 -- greedy == 795.3708558062144 -- diff == 133.06580400133123 -- taskid == [7]
+avg_latency == 1136.58953944773 -- greedy == 927.7099499083928 -- diff == -208.8795895393372 -- taskid == [14]
+avg_latency == 1064.3338235409735 -- greedy == 882.3567571518762 -- diff == -181.97706638909733 -- taskid == [12]
+avg_latency == 667.3168272751673 -- greedy == 784.7890609698977 -- diff == 117.47223369473045 -- taskid == [9]
+avg_latency == 733.427233822373 -- greedy == 803.3178474461694 -- diff == 69.89061362379641 -- taskid == [10]
+avg_latency == 958.225464002691 -- greedy == 830.3707428888592 -- diff == -127.85472111383172 -- taskid == [5]
+avg_latency == 723.6257883006095 -- greedy == 782.6501557886941 -- diff == 59.02436748808452 -- taskid == [2]
+avg_latency == 1100.1043857596396 -- greedy == 917.1303515739442 -- diff == -182.97403418569547 -- taskid == [13]
+avg_latency == 830.9734033698626 -- greedy == 808.106911553519 -- diff == -22.86649181634357 -- taskid == [1]
+avg_latency == 942.8948989868302 -- greedy == 830.3707428888592 -- diff == -112.52415609797094 -- taskid == [5]
+avg_latency == 1098.7575638905525 -- greedy == 917.1303515739442 -- diff == -181.6272123166084 -- taskid == [13]
+avg_latency == 743.4243493030139 -- greedy == 803.3178474461694 -- diff == 59.89349814315551 -- taskid == [10]
+avg_latency == 721.7056625949996 -- greedy == 782.6501557886941 -- diff == 60.944493193694484 -- taskid == [2]
+avg_latency == 963.0430887135369 -- greedy == 827.8765279039657 -- diff == -135.16656080957125 -- taskid == [0]
+avg_latency == 703.9732203354291 -- greedy == 782.6501557886941 -- diff == 78.67693545326495 -- taskid == [2]
+
+
+12
+
+
+avg_latency == 692.3402934359551 -- greedy == 782.6501557886941 -- diff == 90.30986235273895 -- taskid == [2]
+avg_latency == 746.5446143952371 -- greedy == 788.8247370971952 -- diff == 42.280122701958135 -- taskid == [4]
+avg_latency == 657.1853853670119 -- greedy == 795.3708558062144 -- diff == 138.1854704392025 -- taskid == [7]
+avg_latency == 810.3304526917323 -- greedy == 795.2533080208642 -- diff == -15.077144670868051 -- taskid == [17]
+avg_latency == 687.8003514477184 -- greedy == 782.6501557886941 -- diff == 94.84980434097565 -- taskid == [2]
+avg_latency == 939.7626200358255 -- greedy == 830.3707428888592 -- diff == -109.3918771469663 -- taskid == [5]
+avg_latency == 1121.7663089272226 -- greedy == 927.7099499083928 -- diff == -194.05635901882977 -- taskid == [14]
+avg_latency == 728.035360713005 -- greedy == 788.8247370971952 -- diff == 60.78937638419018 -- taskid == [4]
+avg_latency == 704.8026276110786 -- greedy == 788.8247370971952 -- diff == 84.02210948611662 -- taskid == [4]
+avg_latency == 1113.2982345263074 -- greedy == 917.1303515739442 -- diff == -196.16788295236324 -- taskid == [13]
+avg_latency == 1110.3365282201632 -- greedy == 927.7099499083928 -- diff == -182.62657831177046 -- taskid == [14]
+avg_latency == 1044.512827376679 -- greedy == 882.3567571518762 -- diff == -162.15607022480287 -- taskid == [12]
+avg_latency == 727.3711605910165 -- greedy == 788.8247370971952 -- diff == 61.453576506178706 -- taskid == [4]
+avg_latency == 733.0790729834694 -- greedy == 803.3178474461694 -- diff == 70.23877446270001 -- taskid == [10]
+avg_latency == 703.5759860116004 -- greedy == 782.6501557886941 -- diff == 79.07416977709363 -- taskid == [2]
+avg_latency == 724.7715774747713 -- greedy == 788.7067359668185 -- diff == 63.93515849204721 -- taskid == [6]
+avg_latency == 650.4996354687146 -- greedy == 795.3708558062144 -- diff == 144.87122033749984 -- taskid == [7]
+avg_latency == 722.798739398752 -- greedy == 803.3178474461694 -- diff == 80.51910804741738 -- taskid == [10]
+avg_latency == 714.2001610768453 -- greedy == 788.8247370971952 -- diff == 74.62457602034988 -- taskid == [4]
+avg_latency == 954.7948244456563 -- greedy == 827.8765279039657 -- diff == -126.91829654169067 -- taskid == [0]
+avg_latency == 643.6518424310411 -- greedy == 795.3708558062144 -- diff == 151.7190133751733 -- taskid == [7]
+avg_latency == 799.1981025511061 -- greedy == 779.0424737050193 -- diff == -20.155628846086756 -- taskid == [11]
+avg_latency == 713.6557085511072 -- greedy == 788.7067359668185 -- diff == 75.05102741571136 -- taskid == [6]
+avg_latency == 669.0194757801057 -- greedy == 784.7890609698977 -- diff == 115.769585189792 -- taskid == [9]
+avg_latency == 645.1751217744146 -- greedy == 795.3708558062144 -- diff == 150.19573403179982 -- taskid == [7]
+avg_latency == 722.4870499003956 -- greedy == 788.7067359668185 -- diff == 66.21968606642292 -- taskid == [6]
+avg_latency == 981.1888478437833 -- greedy == 845.9735073446545 -- diff == -135.21534049912873 -- taskid == [16]
+avg_latency == 1093.6380887916155 -- greedy == 899.1789614620208 -- diff == -194.4591273295947 -- taskid == [15]
+avg_latency == 672.9703625342642 -- greedy == 784.7890609698977 -- diff == 111.81869843563356 -- taskid == [9]
+avg_latency == 1123.7331691611428 -- greedy == 927.7099499083928 -- diff == -196.02321925274998 -- taskid == [14]
+
+
+13
+
+
+avg_latency == 730.28863902374 -- greedy == 788.7067359668185 -- diff == 58.41809694307858 -- taskid == [6]
+avg_latency == 827.5835052389554 -- greedy == 808.106911553519 -- diff == -19.47659368543634 -- taskid == [1]
+avg_latency == 645.9427269757134 -- greedy == 795.3708558062144 -- diff == 149.428128830501 -- taskid == [7]
+avg_latency == 626.1234176319667 -- greedy == 795.3708558062144 -- diff == 169.2474381742477 -- taskid == [7]
+avg_latency == 702.3770548291478 -- greedy == 788.7067359668185 -- diff == 86.32968113767072 -- taskid == [6]
+avg_latency == 650.6774558454105 -- greedy == 784.7890609698977 -- diff == 134.11160512448726 -- taskid == [9]
+avg_latency == 809.3056816814286 -- greedy == 795.2533080208642 -- diff == -14.052373660564399 -- taskid == [17]
+avg_latency == 806.0597830586706 -- greedy == 808.106911553519 -- diff == 2.04712849484838 -- taskid == [1]
+avg_latency == 786.3569894295692 -- greedy == 808.106911553519 -- diff == 21.749922123949773 -- taskid == [1]
+avg_latency == 720.9068787399428 -- greedy == 788.8247370971952 -- diff == 67.91785835725238 -- taskid == [4]
+avg_latency == 798.3410830725534 -- greedy == 795.2533080208642 -- diff == -3.0877750516891638 -- taskid == [17]
+avg_latency == 793.8965725086348 -- greedy == 779.0424737050193 -- diff == -14.854098803615443 -- taskid == [11]
+avg_latency == 1093.4512613377706 -- greedy == 917.1303515739442 -- diff == -176.32090976382642 -- taskid == [13]
+avg_latency == 775.5021631302425 -- greedy == 779.0424737050193 -- diff == 3.5403105747768677 -- taskid == [11]
+avg_latency == 1117.2428680360931 -- greedy == 927.7099499083928 -- diff == -189.53291812770033 -- taskid == [14]
+avg_latency == 1067.7812147609848 -- greedy == 927.7099499083928 -- diff == -140.07126485259198 -- taskid == [14]
+avg_latency == 1047.4182178251538 -- greedy == 927.7099499083928 -- diff == -119.70826791676097 -- taskid == [14]
+avg_latency == 940.9681576552799 -- greedy == 827.8765279039657 -- diff == -113.09162975131426 -- taskid == [0]
+avg_latency == 1063.1653111949922 -- greedy == 917.1303515739442 -- diff == -146.03495962104807 -- taskid == [13]
+avg_latency == 720.181771386419 -- greedy == 782.6501557886941 -- diff == 62.46838440227509 -- taskid == [2]
+avg_latency == 1073.5137837894304 -- greedy == 899.1789614620208 -- diff == -174.3348223274096 -- taskid == [15]
+avg_latency == 933.5692333427429 -- greedy == 830.3707428888592 -- diff == -103.19849045388366 -- taskid == [5]
+avg_latency == 1021.3858061713219 -- greedy == 882.3567571518762 -- diff == -139.02904901944567 -- taskid == [12]
+avg_latency == 735.3754319402694 -- greedy == 803.3178474461694 -- diff == 67.94241550589993 -- taskid == [10]
+avg_latency == 654.6873169797761 -- greedy == 795.3708558062144 -- diff == 140.68353882643828 -- taskid == [7]
+avg_latency == 1090.4530716015543 -- greedy == 899.1789614620208 -- diff == -191.2741101395335 -- taskid == [15]
+avg_latency == 941.475277183301 -- greedy == 827.8765279039657 -- diff == -113.59874927933538 -- taskid == [0]
+avg_latency == 1084.7776720232143 -- greedy == 917.1303515739442 -- diff == -167.64732044927018 -- taskid == [13]
+avg_latency == 668.6602306477819 -- greedy == 801.0064184761047 -- diff == 132.34618782832285 -- taskid == [8]
+avg_latency == 718.0971741095951 -- greedy == 788.7067359668185 -- diff == 70.60956185722341 -- taskid == [6]
+
+
+ New_teacher == 2106.124742846112
+
+
+
+
+14
+
+
+avg_latency == 1050.2745232119287 -- greedy == 882.3567571518762 -- diff == -167.9177660600525 -- taskid == [12]
+avg_latency == 1013.4819230466844 -- greedy == 882.3567571518762 -- diff == -131.12516589480822 -- taskid == [12]
+avg_latency == 797.1016520225116 -- greedy == 779.0424737050193 -- diff == -18.059178317492297 -- taskid == [11]
+avg_latency == 995.3795389602934 -- greedy == 882.3567571518762 -- diff == -113.02278180841722 -- taskid == [12]
+avg_latency == 927.6856154197147 -- greedy == 827.8765279039657 -- diff == -99.80908751574907 -- taskid == [0]
+avg_latency == 901.0192454348972 -- greedy == 827.8765279039657 -- diff == -73.14271753093158 -- taskid == [0]
+avg_latency == 1077.2662308319364 -- greedy == 927.7099499083928 -- diff == -149.55628092354357 -- taskid == [14]
+avg_latency == 669.180069756467 -- greedy == 801.0064184761047 -- diff == 131.82634871963774 -- taskid == [8]
+avg_latency == 1050.0830321754186 -- greedy == 917.1303515739442 -- diff == -132.9526806014744 -- taskid == [13]
+avg_latency == 658.2367870151655 -- greedy == 796.2377573818479 -- diff == 138.0009703666824 -- taskid == [18]
+avg_latency == 664.1772092709951 -- greedy == 801.0064184761047 -- diff == 136.82920920510958 -- taskid == [8]
+avg_latency == 927.4624982740129 -- greedy == 827.8765279039657 -- diff == -99.58597037004722 -- taskid == [0]
+avg_latency == 661.8434560203962 -- greedy == 784.7890609698977 -- diff == 122.94560494950156 -- taskid == [9]
+avg_latency == 725.6739527871541 -- greedy == 788.8247370971952 -- diff == 63.150784310041104 -- taskid == [4]
+avg_latency == 647.8962471653393 -- greedy == 801.0064184761047 -- diff == 153.1101713107654 -- taskid == [8]
+avg_latency == 653.2649347653116 -- greedy == 784.7890609698977 -- diff == 131.52412620458608 -- taskid == [9]
+avg_latency == 975.7118935839925 -- greedy == 845.9735073446545 -- diff == -129.73838623933796 -- taskid == [16]
+avg_latency == 952.2342361332077 -- greedy == 830.3707428888592 -- diff == -121.86349324434843 -- taskid == [5]
+avg_latency == 795.1005167517934 -- greedy == 775.9840780457088 -- diff == -19.116438706084637 -- taskid == [3]
+avg_latency == 636.9927789584161 -- greedy == 801.0064184761047 -- diff == 164.0136395176886 -- taskid == [8]
+avg_latency == 637.9956588527951 -- greedy == 795.3708558062144 -- diff == 157.37519695341928 -- taskid == [7]
+avg_latency == 708.2122384027617 -- greedy == 788.7067359668185 -- diff == 80.49449756405681 -- taskid == [6]
+avg_latency == 777.1720390943118 -- greedy == 779.0424737050193 -- diff == 1.870434610707548 -- taskid == [11]
+avg_latency == 619.8575735125542 -- greedy == 795.3708558062144 -- diff == 175.51328229366027 -- taskid == [7]
+avg_latency == 1101.3606984644346 -- greedy == 927.7099499083928 -- diff == -173.65074855604178 -- taskid == [14]
+avg_latency == 822.7203600244658 -- greedy == 808.106911553519 -- diff == -14.613448470946764 -- taskid == [1]
+avg_latency == 651.1091119118281 -- greedy == 801.0064184761047 -- diff == 149.89730656427662 -- taskid == [8]
+avg_latency == 1058.660652063765 -- greedy == 899.1789614620208 -- diff == -159.48169060174416 -- taskid == [15]
+avg_latency == 775.7172720192091 -- greedy == 775.9840780457088 -- diff == 0.26680602649969387 -- taskid == [3]
+avg_latency == 915.9509827298573 -- greedy == 827.8765279039657 -- diff == -88.07445482589162 -- taskid == [0]
+
+
+ New_teacher == 2081.684351809615
+
+
+
+
+15
+
+
+avg_latency == 720.4485255041122 -- greedy == 803.3178474461694 -- diff == 82.86932194205713 -- taskid == [10]
+avg_latency == 694.2482489430972 -- greedy == 803.3178474461694 -- diff == 109.06959850307214 -- taskid == [10]
+avg_latency == 776.5965459594998 -- greedy == 779.0424737050193 -- diff == 2.445927745519498 -- taskid == [11]
+avg_latency == 1051.9792215806963 -- greedy == 917.1303515739442 -- diff == -134.84887000675212 -- taskid == [13]
+avg_latency == 760.66790989557 -- greedy == 775.9840780457088 -- diff == 15.316168150138765 -- taskid == [3]
+avg_latency == 923.5160490918023 -- greedy == 845.9735073446545 -- diff == -77.54254174714777 -- taskid == [16]
+avg_latency == 756.5120563978195 -- greedy == 779.0424737050193 -- diff == 22.530417307199855 -- taskid == [11]
+avg_latency == 1050.8442344914163 -- greedy == 899.1789614620208 -- diff == -151.6652730293955 -- taskid == [15]
+avg_latency == 703.24286805627 -- greedy == 788.7067359668185 -- diff == 85.46386791054852 -- taskid == [6]
+avg_latency == 635.6364387561798 -- greedy == 795.3708558062144 -- diff == 159.7344170500346 -- taskid == [7]
+avg_latency == 657.5847115804536 -- greedy == 801.0064184761047 -- diff == 143.42170689565114 -- taskid == [8]
+avg_latency == 793.9179584324429 -- greedy == 795.2533080208642 -- diff == 1.335349588421309 -- taskid == [17]
+avg_latency == 772.3655910021645 -- greedy == 775.9840780457088 -- diff == 3.6184870435442917 -- taskid == [3]
+avg_latency == 758.2303296788351 -- greedy == 779.0424737050193 -- diff == 20.812144026184228 -- taskid == [11]
+avg_latency == 1014.8644673634665 -- greedy == 882.3567571518762 -- diff == -132.50771021159028 -- taskid == [12]
+avg_latency == 700.2175506400381 -- greedy == 788.7067359668185 -- diff == 88.48918532678044 -- taskid == [6]
+avg_latency == 648.1117125947408 -- greedy == 784.7890609698977 -- diff == 136.67734837515695 -- taskid == [9]
+avg_latency == 939.6755126070976 -- greedy == 845.9735073446545 -- diff == -93.7020052624431 -- taskid == [16]
+avg_latency == 625.36899157738 -- greedy == 795.3708558062144 -- diff == 170.0018642288344 -- taskid == [7]
+avg_latency == 607.6050635894912 -- greedy == 795.3708558062144 -- diff == 187.76579221672318 -- taskid == [7]
+avg_latency == 702.923345598943 -- greedy == 788.8247370971952 -- diff == 85.90139149825222 -- taskid == [4]
+avg_latency == 918.6638384623392 -- greedy == 827.8765279039657 -- diff == -90.78731055837352 -- taskid == [0]
+avg_latency == 1089.1791388262614 -- greedy == 927.7099499083928 -- diff == -161.46918891786856 -- taskid == [14]
+avg_latency == 1019.9240436182839 -- greedy == 882.3567571518762 -- diff == -137.56728646640772 -- taskid == [12]
+avg_latency == 643.0616831831932 -- greedy == 784.7890609698977 -- diff == 141.72737778670455 -- taskid == [9]
+avg_latency == 931.1823600142752 -- greedy == 830.3707428888592 -- diff == -100.81161712541598 -- taskid == [5]
+avg_latency == 899.6505022479057 -- greedy == 827.8765279039657 -- diff == -71.77397434394004 -- taskid == [0]
+avg_latency == 638.3750507810728 -- greedy == 784.7890609698977 -- diff == 146.41401018882493 -- taskid == [9]
+avg_latency == 1066.4723599051204 -- greedy == 917.1303515739442 -- diff == -149.3420083311762 -- taskid == [13]
+avg_latency == 1066.4730898674009 -- greedy == 927.7099499083928 -- diff == -138.76313995900807 -- taskid == [14]
+
+
+ New_teacher == 2059.7067281439076
+
+
+
+
+16
+
+
+avg_latency == 705.0165510267258 -- greedy == 803.3178474461694 -- diff == 98.30129641944359 -- taskid == [10]
+avg_latency == 1042.999697456823 -- greedy == 927.7099499083928 -- diff == -115.28974754843023 -- taskid == [14]
+avg_latency == 705.8710714258193 -- greedy == 788.7067359668185 -- diff == 82.83566454099923 -- taskid == [6]
+avg_latency == 1044.2496699727467 -- greedy == 899.1789614620208 -- diff == -145.07070851072592 -- taskid == [15]
+avg_latency == 1041.1200304485728 -- greedy == 917.1303515739442 -- diff == -123.98967887462868 -- taskid == [13]
+avg_latency == 903.8542552774702 -- greedy == 845.9735073446545 -- diff == -57.880747932815666 -- taskid == [16]
+avg_latency == 777.5241936934472 -- greedy == 795.2533080208642 -- diff == 17.72911432741705 -- taskid == [17]
+avg_latency == 885.2841640091215 -- greedy == 827.8765279039657 -- diff == -57.4076361051558 -- taskid == [0]
+avg_latency == 703.6277029306684 -- greedy == 803.3178474461694 -- diff == 99.69014451550095 -- taskid == [10]
+avg_latency == 629.3069360840525 -- greedy == 795.3708558062144 -- diff == 166.06391972216193 -- taskid == [7]
+avg_latency == 770.3858496079989 -- greedy == 775.9840780457088 -- diff == 5.5982284377098495 -- taskid == [3]
+avg_latency == 927.7682078736714 -- greedy == 830.3707428888592 -- diff == -97.39746498481213 -- taskid == [5]
+avg_latency == 908.8197186803272 -- greedy == 845.9735073446545 -- diff == -62.846211335672706 -- taskid == [16]
+avg_latency == 631.2083714542797 -- greedy == 796.2377573818479 -- diff == 165.02938592756823 -- taskid == [18]
+avg_latency == 641.1507566901752 -- greedy == 801.0064184761047 -- diff == 159.85566178592956 -- taskid == [8]
+avg_latency == 610.3122325138636 -- greedy == 795.3708558062144 -- diff == 185.05862329235083 -- taskid == [7]
+avg_latency == 696.5666234483991 -- greedy == 782.6501557886941 -- diff == 86.08353234029494 -- taskid == [2]
+avg_latency == 900.4118836226328 -- greedy == 827.8765279039657 -- diff == -72.53535571866712 -- taskid == [0]
+avg_latency == 617.5598731690952 -- greedy == 795.3708558062144 -- diff == 177.8109826371192 -- taskid == [7]
+avg_latency == 1053.7354052000455 -- greedy == 927.7099499083928 -- diff == -126.02545529165275 -- taskid == [14]
+avg_latency == 893.8735296057021 -- greedy == 830.3707428888592 -- diff == -63.50278671684282 -- taskid == [5]
+avg_latency == 778.5877659979956 -- greedy == 795.2533080208642 -- diff == 16.665542022868635 -- taskid == [17]
+avg_latency == 684.3041139081137 -- greedy == 782.6501557886941 -- diff == 98.3460418805804 -- taskid == [2]
+avg_latency == 874.2200285957746 -- greedy == 830.3707428888592 -- diff == -43.84928570691534 -- taskid == [5]
+avg_latency == 1035.8911618891307 -- greedy == 917.1303515739442 -- diff == -118.76081031518652 -- taskid == [13]
+avg_latency == 762.5141887178556 -- greedy == 795.2533080208642 -- diff == 32.73911930300858 -- taskid == [17]
+avg_latency == 880.1629315715516 -- greedy == 827.8765279039657 -- diff == -52.28640366758589 -- taskid == [0]
+avg_latency == 699.2178359926631 -- greedy == 788.7067359668185 -- diff == 89.4888999741554 -- taskid == [6]
+avg_latency == 864.0648814457485 -- greedy == 827.8765279039657 -- diff == -36.18835354178282 -- taskid == [0]
+avg_latency == 754.5321085938318 -- greedy == 779.0424737050193 -- diff == 24.510365111187525 -- taskid == [11]
+
+
+ New_teacher == 2049.1265465115757
+
+
+
+
+17
+
+
+avg_latency == 872.4935669407708 -- greedy == 830.3707428888592 -- diff == -42.12282405191161 -- taskid == [5]
+avg_latency == 1034.5743806193761 -- greedy == 917.1303515739442 -- diff == -117.44402904543199 -- taskid == [13]
+avg_latency == 708.2310610031536 -- greedy == 803.3178474461694 -- diff == 95.08678644301574 -- taskid == [10]
+avg_latency == 760.3070329368319 -- greedy == 795.2533080208642 -- diff == 34.94627508403232 -- taskid == [17]
+avg_latency == 986.7370774687221 -- greedy == 882.3567571518762 -- diff == -104.38032031684588 -- taskid == [12]
+avg_latency == 752.3068776200839 -- greedy == 775.9840780457088 -- diff == 23.677200425624847 -- taskid == [3]
+avg_latency == 638.7320548854557 -- greedy == 784.7890609698977 -- diff == 146.05700608444204 -- taskid == [9]
+avg_latency == 625.8695734452248 -- greedy == 796.2377573818479 -- diff == 170.36818393662315 -- taskid == [18]
+avg_latency == 602.8109181350027 -- greedy == 796.2377573818479 -- diff == 193.42683924684525 -- taskid == [18]
+avg_latency == 792.4269636657033 -- greedy == 808.106911553519 -- diff == 15.679947887815729 -- taskid == [1]
+avg_latency == 1063.798982233102 -- greedy == 927.7099499083928 -- diff == -136.08903232470914 -- taskid == [14]
+avg_latency == 886.6096574465206 -- greedy == 830.3707428888592 -- diff == -56.23891455766136 -- taskid == [5]
+avg_latency == 763.1812557515962 -- greedy == 795.2533080208642 -- diff == 32.072052269268056 -- taskid == [17]
+avg_latency == 1021.8978303889139 -- greedy == 917.1303515739442 -- diff == -104.76747881496976 -- taskid == [13]
+avg_latency == 1020.2293817139625 -- greedy == 899.1789614620208 -- diff == -121.05042025194177 -- taskid == [15]
+avg_latency == 865.3391028753689 -- greedy == 830.3707428888592 -- diff == -34.968359986509654 -- taskid == [5]
+avg_latency == 762.7410466379303 -- greedy == 779.0424737050193 -- diff == 16.301427067089094 -- taskid == [11]
+avg_latency == 704.6255524037769 -- greedy == 803.3178474461694 -- diff == 98.69229504239252 -- taskid == [10]
+avg_latency == 1001.1128844857216 -- greedy == 882.3567571518762 -- diff == -118.75612733384537 -- taskid == [12]
+avg_latency == 753.5732958921025 -- greedy == 775.9840780457088 -- diff == 22.410782153606306 -- taskid == [3]
+avg_latency == 755.7502870086669 -- greedy == 795.2533080208642 -- diff == 39.50302101219734 -- taskid == [17]
+avg_latency == 621.5810302308355 -- greedy == 796.2377573818479 -- diff == 174.65672715101243 -- taskid == [18]
+avg_latency == 737.5374526776314 -- greedy == 795.2533080208642 -- diff == 57.71585534323276 -- taskid == [17]
+avg_latency == 1050.2207655512536 -- greedy == 927.7099499083928 -- diff == -122.51081564286085 -- taskid == [14]
+avg_latency == 901.2911593253953 -- greedy == 845.9735073446545 -- diff == -55.31765198074072 -- taskid == [16]
+avg_latency == 632.4327740826062 -- greedy == 796.2377573818479 -- diff == 163.8049832992417 -- taskid == [18]
+avg_latency == 692.2799110809054 -- greedy == 782.6501557886941 -- diff == 90.37024470778863 -- taskid == [2]
+avg_latency == 698.080694899232 -- greedy == 788.7067359668185 -- diff == 90.62604106758658 -- taskid == [6]
+avg_latency == 745.5646865135737 -- greedy == 775.9840780457088 -- diff == 30.419391532135023 -- taskid == [3]
+avg_latency == 1048.1685685410637 -- greedy == 927.7099499083928 -- diff == -120.45861863267089 -- taskid == [14]
+
+
+ New_teacher == 1999.0640564539824
+
+
+
+
+18
+
+
+avg_latency == 625.8289655138016 -- greedy == 795.3708558062144 -- diff == 169.54189029241286 -- taskid == [7]
+avg_latency == 696.2930496496472 -- greedy == 788.8247370971952 -- diff == 92.53168744754805 -- taskid == [4]
+avg_latency == 1059.872251228428 -- greedy == 917.1303515739442 -- diff == -142.74189965448386 -- taskid == [13]
+avg_latency == 611.7491061735835 -- greedy == 796.2377573818479 -- diff == 184.4886512082644 -- taskid == [18]
+avg_latency == 630.0053155026708 -- greedy == 801.0064184761047 -- diff == 171.00110297343394 -- taskid == [8]
+avg_latency == 891.7184549217906 -- greedy == 830.3707428888592 -- diff == -61.34771203293133 -- taskid == [5]
+avg_latency == 787.2969592851231 -- greedy == 808.106911553519 -- diff == 20.809952268395932 -- taskid == [1]
+avg_latency == 748.6001309835299 -- greedy == 795.2533080208642 -- diff == 46.65317703733433 -- taskid == [17]
+avg_latency == 766.9022526302882 -- greedy == 808.106911553519 -- diff == 41.204658923230795 -- taskid == [1]
+avg_latency == 614.4661261158262 -- greedy == 795.3708558062144 -- diff == 180.9047296903882 -- taskid == [7]
+avg_latency == 1005.4117398926735 -- greedy == 882.3567571518762 -- diff == -123.0549827407973 -- taskid == [12]
+avg_latency == 889.5694431441034 -- greedy == 827.8765279039657 -- diff == -61.69291524013772 -- taskid == [0]
+avg_latency == 971.7258194255556 -- greedy == 882.3567571518762 -- diff == -89.36906227367945 -- taskid == [12]
+avg_latency == 940.9317025657926 -- greedy == 882.3567571518762 -- diff == -58.57494541391645 -- taskid == [12]
+avg_latency == 1030.0437274397714 -- greedy == 927.7099499083928 -- diff == -102.33377753137859 -- taskid == [14]
+avg_latency == 1005.0941270593779 -- greedy == 927.7099499083928 -- diff == -77.38417715098512 -- taskid == [14]
+avg_latency == 782.5756769183022 -- greedy == 808.106911553519 -- diff == 25.531234635216833 -- taskid == [1]
+avg_latency == 693.5470770874568 -- greedy == 803.3178474461694 -- diff == 109.77077035871253 -- taskid == [10]
+avg_latency == 753.5583401638712 -- greedy == 795.2533080208642 -- diff == 41.694967856993 -- taskid == [17]
+avg_latency == 1027.7577700115748 -- greedy == 899.1789614620208 -- diff == -128.57880854955408 -- taskid == [15]
+avg_latency == 696.9804222683225 -- greedy == 788.8247370971952 -- diff == 91.84431482887271 -- taskid == [4]
+avg_latency == 748.2566298201289 -- greedy == 795.2533080208642 -- diff == 46.996678200735346 -- taskid == [17]
+avg_latency == 783.5510815129145 -- greedy == 808.106911553519 -- diff == 24.55583004060452 -- taskid == [1]
+avg_latency == 684.5430317988803 -- greedy == 782.6501557886941 -- diff == 98.10712398981377 -- taskid == [2]
+avg_latency == 607.3288330028262 -- greedy == 796.2377573818479 -- diff == 188.90892437902176 -- taskid == [18]
+avg_latency == 637.1944090147292 -- greedy == 784.7890609698977 -- diff == 147.5946519551685 -- taskid == [9]
+avg_latency == 754.8472766115598 -- greedy == 775.9840780457088 -- diff == 21.136801434148992 -- taskid == [3]
+avg_latency == 630.4445363815715 -- greedy == 801.0064184761047 -- diff == 170.5618820945332 -- taskid == [8]
+avg_latency == 612.3256536583083 -- greedy == 801.0064184761047 -- diff == 188.68076481779644 -- taskid == [8]
+avg_latency == 746.6333769872803 -- greedy == 795.2533080208642 -- diff == 48.61993103358395 -- taskid == [17]
+
+
+19
+
+
+avg_latency == 775.131621825082 -- greedy == 808.106911553519 -- diff == 32.97528972843702 -- taskid == [1]
+avg_latency == 876.0012955132485 -- greedy == 830.3707428888592 -- diff == -45.630552624389225 -- taskid == [5]
+avg_latency == 689.8748277056557 -- greedy == 803.3178474461694 -- diff == 113.4430197405137 -- taskid == [10]
+avg_latency == 985.2005307544434 -- greedy == 882.3567571518762 -- diff == -102.84377360256724 -- taskid == [12]
+avg_latency == 1023.6598500842912 -- greedy == 917.1303515739442 -- diff == -106.52949851034703 -- taskid == [13]
+avg_latency == 849.9220314237459 -- greedy == 830.3707428888592 -- diff == -19.55128853488668 -- taskid == [5]
+avg_latency == 687.3308087818009 -- greedy == 788.7067359668185 -- diff == 101.37592718501764 -- taskid == [6]
+avg_latency == 1012.0441967971802 -- greedy == 917.1303515739442 -- diff == -94.91384522323608 -- taskid == [13]
+avg_latency == 844.6804531899315 -- greedy == 830.3707428888592 -- diff == -14.3097103010723 -- taskid == [5]
+avg_latency == 861.7326713571003 -- greedy == 827.8765279039657 -- diff == -33.85614345313468 -- taskid == [0]
+avg_latency == 638.0697536452975 -- greedy == 784.7890609698977 -- diff == 146.7193073246002 -- taskid == [9]
+avg_latency == 744.213359126772 -- greedy == 775.9840780457088 -- diff == 31.770718918936723 -- taskid == [3]
+avg_latency == 688.7911590373175 -- greedy == 803.3178474461694 -- diff == 114.5266884088519 -- taskid == [10]
+avg_latency == 682.4503138530866 -- greedy == 788.7067359668185 -- diff == 106.2564221137319 -- taskid == [6]
+avg_latency == 769.2255243045944 -- greedy == 808.106911553519 -- diff == 38.881387248924625 -- taskid == [1]
+avg_latency == 613.4353694225994 -- greedy == 796.2377573818479 -- diff == 182.80238795924856 -- taskid == [18]
+avg_latency == 880.1434468416895 -- greedy == 827.8765279039657 -- diff == -52.26691893772386 -- taskid == [0]
+avg_latency == 676.2966612964766 -- greedy == 782.6501557886941 -- diff == 106.35349449221746 -- taskid == [2]
+avg_latency == 632.0502165469578 -- greedy == 801.0064184761047 -- diff == 168.9562019291469 -- taskid == [8]
+avg_latency == 1039.316717953314 -- greedy == 917.1303515739442 -- diff == -122.18636637936993 -- taskid == [13]
+avg_latency == 682.500399940627 -- greedy == 788.7067359668185 -- diff == 106.2063360261916 -- taskid == [6]
+avg_latency == 741.3400581958771 -- greedy == 779.0424737050193 -- diff == 37.70241550914227 -- taskid == [11]
+avg_latency == 603.5217984111787 -- greedy == 796.2377573818479 -- diff == 192.71595897066925 -- taskid == [18]
+avg_latency == 689.3179795082093 -- greedy == 788.8247370971952 -- diff == 99.50675758898592 -- taskid == [4]
+avg_latency == 668.2899994190489 -- greedy == 788.8247370971952 -- diff == 120.53473767814637 -- taskid == [4]
+avg_latency == 882.4049379311833 -- greedy == 830.3707428888592 -- diff == -52.034195042324086 -- taskid == [5]
+avg_latency == 600.6380008376938 -- greedy == 796.2377573818479 -- diff == 195.59975654415416 -- taskid == [18]
+avg_latency == 1070.756385657011 -- greedy == 927.7099499083928 -- diff == -143.04643574861814 -- taskid == [14]
+avg_latency == 742.4125013085364 -- greedy == 779.0424737050193 -- diff == 36.62997239648291 -- taskid == [11]
+avg_latency == 677.3947709040777 -- greedy == 782.6501557886941 -- diff == 105.25538488461632 -- taskid == [2]
+
+
+ New_teacher == 1976.4139821350327
+
+
+
+
+20
+
+
+avg_latency == 1053.9904401607923 -- greedy == 927.7099499083928 -- diff == -126.28049025239955 -- taskid == [14]
+avg_latency == 689.4059719125748 -- greedy == 788.7067359668185 -- diff == 99.3007640542437 -- taskid == [6]
+avg_latency == 739.222980346448 -- greedy == 775.9840780457088 -- diff == 36.761097699260745 -- taskid == [3]
+avg_latency == 722.0541363658086 -- greedy == 775.9840780457088 -- diff == 53.92994167990014 -- taskid == [3]
+avg_latency == 866.7351078767368 -- greedy == 827.8765279039657 -- diff == -38.85857997277117 -- taskid == [0]
+avg_latency == 881.0030754040719 -- greedy == 845.9735073446545 -- diff == -35.02956805941733 -- taskid == [16]
+avg_latency == 684.1216924730846 -- greedy == 788.7067359668185 -- diff == 104.5850434937339 -- taskid == [6]
+avg_latency == 603.8822270919527 -- greedy == 796.2377573818479 -- diff == 192.35553028989523 -- taskid == [18]
+avg_latency == 620.4990603366715 -- greedy == 784.7890609698977 -- diff == 164.2900006332262 -- taskid == [9]
+avg_latency == 584.1561128390993 -- greedy == 796.2377573818479 -- diff == 212.08164454274868 -- taskid == [18]
+avg_latency == 1042.3042159957477 -- greedy == 927.7099499083928 -- diff == -114.59426608735487 -- taskid == [14]
+avg_latency == 768.4493864399228 -- greedy == 808.106911553519 -- diff == 39.65752511359619 -- taskid == [1]
+avg_latency == 610.342536892741 -- greedy == 784.7890609698977 -- diff == 174.4465240771567 -- taskid == [9]
+avg_latency == 867.9169893939835 -- greedy == 827.8765279039657 -- diff == -40.04046149001783 -- taskid == [0]
+avg_latency == 977.9614769426892 -- greedy == 882.3567571518762 -- diff == -95.60471979081296 -- taskid == [12]
+avg_latency == 1012.2886943976674 -- greedy == 917.1303515739442 -- diff == -95.15834282372327 -- taskid == [13]
+avg_latency == 763.4534777747699 -- greedy == 808.106911553519 -- diff == 44.653433778749104 -- taskid == [1]
+avg_latency == 846.7437031812395 -- greedy == 827.8765279039657 -- diff == -18.867175277273873 -- taskid == [0]
+avg_latency == 684.7268375487192 -- greedy == 803.3178474461694 -- diff == 118.59100989745014 -- taskid == [10]
+avg_latency == 617.9933895847729 -- greedy == 801.0064184761047 -- diff == 183.01302889133183 -- taskid == [8]
+avg_latency == 603.7568605438506 -- greedy == 801.0064184761047 -- diff == 197.2495579322541 -- taskid == [8]
+avg_latency == 746.6322928390503 -- greedy == 795.2533080208642 -- diff == 48.62101518181396 -- taskid == [17]
+avg_latency == 1008.5173653142793 -- greedy == 899.1789614620208 -- diff == -109.33840385225858 -- taskid == [15]
+avg_latency == 726.4281811549458 -- greedy == 795.2533080208642 -- diff == 68.82512686591838 -- taskid == [17]
+avg_latency == 889.2234813896451 -- greedy == 845.9735073446545 -- diff == -43.24997404499061 -- taskid == [16]
+avg_latency == 769.5129843589646 -- greedy == 808.106911553519 -- diff == 38.59392719455445 -- taskid == [1]
+avg_latency == 683.2121047344889 -- greedy == 788.8247370971952 -- diff == 105.61263236270634 -- taskid == [4]
+avg_latency == 622.9993266041483 -- greedy == 784.7890609698977 -- diff == 161.78973436574938 -- taskid == [9]
+avg_latency == 737.3127806233271 -- greedy == 795.2533080208642 -- diff == 57.94052739753715 -- taskid == [17]
+avg_latency == 614.1211390550069 -- greedy == 795.3708558062144 -- diff == 181.24971675120753 -- taskid == [7]
+
+
+ New_teacher == 1976.2330489442793
+
+
+
+
+21
+
+
+avg_latency == 762.6079830113139 -- greedy == 808.106911553519 -- diff == 45.498928542205135 -- taskid == [1]
+avg_latency == 735.5008213929722 -- greedy == 779.0424737050193 -- diff == 43.54165231204718 -- taskid == [11]
+avg_latency == 740.0718287488937 -- greedy == 795.2533080208642 -- diff == 55.18147927197049 -- taskid == [17]
+avg_latency == 866.0094983441625 -- greedy == 827.8765279039657 -- diff == -38.1329704401968 -- taskid == [0]
+avg_latency == 759.6896923535892 -- greedy == 808.106911553519 -- diff == 48.41721919992983 -- taskid == [1]
+avg_latency == 611.2308314144544 -- greedy == 795.3708558062144 -- diff == 184.14002439176 -- taskid == [7]
+avg_latency == 1040.493924583176 -- greedy == 927.7099499083928 -- diff == -112.78397467478328 -- taskid == [14]
+avg_latency == 985.5946926843915 -- greedy == 882.3567571518762 -- diff == -103.23793553251528 -- taskid == [12]
+avg_latency == 737.2081405225755 -- greedy == 775.9840780457088 -- diff == 38.77593752313328 -- taskid == [3]
+avg_latency == 962.0857435746466 -- greedy == 882.3567571518762 -- diff == -79.72898642277039 -- taskid == [12]
+avg_latency == 871.1929426907132 -- greedy == 830.3707428888592 -- diff == -40.82219980185391 -- taskid == [5]
+avg_latency == 886.9024969149863 -- greedy == 845.9735073446545 -- diff == -40.92898957033174 -- taskid == [16]
+avg_latency == 644.4253575479235 -- greedy == 784.7890609698977 -- diff == 140.36370342197426 -- taskid == [9]
+avg_latency == 743.6679094435829 -- greedy == 779.0424737050193 -- diff == 35.37456426143649 -- taskid == [11]
+avg_latency == 681.1253272309576 -- greedy == 788.7067359668185 -- diff == 107.58140873586092 -- taskid == [6]
+avg_latency == 679.7745127907889 -- greedy == 782.6501557886941 -- diff == 102.87564299790517 -- taskid == [2]
+avg_latency == 872.2482138815881 -- greedy == 827.8765279039657 -- diff == -44.371685977622406 -- taskid == [0]
+avg_latency == 976.1149427857126 -- greedy == 882.3567571518762 -- diff == -93.75818563383643 -- taskid == [12]
+avg_latency == 764.3377080665043 -- greedy == 808.106911553519 -- diff == 43.76920348701469 -- taskid == [1]
+avg_latency == 862.9377370718682 -- greedy == 830.3707428888592 -- diff == -32.566994183009 -- taskid == [5]
+avg_latency == 1011.550681736551 -- greedy == 899.1789614620208 -- diff == -112.37172027453028 -- taskid == [15]
+avg_latency == 733.367878910814 -- greedy == 775.9840780457088 -- diff == 42.616199134894714 -- taskid == [3]
+avg_latency == 759.181769008255 -- greedy == 808.106911553519 -- diff == 48.925142545264066 -- taskid == [1]
+avg_latency == 748.9913308254105 -- greedy == 808.106911553519 -- diff == 59.11558072810851 -- taskid == [1]
+avg_latency == 723.8534814648219 -- greedy == 775.9840780457088 -- diff == 52.130596580886845 -- taskid == [3]
+avg_latency == 619.6405203190803 -- greedy == 784.7890609698977 -- diff == 165.14854065081738 -- taskid == [9]
+avg_latency == 718.4701021601542 -- greedy == 775.9840780457088 -- diff == 57.5139758855546 -- taskid == [3]
+avg_latency == 734.6894980779921 -- greedy == 779.0424737050193 -- diff == 44.35297562702726 -- taskid == [11]
+avg_latency == 622.285476173687 -- greedy == 801.0064184761047 -- diff == 178.7209423024177 -- taskid == [8]
+avg_latency == 602.0546637581144 -- greedy == 796.2377573818479 -- diff == 194.1830936237335 -- taskid == [18]
+
+
+22
+
+
+avg_latency == 662.3366771843773 -- greedy == 782.6501557886941 -- diff == 120.31347860431674 -- taskid == [2]
+avg_latency == 679.4725865012987 -- greedy == 788.7067359668185 -- diff == 109.23414946551986 -- taskid == [6]
+avg_latency == 665.3068524628367 -- greedy == 788.7067359668185 -- diff == 123.39988350398187 -- taskid == [6]
+avg_latency == 880.4288673214094 -- greedy == 827.8765279039657 -- diff == -52.552339417443704 -- taskid == [0]
+avg_latency == 875.0755177475521 -- greedy == 830.3707428888592 -- diff == -44.70477485869287 -- taskid == [5]
+avg_latency == 883.5893142875535 -- greedy == 845.9735073446545 -- diff == -37.615806942898985 -- taskid == [16]
+avg_latency == 698.3970327531678 -- greedy == 803.3178474461694 -- diff == 104.9208146930016 -- taskid == [10]
+avg_latency == 735.9466103420802 -- greedy == 779.0424737050193 -- diff == 43.0958633629391 -- taskid == [11]
+avg_latency == 766.6886645566531 -- greedy == 808.106911553519 -- diff == 41.418246996865946 -- taskid == [1]
+avg_latency == 865.7970419188772 -- greedy == 827.8765279039657 -- diff == -37.92051401491153 -- taskid == [0]
+avg_latency == 679.0476491949626 -- greedy == 782.6501557886941 -- diff == 103.6025065937315 -- taskid == [2]
+avg_latency == 636.4104108390263 -- greedy == 784.7890609698977 -- diff == 148.3786501308714 -- taskid == [9]
+avg_latency == 735.2883765662601 -- greedy == 775.9840780457088 -- diff == 40.695701479448644 -- taskid == [3]
+avg_latency == 981.6838458279747 -- greedy == 882.3567571518762 -- diff == -99.32708867609847 -- taskid == [12]
+avg_latency == 1015.9150046005248 -- greedy == 899.1789614620208 -- diff == -116.73604313850399 -- taskid == [15]
+avg_latency == 746.5223528816769 -- greedy == 795.2533080208642 -- diff == 48.73095513918736 -- taskid == [17]
+avg_latency == 725.6411080181259 -- greedy == 795.2533080208642 -- diff == 69.61220000273829 -- taskid == [17]
+avg_latency == 607.2232294452123 -- greedy == 796.2377573818479 -- diff == 189.01452793663566 -- taskid == [18]
+avg_latency == 676.2371696944782 -- greedy == 803.3178474461694 -- diff == 127.08067775169116 -- taskid == [10]
+avg_latency == 872.0236795597076 -- greedy == 830.3707428888592 -- diff == -41.65293667084836 -- taskid == [5]
+avg_latency == 846.1245654123715 -- greedy == 830.3707428888592 -- diff == -15.753822523512213 -- taskid == [5]
+avg_latency == 1030.0276939062664 -- greedy == 927.7099499083928 -- diff == -102.31774399787366 -- taskid == [14]
+avg_latency == 838.2320285629273 -- greedy == 830.3707428888592 -- diff == -7.861285674068085 -- taskid == [5]
+avg_latency == 676.393043375138 -- greedy == 788.7067359668185 -- diff == 112.31369259168059 -- taskid == [6]
+avg_latency == 1019.599516272395 -- greedy == 927.7099499083928 -- diff == -91.88956636400223 -- taskid == [14]
+avg_latency == 973.57336964377 -- greedy == 882.3567571518762 -- diff == -91.21661249189378 -- taskid == [12]
+avg_latency == 989.7270118827277 -- greedy == 899.1789614620208 -- diff == -90.54805042070689 -- taskid == [15]
+avg_latency == 1011.9706527674266 -- greedy == 917.1303515739442 -- diff == -94.84030119348245 -- taskid == [13]
+avg_latency == 946.7783163765771 -- greedy == 882.3567571518762 -- diff == -64.4215592247009 -- taskid == [12]
+avg_latency == 629.794950465434 -- greedy == 784.7890609698977 -- diff == 154.99411050446372 -- taskid == [9]
+
+
+23
+
+
+avg_latency == 669.0528732826915 -- greedy == 788.7067359668185 -- diff == 119.65386268412703 -- taskid == [6]
+avg_latency == 613.150106310572 -- greedy == 784.7890609698977 -- diff == 171.6389546593257 -- taskid == [9]
+avg_latency == 1022.2358976501602 -- greedy == 917.1303515739442 -- diff == -105.105546076216 -- taskid == [13]
+avg_latency == 1018.3866605973244 -- greedy == 927.7099499083928 -- diff == -90.67671068893162 -- taskid == [14]
+avg_latency == 730.4719463710647 -- greedy == 779.0424737050193 -- diff == 48.5705273339546 -- taskid == [11]
+avg_latency == 988.2521285857065 -- greedy == 917.1303515739442 -- diff == -71.12177701176233 -- taskid == [13]
+avg_latency == 965.106662895584 -- greedy == 917.1303515739442 -- diff == -47.976311321639855 -- taskid == [13]
+avg_latency == 607.0919800990514 -- greedy == 796.2377573818479 -- diff == 189.14577728279653 -- taskid == [18]
+avg_latency == 1016.2976178346361 -- greedy == 927.7099499083928 -- diff == -88.58766792624328 -- taskid == [14]
+avg_latency == 971.5980267664909 -- greedy == 917.1303515739442 -- diff == -54.46767519254672 -- taskid == [13]
+avg_latency == 739.662473571573 -- greedy == 779.0424737050193 -- diff == 39.3800001334464 -- taskid == [11]
+avg_latency == 745.3758294566973 -- greedy == 775.9840780457088 -- diff == 30.60824858901151 -- taskid == [3]
+avg_latency == 635.8131203697068 -- greedy == 795.3708558062144 -- diff == 159.55773543650764 -- taskid == [7]
+avg_latency == 636.5017931850024 -- greedy == 801.0064184761047 -- diff == 164.50462529110234 -- taskid == [8]
+avg_latency == 891.2098845516479 -- greedy == 845.9735073446545 -- diff == -45.236377206993325 -- taskid == [16]
+avg_latency == 680.8213948120118 -- greedy == 803.3178474461694 -- diff == 122.49645263415755 -- taskid == [10]
+avg_latency == 863.6701041140011 -- greedy == 845.9735073446545 -- diff == -17.69659676934657 -- taskid == [16]
+avg_latency == 617.3415839526177 -- greedy == 796.2377573818479 -- diff == 178.8961734292302 -- taskid == [18]
+avg_latency == 869.9192193097796 -- greedy == 830.3707428888592 -- diff == -39.54847642092034 -- taskid == [5]
+avg_latency == 846.6809962610517 -- greedy == 830.3707428888592 -- diff == -16.310253372192506 -- taskid == [5]
+avg_latency == 867.7377758406094 -- greedy == 827.8765279039657 -- diff == -39.861247936643736 -- taskid == [0]
+avg_latency == 694.4820100686345 -- greedy == 788.8247370971952 -- diff == 94.34272702856072 -- taskid == [4]
+avg_latency == 599.6343408798626 -- greedy == 796.2377573818479 -- diff == 196.6034165019853 -- taskid == [18]
+avg_latency == 764.9591052845409 -- greedy == 808.106911553519 -- diff == 43.147806268978115 -- taskid == [1]
+avg_latency == 589.5991112408774 -- greedy == 796.2377573818479 -- diff == 206.63864614097054 -- taskid == [18]
+avg_latency == 894.1921974922998 -- greedy == 845.9735073446545 -- diff == -48.21869014764525 -- taskid == [16]
+avg_latency == 865.7935360662051 -- greedy == 827.8765279039657 -- diff == -37.917008162239426 -- taskid == [0]
+avg_latency == 856.4805338602339 -- greedy == 830.3707428888592 -- diff == -26.10979097137465 -- taskid == [5]
+avg_latency == 859.0824055967876 -- greedy == 845.9735073446545 -- diff == -13.10889825213303 -- taskid == [16]
+avg_latency == 1021.4025375740733 -- greedy == 927.7099499083928 -- diff == -93.69258766568055 -- taskid == [14]
+
+
+ New_teacher == 1973.5919332092944
+
+
+
+
+24
+
+
+avg_latency == 619.6639761087962 -- greedy == 801.0064184761047 -- diff == 181.34244236730854 -- taskid == [8]
+avg_latency == 762.7030948442323 -- greedy == 808.106911553519 -- diff == 45.40381670928673 -- taskid == [1]
+avg_latency == 735.2134077459472 -- greedy == 779.0424737050193 -- diff == 43.82906595907218 -- taskid == [11]
+avg_latency == 861.7026653276715 -- greedy == 845.9735073446545 -- diff == -15.72915798301699 -- taskid == [16]
+avg_latency == 1012.8539787695885 -- greedy == 927.7099499083928 -- diff == -85.1440288611957 -- taskid == [14]
+avg_latency == 844.7258184111323 -- greedy == 827.8765279039657 -- diff == -16.849290507166643 -- taskid == [0]
+avg_latency == 611.9225238060543 -- greedy == 795.3708558062144 -- diff == 183.44833200016012 -- taskid == [7]
+avg_latency == 753.4433671869006 -- greedy == 808.106911553519 -- diff == 54.66354436661845 -- taskid == [1]
+avg_latency == 1002.1211407051359 -- greedy == 917.1303515739442 -- diff == -84.99078913119172 -- taskid == [13]
+avg_latency == 851.6852884798594 -- greedy == 830.3707428888592 -- diff == -21.314545591000183 -- taskid == [5]
+avg_latency == 985.1388623585973 -- greedy == 917.1303515739442 -- diff == -68.00851078465314 -- taskid == [13]
+avg_latency == 617.446482852459 -- greedy == 796.2377573818479 -- diff == 178.79127452938894 -- taskid == [18]
+avg_latency == 756.554023180621 -- greedy == 808.106911553519 -- diff == 51.552888372897996 -- taskid == [1]
+avg_latency == 666.8234657528468 -- greedy == 782.6501557886941 -- diff == 115.82669003584726 -- taskid == [2]
+avg_latency == 735.9839054714884 -- greedy == 795.2533080208642 -- diff == 59.269402549375855 -- taskid == [17]
+avg_latency == 730.1568276344844 -- greedy == 779.0424737050193 -- diff == 48.885646070534904 -- taskid == [11]
+avg_latency == 1017.3817417247091 -- greedy == 927.7099499083928 -- diff == -89.67179181631627 -- taskid == [14]
+avg_latency == 615.7967166950363 -- greedy == 784.7890609698977 -- diff == 168.99234427486147 -- taskid == [9]
+avg_latency == 861.309339594514 -- greedy == 830.3707428888592 -- diff == -30.93859670565473 -- taskid == [5]
+avg_latency == 681.7204153938702 -- greedy == 788.8247370971952 -- diff == 107.10432170332501 -- taskid == [4]
+avg_latency == 756.0700881582668 -- greedy == 808.106911553519 -- diff == 52.03682339525221 -- taskid == [1]
+avg_latency == 871.7689247247968 -- greedy == 845.9735073446545 -- diff == -25.795417380142226 -- taskid == [16]
+avg_latency == 744.147305587755 -- greedy == 808.106911553519 -- diff == 63.95960596576401 -- taskid == [1]
+avg_latency == 960.6542638304848 -- greedy == 882.3567571518762 -- diff == -78.29750667860856 -- taskid == [12]
+avg_latency == 680.139731798826 -- greedy == 788.8247370971952 -- diff == 108.68500529836922 -- taskid == [4]
+avg_latency == 731.5600882067135 -- greedy == 775.9840780457088 -- diff == 44.423989838995226 -- taskid == [3]
+avg_latency == 674.5835214205741 -- greedy == 803.3178474461694 -- diff == 128.73432602559524 -- taskid == [10]
+avg_latency == 861.1774090776171 -- greedy == 827.8765279039657 -- diff == -33.30088117365142 -- taskid == [0]
+avg_latency == 861.032999422632 -- greedy == 845.9735073446545 -- diff == -15.059492077977438 -- taskid == [16]
+avg_latency == 613.2073459379878 -- greedy == 801.0064184761047 -- diff == 187.7990725381169 -- taskid == [8]
+
+
+25
+
+
+avg_latency == 851.2320129067014 -- greedy == 827.8765279039657 -- diff == -23.35548500273569 -- taskid == [0]
+avg_latency == 598.9108012815204 -- greedy == 796.2377573818479 -- diff == 197.3269561003275 -- taskid == [18]
+avg_latency == 620.1080538043567 -- greedy == 784.7890609698977 -- diff == 164.68100716554102 -- taskid == [9]
+avg_latency == 757.9623082354954 -- greedy == 808.106911553519 -- diff == 50.144603318023655 -- taskid == [1]
+avg_latency == 743.3921310986656 -- greedy == 808.106911553519 -- diff == 64.71478045485344 -- taskid == [1]
+avg_latency == 971.1729997412409 -- greedy == 882.3567571518762 -- diff == -88.81624258936472 -- taskid == [12]
+avg_latency == 944.0688661271095 -- greedy == 882.3567571518762 -- diff == -61.712108975233264 -- taskid == [12]
+avg_latency == 1025.9174843393598 -- greedy == 927.7099499083928 -- diff == -98.20753443096703 -- taskid == [14]
+avg_latency == 673.6424315139907 -- greedy == 803.3178474461694 -- diff == 129.67541593217868 -- taskid == [10]
+avg_latency == 613.0844573734012 -- greedy == 784.7890609698977 -- diff == 171.70460359649655 -- taskid == [9]
+avg_latency == 880.8377221739497 -- greedy == 830.3707428888592 -- diff == -50.466979285090474 -- taskid == [5]
+avg_latency == 676.5952310053552 -- greedy == 788.8247370971952 -- diff == 112.22950609184 -- taskid == [4]
+avg_latency == 729.0034849290031 -- greedy == 775.9840780457088 -- diff == 46.98059311670568 -- taskid == [3]
+avg_latency == 709.0910356134416 -- greedy == 775.9840780457088 -- diff == 66.89304243226718 -- taskid == [3]
+avg_latency == 850.5126973584039 -- greedy == 830.3707428888592 -- diff == -20.141954469544658 -- taskid == [5]
+avg_latency == 1019.5983682325636 -- greedy == 917.1303515739442 -- diff == -102.46801665861949 -- taskid == [13]
+avg_latency == 619.6720110369138 -- greedy == 801.0064184761047 -- diff == 181.33440743919095 -- taskid == [8]
+avg_latency == 609.9869512876238 -- greedy == 795.3708558062144 -- diff == 185.3839045185906 -- taskid == [7]
+avg_latency == 772.5417072370258 -- greedy == 808.106911553519 -- diff == 35.56520431649324 -- taskid == [1]
+avg_latency == 719.2486985626902 -- greedy == 775.9840780457088 -- diff == 56.73537948301862 -- taskid == [3]
+avg_latency == 866.1931333547047 -- greedy == 830.3707428888592 -- diff == -35.8223904658455 -- taskid == [5]
+avg_latency == 870.2131924859865 -- greedy == 845.9735073446545 -- diff == -24.23968514133196 -- taskid == [16]
+avg_latency == 1013.8623874700137 -- greedy == 899.1789614620208 -- diff == -114.68342600799292 -- taskid == [15]
+avg_latency == 757.4675105781828 -- greedy == 808.106911553519 -- diff == 50.63940097533623 -- taskid == [1]
+avg_latency == 852.2178804277012 -- greedy == 830.3707428888592 -- diff == -21.847137538841935 -- taskid == [5]
+avg_latency == 848.0012720986912 -- greedy == 830.3707428888592 -- diff == -17.630529209831934 -- taskid == [5]
+avg_latency == 740.6748177376202 -- greedy == 779.0424737050193 -- diff == 38.36765596739917 -- taskid == [11]
+avg_latency == 987.8997361973354 -- greedy == 899.1789614620208 -- diff == -88.72077473531465 -- taskid == [15]
+avg_latency == 632.8880296958922 -- greedy == 784.7890609698977 -- diff == 151.9010312740055 -- taskid == [9]
+avg_latency == 833.247356440326 -- greedy == 830.3707428888592 -- diff == -2.8766135514667894 -- taskid == [5]
+
+
+26
+
+
+avg_latency == 857.602948423045 -- greedy == 830.3707428888592 -- diff == -27.23220553418571 -- taskid == [5]
+avg_latency == 1006.7096203317235 -- greedy == 917.1303515739442 -- diff == -89.57926875777935 -- taskid == [13]
+avg_latency == 640.3516012920516 -- greedy == 795.3708558062144 -- diff == 155.01925451416287 -- taskid == [7]
+avg_latency == 1027.2923020446506 -- greedy == 927.7099499083928 -- diff == -99.58235213625778 -- taskid == [14]
+avg_latency == 623.6711347157888 -- greedy == 784.7890609698977 -- diff == 161.11792625410897 -- taskid == [9]
+avg_latency == 984.2654996537073 -- greedy == 917.1303515739442 -- diff == -67.1351480797631 -- taskid == [13]
+avg_latency == 636.2208080517088 -- greedy == 801.0064184761047 -- diff == 164.78561042439594 -- taskid == [8]
+avg_latency == 610.2350290493692 -- greedy == 784.7890609698977 -- diff == 174.55403192052847 -- taskid == [9]
+avg_latency == 1010.1539081631933 -- greedy == 927.7099499083928 -- diff == -82.44395825480046 -- taskid == [14]
+avg_latency == 984.1977624826841 -- greedy == 917.1303515739442 -- diff == -67.06741090873993 -- taskid == [13]
+avg_latency == 868.9394975363732 -- greedy == 845.9735073446545 -- diff == -22.965990191718674 -- taskid == [16]
+avg_latency == 681.3231470504625 -- greedy == 788.8247370971952 -- diff == 107.50159004673276 -- taskid == [4]
+avg_latency == 983.1178781880106 -- greedy == 899.1789614620208 -- diff == -83.93891672598988 -- taskid == [15]
+avg_latency == 670.4755938421521 -- greedy == 782.6501557886941 -- diff == 112.17456194654198 -- taskid == [2]
+avg_latency == 740.0038806827818 -- greedy == 795.2533080208642 -- diff == 55.249427338082455 -- taskid == [17]
+avg_latency == 679.4750841776712 -- greedy == 803.3178474461694 -- diff == 123.84276326849817 -- taskid == [10]
+avg_latency == 659.3415788576126 -- greedy == 803.3178474461694 -- diff == 143.97626858855676 -- taskid == [10]
+avg_latency == 874.2495804276604 -- greedy == 845.9735073446545 -- diff == -28.276073083005826 -- taskid == [16]
+avg_latency == 610.398535788141 -- greedy == 784.7890609698977 -- diff == 174.39052518175674 -- taskid == [9]
+avg_latency == 863.5461499926159 -- greedy == 827.8765279039657 -- diff == -35.66962208865027 -- taskid == [0]
+avg_latency == 620.7537192388262 -- greedy == 795.3708558062144 -- diff == 174.61713656738823 -- taskid == [7]
+avg_latency == 678.0218517931802 -- greedy == 788.8247370971952 -- diff == 110.80288530401504 -- taskid == [4]
+avg_latency == 615.9336246460233 -- greedy == 801.0064184761047 -- diff == 185.07279383008142 -- taskid == [8]
+avg_latency == 724.2200024568558 -- greedy == 775.9840780457088 -- diff == 51.76407558885296 -- taskid == [3]
+avg_latency == 703.2715137728826 -- greedy == 775.9840780457088 -- diff == 72.71256427282617 -- taskid == [3]
+avg_latency == 615.2697917293822 -- greedy == 801.0064184761047 -- diff == 185.73662674672255 -- taskid == [8]
+avg_latency == 599.7403196812493 -- greedy == 795.3708558062144 -- diff == 195.63053612496515 -- taskid == [7]
+avg_latency == 1027.9473497712272 -- greedy == 927.7099499083928 -- diff == -100.23739986283442 -- taskid == [14]
+avg_latency == 728.7203143020084 -- greedy == 779.0424737050193 -- diff == 50.322159403010915 -- taskid == [11]
+avg_latency == 606.2274502467429 -- greedy == 784.7890609698977 -- diff == 178.56161072315479 -- taskid == [9]
+
+
+27
+
+
+avg_latency == 998.9642626753943 -- greedy == 927.7099499083928 -- diff == -71.25431276700147 -- taskid == [14]
+avg_latency == 765.4873435684885 -- greedy == 808.106911553519 -- diff == 42.61956798503047 -- taskid == [1]
+avg_latency == 618.5550591575894 -- greedy == 801.0064184761047 -- diff == 182.4513593185153 -- taskid == [8]
+avg_latency == 676.0927940899169 -- greedy == 788.8247370971952 -- diff == 112.73194300727835 -- taskid == [4]
+avg_latency == 738.2397472675186 -- greedy == 795.2533080208642 -- diff == 57.01356075334559 -- taskid == [17]
+avg_latency == 672.4051369451795 -- greedy == 788.7067359668185 -- diff == 116.30159902163905 -- taskid == [6]
+avg_latency == 715.5024279700281 -- greedy == 775.9840780457088 -- diff == 60.481650075680705 -- taskid == [3]
+avg_latency == 589.9941432879176 -- greedy == 796.2377573818479 -- diff == 206.24361409393032 -- taskid == [18]
+avg_latency == 597.454195236356 -- greedy == 784.7890609698977 -- diff == 187.33486573354173 -- taskid == [9]
+avg_latency == 662.4376047589847 -- greedy == 788.7067359668185 -- diff == 126.26913120783388 -- taskid == [6]
+avg_latency == 963.8764008177621 -- greedy == 882.3567571518762 -- diff == -81.51964366588595 -- taskid == [12]
+avg_latency == 605.3904245816094 -- greedy == 801.0064184761047 -- diff == 195.61599389449532 -- taskid == [8]
+avg_latency == 959.1957726458959 -- greedy == 882.3567571518762 -- diff == -76.83901549401969 -- taskid == [12]
+avg_latency == 662.9386149375371 -- greedy == 788.7067359668185 -- diff == 125.76812102928147 -- taskid == [6]
+avg_latency == 1010.7622969940866 -- greedy == 917.1303515739442 -- diff == -93.63194542014242 -- taskid == [13]
+avg_latency == 663.6999371924945 -- greedy == 782.6501557886941 -- diff == 118.95021859619953 -- taskid == [2]
+avg_latency == 724.9256968149458 -- greedy == 775.9840780457088 -- diff == 51.05838123076296 -- taskid == [3]
+avg_latency == 659.8717176890508 -- greedy == 788.7067359668185 -- diff == 128.83501827776774 -- taskid == [6]
+avg_latency == 667.151019784655 -- greedy == 788.8247370971952 -- diff == 121.67371731254025 -- taskid == [4]
+avg_latency == 728.0436879680361 -- greedy == 779.0424737050193 -- diff == 50.99878573698322 -- taskid == [11]
+avg_latency == 872.4112766800336 -- greedy == 845.9735073446545 -- diff == -26.437769335379016 -- taskid == [16]
+avg_latency == 843.7052018825395 -- greedy == 845.9735073446545 -- diff == 2.268305462114995 -- taskid == [16]
+avg_latency == 661.4974374792781 -- greedy == 788.7067359668185 -- diff == 127.20929848754042 -- taskid == [6]
+avg_latency == 716.1832028605326 -- greedy == 779.0424737050193 -- diff == 62.85927084448679 -- taskid == [11]
+avg_latency == 708.6500582402639 -- greedy == 779.0424737050193 -- diff == 70.39241546475546 -- taskid == [11]
+avg_latency == 878.1120693770818 -- greedy == 830.3707428888592 -- diff == -47.74132648822251 -- taskid == [5]
+avg_latency == 1027.4613089479446 -- greedy == 927.7099499083928 -- diff == -99.75135903955186 -- taskid == [14]
+avg_latency == 721.3702276695115 -- greedy == 779.0424737050193 -- diff == 57.6722460355079 -- taskid == [11]
+avg_latency == 657.9391288843563 -- greedy == 782.6501557886941 -- diff == 124.71102690433781 -- taskid == [2]
+avg_latency == 664.7012942121506 -- greedy == 803.3178474461694 -- diff == 138.61655323401874 -- taskid == [10]
+
+
+ New_teacher == 1944.4525229968494
+
+
+
+
+28
+
+
+avg_latency == 589.0167727103778 -- greedy == 796.2377573818479 -- diff == 207.2209846714701 -- taskid == [18]
+avg_latency == 655.545509663977 -- greedy == 803.3178474461694 -- diff == 147.77233778219238 -- taskid == [10]
+avg_latency == 1013.0267231530871 -- greedy == 927.7099499083928 -- diff == -85.31677324469433 -- taskid == [14]
+avg_latency == 955.6276341111865 -- greedy == 882.3567571518762 -- diff == -73.27087695931027 -- taskid == [12]
+avg_latency == 597.6471586966787 -- greedy == 795.3708558062144 -- diff == 197.7236971095357 -- taskid == [7]
+avg_latency == 654.1615107253484 -- greedy == 803.3178474461694 -- diff == 149.15633672082095 -- taskid == [10]
+avg_latency == 713.3179828494617 -- greedy == 775.9840780457088 -- diff == 62.666095196247056 -- taskid == [3]
+avg_latency == 590.1259262870379 -- greedy == 795.3708558062144 -- diff == 205.24492951917648 -- taskid == [7]
+avg_latency == 1004.5707395650319 -- greedy == 927.7099499083928 -- diff == -76.8607896566391 -- taskid == [14]
+avg_latency == 935.740686614963 -- greedy == 882.3567571518762 -- diff == -53.383929463086815 -- taskid == [12]
+avg_latency == 978.9403534767424 -- greedy == 927.7099499083928 -- diff == -51.23040356834963 -- taskid == [14]
+avg_latency == 605.217508248915 -- greedy == 801.0064184761047 -- diff == 195.78891022718972 -- taskid == [8]
+avg_latency == 665.6445845087869 -- greedy == 788.7067359668185 -- diff == 123.06215145803162 -- taskid == [6]
+avg_latency == 853.9742462450846 -- greedy == 830.3707428888592 -- diff == -23.60350335622536 -- taskid == [5]
+avg_latency == 927.2777655593736 -- greedy == 882.3567571518762 -- diff == -44.921008407497425 -- taskid == [12]
+avg_latency == 587.0513098760468 -- greedy == 795.3708558062144 -- diff == 208.31954593016758 -- taskid == [7]
+avg_latency == 600.8046092004367 -- greedy == 784.7890609698977 -- diff == 183.98445176946097 -- taskid == [9]
+avg_latency == 728.5396036421096 -- greedy == 779.0424737050193 -- diff == 50.50287006290978 -- taskid == [11]
+avg_latency == 865.2131843423026 -- greedy == 845.9735073446545 -- diff == -19.239676997648075 -- taskid == [16]
+avg_latency == 667.2776212078641 -- greedy == 788.7067359668185 -- diff == 121.42911475895448 -- taskid == [6]
+avg_latency == 990.7897589531898 -- greedy == 899.1789614620208 -- diff == -91.61079749116902 -- taskid == [15]
+avg_latency == 608.0344808160919 -- greedy == 801.0064184761047 -- diff == 192.97193766001283 -- taskid == [8]
+avg_latency == 993.4212285951478 -- greedy == 927.7099499083928 -- diff == -65.71127868675501 -- taskid == [14]
+avg_latency == 851.8021976063046 -- greedy == 830.3707428888592 -- diff == -21.431454717445376 -- taskid == [5]
+avg_latency == 844.6648147107533 -- greedy == 827.8765279039657 -- diff == -16.788286806787596 -- taskid == [0]
+avg_latency == 721.3087454864093 -- greedy == 779.0424737050193 -- diff == 57.733728218610054 -- taskid == [11]
+avg_latency == 825.2790100281579 -- greedy == 827.8765279039657 -- diff == 2.597517875807739 -- taskid == [0]
+avg_latency == 927.5050010783876 -- greedy == 882.3567571518762 -- diff == -45.14824392651144 -- taskid == [12]
+avg_latency == 750.4470276285443 -- greedy == 808.106911553519 -- diff == 57.65988392497468 -- taskid == [1]
+avg_latency == 589.2029099449022 -- greedy == 796.2377573818479 -- diff == 207.0348474369457 -- taskid == [18]
+
+
+ New_teacher == 1936.813915263159
+
+
+
+
+29
+
+
+avg_latency == 916.8557657145228 -- greedy == 882.3567571518762 -- diff == -34.49900856264662 -- taskid == [12]
+avg_latency == 994.6481302683286 -- greedy == 927.7099499083928 -- diff == -66.93818035993581 -- taskid == [14]
+avg_latency == 599.8195286504473 -- greedy == 784.7890609698977 -- diff == 184.96953231945042 -- taskid == [9]
+avg_latency == 747.3507399888312 -- greedy == 808.106911553519 -- diff == 60.75617156468786 -- taskid == [1]
+avg_latency == 717.1897640812874 -- greedy == 779.0424737050193 -- diff == 61.852709623731926 -- taskid == [11]
+avg_latency == 609.2564960677556 -- greedy == 801.0064184761047 -- diff == 191.7499224083491 -- taskid == [8]
+avg_latency == 939.0934369707925 -- greedy == 882.3567571518762 -- diff == -56.736679818916286 -- taskid == [12]
+avg_latency == 655.33960731599 -- greedy == 782.6501557886941 -- diff == 127.31054847270411 -- taskid == [2]
+avg_latency == 747.6792965082305 -- greedy == 808.106911553519 -- diff == 60.42761504528846 -- taskid == [1]
+avg_latency == 717.4380481452806 -- greedy == 775.9840780457088 -- diff == 58.54602990042815 -- taskid == [3]
+avg_latency == 1001.8433703737531 -- greedy == 899.1789614620208 -- diff == -102.66440891173238 -- taskid == [15]
+avg_latency == 743.3101808364187 -- greedy == 808.106911553519 -- diff == 64.79673071710033 -- taskid == [1]
+avg_latency == 601.1078442639622 -- greedy == 784.7890609698977 -- diff == 183.68121670593553 -- taskid == [9]
+avg_latency == 662.5812694808959 -- greedy == 803.3178474461694 -- diff == 140.73657796527345 -- taskid == [10]
+avg_latency == 601.5185527363368 -- greedy == 801.0064184761047 -- diff == 199.48786573976793 -- taskid == [8]
+avg_latency == 592.3630433745384 -- greedy == 784.7890609698977 -- diff == 192.42601759535933 -- taskid == [9]
+avg_latency == 742.2115364640645 -- greedy == 795.2533080208642 -- diff == 53.041771556799745 -- taskid == [17]
+avg_latency == 666.7065884235654 -- greedy == 788.7067359668185 -- diff == 122.00014754325309 -- taskid == [6]
+avg_latency == 723.8590401938438 -- greedy == 779.0424737050193 -- diff == 55.18343351117551 -- taskid == [11]
+avg_latency == 1009.4387245070593 -- greedy == 899.1789614620208 -- diff == -110.25976304503854 -- taskid == [15]
+avg_latency == 749.1765263478688 -- greedy == 808.106911553519 -- diff == 58.93038520565017 -- taskid == [1]
+avg_latency == 597.3730892484938 -- greedy == 801.0064184761047 -- diff == 203.63332922761094 -- taskid == [8]
+avg_latency == 594.7674414722715 -- greedy == 795.3708558062144 -- diff == 200.60341433394296 -- taskid == [7]
+avg_latency == 989.604546759878 -- greedy == 899.1789614620208 -- diff == -90.4255852978572 -- taskid == [15]
+avg_latency == 729.2331961494582 -- greedy == 795.2533080208642 -- diff == 66.02011187140602 -- taskid == [17]
+avg_latency == 591.7219481522425 -- greedy == 795.3708558062144 -- diff == 203.64890765397195 -- taskid == [7]
+avg_latency == 879.596348677499 -- greedy == 845.9735073446545 -- diff == -33.62284133284447 -- taskid == [16]
+avg_latency == 1012.1090735817364 -- greedy == 927.7099499083928 -- diff == -84.39912367334364 -- taskid == [14]
+avg_latency == 674.3431301668985 -- greedy == 782.6501557886941 -- diff == 108.30702562179556 -- taskid == [2]
+avg_latency == 729.1074560893194 -- greedy == 775.9840780457088 -- diff == 46.876621956389386 -- taskid == [3]
+
+
+30
+
+
+avg_latency == 852.9347296955517 -- greedy == 830.3707428888592 -- diff == -22.56398680669247 -- taskid == [5]
+avg_latency == 754.0631237732887 -- greedy == 808.106911553519 -- diff == 54.04378778023033 -- taskid == [1]
+avg_latency == 607.9409118328912 -- greedy == 795.3708558062144 -- diff == 187.42994397332325 -- taskid == [7]
+avg_latency == 933.3426151291166 -- greedy == 882.3567571518762 -- diff == -50.98585797724036 -- taskid == [12]
+avg_latency == 716.8892726791789 -- greedy == 775.9840780457088 -- diff == 59.09480536652984 -- taskid == [3]
+avg_latency == 843.1940709164619 -- greedy == 845.9735073446545 -- diff == 2.779436428192639 -- taskid == [16]
+avg_latency == 842.7959077154568 -- greedy == 827.8765279039657 -- diff == -14.919379811491126 -- taskid == [0]
+avg_latency == 659.1525299834116 -- greedy == 803.3178474461694 -- diff == 144.1653174627578 -- taskid == [10]
+avg_latency == 663.1883349022185 -- greedy == 788.7067359668185 -- diff == 125.51840106460008 -- taskid == [6]
+avg_latency == 653.0091997610366 -- greedy == 788.7067359668185 -- diff == 135.69753620578194 -- taskid == [6]
+avg_latency == 653.0640294331549 -- greedy == 788.7067359668185 -- diff == 135.6427065336636 -- taskid == [6]
+avg_latency == 583.1891482715471 -- greedy == 796.2377573818479 -- diff == 213.04860911030084 -- taskid == [18]
+avg_latency == 600.9038101274627 -- greedy == 801.0064184761047 -- diff == 200.10260834864198 -- taskid == [8]
+avg_latency == 939.0269282244002 -- greedy == 882.3567571518762 -- diff == -56.670171072524 -- taskid == [12]
+avg_latency == 849.0529330644199 -- greedy == 845.9735073446545 -- diff == -3.079425719765368 -- taskid == [16]
+avg_latency == 598.0743473665102 -- greedy == 795.3708558062144 -- diff == 197.2965084397042 -- taskid == [7]
+avg_latency == 856.0151904949461 -- greedy == 827.8765279039657 -- diff == -28.138662590980402 -- taskid == [0]
+avg_latency == 859.1439394019944 -- greedy == 845.9735073446545 -- diff == -13.170432057339895 -- taskid == [16]
+avg_latency == 734.7774744773047 -- greedy == 779.0424737050193 -- diff == 44.26499922771461 -- taskid == [11]
+avg_latency == 658.891387784045 -- greedy == 803.3178474461694 -- diff == 144.42645966212433 -- taskid == [10]
+avg_latency == 853.1920707068579 -- greedy == 830.3707428888592 -- diff == -22.821327817998622 -- taskid == [5]
+avg_latency == 937.7738759009361 -- greedy == 882.3567571518762 -- diff == -55.41711874905991 -- taskid == [12]
+avg_latency == 730.3860939368249 -- greedy == 795.2533080208642 -- diff == 64.86721408403935 -- taskid == [17]
+avg_latency == 611.5548289901053 -- greedy == 801.0064184761047 -- diff == 189.45158948599942 -- taskid == [8]
+avg_latency == 658.8354633259363 -- greedy == 803.3178474461694 -- diff == 144.48238412023306 -- taskid == [10]
+avg_latency == 850.6750569101333 -- greedy == 845.9735073446545 -- diff == -4.7015495654787856 -- taskid == [16]
+avg_latency == 1009.9376740218571 -- greedy == 927.7099499083928 -- diff == -82.22772411346432 -- taskid == [14]
+avg_latency == 722.7834228832654 -- greedy == 775.9840780457088 -- diff == 53.200655162443354 -- taskid == [3]
+avg_latency == 925.1144114469664 -- greedy == 882.3567571518762 -- diff == -42.75765429509022 -- taskid == [12]
+avg_latency == 726.9847039242336 -- greedy == 779.0424737050193 -- diff == 52.05776978078575 -- taskid == [11]
+
+
+ New_teacher == 1933.5792521956723
+
+
+
+
+31
+
+
+avg_latency == 992.6286276645797 -- greedy == 927.7099499083928 -- diff == -64.91867775618687 -- taskid == [14]
+avg_latency == 672.6929321679388 -- greedy == 788.8247370971952 -- diff == 116.13180492925642 -- taskid == [4]
+avg_latency == 754.8720318377495 -- greedy == 808.106911553519 -- diff == 53.234879715769466 -- taskid == [1]
+avg_latency == 740.349791610745 -- greedy == 808.106911553519 -- diff == 67.75711994277401 -- taskid == [1]
+avg_latency == 710.5256837130682 -- greedy == 775.9840780457088 -- diff == 65.45839433264052 -- taskid == [3]
+avg_latency == 843.7927641704423 -- greedy == 827.8765279039657 -- diff == -15.91623626647663 -- taskid == [0]
+avg_latency == 980.7623332734516 -- greedy == 899.1789614620208 -- diff == -81.58337181143088 -- taskid == [15]
+avg_latency == 664.2275276734489 -- greedy == 782.6501557886941 -- diff == 118.42262811524517 -- taskid == [2]
+avg_latency == 588.0312782237735 -- greedy == 796.2377573818479 -- diff == 208.20647915807444 -- taskid == [18]
+avg_latency == 663.1491624740601 -- greedy == 788.7067359668185 -- diff == 125.55757349275848 -- taskid == [6]
+avg_latency == 750.3227246715956 -- greedy == 808.106911553519 -- diff == 57.78418688192346 -- taskid == [1]
+avg_latency == 609.5591965410777 -- greedy == 784.7890609698977 -- diff == 175.22986442882006 -- taskid == [9]
+avg_latency == 665.4532478865215 -- greedy == 788.8247370971952 -- diff == 123.37148921067376 -- taskid == [4]
+avg_latency == 740.3468729245185 -- greedy == 808.106911553519 -- diff == 67.76003862900052 -- taskid == [1]
+avg_latency == 710.5019114700591 -- greedy == 775.9840780457088 -- diff == 65.48216657564967 -- taskid == [3]
+avg_latency == 841.0293068075316 -- greedy == 845.9735073446545 -- diff == 4.944200537122924 -- taskid == [16]
+avg_latency == 667.7811235263007 -- greedy == 803.3178474461694 -- diff == 135.53672391986868 -- taskid == [10]
+avg_latency == 585.0402435512543 -- greedy == 796.2377573818479 -- diff == 211.1975138305936 -- taskid == [18]
+avg_latency == 940.9119010000366 -- greedy == 882.3567571518762 -- diff == -58.555143848160355 -- taskid == [12]
+avg_latency == 849.687691340828 -- greedy == 827.8765279039657 -- diff == -21.81116343686233 -- taskid == [0]
+avg_latency == 1002.5835112768991 -- greedy == 927.7099499083928 -- diff == -74.87356136850633 -- taskid == [14]
+avg_latency == 657.3538574869428 -- greedy == 803.3178474461694 -- diff == 145.96398995922652 -- taskid == [10]
+avg_latency == 985.270868679469 -- greedy == 899.1789614620208 -- diff == -86.09190721744824 -- taskid == [15]
+avg_latency == 849.1533536458969 -- greedy == 830.3707428888592 -- diff == -18.782610757037673 -- taskid == [5]
+avg_latency == 743.9763917973381 -- greedy == 808.106911553519 -- diff == 64.13051975618089 -- taskid == [1]
+avg_latency == 675.826880500303 -- greedy == 788.7067359668185 -- diff == 112.87985546651555 -- taskid == [6]
+avg_latency == 733.571605571161 -- greedy == 795.2533080208642 -- diff == 61.681702449703266 -- taskid == [17]
+avg_latency == 977.026778172275 -- greedy == 899.1789614620208 -- diff == -77.84781671025428 -- taskid == [15]
+avg_latency == 628.3388362656865 -- greedy == 801.0064184761047 -- diff == 172.66758221041823 -- taskid == [8]
+avg_latency == 843.4565814574242 -- greedy == 830.3707428888592 -- diff == -13.08583856856501 -- taskid == [5]
+
+
+ New_teacher == 1919.5255154063466
+
+
+
+
+32
+
+
+avg_latency == 678.0919158428737 -- greedy == 788.8247370971952 -- diff == 110.7328212543215 -- taskid == [4]
+avg_latency == 1000.0870712617057 -- greedy == 917.1303515739442 -- diff == -82.9567196877615 -- taskid == [13]
+avg_latency == 843.7824422430175 -- greedy == 827.8765279039657 -- diff == -15.905914339051833 -- taskid == [0]
+avg_latency == 609.4902606372289 -- greedy == 801.0064184761047 -- diff == 191.51615783887587 -- taskid == [8]
+avg_latency == 978.7699763359341 -- greedy == 917.1303515739442 -- diff == -61.63962476198992 -- taskid == [13]
+avg_latency == 990.5908891555241 -- greedy == 927.7099499083928 -- diff == -62.88093924713132 -- taskid == [14]
+avg_latency == 689.2791057953426 -- greedy == 788.7067359668185 -- diff == 99.42763017147593 -- taskid == [6]
+avg_latency == 676.0892961804799 -- greedy == 788.8247370971952 -- diff == 112.73544091671533 -- taskid == [4]
+avg_latency == 612.1502512678555 -- greedy == 801.0064184761047 -- diff == 188.8561672082492 -- taskid == [8]
+avg_latency == 659.7907724067687 -- greedy == 803.3178474461694 -- diff == 143.52707503940064 -- taskid == [10]
+avg_latency == 661.1009798379489 -- greedy == 788.8247370971952 -- diff == 127.72375725924633 -- taskid == [4]
+avg_latency == 651.2211822878293 -- greedy == 803.3178474461694 -- diff == 152.0966651583401 -- taskid == [10]
+avg_latency == 941.0274595679692 -- greedy == 882.3567571518762 -- diff == -58.670702416093036 -- taskid == [12]
+avg_latency == 666.8228654660769 -- greedy == 788.7067359668185 -- diff == 121.88387050074164 -- taskid == [6]
+avg_latency == 599.7987583962577 -- greedy == 801.0064184761047 -- diff == 201.20766007984707 -- taskid == [8]
+avg_latency == 834.4208121884209 -- greedy == 827.8765279039657 -- diff == -6.544284284455216 -- taskid == [0]
+avg_latency == 981.1263212824413 -- greedy == 899.1789614620208 -- diff == -81.9473598204205 -- taskid == [15]
+avg_latency == 844.7602801243781 -- greedy == 830.3707428888592 -- diff == -14.389537235518901 -- taskid == [5]
+avg_latency == 984.6389869380132 -- greedy == 927.7099499083928 -- diff == -56.92903702962042 -- taskid == [14]
+avg_latency == 953.0731054119927 -- greedy == 899.1789614620208 -- diff == -53.894143949971976 -- taskid == [15]
+avg_latency == 961.28207236948 -- greedy == 927.7099499083928 -- diff == -33.57212246108725 -- taskid == [14]
+avg_latency == 726.8321028509821 -- greedy == 795.2533080208642 -- diff == 68.42120516988211 -- taskid == [17]
+avg_latency == 651.421189721775 -- greedy == 803.3178474461694 -- diff == 151.89665772439434 -- taskid == [10]
+avg_latency == 964.8050016848564 -- greedy == 927.7099499083928 -- diff == -37.095051776463606 -- taskid == [14]
+avg_latency == 583.9449685632843 -- greedy == 796.2377573818479 -- diff == 212.29278881856362 -- taskid == [18]
+avg_latency == 720.939503842054 -- greedy == 779.0424737050193 -- diff == 58.102969862965324 -- taskid == [11]
+avg_latency == 962.7468940189362 -- greedy == 899.1789614620208 -- diff == -63.56793255691548 -- taskid == [15]
+avg_latency == 748.9503857716288 -- greedy == 808.106911553519 -- diff == 59.156525781890196 -- taskid == [1]
+avg_latency == 832.4192778848103 -- greedy == 827.8765279039657 -- diff == -4.542749980844633 -- taskid == [0]
+avg_latency == 839.387092624637 -- greedy == 830.3707428888592 -- diff == -9.016349735777794 -- taskid == [5]
+
+
+33
+
+
+avg_latency == 850.6457199516159 -- greedy == 845.9735073446545 -- diff == -4.672212606961352 -- taskid == [16]
+avg_latency == 611.0394492766789 -- greedy == 784.7890609698977 -- diff == 173.74961169321887 -- taskid == [9]
+avg_latency == 966.4166868013518 -- greedy == 899.1789614620208 -- diff == -67.23772533933106 -- taskid == [15]
+avg_latency == 671.8504683928626 -- greedy == 788.8247370971952 -- diff == 116.97426870433264 -- taskid == [4]
+avg_latency == 607.7946883873667 -- greedy == 801.0064184761047 -- diff == 193.21173008873802 -- taskid == [8]
+avg_latency == 717.2035283942223 -- greedy == 779.0424737050193 -- diff == 61.838945310797044 -- taskid == [11]
+avg_latency == 711.8803866882461 -- greedy == 775.9840780457088 -- diff == 64.10369135746271 -- taskid == [3]
+avg_latency == 705.8983723068237 -- greedy == 779.0424737050193 -- diff == 73.14410139819563 -- taskid == [11]
+avg_latency == 578.2082291073118 -- greedy == 796.2377573818479 -- diff == 218.02952827453612 -- taskid == [18]
+avg_latency == 839.6044023011888 -- greedy == 830.3707428888592 -- diff == -9.23365941232953 -- taskid == [5]
+avg_latency == 846.7940897320884 -- greedy == 845.9735073446545 -- diff == -0.8205823874338876 -- taskid == [16]
+avg_latency == 824.6416679563522 -- greedy == 827.8765279039657 -- diff == 3.2348599476134723 -- taskid == [0]
+avg_latency == 917.2367703825678 -- greedy == 882.3567571518762 -- diff == -34.88001323069159 -- taskid == [12]
+avg_latency == 829.2704265474591 -- greedy == 845.9735073446545 -- diff == 16.703080797195412 -- taskid == [16]
+avg_latency == 663.005341410855 -- greedy == 803.3178474461694 -- diff == 140.3125060353144 -- taskid == [10]
+avg_latency == 963.8747263397489 -- greedy == 917.1303515739442 -- diff == -46.744374765804764 -- taskid == [13]
+avg_latency == 677.647211533601 -- greedy == 788.7067359668185 -- diff == 111.05952443321758 -- taskid == [6]
+avg_latency == 727.3456280441557 -- greedy == 795.2533080208642 -- diff == 67.90767997670855 -- taskid == [17]
+avg_latency == 611.428773013619 -- greedy == 784.7890609698977 -- diff == 173.36028795627874 -- taskid == [9]
+avg_latency == 718.539628445639 -- greedy == 795.2533080208642 -- diff == 76.71367957522523 -- taskid == [17]
+avg_latency == 661.8378705662864 -- greedy == 788.8247370971952 -- diff == 126.98686653090886 -- taskid == [4]
+avg_latency == 597.4922345592498 -- greedy == 784.7890609698977 -- diff == 187.2968264106479 -- taskid == [9]
+avg_latency == 931.6884538014275 -- greedy == 882.3567571518762 -- diff == -49.331696649551304 -- taskid == [12]
+avg_latency == 581.4247881694248 -- greedy == 796.2377573818479 -- diff == 214.81296921242313 -- taskid == [18]
+avg_latency == 602.9435311767713 -- greedy == 801.0064184761047 -- diff == 198.0628872993334 -- taskid == [8]
+avg_latency == 599.2987736112731 -- greedy == 795.3708558062144 -- diff == 196.07208219494134 -- taskid == [7]
+avg_latency == 988.8390346979686 -- greedy == 899.1789614620208 -- diff == -89.66007323594783 -- taskid == [15]
+avg_latency == 582.7461145365988 -- greedy == 796.2377573818479 -- diff == 213.4916428452491 -- taskid == [18]
+avg_latency == 921.8534356357167 -- greedy == 882.3567571518762 -- diff == -39.49667848384047 -- taskid == [12]
+avg_latency == 599.335608561979 -- greedy == 784.7890609698977 -- diff == 185.4534524079187 -- taskid == [9]
+
+
+34
+
+
+avg_latency == 831.1694886864663 -- greedy == 827.8765279039657 -- diff == -3.292960782500586 -- taskid == [0]
+avg_latency == 747.6757476364954 -- greedy == 808.106911553519 -- diff == 60.43116391702358 -- taskid == [1]
+avg_latency == 656.3887165037019 -- greedy == 782.6501557886941 -- diff == 126.2614392849922 -- taskid == [2]
+avg_latency == 710.4166391050203 -- greedy == 775.9840780457088 -- diff == 65.56743894068848 -- taskid == [3]
+avg_latency == 907.0139689985549 -- greedy == 882.3567571518762 -- diff == -24.657211846678706 -- taskid == [12]
+avg_latency == 826.6209844976834 -- greedy == 827.8765279039657 -- diff == 1.2555434062822997 -- taskid == [0]
+avg_latency == 707.6188999423026 -- greedy == 775.9840780457088 -- diff == 68.36517810340615 -- taskid == [3]
+avg_latency == 741.4467886203767 -- greedy == 808.106911553519 -- diff == 66.66012293314236 -- taskid == [1]
+avg_latency == 814.9488477051871 -- greedy == 827.8765279039657 -- diff == 12.927680198778603 -- taskid == [0]
+avg_latency == 655.0058935297966 -- greedy == 803.3178474461694 -- diff == 148.31195391637277 -- taskid == [10]
+avg_latency == 701.0464004529817 -- greedy == 775.9840780457088 -- diff == 74.93767759272703 -- taskid == [3]
+avg_latency == 836.9478711468969 -- greedy == 845.9735073446545 -- diff == 9.025636197757649 -- taskid == [16]
+avg_latency == 903.6350644951411 -- greedy == 882.3567571518762 -- diff == -21.27830734326494 -- taskid == [12]
+avg_latency == 825.2440850897516 -- greedy == 845.9735073446545 -- diff == 20.729422254902943 -- taskid == [16]
+avg_latency == 813.7517318154471 -- greedy == 845.9735073446545 -- diff == 32.221775529207434 -- taskid == [16]
+avg_latency == 607.5101871835436 -- greedy == 801.0064184761047 -- diff == 193.4962312925611 -- taskid == [8]
+avg_latency == 600.8003924013682 -- greedy == 795.3708558062144 -- diff == 194.57046340484624 -- taskid == [7]
+avg_latency == 826.1634292966161 -- greedy == 845.9735073446545 -- diff == 19.810078048038463 -- taskid == [16]
+avg_latency == 893.6471463412148 -- greedy == 882.3567571518762 -- diff == -11.290389189338612 -- taskid == [12]
+avg_latency == 879.6593356422695 -- greedy == 882.3567571518762 -- diff == 2.69742150960667 -- taskid == [12]
+avg_latency == 817.4808335688726 -- greedy == 845.9735073446545 -- diff == 28.492673775781896 -- taskid == [16]
+avg_latency == 966.2879445839745 -- greedy == 917.1303515739442 -- diff == -49.15759301003038 -- taskid == [13]
+avg_latency == 747.527925147002 -- greedy == 808.106911553519 -- diff == 60.57898640651706 -- taskid == [1]
+avg_latency == 946.7649073660033 -- greedy == 917.1303515739442 -- diff == -29.634555792059132 -- taskid == [13]
+avg_latency == 667.9529225204332 -- greedy == 788.8247370971952 -- diff == 120.87181457676206 -- taskid == [4]
+avg_latency == 656.9012329217093 -- greedy == 782.6501557886941 -- diff == 125.7489228669848 -- taskid == [2]
+avg_latency == 722.8917482508523 -- greedy == 795.2533080208642 -- diff == 72.36155977001192 -- taskid == [17]
+avg_latency == 706.5909985095977 -- greedy == 775.9840780457088 -- diff == 69.39307953611103 -- taskid == [3]
+avg_latency == 837.4379733986718 -- greedy == 830.3707428888592 -- diff == -7.067230509812589 -- taskid == [5]
+avg_latency == 697.2943263237408 -- greedy == 775.9840780457088 -- diff == 78.68975172196792 -- taskid == [3]
+
+
+35
+
+
+avg_latency == 967.8369062369619 -- greedy == 899.1789614620208 -- diff == -68.65794477494114 -- taskid == [15]
+avg_latency == 607.3308958455632 -- greedy == 784.7890609698977 -- diff == 177.45816512433453 -- taskid == [9]
+avg_latency == 972.3581406065668 -- greedy == 899.1789614620208 -- diff == -73.17917914454608 -- taskid == [15]
+avg_latency == 603.1016065185275 -- greedy == 784.7890609698977 -- diff == 181.68745445137017 -- taskid == [9]
+avg_latency == 746.1045522817066 -- greedy == 808.106911553519 -- diff == 62.00235927181245 -- taskid == [1]
+avg_latency == 603.1221613753728 -- greedy == 801.0064184761047 -- diff == 197.88425710073193 -- taskid == [8]
+avg_latency == 836.9860110509601 -- greedy == 845.9735073446545 -- diff == 8.987496293694448 -- taskid == [16]
+avg_latency == 704.3045753948758 -- greedy == 775.9840780457088 -- diff == 71.679502650833 -- taskid == [3]
+avg_latency == 597.0802260826929 -- greedy == 801.0064184761047 -- diff == 203.92619239341184 -- taskid == [8]
+avg_latency == 712.8512626286507 -- greedy == 779.0424737050193 -- diff == 66.19121107636863 -- taskid == [11]
+avg_latency == 649.4915088693482 -- greedy == 782.6501557886941 -- diff == 133.15864691934587 -- taskid == [2]
+avg_latency == 969.5511559505326 -- greedy == 917.1303515739442 -- diff == -52.42080437658842 -- taskid == [13]
+avg_latency == 590.8587592986652 -- greedy == 801.0064184761047 -- diff == 210.14765917743955 -- taskid == [8]
+avg_latency == 957.8042707758086 -- greedy == 899.1789614620208 -- diff == -58.62530931378785 -- taskid == [15]
+avg_latency == 658.7884533668246 -- greedy == 803.3178474461694 -- diff == 144.5293940793448 -- taskid == [10]
+avg_latency == 594.0983374386516 -- greedy == 801.0064184761047 -- diff == 206.90808103745314 -- taskid == [8]
+avg_latency == 665.0235655919348 -- greedy == 788.7067359668185 -- diff == 123.68317037488373 -- taskid == [6]
+avg_latency == 835.8472302966118 -- greedy == 827.8765279039657 -- diff == -7.970702392646103 -- taskid == [0]
+avg_latency == 743.4229153593471 -- greedy == 808.106911553519 -- diff == 64.68399619417187 -- taskid == [1]
+avg_latency == 600.0363933141164 -- greedy == 784.7890609698977 -- diff == 184.75266765578135 -- taskid == [9]
+avg_latency == 661.3087407682418 -- greedy == 788.8247370971952 -- diff == 127.5159963289534 -- taskid == [4]
+avg_latency == 713.9630265457698 -- greedy == 779.0424737050193 -- diff == 65.07944715924953 -- taskid == [11]
+avg_latency == 656.9550311816761 -- greedy == 788.7067359668185 -- diff == 131.75170478514246 -- taskid == [6]
+avg_latency == 738.5669166325432 -- greedy == 808.106911553519 -- diff == 69.5399949209758 -- taskid == [1]
+avg_latency == 706.6986084253583 -- greedy == 779.0424737050193 -- diff == 72.34386527966103 -- taskid == [11]
+avg_latency == 595.1556813772474 -- greedy == 784.7890609698977 -- diff == 189.63337959265027 -- taskid == [9]
+avg_latency == 919.3901899165426 -- greedy == 882.3567571518762 -- diff == -37.03343276466637 -- taskid == [12]
+avg_latency == 963.4294872812544 -- greedy == 917.1303515739442 -- diff == -46.299135707310256 -- taskid == [13]
+avg_latency == 595.4535319282668 -- greedy == 795.3708558062144 -- diff == 199.91732387794764 -- taskid == [7]
+avg_latency == 645.2793522723334 -- greedy == 782.6501557886941 -- diff == 137.37080351636064 -- taskid == [2]
+
+
+36
+
+
+avg_latency == 829.1711942294256 -- greedy == 827.8765279039657 -- diff == -1.294666325459957 -- taskid == [0]
+avg_latency == 703.9207542188373 -- greedy == 775.9840780457088 -- diff == 72.06332382687151 -- taskid == [3]
+avg_latency == 594.5165007161959 -- greedy == 801.0064184761047 -- diff == 206.48991775990885 -- taskid == [8]
+avg_latency == 579.3023199991227 -- greedy == 796.2377573818479 -- diff == 216.93543738272524 -- taskid == [18]
+avg_latency == 974.8206150813647 -- greedy == 899.1789614620208 -- diff == -75.64165361934397 -- taskid == [15]
+avg_latency == 588.4765144138745 -- greedy == 801.0064184761047 -- diff == 212.52990406223023 -- taskid == [8]
