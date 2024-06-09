@@ -417,9 +417,9 @@ if __name__ == "__main__":
                                     # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_12/random.20." # full ok
                                     # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_20/random.20."
                                     # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_24/random.20." # full ok
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_n/offload_random20/random.20." # full ok
+                                    "./env/mec_offloaing_envs/data/meta_offloading_n/offload_random20/random.20." # full ok
                                     # "./env/mec_offloaing_envs/data/meta_offloading_n/offload_random30/random.30."
-                                    "./env/mec_offloaing_envs/data/meta_offloading_n/offload_random40/random.40."
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_n/offload_random40/random.40."
                                     ],
                                 time_major=False)
 
