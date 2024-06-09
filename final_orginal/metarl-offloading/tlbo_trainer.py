@@ -708,7 +708,7 @@ class TLBO:
 
 
 if __name__ == "__main__":
-    META_BATCH_SIZE = 1
+    META_BATCH_SIZE = 2
 
     resource_cluster = Resources(mec_process_capable=(10.0 * 1024 * 1024),
                                  mobile_process_capable=(1.0 * 1024 * 1024),
@@ -811,8 +811,8 @@ if __name__ == "__main__":
             # [0.0, 0.5],       # dropout range
             # [0.5, 2.0],       # forget_bias range 
             # [1, 5]           # num_layers range
-            [10, 200], # num_inner_grad_steps
-            [10, 200], # inner_batch_size
+            [10, 30], # num_inner_grad_steps
+            [10, 30], # inner_batch_size
             # [10, 1000], # num_inner_grad_steps
             # [10, 2000], # inner_batch_size
         ])      
