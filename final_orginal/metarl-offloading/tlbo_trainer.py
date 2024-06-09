@@ -23,7 +23,12 @@ from env.mec_offloaing_envs.offloading_env import OffloadingEnvironment
 from samplers.seq2seq_meta_sampler import Seq2SeqMetaSampler
 from policies.distributions.categorical_pd import CategoricalPd
 import sys    
-
+import logging
+logging.getLogger('tensorflow').disabled = True
+import warnings
+warnings.filterwarnings("ignore", category=UserWarning, module="gym")
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 class FixedSequenceLearningSampleEmbeddingHelper(tf.contrib.seq2seq.SampleEmbeddingHelper):
     def __init__(self, sequence_length, embedding, start_tokens, end_token, softmax_temperature=None, seed=None):
         """
@@ -691,9 +696,9 @@ class TLBO:
             self.learner_phase()
             best_index = np.argmin(self.fitness)
             if self.fitness[best_index] < self.teacher :
-                # self.trainer.policy.async_parameters()
                 self.teacher = self.fitness[best_index]
                 print(f"\n\n New_teacher == {self.teacher}\n\n")
+            self.trainer.policy.async_parameters()
             self.trainer.policy.core_policy.save_variables(
                     save_path="./meta_model_inner_step1/meta_model_" + str(_) + ".ckpt")
         self.trainer.policy.core_policy.save_variables(save_path="./meta_model_inner_step1/meta_model_final.ckpt")
@@ -791,7 +796,7 @@ if __name__ == "__main__":
                         sampler=sampler,
                         sampler_processor=sampler_processor,
                         policy=meta_policy,
-                        n_itr=10,
+                        n_itr=1,
                         start_itr=0,
                         inner_batch_size=1000, 
                         sess=sess,

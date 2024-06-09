@@ -9,7 +9,12 @@ from policies.distributions.categorical_pd import CategoricalPd
 import joblib
 import os
 import glob
-
+import logging
+logging.getLogger('tensorflow').disabled = True
+import warnings
+warnings.filterwarnings("ignore", category=UserWarning, module="gym")
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 class Trainer():
     def __init__(self,algo,
                 env,
@@ -72,10 +77,10 @@ class Trainer():
             avg_latencies.append(avg_latency)
 
 
-            logger.logkv('Itr', itr)
-            logger.logkv('Average reward, ', avg_reward)
-            logger.logkv('Average latency,', avg_latency)
-            logger.dumpkvs()
+            # logger.logkv('Itr', itr)
+            # logger.logkv('Average reward, ', avg_reward)
+            # logger.logkv('Average latency,', avg_latency)
+            # logger.dumpkvs()
             avg_ret.append(avg_reward)
 
         return avg_ret, avg_pg_loss,avg_vf_loss, avg_latencies
@@ -409,7 +414,12 @@ if __name__ == "__main__":
                                 batch_size=100,
                                 graph_number=100,
                                 graph_file_paths=[
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_12/random.20."
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_12/random.20." # full ok
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_20/random.20."
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_24/random.20." # full ok
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_n/offload_random20/random.20." # full ok
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_n/offload_random30/random.30."
+                                    "./env/mec_offloaing_envs/data/meta_offloading_n/offload_random40/random.40."
                                     ],
                                 time_major=False)
 
@@ -429,10 +439,10 @@ if __name__ == "__main__":
     print("avg greedy solution: ", np.mean(task_finish_time_batch))
     print("avg greedy solution: ", np.mean(finish_time))
 
-    print()
+    # print()
     finish_time = env.get_all_mec_execute_time()
     print("avg all remote solution: ", np.mean(finish_time))
-    print()
+    # print()
     finish_time = env.get_all_locally_execute_time()
     print("avg all local solution: ", np.mean(finish_time))
     hparams = tf.contrib.training.HParams(
@@ -487,7 +497,7 @@ if __name__ == "__main__":
                       sampler=sampler,
                       sample_processor=sample_processor,
                       policy=policy,
-                      n_itr=2,
+                      n_itr=1,
                       start_itr=0,
                       batch_size=500,
                       num_inner_grad_steps=3)
@@ -497,6 +507,7 @@ if __name__ == "__main__":
     # Find all .ckpt files in the directory
     import re
     checkpoint_files = glob.glob("meta_model_inner_step1/meta_model_*.ckpt")
+    # checkpoint_files = glob.glob("/home/mehrdad/final_project/test/metarl-offloading/meta_model_inner_step1/meta_model_*.ckpt")
 
     def extract_number(filename):
         # Extract the number from the filename
@@ -511,15 +522,15 @@ if __name__ == "__main__":
             # Load variables from the current checkpoint file
             load_path = checkpoint_file  
             policy.load_variables(load_path)
-            print(checkpoint_file)
+            # print(checkpoint_file)
             # Train and evaluate on this checkpoint
             avg_ret, avg_pg_loss, avg_vf_loss, avg_latencies = trainer.train()
 
             # (Optionally) Log or store the results for this checkpoint
-            # print(f"Results for checkpoint {checkpoint_file}:")
-            # print(f"  Average Return: {avg_ret}")
-            # print(f"  Average PG Loss: {avg_pg_loss}")
-            # print(f"  Average VF Loss: {avg_vf_loss}")
-            # print(f"  Average Latencies: {avg_latencies}")
+            print(f"Results for checkpoint {checkpoint_file}:")
+            print(f"  Average Return: {np.mean(avg_ret)}")
+            print(f"  Average PG Loss: {np.mean(avg_pg_loss)}")
+            print(f"  Average VF Loss: {np.mean(avg_vf_loss)}")
+            print(f"  Average Latencies: {np.mean(avg_latencies)}")
 
 

@@ -57,7 +57,7 @@ class Seq2SeqSampler(Sampler):
         n_samples = 0
         running_paths = dict()
 
-        pbar = ProgBar(self.total_samples)
+        # pbar = ProgBar(self.total_samples)
         policy_time, env_time = 0, 0
 
         policy = self.policy
@@ -104,10 +104,10 @@ class Seq2SeqSampler(Sampler):
                 new_samples += len(running_paths["rewards"])
                 running_paths = _get_empty_running_paths_dict()
 
-            pbar.update(new_samples)
+            # pbar.update(new_samples)
             n_samples += new_samples
             obses = next_obses
-        pbar.stop()
+        # pbar.stop()
 
         self.total_timesteps_sampled += self.total_samples
         if log:
