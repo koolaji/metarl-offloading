@@ -602,7 +602,7 @@ class Trainer(object):
         return avg_loss
 
 class TLBO:
-    def __init__(self, population_size, dim, bounds, iterations, trainer):
+    def __init__(self, population_size, dim, bounds, iterations, trainer, start_W=0.9, end_W=0.2):
         self.population_size = population_size
         self.dim = dim
         self.bounds = bounds
@@ -613,6 +613,8 @@ class TLBO:
         self.teacher = np.inf
         self.current_iteration = 0
         self.max_iterations = iterations
+        self.start_W = start_W  
+        self.end_W = end_W      
     def evaluate_population(self, sess, weight_loss=0.5, weight_reward=0.5):
         for i in range(self.population_size):
             # inner_lr, outer_lr, num_units, encoder_units, decoder_hidden_unit, dropout, forget_bias, num_layers = self.population[i]
