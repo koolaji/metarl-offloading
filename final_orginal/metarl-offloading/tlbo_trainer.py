@@ -708,7 +708,7 @@ class TLBO:
 
 
 if __name__ == "__main__":
-    META_BATCH_SIZE = 2
+    META_BATCH_SIZE = 1
 
     resource_cluster = Resources(mec_process_capable=(10.0 * 1024 * 1024),
                                  mobile_process_capable=(1.0 * 1024 * 1024),
@@ -816,7 +816,7 @@ if __name__ == "__main__":
             # [10, 1000], # num_inner_grad_steps
             # [10, 2000], # inner_batch_size
         ])      
-        tlbo = TLBO(population_size=15, dim=4, bounds=bounds, iterations=100, trainer=trainer)
+        tlbo = TLBO(population_size=15, dim=4, bounds=bounds, iterations=200, trainer=trainer)
         sess.run(tf.global_variables_initializer())
         inner_lr, outer_lr, num_inner_grad_steps, inner_batch_size = tlbo.optimize(sess)
         print(f"inner_lr = {inner_lr} ,outer_lr = {outer_lr}, num_inner_grad_steps = {num_inner_grad_steps}, inner_batch_size = {inner_batch_size}")
