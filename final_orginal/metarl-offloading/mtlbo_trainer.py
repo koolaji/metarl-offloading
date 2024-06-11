@@ -50,70 +50,36 @@ class Timer:
         
 class FixedSequenceLearningSampleEmbeddingHelper(tf.contrib.seq2seq.SampleEmbeddingHelper):
     def __init__(self, sequence_length, embedding, start_tokens, end_token, softmax_temperature=None, seed=None):
-        """
-        Initializes the FixedSequenceLearningSampleEmbeddingHelper.
-
-        Args:
-            sequence_length: A 1-D int32 tensor of shape [batch_size] containing the lengths of each sequence.
-            embedding: A callable that takes a vector tensor of ids (argmax ids).
-            start_tokens: A int32 tensor of shape [batch_size] containing the start tokens.
-            end_token: An int32 scalar tensor representing the end token.
-            softmax_temperature: Optional float scalar, temperature to apply at sampling time.
-            seed: Optional int scalar, the seed for sampling.
-        """
         super(FixedSequenceLearningSampleEmbeddingHelper, self).__init__(
             embedding, start_tokens, end_token, softmax_temperature, seed
         )
-
-        # Convert sequence_length to a tensor and check its shape
-        self._sequence_length = ops.convert_to_tensor(sequence_length, name="sequence_length")
+        self._sequence_length = ops.convert_to_tensor(
+            sequence_length, name="sequence_length")
         if self._sequence_length.get_shape().ndims != 1:
             raise ValueError(
                 "Expected sequence_length to be a vector, but received shape: %s" %
                 self._sequence_length.get_shape())
 
     def sample(self, time, outputs, state, name=None):
-        """
-        Sample for SampleEmbeddingHelper.
-
-        Args:
-            time: A scalar int32 tensor, the current time step.
-            outputs: A tensor, the RNN outputs at the current time step.
-            state: The RNN state.
-            name: An optional string, the name for this operation.
-
-        Returns:
-            sample_ids: A tensor containing the sampled ids.
-        """
-        del time, state  # Unused
-
+        """sample for SampleEmbeddingHelper."""
+        del time, state  # unused by sample_fn
+        # Outputs are logits, we sample instead of argmax (greedy).
         if not isinstance(outputs, ops.Tensor):
             raise TypeError("Expected outputs to be a single Tensor, got: %s" %
                             type(outputs))
+        if self._softmax_temperature is None:
+            logits = outputs
+        else:
+            logits = outputs / self._softmax_temperature
 
-        logits = outputs if self._softmax_temperature is None else outputs / self._softmax_temperature
-        sample_id_sampler = Categorical(logits=logits)
+        sample_id_sampler = categorical.Categorical(logits=logits)
         sample_ids = sample_id_sampler.sample(seed=self._seed)
 
         return sample_ids
 
     def next_inputs(self, time, outputs, state, sample_ids, name=None):
-        """
-        next_inputs_fn for SampleEmbeddingHelper.
-
-        Args:
-            time: A scalar int32 tensor, the current time step.
-            outputs: A tensor, the RNN outputs at the current time step.
-            state: The RNN state.
-            sample_ids: A tensor, the sampled ids.
-            name: An optional string, the name for this operation.
-
-        Returns:
-            finished: A boolean tensor indicating which sequences have finished.
-            next_inputs: The next inputs to the RNN.
-            state: The RNN state.
-        """
-        del outputs  # Unused
+        """next_inputs_fn for GreedyEmbeddingHelper."""
+        del outputs  # unused by next_inputs_fn
 
         next_time = time + 1
         finished = (next_time >= self._sequence_length)
@@ -121,11 +87,10 @@ class FixedSequenceLearningSampleEmbeddingHelper(tf.contrib.seq2seq.SampleEmbedd
 
         next_inputs = control_flow_ops.cond(
             all_finished,
-            lambda: self._start_inputs,  # If all sequences are finished, use start inputs
-            lambda: self._embedding_fn(sample_ids)  # Otherwise, use the embedding of the sampled ids
-        )
-
-        return finished, next_inputs, state
+            # If we're finished, the next_inputs value doesn't matter
+            lambda: self._start_inputs,
+            lambda: self._embedding_fn(sample_ids))
+        return (finished, next_inputs, state)
 
 
 def _single_cell(hparams, residual_connection=False, residual_fn=None):
@@ -642,6 +607,7 @@ class TLBO:
         for i in range(self.population_size):
             # inner_lr, outer_lr, num_units, encoder_units, decoder_hidden_unit, dropout, forget_bias, num_layers = self.population[i]
             inner_lr, outer_lr, num_inner_grad_steps, inner_batch_size = self.population[i]
+            # print(i, inner_lr, outer_lr, num_inner_grad_steps, inner_batch_size, self.teacher)
 
 
             # self.trainer.policy.hparams.num_units = int(num_units)
@@ -668,7 +634,6 @@ class TLBO:
 
             self.fitness[i] = -(-weight_loss * avg_loss + weight_reward * avg_reward)  # Combine loss and reward
             # print(i, np.argmin(self.fitness), self.fitness[i], inner_lr, outer_lr, num_units, dropout, forget_bias, num_layers)
-            # print(i, np.argmin(self.fitness), self.fitness[i], inner_lr, outer_lr, num_inner_grad_steps, inner_batch_size, self.teacher)
 
 
 
@@ -858,12 +823,12 @@ if __name__ == "__main__":
             # [0.0, 0.5],       # dropout range
             # [0.5, 2.0],       # forget_bias range 
             # [1, 5]           # num_layers range
-            [10, 30], # num_inner_grad_steps
-            [10, 30], # inner_batch_size
+            [10, 20], # num_inner_grad_steps
+            [10, 20], # inner_batch_size
             # [10, 1000], # num_inner_grad_steps
             # [10, 2000], # inner_batch_size
         ])      
-        tlbo = TLBO(population_size=15, dim=4, bounds=bounds, iterations=100, trainer=trainer)
+        tlbo = TLBO(population_size=20, dim=4, bounds=bounds, iterations=500, trainer=trainer)
         sess.run(tf.global_variables_initializer())
         inner_lr, outer_lr, num_inner_grad_steps, inner_batch_size = tlbo.optimize(sess)
         print(f"inner_lr = {inner_lr} ,outer_lr = {outer_lr}, num_inner_grad_steps = {num_inner_grad_steps}, inner_batch_size = {inner_batch_size}")

@@ -23,7 +23,12 @@ from env.mec_offloaing_envs.offloading_env import OffloadingEnvironment
 from samplers.seq2seq_meta_sampler import Seq2SeqMetaSampler
 from policies.distributions.categorical_pd import CategoricalPd
 import sys    
-
+import logging
+logging.getLogger('tensorflow').disabled = True
+import warnings
+warnings.filterwarnings("ignore", category=UserWarning, module="gym")
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 class FixedSequenceLearningSampleEmbeddingHelper(tf.contrib.seq2seq.SampleEmbeddingHelper):
     def __init__(self, sequence_length, embedding, start_tokens, end_token, softmax_temperature=None, seed=None):
         """
@@ -70,7 +75,7 @@ class FixedSequenceLearningSampleEmbeddingHelper(tf.contrib.seq2seq.SampleEmbedd
         logits = outputs if self._softmax_temperature is None else outputs / self._softmax_temperature
         sample_id_sampler = Categorical(logits=logits)
         sample_ids = sample_id_sampler.sample(seed=self._seed)
-        sample_ids = tf.where(tf.equal(sample_ids, 2), tf.ones_like(sample_ids), sample_ids)
+
         return sample_ids
 
     def next_inputs(self, time, outputs, state, sample_ids, name=None):
@@ -470,9 +475,9 @@ class MRLCO():
             self._outer_train = self.outer_optimizer.apply_gradients(outer_grads_and_var)
 
 
-    def UpdateMetaPolicy(self):
+    def UpdateMetaPolicy(self, sess):
         # get the parameters value of the policy network
-        sess = tf.compat.v1.get_default_session()
+        # sess = tf.compat.v1.get_default_session()
 
         for i in range(int(self.meta_batch_size)):
             params_symbol = self.policy.meta_policies[i].get_trainable_variables()
@@ -491,7 +496,7 @@ class MRLCO():
             _ = sess.run(self._outer_train, feed_dict=update_feed_dict)
 
         # print("async core policy to meta-policy")
-        #self.policy.async_parameters()
+        # self.policy.async_parameters()
 
     def UpdatePPOTarget(self, task_samples, sess, batch_size=50):
         total_policy_losses = []
@@ -525,7 +530,7 @@ class MRLCO():
         oldvpred = np.split(np.array(task_samples['values'], dtype=np.float32), batch_number)
         returns = np.split(np.array(task_samples['returns'], dtype=np.float32), batch_number)
 
-        sess = tf.compat.v1.get_default_session()
+        # sess = tf.compat.v1.get_default_session()
 
         vf_loss = 0.0
         pg_loss = 0.0
@@ -561,6 +566,7 @@ class Trainer(object):
                  sampler_processor,
                  policy,
                  n_itr,
+                 sess,
                  greedy_finish_time,
                  start_itr=0,
                  inner_batch_size=500,
@@ -574,7 +580,7 @@ class Trainer(object):
         self.avg_latency = 100000
         self.sampler = sampler
         self.sampler_processor = sampler_processor
-        self.sess = tf.compat.v1.get_default_session()
+        self.sess = sess
         self.greedy_finish_time = greedy_finish_time
     def train(self):
         avg_loss = []
@@ -582,10 +588,10 @@ class Trainer(object):
             task_ids = self.sampler.update_tasks()
             paths = self.sampler.obtain_samples(log=False, log_prefix='') 
             greedy_run_time = [self.greedy_finish_time[x] for x in task_ids]
-            samples_data = self.sampler_processor.process_samples(paths, log=False, log_prefix='')    
-            self.algo.UpdateMetaPolicy()        
+            samples_data = self.sampler_processor.process_samples(paths, log=False, log_prefix='')            
             policy_losses, value_losses = self.algo.UpdatePPOTarget(samples_data, batch_size=self.inner_batch_size, sess=self.sess)
             avg_loss.append(np.mean(policy_losses))
+            self.algo.UpdateMetaPolicy(sess=self.sess)
             latency = np.array([])
             for i in range(len(samples_data)):
                 latency = np.concatenate((latency, samples_data[i]['finish_time']), axis=-1)
@@ -684,7 +690,6 @@ class TLBO:
 
     def optimize(self, sess):
         self.evaluate_population(sess=sess)
-        self.trainer.policy.async_parameters()
         for _ in range(self.iterations):
             print(f"\n\n{_}\n\n")
             self.teacher_phase()
@@ -694,7 +699,8 @@ class TLBO:
                 self.teacher = self.fitness[best_index]
                 print(f"\n\n New_teacher == {self.teacher}\n\n")
             self.trainer.policy.async_parameters()
-            self.trainer.policy.core_policy.save_variables(save_path="./meta_model_inner_step1/meta_model_" + str(_) + ".ckpt")
+            self.trainer.policy.core_policy.save_variables(
+                    save_path="./meta_model_inner_step1/meta_model_" + str(_) + ".ckpt")
         self.trainer.policy.core_policy.save_variables(save_path="./meta_model_inner_step1/meta_model_final.ckpt")
         best_index = np.argmin(self.fitness)
         best_solution = self.population[best_index]
@@ -784,17 +790,17 @@ if __name__ == "__main__":
                  meta_batch_size=META_BATCH_SIZE,
                  num_inner_grad_steps=1,
                  clip_value=0.3)
-    trainer = Trainer(algo=algo,
+    with tf.compat.v1.Session() as sess:
+
+        trainer = Trainer(algo=algo,
                         sampler=sampler,
                         sampler_processor=sampler_processor,
                         policy=meta_policy,
                         n_itr=1,
                         start_itr=0,
                         inner_batch_size=1000, 
+                        sess=sess,
                         greedy_finish_time=greedy_finish_time)
-    
-    with tf.compat.v1.Session() as sess:
-
 
         bounds = np.array([
             [1e-20, 5e-4],     # inner_lr range
@@ -805,12 +811,12 @@ if __name__ == "__main__":
             # [0.0, 0.5],       # dropout range
             # [0.5, 2.0],       # forget_bias range 
             # [1, 5]           # num_layers range
-            [10, 20], # num_inner_grad_steps
-            [10, 20], # inner_batch_size
+            [10, 200], # num_inner_grad_steps
+            [10, 200], # inner_batch_size
             # [10, 1000], # num_inner_grad_steps
             # [10, 2000], # inner_batch_size
         ])      
-        tlbo = TLBO(population_size=15, dim=4, bounds=bounds, iterations=5, trainer=trainer)
+        tlbo = TLBO(population_size=15, dim=4, bounds=bounds, iterations=100, trainer=trainer)
         sess.run(tf.global_variables_initializer())
         inner_lr, outer_lr, num_inner_grad_steps, inner_batch_size = tlbo.optimize(sess)
-        print(f"inner_lr = {inner_lr} ,outer_lr = {outer_lr}, num_inner_grad_steps = {num_inner_grad_steps}, inner_batch_size = {inner_batch_size}, Teacher = {TLBO.teacher}, population_size = {TLBO.population_size}, bounds = {TLBO.bounds}, iterations = {TLBO.iterations}" )
+        print(f"inner_lr = {inner_lr} ,outer_lr = {outer_lr}, num_inner_grad_steps = {num_inner_grad_steps}, inner_batch_size = {inner_batch_size}")
