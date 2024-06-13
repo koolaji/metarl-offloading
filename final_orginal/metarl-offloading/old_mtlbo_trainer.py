@@ -783,29 +783,29 @@ if __name__ == "__main__":
                                 graph_number=100,
                                 graph_file_paths=[
                                     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_1/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_2/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_3/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_5/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_6/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_7/random.20.",
-                                    # #"./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_8/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_9/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_10/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_11/random.20.",
-                                    # #"./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_12/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_13/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_14/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_15/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_16/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_17/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_18/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_19/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_20/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_21/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_22/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_23/random.20.",
-                                    # #"./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_24/random.20.",
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_25/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_2/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_3/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_5/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_6/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_7/random.20.",
+                                    #"./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_8/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_9/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_10/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_11/random.20.",
+                                    #"./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_12/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_13/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_14/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_15/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_16/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_17/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_18/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_19/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_20/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_21/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_22/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_23/random.20.",
+                                    #"./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_24/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_25/random.20.",
                                 ],
                                 time_major=False)
     action, greedy_finish_time = env.greedy_solution()
@@ -872,16 +872,16 @@ if __name__ == "__main__":
                         greedy_finish_time=greedy_finish_time)
 
         bounds = np.array([
-            [2e-6, 2e-4],     # inner_lr range
-            [2e-6, 2e-4],     # outer_lr range
+            [1e-20, 5e-4],     # inner_lr range
+            [1e-20, 5e-4],     # outer_lr range
             # [64, 256],        # num_units range 
             # [64, 256],        # encoder_units range 
             # [64, 256],        # decoder_hidden_unit range 
             # [0.0, 0.5],       # dropout range
             # [0.5, 2.0],       # forget_bias range 
             # [1, 5]           # num_layers range
-            [10, 60], # num_inner_grad_steps
-            [10, 60], # inner_batch_size
+            [10, 200], # num_inner_grad_steps
+            [10, 200], # inner_batch_size
             # [10, 1000], # num_inner_grad_steps
             # [10, 2000], # inner_batch_size
         ])      

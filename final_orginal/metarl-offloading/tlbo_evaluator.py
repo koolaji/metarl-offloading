@@ -415,9 +415,9 @@ if __name__ == "__main__":
                                 batch_size=100,
                                 graph_number=100,
                                 graph_file_paths=[
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_1/random.20." # full ok
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_12/random.20." # full ok
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_24/random.20." # full ok
+                                    #"./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_8/random.20." # full ok
+                                     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_12/random.20." # full ok
+                                    #"./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_24/random.20." # full ok
                                     # "./env/mec_offloaing_envs/data/meta_offloading_n/offload_random20/random.20." # full ok
                                     # "./env/mec_offloaing_envs/data/meta_offloading_n/offload_random30/random.30."
                                     # "./env/mec_offloaing_envs/data/meta_offloading_n/offload_random40/random.40."
@@ -507,7 +507,7 @@ if __name__ == "__main__":
 
     # Find all .ckpt files in the directory
     import re
-    checkpoint_files = glob.glob("meta_model_inner_step1/meta_model_*.ckpt")
+    checkpoint_files = glob.glob("meta_model_inner_step1/meta_model_19*.ckpt")
     # checkpoint_files = glob.glob("/home/mehrdad/final_project/test/metarl-offloading/meta_model_inner_step1/meta_model_*.ckpt")
 
     def extract_number(filename):
