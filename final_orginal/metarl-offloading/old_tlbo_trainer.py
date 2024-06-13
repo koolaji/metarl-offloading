@@ -724,18 +724,23 @@ if __name__ == "__main__":
                                     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_5/random.20.",
                                     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_6/random.20.",
                                     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_7/random.20.",
+                                    #"./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_8/random.20.",
                                     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_9/random.20.",
                                     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_10/random.20.",
                                     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_11/random.20.",
+                                    #"./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_12/random.20.",
                                     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_13/random.20.",
                                     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_14/random.20.",
                                     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_15/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_16/random.20.",
                                     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_17/random.20.",
                                     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_18/random.20.",
                                     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_19/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_20/random.20.",
                                     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_21/random.20.",
                                     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_22/random.20.",
                                     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_23/random.20.",
+                                    #"./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_24/random.20.",
                                     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_25/random.20.",
                                 ],
                                 time_major=False)
@@ -819,4 +824,4 @@ if __name__ == "__main__":
         tlbo = TLBO(population_size=15, dim=4, bounds=bounds, iterations=1000, trainer=trainer)
         sess.run(tf.global_variables_initializer())
         inner_lr, outer_lr, num_inner_grad_steps, inner_batch_size = tlbo.optimize(sess)
-        print(f"inner_lr = {inner_lr} ,outer_lr = {outer_lr}, num_inner_grad_steps = {num_inner_grad_steps}, inner_batch_size = {inner_batch_size}")
+        print(f"inner_lr = {inner_lr} ,outer_lr = {outer_lr}, num_inner_grad_steps = {num_inner_grad_steps}, inner_batch_size = {inner_batch_size}, Teacher = {TLBO.teacher}, population_size = {TLBO.population_size}, bounds = {TLBO.bounds}, iterations = {TLBO.iterations}" )

@@ -415,8 +415,8 @@ if __name__ == "__main__":
                                 batch_size=100,
                                 graph_number=100,
                                 graph_file_paths=[
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_12/random.20." # full ok
-                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_20/random.20."
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_1/random.20." # full ok
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_12/random.20." # full ok
                                     # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_24/random.20." # full ok
                                     # "./env/mec_offloaing_envs/data/meta_offloading_n/offload_random20/random.20." # full ok
                                     # "./env/mec_offloaing_envs/data/meta_offloading_n/offload_random30/random.30."
