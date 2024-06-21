@@ -1,0 +1,38 @@
+/home/mehrdad/anaconda3/envs/tf-1.15-cpu/lib/python3.6/site-packages/gym/core.py:27: UserWarning: WARN: Gym minimally supports python 3.6 as the python foundation not longer supports the version, please update your version to 3.7+
+  "Gym minimally supports python 3.6 as the python foundation not longer supports the version, please update your version to 3.7+"
+calculate optimal solution offloading20_4======
+exhausted plan size:  1048576
+task_graph_batch cost shape is (100,)
+avg optimal solution:  -5.176789907715679
+avg optimal solution:  762.5754825718743
+avg optimal solution:  762.5754825718743
+calculate optimal solution offloading20_8======
+exhausted plan size:  1048576
+task_graph_batch cost shape is (100,)
+avg optimal solution:  -4.718119649195014
+avg optimal solution:  679.313347579411
+avg optimal solution:  679.313347579411
+calculate optimal solution offloading20_12======
+exhausted plan size:  1048576
+task_graph_batch cost shape is (100,)
+avg optimal solution:  -3.665455851735836
+avg optimal solution:  555.4668672907693
+avg optimal solution:  555.4668672907693
+calculate optimal solution offloading20_16======
+exhausted plan size:  1048576
+task_graph_batch cost shape is (100,)
+avg optimal solution:  -5.207127568170257
+avg optimal solution:  739.8716840024675
+avg optimal solution:  739.8716840024675
+calculate optimal solution offloading20_20======
+exhausted plan size:  1048576
+task_graph_batch cost shape is (100,)
+avg optimal solution:  -6.0207164317838275
+avg optimal solution:  871.9318479753222
+avg optimal solution:  871.9318479753222
+calculate optimal solution offloading20_24======
+exhausted plan size:  1048576
+task_graph_batch cost shape is (100,)
+avg optimal solution:  -3.996917598420847
+avg optimal solution:  605.0515577827182
+avg optimal solution:  605.0515577827182
