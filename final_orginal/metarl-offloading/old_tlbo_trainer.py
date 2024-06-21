@@ -512,7 +512,8 @@ class MRLCO():
         policy_losses = []
         value_losses = []
 
-        batch_number = int(task_samples['observations'].shape[0] / batch_size)
+        batch_number = max(1, int(task_samples['observations'].shape[0] / batch_size))  # Ensure at least 1 batch
+
         self.update_numbers = batch_number
         #:q!
         # print("update number is: ", self.update_numbers)
@@ -615,14 +616,14 @@ class TLBO:
     def evaluate_population(self, sess, weight_loss=0.5, weight_reward=0.5):
         for i in range(self.population_size):
             # inner_lr, outer_lr, num_units, encoder_units, decoder_hidden_unit, dropout, forget_bias, num_layers = self.population[i]
-            inner_lr, outer_lr, num_inner_grad_steps, inner_batch_size = self.population[i]
+            inner_lr, outer_lr, num_inner_grad_steps, inner_batch_size, dropout, forget_bias = self.population[i]
 
 
             # self.trainer.policy.hparams.num_units = int(num_units)
             # self.trainer.policy.hparams.encoder_units = int(encoder_units)
             # self.trainer.policy.hparams.decoder_hidden_unit = int(encoder_units)
-            # self.trainer.policy.hparams.dropout = dropout
-            # self.trainer.policy.hparams.forget_bias = forget_bias
+            self.trainer.policy.hparams.dropout = dropout
+            self.trainer.policy.hparams.forget_bias = forget_bias
             # self.trainer.policy.hparams.num_layers = int(num_layers)
 
             # Set trainer hyperparameters:
@@ -641,7 +642,7 @@ class TLBO:
             avg_reward = np.mean([np.sum(path["rewards"]) for path in samples_data])
 
             self.fitness[i] = -(-weight_loss * avg_loss + weight_reward * avg_reward)  # Combine loss and reward
-            # print(i, np.argmin(self.fitness), self.fitness[i], inner_lr, outer_lr, num_units, dropout, forget_bias, num_layers)
+            print(i, np.argmin(self.fitness), self.fitness[i], inner_lr, outer_lr, dropout)
             # print(i, np.argmin(self.fitness), self.fitness[i], inner_lr, outer_lr, num_inner_grad_steps, inner_batch_size, self.teacher)
 
 
@@ -698,7 +699,7 @@ class TLBO:
             if self.fitness[best_index] < self.teacher :
                 self.teacher = self.fitness[best_index]
                 print(f"\n\n New_teacher == {self.teacher}\n\n")
-            self.trainer.policy.async_parameters()
+            # self.trainer.policy.async_parameters()
             self.trainer.policy.core_policy.save_variables(
                     save_path="./meta_model_inner_step1/meta_model_" + str(_) + ".ckpt")
         self.trainer.policy.core_policy.save_variables(save_path="./meta_model_inner_step1/meta_model_final.ckpt")
@@ -718,30 +719,42 @@ if __name__ == "__main__":
                                 batch_size=100,
                                 graph_number=100,
                                 graph_file_paths=[
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_1/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_2/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_3/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_5/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_6/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_7/random.20.",
-                                    #"./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_8/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_9/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_10/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_11/random.20.",
-                                    #"./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_12/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_13/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_14/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_15/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_16/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_17/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_18/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_19/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_20/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_21/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_22/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_23/random.20.",
-                                    #"./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_24/random.20.",
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_25/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_1/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_2/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_3/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_5/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_6/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_7/random.20.",
+                                    # #"./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_8/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_9/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_10/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_11/random.20.",
+                                    # #"./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_12/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_13/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_14/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_15/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_16/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_17/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_18/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_19/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_20/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_21/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_22/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_23/random.20.",
+                                    # #"./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_24/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_25/random.20.",
+                                    "./env/mec_offloaing_envs/data/meta_offloading_n/offload_random10/random.10.",                                    
+                                    "./env/mec_offloaing_envs/data/meta_offloading_n/offload_random15/random.15.",                                    
+                                    "./env/mec_offloaing_envs/data/meta_offloading_n/offload_random25/random.25.",                                    
+                                    "./env/mec_offloaing_envs/data/meta_offloading_n/offload_random35/random.35.",                                    
+                                    "./env/mec_offloaing_envs/data/meta_offloading_n/offload_random45/random.45.", 
+                                    "./env/mec_offloaing_envs/data/meta_offloading_n/offload_random50/random.50.",                                                                                                               
+                                    # "./env/mec_offloaing_envs/data/new_meta_offloading_n/offload_random10/random.10.",                                    
+                                    # "./env/mec_offloaing_envs/data/new_meta_offloading_n/offload_random15/random.15.",                                    
+                                    # "./env/mec_offloaing_envs/data/new_meta_offloading_n/offload_random25/random.25.",                                    
+                                    # "./env/mec_offloaing_envs/data/new_meta_offloading_n/offload_random35/random.35.",                                    
+                                    # "./env/mec_offloaing_envs/data/new_meta_offloading_n/offload_random45/random.45.",                                    
+                                    # "./env/mec_offloaing_envs/data/new_meta_offloading_n/offload_random50/random.50.",                                      
                                 ],
                                 time_major=False)
     action, greedy_finish_time = env.greedy_solution()
@@ -761,7 +774,7 @@ if __name__ == "__main__":
         n_features=2,
         is_attention=True,
         forget_bias=1.0,
-        dropout=0,
+        dropout=0.5,
         num_gpus=1,
         num_layers=2,
         num_residual_layers=0,
@@ -808,20 +821,20 @@ if __name__ == "__main__":
                         greedy_finish_time=greedy_finish_time)
 
         bounds = np.array([
-            [1e-20, 5e-4],     # inner_lr range
-            [1e-20, 5e-4],     # outer_lr range
+            [1e-20, 1e-4],     # inner_lr range
+            [1e-20, 1e-4],     # outer_lr range
             # [64, 256],        # num_units range 
             # [64, 256],        # encoder_units range 
             # [64, 256],        # decoder_hidden_unit range 
-            # [0.0, 0.5],       # dropout range
-            # [0.5, 2.0],       # forget_bias range 
             # [1, 5]           # num_layers range
-            [10, 200], # num_inner_grad_steps
-            [10, 200], # inner_batch_size
+            [20, 200], # num_inner_grad_steps
+            [20, 200], # inner_batch_size
+            [0.0, 1.0],       # dropout range            
+            # [0.0, 2.0],       # forget_bias range 
             # [10, 1000], # num_inner_grad_steps
             # [10, 2000], # inner_batch_size
         ])      
-        tlbo = TLBO(population_size=15, dim=4, bounds=bounds, iterations=1000, trainer=trainer)
+        tlbo = TLBO(population_size=15, dim=6, bounds=bounds, iterations=1000, trainer=trainer)
         sess.run(tf.global_variables_initializer())
         inner_lr, outer_lr, num_inner_grad_steps, inner_batch_size = tlbo.optimize(sess)
         print(f"inner_lr = {inner_lr} ,outer_lr = {outer_lr}, num_inner_grad_steps = {num_inner_grad_steps}, inner_batch_size = {inner_batch_size}, Teacher = {TLBO.teacher}, population_size = {TLBO.population_size}, bounds = {TLBO.bounds}, iterations = {TLBO.iterations}" )

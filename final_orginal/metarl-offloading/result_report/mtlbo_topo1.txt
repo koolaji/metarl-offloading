@@ -1,0 +1,2971 @@
+Logging to ./meta_evaluate_ppo_log/task_offloading
+calculate baseline solution======
+avg greedy solution:  -5.567948890792309
+avg greedy solution:  796.5392892030991
+avg greedy solution:  800.7549933118821
+avg all remote solution:  1324.8977796233041
+avg all local solution:  1418.5882958889008
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_1.ckpt:
+  Average Latencies: 856.8729135693142
+  avg_latencies_final: 856.8729135693142
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_2.ckpt:
+  Average Latencies: 844.2587498915946
+  avg_latencies_final: 844.2587498915946
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_3.ckpt:
+  Average Latencies: 837.1538807157108
+  avg_latencies_final: 837.1538807157108
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_4.ckpt:
+  Average Latencies: 832.1984637349809
+  avg_latencies_final: 832.1984637349809
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_5.ckpt:
+  Average Latencies: 837.6367049716404
+  avg_latencies_final: 832.1984637349809
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_6.ckpt:
+  Average Latencies: 850.560154883153
+  avg_latencies_final: 832.1984637349809
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_7.ckpt:
+  Average Latencies: 833.0589472910608
+  avg_latencies_final: 832.1984637349809
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_8.ckpt:
+  Average Latencies: 808.8372867027282
+  avg_latencies_final: 808.8372867027282
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_9.ckpt:
+  Average Latencies: 800.3836728535788
+  avg_latencies_final: 800.3836728535788
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_10.ckpt:
+  Average Latencies: 782.7715515670504
+  avg_latencies_final: 782.7715515670504
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_11.ckpt:
+  Average Latencies: 766.3928117978912
+  avg_latencies_final: 766.3928117978912
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_12.ckpt:
+  Average Latencies: 790.8270541321754
+  avg_latencies_final: 766.3928117978912
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_13.ckpt:
+  Average Latencies: 766.5121869415284
+  avg_latencies_final: 766.3928117978912
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_14.ckpt:
+  Average Latencies: 754.694712779522
+  avg_latencies_final: 754.694712779522
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_15.ckpt:
+  Average Latencies: 754.3429381153379
+  avg_latencies_final: 754.3429381153379
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_16.ckpt:
+  Average Latencies: 752.9726916249957
+  avg_latencies_final: 752.9726916249957
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_17.ckpt:
+  Average Latencies: 753.5919600556101
+  avg_latencies_final: 752.9726916249957
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_18.ckpt:
+  Average Latencies: 751.1401984269959
+  avg_latencies_final: 751.1401984269959
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_19.ckpt:
+  Average Latencies: 754.5909077745165
+  avg_latencies_final: 751.1401984269959
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_20.ckpt:
+  Average Latencies: 749.826233991909
+  avg_latencies_final: 749.826233991909
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_21.ckpt:
+  Average Latencies: 753.5666179176875
+  avg_latencies_final: 749.826233991909
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_22.ckpt:
+  Average Latencies: 745.2393233069012
+  avg_latencies_final: 745.2393233069012
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_23.ckpt:
+  Average Latencies: 744.6061095360348
+  avg_latencies_final: 744.6061095360348
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_24.ckpt:
+  Average Latencies: 777.6777922442028
+  avg_latencies_final: 744.6061095360348
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_25.ckpt:
+  Average Latencies: 769.4590884572029
+  avg_latencies_final: 744.6061095360348
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_26.ckpt:
+  Average Latencies: 755.6056495819637
+  avg_latencies_final: 744.6061095360348
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_27.ckpt:
+  Average Latencies: 764.2868354400633
+  avg_latencies_final: 744.6061095360348
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_28.ckpt:
+  Average Latencies: 756.9713724496432
+  avg_latencies_final: 744.6061095360348
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_29.ckpt:
+  Average Latencies: 748.4526535777364
+  avg_latencies_final: 744.6061095360348
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_30.ckpt:
+  Average Latencies: 763.1682758461816
+  avg_latencies_final: 744.6061095360348
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_31.ckpt:
+  Average Latencies: 746.60664803054
+  avg_latencies_final: 744.6061095360348
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_32.ckpt:
+  Average Latencies: 759.646906646347
+  avg_latencies_final: 744.6061095360348
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_33.ckpt:
+  Average Latencies: 740.3719781228474
+  avg_latencies_final: 740.3719781228474
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_34.ckpt:
+  Average Latencies: 745.5099844748496
+  avg_latencies_final: 740.3719781228474
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_35.ckpt:
+  Average Latencies: 751.8536881027356
+  avg_latencies_final: 740.3719781228474
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_36.ckpt:
+  Average Latencies: 744.4854718843051
+  avg_latencies_final: 740.3719781228474
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_37.ckpt:
+  Average Latencies: 763.5925292915889
+  avg_latencies_final: 740.3719781228474
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_38.ckpt:
+  Average Latencies: 742.5902182782173
+  avg_latencies_final: 740.3719781228474
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_39.ckpt:
+  Average Latencies: 739.7287841533525
+  avg_latencies_final: 739.7287841533525
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_40.ckpt:
+  Average Latencies: 740.5588287767819
+  avg_latencies_final: 739.7287841533525
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_41.ckpt:
+  Average Latencies: 741.4568315665109
+  avg_latencies_final: 739.7287841533525
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_42.ckpt:
+  Average Latencies: 744.9010324218749
+  avg_latencies_final: 739.7287841533525
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_43.ckpt:
+  Average Latencies: 739.6256542218617
+  avg_latencies_final: 739.6256542218617
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_44.ckpt:
+  Average Latencies: 737.3915024938583
+  avg_latencies_final: 737.3915024938583
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_45.ckpt:
+  Average Latencies: 736.2133993027278
+  avg_latencies_final: 736.2133993027278
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_46.ckpt:
+  Average Latencies: 741.5524587254115
+  avg_latencies_final: 736.2133993027278
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_47.ckpt:
+  Average Latencies: 746.0095278529031
+  avg_latencies_final: 736.2133993027278
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_48.ckpt:
+  Average Latencies: 734.6258641530718
+  avg_latencies_final: 734.6258641530718
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_49.ckpt:
+  Average Latencies: 738.5520132493838
+  avg_latencies_final: 734.6258641530718
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_50.ckpt:
+  Average Latencies: 734.085742825113
+  avg_latencies_final: 734.085742825113
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_51.ckpt:
+  Average Latencies: 734.3154900129045
+  avg_latencies_final: 734.085742825113
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_52.ckpt:
+  Average Latencies: 733.4356737655638
+  avg_latencies_final: 733.4356737655638
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_53.ckpt:
+  Average Latencies: 736.8564383612087
+  avg_latencies_final: 733.4356737655638
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_54.ckpt:
+  Average Latencies: 738.0815425411497
+  avg_latencies_final: 733.4356737655638
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_55.ckpt:
+  Average Latencies: 735.7784013769694
+  avg_latencies_final: 733.4356737655638
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_56.ckpt:
+  Average Latencies: 735.9764149421828
+  avg_latencies_final: 733.4356737655638
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_57.ckpt:
+  Average Latencies: 734.1136410812242
+  avg_latencies_final: 733.4356737655638
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_58.ckpt:
+  Average Latencies: 733.8948649927547
+  avg_latencies_final: 733.4356737655638
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_59.ckpt:
+  Average Latencies: 736.34878838159
+  avg_latencies_final: 733.4356737655638
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_60.ckpt:
+  Average Latencies: 736.6552154128347
+  avg_latencies_final: 733.4356737655638
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_61.ckpt:
+  Average Latencies: 733.5926305984361
+  avg_latencies_final: 733.4356737655638
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_62.ckpt:
+  Average Latencies: 739.4170729631425
+  avg_latencies_final: 733.4356737655638
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_63.ckpt:
+  Average Latencies: 737.6200292834827
+  avg_latencies_final: 733.4356737655638
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_64.ckpt:
+  Average Latencies: 735.1753068092482
+  avg_latencies_final: 733.4356737655638
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_65.ckpt:
+  Average Latencies: 735.127024851581
+  avg_latencies_final: 733.4356737655638
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_66.ckpt:
+  Average Latencies: 740.663142862865
+  avg_latencies_final: 733.4356737655638
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_67.ckpt:
+  Average Latencies: 735.352539592525
+  avg_latencies_final: 733.4356737655638
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_68.ckpt:
+  Average Latencies: 734.9184274612018
+  avg_latencies_final: 733.4356737655638
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_69.ckpt:
+  Average Latencies: 735.0146615218299
+  avg_latencies_final: 733.4356737655638
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_70.ckpt:
+  Average Latencies: 737.0423000603267
+  avg_latencies_final: 733.4356737655638
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_71.ckpt:
+  Average Latencies: 736.4148988234657
+  avg_latencies_final: 733.4356737655638
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_72.ckpt:
+  Average Latencies: 732.7073950137137
+  avg_latencies_final: 732.7073950137137
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_73.ckpt:
+  Average Latencies: 730.4361887248992
+  avg_latencies_final: 730.4361887248992
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_74.ckpt:
+  Average Latencies: 736.0294931921142
+  avg_latencies_final: 730.4361887248992
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_75.ckpt:
+  Average Latencies: 731.023195588616
+  avg_latencies_final: 730.4361887248992
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_76.ckpt:
+  Average Latencies: 734.1801451340267
+  avg_latencies_final: 730.4361887248992
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_77.ckpt:
+  Average Latencies: 737.7953181647301
+  avg_latencies_final: 730.4361887248992
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_78.ckpt:
+  Average Latencies: 734.0881165763855
+  avg_latencies_final: 730.4361887248992
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_79.ckpt:
+  Average Latencies: 734.3220161019188
+  avg_latencies_final: 730.4361887248992
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_80.ckpt:
+  Average Latencies: 733.6081018804687
+  avg_latencies_final: 730.4361887248992
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_81.ckpt:
+  Average Latencies: 737.3012313244003
+  avg_latencies_final: 730.4361887248992
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_82.ckpt:
+  Average Latencies: 737.1108904575757
+  avg_latencies_final: 730.4361887248992
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_83.ckpt:
+  Average Latencies: 732.4093224134035
+  avg_latencies_final: 730.4361887248992
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_84.ckpt:
+  Average Latencies: 747.2359362213545
+  avg_latencies_final: 730.4361887248992
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_85.ckpt:
+  Average Latencies: 737.7462527729851
+  avg_latencies_final: 730.4361887248992
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_86.ckpt:
+  Average Latencies: 733.386719882788
+  avg_latencies_final: 730.4361887248992
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_87.ckpt:
+  Average Latencies: 732.4442028229032
+  avg_latencies_final: 730.4361887248992
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_88.ckpt:
+  Average Latencies: 736.0601073060716
+  avg_latencies_final: 730.4361887248992
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_89.ckpt:
+  Average Latencies: 736.7942487102781
+  avg_latencies_final: 730.4361887248992
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_90.ckpt:
+  Average Latencies: 734.9721931412288
+  avg_latencies_final: 730.4361887248992
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_91.ckpt:
+  Average Latencies: 740.383161181518
+  avg_latencies_final: 730.4361887248992
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_92.ckpt:
+  Average Latencies: 735.3408367818696
+  avg_latencies_final: 730.4361887248992
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_93.ckpt:
+  Average Latencies: 734.5027539337159
+  avg_latencies_final: 730.4361887248992
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_94.ckpt:
+  Average Latencies: 735.4256885721069
+  avg_latencies_final: 730.4361887248992
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_95.ckpt:
+  Average Latencies: 737.6700083561078
+  avg_latencies_final: 730.4361887248992
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_96.ckpt:
+  Average Latencies: 735.1167529301507
+  avg_latencies_final: 730.4361887248992
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_97.ckpt:
+  Average Latencies: 735.0890549770355
+  avg_latencies_final: 730.4361887248992
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_98.ckpt:
+  Average Latencies: 736.0058059895788
+  avg_latencies_final: 730.4361887248992
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_99.ckpt:
+  Average Latencies: 735.3504836833
+  avg_latencies_final: 730.4361887248992
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_100.ckpt:
+  Average Latencies: 731.4700173590795
+  avg_latencies_final: 730.4361887248992
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_101.ckpt:
+  Average Latencies: 732.0043274444853
+  avg_latencies_final: 730.4361887248992
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_102.ckpt:
+  Average Latencies: 738.502374297251
+  avg_latencies_final: 730.4361887248992
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_103.ckpt:
+  Average Latencies: 732.2276511079516
+  avg_latencies_final: 730.4361887248992
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_104.ckpt:
+  Average Latencies: 731.7009743035861
+  avg_latencies_final: 730.4361887248992
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_105.ckpt:
+  Average Latencies: 730.3426838314466
+  avg_latencies_final: 730.3426838314466
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_106.ckpt:
+  Average Latencies: 732.137772277832
+  avg_latencies_final: 730.3426838314466
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_107.ckpt:
+  Average Latencies: 733.1224827888897
+  avg_latencies_final: 730.3426838314466
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_108.ckpt:
+  Average Latencies: 734.3698477088927
+  avg_latencies_final: 730.3426838314466
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_109.ckpt:
+  Average Latencies: 732.9634971883775
+  avg_latencies_final: 730.3426838314466
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_110.ckpt:
+  Average Latencies: 733.1149016780307
+  avg_latencies_final: 730.3426838314466
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_111.ckpt:
+  Average Latencies: 733.6947534524509
+  avg_latencies_final: 730.3426838314466
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_112.ckpt:
+  Average Latencies: 738.7915589352606
+  avg_latencies_final: 730.3426838314466
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_113.ckpt:
+  Average Latencies: 734.5761479153633
+  avg_latencies_final: 730.3426838314466
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_114.ckpt:
+  Average Latencies: 734.1287925252369
+  avg_latencies_final: 730.3426838314466
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_115.ckpt:
+  Average Latencies: 737.495626344204
+  avg_latencies_final: 730.3426838314466
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_116.ckpt:
+  Average Latencies: 735.8201374196734
+  avg_latencies_final: 730.3426838314466
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_117.ckpt:
+  Average Latencies: 735.1646863964899
+  avg_latencies_final: 730.3426838314466
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_118.ckpt:
+  Average Latencies: 735.1703514407021
+  avg_latencies_final: 730.3426838314466
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_119.ckpt:
+  Average Latencies: 732.7702393339565
+  avg_latencies_final: 730.3426838314466
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_120.ckpt:
+  Average Latencies: 734.8905609208651
+  avg_latencies_final: 730.3426838314466
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_121.ckpt:
+  Average Latencies: 729.3327525960922
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_122.ckpt:
+  Average Latencies: 736.7383843691416
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_123.ckpt:
+  Average Latencies: 736.1176175671169
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_124.ckpt:
+  Average Latencies: 741.172737858309
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_125.ckpt:
+  Average Latencies: 736.2604238490923
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_126.ckpt:
+  Average Latencies: 735.1017089585441
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_127.ckpt:
+  Average Latencies: 735.6986736605099
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_128.ckpt:
+  Average Latencies: 733.9696221162388
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_129.ckpt:
+  Average Latencies: 736.0193639521054
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_130.ckpt:
+  Average Latencies: 730.4961049683027
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_131.ckpt:
+  Average Latencies: 732.3224399990627
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_132.ckpt:
+  Average Latencies: 735.2684470078877
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_133.ckpt:
+  Average Latencies: 731.3195245993343
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_134.ckpt:
+  Average Latencies: 734.078511913286
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_135.ckpt:
+  Average Latencies: 732.6911853788649
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_136.ckpt:
+  Average Latencies: 732.915406187112
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_137.ckpt:
+  Average Latencies: 735.062144505569
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_138.ckpt:
+  Average Latencies: 735.7914313830239
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_139.ckpt:
+  Average Latencies: 731.4002909034865
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_140.ckpt:
+  Average Latencies: 732.3447025907517
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_141.ckpt:
+  Average Latencies: 737.6049440246718
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_142.ckpt:
+  Average Latencies: 738.1919773010527
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_143.ckpt:
+  Average Latencies: 733.5294199086461
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_144.ckpt:
+  Average Latencies: 738.5112088603837
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_145.ckpt:
+  Average Latencies: 735.9003613940647
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_146.ckpt:
+  Average Latencies: 730.6468265346664
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_147.ckpt:
+  Average Latencies: 732.7201251103265
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_148.ckpt:
+  Average Latencies: 734.863693775109
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_149.ckpt:
+  Average Latencies: 731.0247237962586
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_150.ckpt:
+  Average Latencies: 734.9439900269508
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_151.ckpt:
+  Average Latencies: 733.4336222766877
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_152.ckpt:
+  Average Latencies: 736.9683691411154
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_153.ckpt:
+  Average Latencies: 733.7549323220934
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_154.ckpt:
+  Average Latencies: 732.9634194435256
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_155.ckpt:
+  Average Latencies: 734.1564399206571
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_156.ckpt:
+  Average Latencies: 735.2698431145122
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_157.ckpt:
+  Average Latencies: 733.4522619318826
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_158.ckpt:
+  Average Latencies: 733.4598325957571
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_159.ckpt:
+  Average Latencies: 731.7449876438142
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_160.ckpt:
+  Average Latencies: 731.9112489461899
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_161.ckpt:
+  Average Latencies: 734.6390393528666
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_162.ckpt:
+  Average Latencies: 732.8459443954877
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_163.ckpt:
+  Average Latencies: 735.9477001271248
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_164.ckpt:
+  Average Latencies: 730.9718468125071
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_165.ckpt:
+  Average Latencies: 733.0152820662908
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_166.ckpt:
+  Average Latencies: 733.5614246928487
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_167.ckpt:
+  Average Latencies: 731.8220438718114
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_168.ckpt:
+  Average Latencies: 733.853097273486
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_169.ckpt:
+  Average Latencies: 732.2532627454757
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_170.ckpt:
+  Average Latencies: 735.0550156334195
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_171.ckpt:
+  Average Latencies: 737.4820310478074
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_172.ckpt:
+  Average Latencies: 735.0201696536336
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_173.ckpt:
+  Average Latencies: 735.2328212949208
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_174.ckpt:
+  Average Latencies: 736.861666703524
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_175.ckpt:
+  Average Latencies: 736.2935560562271
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_176.ckpt:
+  Average Latencies: 735.1121264294761
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_177.ckpt:
+  Average Latencies: 731.6014129407201
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_178.ckpt:
+  Average Latencies: 736.3428743728228
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_179.ckpt:
+  Average Latencies: 736.5939328374454
+  avg_latencies_final: 729.3327525960922
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_180.ckpt:
+  Average Latencies: 728.1876488504547
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_181.ckpt:
+  Average Latencies: 736.5998635310174
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_182.ckpt:
+  Average Latencies: 735.9532661123139
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_183.ckpt:
+  Average Latencies: 738.5981123136248
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_184.ckpt:
+  Average Latencies: 736.8939677610398
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_185.ckpt:
+  Average Latencies: 733.094246572399
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_186.ckpt:
+  Average Latencies: 728.9893049572127
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_187.ckpt:
+  Average Latencies: 733.0034508125033
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_188.ckpt:
+  Average Latencies: 736.638417242963
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_189.ckpt:
+  Average Latencies: 734.1455993546213
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_190.ckpt:
+  Average Latencies: 733.106682698277
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_191.ckpt:
+  Average Latencies: 732.3574873824392
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_192.ckpt:
+  Average Latencies: 741.9747557952471
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_193.ckpt:
+  Average Latencies: 733.530973204313
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_194.ckpt:
+  Average Latencies: 734.6317642675128
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_195.ckpt:
+  Average Latencies: 737.2420598020282
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_196.ckpt:
+  Average Latencies: 733.2137191461971
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_197.ckpt:
+  Average Latencies: 732.0835104113306
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_198.ckpt:
+  Average Latencies: 735.9145805839538
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_199.ckpt:
+  Average Latencies: 731.403660061373
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_200.ckpt:
+  Average Latencies: 730.9465968932151
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_201.ckpt:
+  Average Latencies: 737.9953279168946
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_202.ckpt:
+  Average Latencies: 735.5131186918395
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_203.ckpt:
+  Average Latencies: 733.5659833403179
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_204.ckpt:
+  Average Latencies: 736.3986696687155
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_205.ckpt:
+  Average Latencies: 732.9329912272453
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_206.ckpt:
+  Average Latencies: 729.910592036656
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_207.ckpt:
+  Average Latencies: 736.1227309944562
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_208.ckpt:
+  Average Latencies: 733.7122948606899
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_209.ckpt:
+  Average Latencies: 734.1568831883976
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_210.ckpt:
+  Average Latencies: 734.707770581041
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_211.ckpt:
+  Average Latencies: 739.6300891692161
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_212.ckpt:
+  Average Latencies: 735.9993690356526
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_213.ckpt:
+  Average Latencies: 733.0965265237535
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_214.ckpt:
+  Average Latencies: 731.6025293151582
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_215.ckpt:
+  Average Latencies: 731.8560309055465
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_216.ckpt:
+  Average Latencies: 735.3294690514156
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_217.ckpt:
+  Average Latencies: 731.9643399198668
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_218.ckpt:
+  Average Latencies: 736.6692875159945
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_219.ckpt:
+  Average Latencies: 734.910738291468
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_220.ckpt:
+  Average Latencies: 733.9163247477668
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_221.ckpt:
+  Average Latencies: 731.9929194648198
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_222.ckpt:
+  Average Latencies: 734.8017325322425
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_223.ckpt:
+  Average Latencies: 733.8622387863295
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_224.ckpt:
+  Average Latencies: 732.0853703591346
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_225.ckpt:
+  Average Latencies: 734.4525401167461
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_226.ckpt:
+  Average Latencies: 730.2711151926177
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_227.ckpt:
+  Average Latencies: 733.8513489533287
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_228.ckpt:
+  Average Latencies: 730.9331544505663
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_229.ckpt:
+  Average Latencies: 730.2997607079778
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_230.ckpt:
+  Average Latencies: 736.5571775509153
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_231.ckpt:
+  Average Latencies: 733.831194174671
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_232.ckpt:
+  Average Latencies: 732.3765941591807
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_233.ckpt:
+  Average Latencies: 730.8144084595272
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_234.ckpt:
+  Average Latencies: 733.0142863211087
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_235.ckpt:
+  Average Latencies: 733.1737593255723
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_236.ckpt:
+  Average Latencies: 732.2069832299912
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_237.ckpt:
+  Average Latencies: 736.5557555039951
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_238.ckpt:
+  Average Latencies: 734.0220245368413
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_239.ckpt:
+  Average Latencies: 731.6365867113113
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_240.ckpt:
+  Average Latencies: 732.2844009682248
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_241.ckpt:
+  Average Latencies: 735.9331524356434
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_242.ckpt:
+  Average Latencies: 732.1929150108474
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_243.ckpt:
+  Average Latencies: 732.0778536220006
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_244.ckpt:
+  Average Latencies: 733.373972012874
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_245.ckpt:
+  Average Latencies: 732.9582640936579
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_246.ckpt:
+  Average Latencies: 730.8639436665126
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_247.ckpt:
+  Average Latencies: 735.9046970064164
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_248.ckpt:
+  Average Latencies: 731.9327045318603
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_249.ckpt:
+  Average Latencies: 731.1810036891256
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_250.ckpt:
+  Average Latencies: 735.9312438981873
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_251.ckpt:
+  Average Latencies: 731.2814881303515
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_252.ckpt:
+  Average Latencies: 731.1370020462854
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_253.ckpt:
+  Average Latencies: 734.475427397292
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_254.ckpt:
+  Average Latencies: 735.9387890538352
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_255.ckpt:
+  Average Latencies: 733.6247348857879
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_256.ckpt:
+  Average Latencies: 730.4869595796995
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_257.ckpt:
+  Average Latencies: 730.7276279170718
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_258.ckpt:
+  Average Latencies: 731.70328762643
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_259.ckpt:
+  Average Latencies: 735.1113832960674
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_260.ckpt:
+  Average Latencies: 732.4027472982951
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_261.ckpt:
+  Average Latencies: 731.2990095403944
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_262.ckpt:
+  Average Latencies: 732.2098618445668
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_263.ckpt:
+  Average Latencies: 735.6724042409217
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_264.ckpt:
+  Average Latencies: 732.3611041566169
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_265.ckpt:
+  Average Latencies: 733.8742481700353
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_266.ckpt:
+  Average Latencies: 733.9803207068443
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_267.ckpt:
+  Average Latencies: 732.5949969957896
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_268.ckpt:
+  Average Latencies: 734.1658119942392
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_269.ckpt:
+  Average Latencies: 731.6691607510021
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_270.ckpt:
+  Average Latencies: 737.5944878289495
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_271.ckpt:
+  Average Latencies: 738.5097540959358
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_272.ckpt:
+  Average Latencies: 733.4307999592236
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_273.ckpt:
+  Average Latencies: 731.3507817916326
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_274.ckpt:
+  Average Latencies: 734.8319529244695
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_275.ckpt:
+  Average Latencies: 730.3558962021691
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_276.ckpt:
+  Average Latencies: 730.371297756345
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_277.ckpt:
+  Average Latencies: 730.068748961939
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_278.ckpt:
+  Average Latencies: 729.4762265632493
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_279.ckpt:
+  Average Latencies: 732.9887350382124
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_280.ckpt:
+  Average Latencies: 733.5175459467479
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_281.ckpt:
+  Average Latencies: 733.4314278343337
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_282.ckpt:
+  Average Latencies: 734.37144416508
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_283.ckpt:
+  Average Latencies: 731.2701190807479
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_284.ckpt:
+  Average Latencies: 733.0011100884846
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_285.ckpt:
+  Average Latencies: 738.1504771352223
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_286.ckpt:
+  Average Latencies: 731.6901249743325
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_287.ckpt:
+  Average Latencies: 733.2884475273679
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_288.ckpt:
+  Average Latencies: 731.0335358815057
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_289.ckpt:
+  Average Latencies: 730.2291139217106
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_290.ckpt:
+  Average Latencies: 732.3308678653716
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_291.ckpt:
+  Average Latencies: 732.5261386245181
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_292.ckpt:
+  Average Latencies: 730.1757782547542
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_293.ckpt:
+  Average Latencies: 734.3623063270296
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_294.ckpt:
+  Average Latencies: 734.1879358966555
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_295.ckpt:
+  Average Latencies: 733.9204642224039
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_296.ckpt:
+  Average Latencies: 730.8878927394459
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_297.ckpt:
+  Average Latencies: 733.1001509685925
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_298.ckpt:
+  Average Latencies: 733.2281787424224
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_299.ckpt:
+  Average Latencies: 733.6945936993327
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_300.ckpt:
+  Average Latencies: 734.7426531818935
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_301.ckpt:
+  Average Latencies: 737.5295690439496
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_302.ckpt:
+  Average Latencies: 734.5865862051555
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_303.ckpt:
+  Average Latencies: 735.4597998575075
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_304.ckpt:
+  Average Latencies: 732.1451869099616
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_305.ckpt:
+  Average Latencies: 737.2629422010558
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_306.ckpt:
+  Average Latencies: 733.8015225681849
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_307.ckpt:
+  Average Latencies: 734.5361413860866
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_308.ckpt:
+  Average Latencies: 736.4786715599606
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_309.ckpt:
+  Average Latencies: 733.8339755257607
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_310.ckpt:
+  Average Latencies: 730.4300491290501
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_311.ckpt:
+  Average Latencies: 733.3177441065106
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_312.ckpt:
+  Average Latencies: 735.9937984600748
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_313.ckpt:
+  Average Latencies: 731.8890883704186
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_314.ckpt:
+  Average Latencies: 731.6887503635952
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_315.ckpt:
+  Average Latencies: 732.054800482205
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_316.ckpt:
+  Average Latencies: 734.1131219947134
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_317.ckpt:
+  Average Latencies: 735.1089909445627
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_318.ckpt:
+  Average Latencies: 732.5186732186318
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_319.ckpt:
+  Average Latencies: 734.6037342338153
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_320.ckpt:
+  Average Latencies: 731.9383207545961
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_321.ckpt:
+  Average Latencies: 734.5778505445481
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_322.ckpt:
+  Average Latencies: 733.9669946049689
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_323.ckpt:
+  Average Latencies: 731.9573040893555
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_324.ckpt:
+  Average Latencies: 734.1639686356
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_325.ckpt:
+  Average Latencies: 733.0179712778772
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_326.ckpt:
+  Average Latencies: 731.6199857587133
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_327.ckpt:
+  Average Latencies: 731.7163864675794
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_328.ckpt:
+  Average Latencies: 732.7696856787954
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_329.ckpt:
+  Average Latencies: 735.192547956017
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_330.ckpt:
+  Average Latencies: 737.0514932890211
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_331.ckpt:
+  Average Latencies: 734.3339681621006
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_332.ckpt:
+  Average Latencies: 734.4857133928707
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_333.ckpt:
+  Average Latencies: 735.200485666384
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_334.ckpt:
+  Average Latencies: 735.4025955660276
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_335.ckpt:
+  Average Latencies: 735.991609266499
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_336.ckpt:
+  Average Latencies: 735.6743266233717
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_337.ckpt:
+  Average Latencies: 735.2574909997395
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_338.ckpt:
+  Average Latencies: 733.2475745964732
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_339.ckpt:
+  Average Latencies: 730.1882954430853
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_340.ckpt:
+  Average Latencies: 730.6771650218146
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_341.ckpt:
+  Average Latencies: 733.1662058513232
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_342.ckpt:
+  Average Latencies: 730.1459055355617
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_343.ckpt:
+  Average Latencies: 732.6849872888974
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_344.ckpt:
+  Average Latencies: 731.2889453140532
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_345.ckpt:
+  Average Latencies: 732.7261620983124
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_346.ckpt:
+  Average Latencies: 735.8705433032445
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_347.ckpt:
+  Average Latencies: 735.4062910914013
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_348.ckpt:
+  Average Latencies: 737.7588777317728
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_349.ckpt:
+  Average Latencies: 735.674714399978
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_350.ckpt:
+  Average Latencies: 737.4891564588683
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_351.ckpt:
+  Average Latencies: 733.8298012278285
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_352.ckpt:
+  Average Latencies: 735.9521324175289
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_353.ckpt:
+  Average Latencies: 738.1846299385479
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_354.ckpt:
+  Average Latencies: 734.6448737559863
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_355.ckpt:
+  Average Latencies: 739.2701888748032
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_356.ckpt:
+  Average Latencies: 738.9142434451784
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_357.ckpt:
+  Average Latencies: 737.5153204820361
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_358.ckpt:
+  Average Latencies: 732.4356677155631
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_359.ckpt:
+  Average Latencies: 735.8544603093146
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_360.ckpt:
+  Average Latencies: 754.8411789822851
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_361.ckpt:
+  Average Latencies: 742.9775542434829
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_362.ckpt:
+  Average Latencies: 733.927015171201
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_363.ckpt:
+  Average Latencies: 735.7420305827959
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_364.ckpt:
+  Average Latencies: 734.1239604979651
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_365.ckpt:
+  Average Latencies: 733.1364324422019
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_366.ckpt:
+  Average Latencies: 733.6447283474922
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_367.ckpt:
+  Average Latencies: 734.7094802665302
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_368.ckpt:
+  Average Latencies: 735.1111420781408
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_369.ckpt:
+  Average Latencies: 734.6657274956704
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_370.ckpt:
+  Average Latencies: 732.559801353618
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_371.ckpt:
+  Average Latencies: 734.8821415333748
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_372.ckpt:
+  Average Latencies: 735.4559189888272
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_373.ckpt:
+  Average Latencies: 737.5565935559273
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_374.ckpt:
+  Average Latencies: 735.8274037797792
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_375.ckpt:
+  Average Latencies: 734.6400533526421
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_376.ckpt:
+  Average Latencies: 736.7680748632704
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_377.ckpt:
+  Average Latencies: 734.4050452981268
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_378.ckpt:
+  Average Latencies: 732.6632076036318
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_379.ckpt:
+  Average Latencies: 734.5153726443427
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_380.ckpt:
+  Average Latencies: 736.3043156941004
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_381.ckpt:
+  Average Latencies: 736.35955894522
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_382.ckpt:
+  Average Latencies: 733.3520664093562
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_383.ckpt:
+  Average Latencies: 737.8916721915247
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_384.ckpt:
+  Average Latencies: 733.5037520011493
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_385.ckpt:
+  Average Latencies: 734.3259135175024
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_386.ckpt:
+  Average Latencies: 734.563558997631
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_387.ckpt:
+  Average Latencies: 736.9544134573391
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_388.ckpt:
+  Average Latencies: 734.7705768134254
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_389.ckpt:
+  Average Latencies: 735.2098442882674
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_390.ckpt:
+  Average Latencies: 737.3718715780666
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_391.ckpt:
+  Average Latencies: 735.2178559451513
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_392.ckpt:
+  Average Latencies: 735.399912427725
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_393.ckpt:
+  Average Latencies: 732.6254923820223
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_394.ckpt:
+  Average Latencies: 738.1584810082163
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_395.ckpt:
+  Average Latencies: 732.0691804840905
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_396.ckpt:
+  Average Latencies: 734.4507151828223
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_397.ckpt:
+  Average Latencies: 737.3150328690529
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_398.ckpt:
+  Average Latencies: 732.8779373088428
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_399.ckpt:
+  Average Latencies: 732.5327786578587
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_400.ckpt:
+  Average Latencies: 730.5717701676097
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_401.ckpt:
+  Average Latencies: 734.0001661340168
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_402.ckpt:
+  Average Latencies: 732.0682700717517
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_403.ckpt:
+  Average Latencies: 732.542531216308
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_404.ckpt:
+  Average Latencies: 739.0561141115325
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_405.ckpt:
+  Average Latencies: 736.4577345684869
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_406.ckpt:
+  Average Latencies: 736.5922303491866
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_407.ckpt:
+  Average Latencies: 737.0196438116891
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_408.ckpt:
+  Average Latencies: 734.3195015408243
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_409.ckpt:
+  Average Latencies: 734.6753293813705
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_410.ckpt:
+  Average Latencies: 732.9234322794098
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_411.ckpt:
+  Average Latencies: 735.588412974058
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_412.ckpt:
+  Average Latencies: 740.2845531251363
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_413.ckpt:
+  Average Latencies: 736.385125723294
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_414.ckpt:
+  Average Latencies: 733.5921089774678
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_415.ckpt:
+  Average Latencies: 731.9781253388678
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_416.ckpt:
+  Average Latencies: 733.6581289549418
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_417.ckpt:
+  Average Latencies: 734.2412425671579
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_418.ckpt:
+  Average Latencies: 737.9077684090205
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_419.ckpt:
+  Average Latencies: 737.0133667409625
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_420.ckpt:
+  Average Latencies: 736.0793581818307
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_421.ckpt:
+  Average Latencies: 732.3594942134176
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_422.ckpt:
+  Average Latencies: 733.0608527990477
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_423.ckpt:
+  Average Latencies: 732.3798949640546
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_424.ckpt:
+  Average Latencies: 732.221809737982
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_425.ckpt:
+  Average Latencies: 734.0941197173255
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_426.ckpt:
+  Average Latencies: 731.8507301019805
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_427.ckpt:
+  Average Latencies: 731.420984743813
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_428.ckpt:
+  Average Latencies: 735.1460908812795
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_429.ckpt:
+  Average Latencies: 735.6529481644221
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_430.ckpt:
+  Average Latencies: 733.3376491008078
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_431.ckpt:
+  Average Latencies: 734.5783687324661
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_432.ckpt:
+  Average Latencies: 734.809809037045
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_433.ckpt:
+  Average Latencies: 738.6550521907126
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_434.ckpt:
+  Average Latencies: 734.5413412650789
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_435.ckpt:
+  Average Latencies: 734.9491332713809
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_436.ckpt:
+  Average Latencies: 733.8030117630414
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_437.ckpt:
+  Average Latencies: 736.1625057657923
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_438.ckpt:
+  Average Latencies: 737.0767450820377
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_439.ckpt:
+  Average Latencies: 736.7183926692009
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_440.ckpt:
+  Average Latencies: 731.7922708514214
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_441.ckpt:
+  Average Latencies: 738.335241231169
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_442.ckpt:
+  Average Latencies: 737.2875245922634
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_443.ckpt:
+  Average Latencies: 737.4160691989625
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_444.ckpt:
+  Average Latencies: 740.0439856048175
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_445.ckpt:
+  Average Latencies: 738.2736156074114
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_446.ckpt:
+  Average Latencies: 734.2205690984181
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_447.ckpt:
+  Average Latencies: 733.9279984725543
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_448.ckpt:
+  Average Latencies: 735.7777608372279
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_449.ckpt:
+  Average Latencies: 737.6509734796796
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_450.ckpt:
+  Average Latencies: 736.3268773259435
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_451.ckpt:
+  Average Latencies: 731.5033743738447
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_452.ckpt:
+  Average Latencies: 728.954254382992
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_453.ckpt:
+  Average Latencies: 733.6115618253708
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_454.ckpt:
+  Average Latencies: 734.0484857955933
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_455.ckpt:
+  Average Latencies: 736.9597158368518
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_456.ckpt:
+  Average Latencies: 734.2738014782361
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_457.ckpt:
+  Average Latencies: 735.8998755580494
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_458.ckpt:
+  Average Latencies: 736.7753370462418
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_459.ckpt:
+  Average Latencies: 736.6322706906591
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_460.ckpt:
+  Average Latencies: 734.2416971785
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_461.ckpt:
+  Average Latencies: 734.058573366533
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_462.ckpt:
+  Average Latencies: 737.2322309483665
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_463.ckpt:
+  Average Latencies: 734.4421346994263
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_464.ckpt:
+  Average Latencies: 736.526657436003
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_465.ckpt:
+  Average Latencies: 732.8269168396813
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_466.ckpt:
+  Average Latencies: 734.367823931803
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_467.ckpt:
+  Average Latencies: 729.9994509904725
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_468.ckpt:
+  Average Latencies: 730.5877596498625
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_469.ckpt:
+  Average Latencies: 730.3371724270547
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_470.ckpt:
+  Average Latencies: 731.2208926854133
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_471.ckpt:
+  Average Latencies: 732.1541165858405
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_472.ckpt:
+  Average Latencies: 733.1631164478573
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_473.ckpt:
+  Average Latencies: 732.8984939019339
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_474.ckpt:
+  Average Latencies: 730.1242951303891
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_475.ckpt:
+  Average Latencies: 748.0931358075005
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_476.ckpt:
+  Average Latencies: 734.7032781963758
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_477.ckpt:
+  Average Latencies: 732.4826484339304
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_478.ckpt:
+  Average Latencies: 737.3419431136812
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_479.ckpt:
+  Average Latencies: 736.623748423808
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_480.ckpt:
+  Average Latencies: 731.4449419739586
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_481.ckpt:
+  Average Latencies: 736.6893248449597
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_482.ckpt:
+  Average Latencies: 735.083107061209
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_483.ckpt:
+  Average Latencies: 739.6446227783612
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_484.ckpt:
+  Average Latencies: 736.589612872369
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_485.ckpt:
+  Average Latencies: 741.5279114899636
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_486.ckpt:
+  Average Latencies: 740.9333036079407
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_487.ckpt:
+  Average Latencies: 735.3633578249659
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_488.ckpt:
+  Average Latencies: 737.4171428659439
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_489.ckpt:
+  Average Latencies: 736.1948894070762
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_490.ckpt:
+  Average Latencies: 738.011520892075
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_491.ckpt:
+  Average Latencies: 738.5502503464699
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_492.ckpt:
+  Average Latencies: 737.1264696871212
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_493.ckpt:
+  Average Latencies: 735.3145791923115
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_494.ckpt:
+  Average Latencies: 737.6867105064119
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_495.ckpt:
+  Average Latencies: 735.4656568329948
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_496.ckpt:
+  Average Latencies: 734.9721618963922
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_497.ckpt:
+  Average Latencies: 735.029938882201
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_498.ckpt:
+  Average Latencies: 734.4248477298873
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_499.ckpt:
+  Average Latencies: 737.325718461064
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_500.ckpt:
+  Average Latencies: 736.7571874988283
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_501.ckpt:
+  Average Latencies: 735.0777083265032
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_502.ckpt:
+  Average Latencies: 735.3576757216862
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_503.ckpt:
+  Average Latencies: 737.9477307118008
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_504.ckpt:
+  Average Latencies: 736.211750960677
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_505.ckpt:
+  Average Latencies: 735.5393326506343
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_506.ckpt:
+  Average Latencies: 731.4275816862788
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_507.ckpt:
+  Average Latencies: 737.4365921853883
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_508.ckpt:
+  Average Latencies: 735.0774777899605
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_509.ckpt:
+  Average Latencies: 733.9449059054374
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_510.ckpt:
+  Average Latencies: 732.9030353925159
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_511.ckpt:
+  Average Latencies: 737.7422350756917
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_512.ckpt:
+  Average Latencies: 738.0182141678538
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_513.ckpt:
+  Average Latencies: 736.2451247378485
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_514.ckpt:
+  Average Latencies: 734.6185019233976
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_515.ckpt:
+  Average Latencies: 734.9617894039427
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_516.ckpt:
+  Average Latencies: 738.687533008698
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_517.ckpt:
+  Average Latencies: 739.1376391180584
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_518.ckpt:
+  Average Latencies: 736.1341642670768
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_519.ckpt:
+  Average Latencies: 734.3069872111048
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_520.ckpt:
+  Average Latencies: 738.903544189821
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_521.ckpt:
+  Average Latencies: 738.7555427354677
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_522.ckpt:
+  Average Latencies: 740.9079510790688
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_523.ckpt:
+  Average Latencies: 736.3260785786629
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_524.ckpt:
+  Average Latencies: 736.6131077449116
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_525.ckpt:
+  Average Latencies: 732.5017936853953
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_526.ckpt:
+  Average Latencies: 737.8001145801408
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_527.ckpt:
+  Average Latencies: 734.5210224161148
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_528.ckpt:
+  Average Latencies: 735.1635782386235
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_529.ckpt:
+  Average Latencies: 733.9722875369617
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_530.ckpt:
+  Average Latencies: 734.5880868780272
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_531.ckpt:
+  Average Latencies: 733.6442022986004
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_532.ckpt:
+  Average Latencies: 735.1969402685438
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_533.ckpt:
+  Average Latencies: 739.4956054107665
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_534.ckpt:
+  Average Latencies: 736.9024667197908
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_535.ckpt:
+  Average Latencies: 737.6858100815364
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_536.ckpt:
+  Average Latencies: 738.8371165000916
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_537.ckpt:
+  Average Latencies: 736.5953509928296
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_538.ckpt:
+  Average Latencies: 733.4844549659321
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_539.ckpt:
+  Average Latencies: 736.2868396618161
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_540.ckpt:
+  Average Latencies: 737.0413093614305
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_541.ckpt:
+  Average Latencies: 735.4528130579812
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_542.ckpt:
+  Average Latencies: 733.7868267419543
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_543.ckpt:
+  Average Latencies: 735.9909887569563
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_544.ckpt:
+  Average Latencies: 735.9034758230073
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_545.ckpt:
+  Average Latencies: 735.4910742383139
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_546.ckpt:
+  Average Latencies: 736.4242025640489
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_547.ckpt:
+  Average Latencies: 733.0913038805961
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_548.ckpt:
+  Average Latencies: 736.6656238717488
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_549.ckpt:
+  Average Latencies: 733.6433923721178
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_550.ckpt:
+  Average Latencies: 737.2675394429888
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_551.ckpt:
+  Average Latencies: 737.8488354525566
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_552.ckpt:
+  Average Latencies: 735.7915955727441
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_553.ckpt:
+  Average Latencies: 737.3047371237345
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_554.ckpt:
+  Average Latencies: 735.5105917498453
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_555.ckpt:
+  Average Latencies: 737.0155722319603
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_556.ckpt:
+  Average Latencies: 739.6723792701448
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_557.ckpt:
+  Average Latencies: 736.5409831676483
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_558.ckpt:
+  Average Latencies: 737.074018931893
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_559.ckpt:
+  Average Latencies: 740.3533507096836
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_560.ckpt:
+  Average Latencies: 735.6668986934933
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_561.ckpt:
+  Average Latencies: 734.8242419449534
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_562.ckpt:
+  Average Latencies: 736.9134915983337
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_563.ckpt:
+  Average Latencies: 736.9333157172475
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_564.ckpt:
+  Average Latencies: 733.4975065851484
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_565.ckpt:
+  Average Latencies: 735.6808987232345
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_566.ckpt:
+  Average Latencies: 737.7444966739519
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_567.ckpt:
+  Average Latencies: 738.6206326918057
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_568.ckpt:
+  Average Latencies: 736.4179510257039
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_569.ckpt:
+  Average Latencies: 735.1852366840362
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_570.ckpt:
+  Average Latencies: 735.9206677816527
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_571.ckpt:
+  Average Latencies: 740.2973694237573
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_572.ckpt:
+  Average Latencies: 735.6210214150019
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_573.ckpt:
+  Average Latencies: 735.0151153859683
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_574.ckpt:
+  Average Latencies: 738.4930546052116
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_575.ckpt:
+  Average Latencies: 736.87436522789
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_576.ckpt:
+  Average Latencies: 738.1526934167999
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_577.ckpt:
+  Average Latencies: 733.3790881370817
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_578.ckpt:
+  Average Latencies: 735.2337337960107
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_579.ckpt:
+  Average Latencies: 733.4298280538287
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_580.ckpt:
+  Average Latencies: 731.9467350831849
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_581.ckpt:
+  Average Latencies: 735.4451705719675
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_582.ckpt:
+  Average Latencies: 738.0809113118308
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_583.ckpt:
+  Average Latencies: 734.0698240531513
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_584.ckpt:
+  Average Latencies: 735.2091201777323
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_585.ckpt:
+  Average Latencies: 739.7433645309992
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_586.ckpt:
+  Average Latencies: 733.8575017778669
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_587.ckpt:
+  Average Latencies: 736.2353018361091
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_588.ckpt:
+  Average Latencies: 735.6677051821165
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_589.ckpt:
+  Average Latencies: 735.8731558448928
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_590.ckpt:
+  Average Latencies: 734.0585830082756
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_591.ckpt:
+  Average Latencies: 737.0146750492914
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_592.ckpt:
+  Average Latencies: 735.4476209418434
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_593.ckpt:
+  Average Latencies: 735.4175520148822
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_594.ckpt:
+  Average Latencies: 734.491992731217
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_595.ckpt:
+  Average Latencies: 734.3412594479015
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_596.ckpt:
+  Average Latencies: 736.210574585506
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_597.ckpt:
+  Average Latencies: 735.4446628061295
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_598.ckpt:
+  Average Latencies: 737.418451133292
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_599.ckpt:
+  Average Latencies: 735.8312064632415
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_600.ckpt:
+  Average Latencies: 732.92210740445
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_601.ckpt:
+  Average Latencies: 732.9047562669073
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_602.ckpt:
+  Average Latencies: 733.2189181728772
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_603.ckpt:
+  Average Latencies: 733.5446676060131
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_604.ckpt:
+  Average Latencies: 736.2088041228021
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_605.ckpt:
+  Average Latencies: 735.5760412669727
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_606.ckpt:
+  Average Latencies: 736.1312447510038
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_607.ckpt:
+  Average Latencies: 735.9184183863504
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_608.ckpt:
+  Average Latencies: 735.3078742198671
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_609.ckpt:
+  Average Latencies: 735.5570087866784
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_610.ckpt:
+  Average Latencies: 734.6343672529493
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_611.ckpt:
+  Average Latencies: 734.075183312021
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_612.ckpt:
+  Average Latencies: 732.8403889535223
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_613.ckpt:
+  Average Latencies: 734.9519910963058
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_614.ckpt:
+  Average Latencies: 736.0326601173945
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_615.ckpt:
+  Average Latencies: 736.7766663912773
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_616.ckpt:
+  Average Latencies: 738.6505623951231
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_617.ckpt:
+  Average Latencies: 734.1665098814419
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_618.ckpt:
+  Average Latencies: 735.2302334745542
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_619.ckpt:
+  Average Latencies: 734.1090466582708
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_620.ckpt:
+  Average Latencies: 735.6956070069858
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_621.ckpt:
+  Average Latencies: 737.084876188864
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_622.ckpt:
+  Average Latencies: 737.3624820991652
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_623.ckpt:
+  Average Latencies: 733.3340735560145
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_624.ckpt:
+  Average Latencies: 735.0688602480208
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_625.ckpt:
+  Average Latencies: 735.6929919210978
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_626.ckpt:
+  Average Latencies: 736.3371527835573
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_627.ckpt:
+  Average Latencies: 737.4514075775692
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_628.ckpt:
+  Average Latencies: 737.7792086990628
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_629.ckpt:
+  Average Latencies: 735.8819152858734
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_630.ckpt:
+  Average Latencies: 734.7369799423899
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_631.ckpt:
+  Average Latencies: 731.6880175615855
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_632.ckpt:
+  Average Latencies: 734.8178096633638
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_633.ckpt:
+  Average Latencies: 731.7864672543661
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_634.ckpt:
+  Average Latencies: 734.1483578802653
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_635.ckpt:
+  Average Latencies: 738.9313223677908
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_636.ckpt:
+  Average Latencies: 736.1282982861655
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_637.ckpt:
+  Average Latencies: 733.5711003460067
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_638.ckpt:
+  Average Latencies: 737.5620403542246
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_639.ckpt:
+  Average Latencies: 737.0793759481429
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_640.ckpt:
+  Average Latencies: 737.9979150184496
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_641.ckpt:
+  Average Latencies: 737.6556162476403
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_642.ckpt:
+  Average Latencies: 737.1854800402913
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_643.ckpt:
+  Average Latencies: 733.5400336723328
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_644.ckpt:
+  Average Latencies: 735.557405592932
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_645.ckpt:
+  Average Latencies: 735.7452355691229
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_646.ckpt:
+  Average Latencies: 736.9655989238331
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_647.ckpt:
+  Average Latencies: 737.4839319129671
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_648.ckpt:
+  Average Latencies: 736.6107991723878
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_649.ckpt:
+  Average Latencies: 736.5638575628963
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_650.ckpt:
+  Average Latencies: 737.6269215940202
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_651.ckpt:
+  Average Latencies: 734.7569918176924
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_652.ckpt:
+  Average Latencies: 737.28711951922
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_653.ckpt:
+  Average Latencies: 735.701784209701
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_654.ckpt:
+  Average Latencies: 737.3494448241098
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_655.ckpt:
+  Average Latencies: 734.1139854124342
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_656.ckpt:
+  Average Latencies: 738.3048708494051
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_657.ckpt:
+  Average Latencies: 735.2243968038014
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_658.ckpt:
+  Average Latencies: 736.7445382511685
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_659.ckpt:
+  Average Latencies: 738.1561420163155
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_660.ckpt:
+  Average Latencies: 739.2508415751321
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_661.ckpt:
+  Average Latencies: 735.3514010733331
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_662.ckpt:
+  Average Latencies: 737.1505572457859
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_663.ckpt:
+  Average Latencies: 734.9528176915851
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_664.ckpt:
+  Average Latencies: 738.1217110718183
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_665.ckpt:
+  Average Latencies: 732.8863401418959
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_666.ckpt:
+  Average Latencies: 735.1503876387324
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_667.ckpt:
+  Average Latencies: 736.642064650304
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_668.ckpt:
+  Average Latencies: 734.9188626115117
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_669.ckpt:
+  Average Latencies: 735.663354302597
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_670.ckpt:
+  Average Latencies: 736.8896096576964
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_671.ckpt:
+  Average Latencies: 736.1429283549446
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_672.ckpt:
+  Average Latencies: 737.7629291087695
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_673.ckpt:
+  Average Latencies: 736.7961796146528
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_674.ckpt:
+  Average Latencies: 736.0516976817404
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_675.ckpt:
+  Average Latencies: 736.9133026361602
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_676.ckpt:
+  Average Latencies: 737.8703997285434
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_677.ckpt:
+  Average Latencies: 736.6691191260337
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_678.ckpt:
+  Average Latencies: 733.7847433447565
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_679.ckpt:
+  Average Latencies: 733.2363280767713
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_680.ckpt:
+  Average Latencies: 736.9299120844978
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_681.ckpt:
+  Average Latencies: 738.7693190546989
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_682.ckpt:
+  Average Latencies: 736.4818549375261
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_683.ckpt:
+  Average Latencies: 738.8073318568911
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_684.ckpt:
+  Average Latencies: 739.2156941898892
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_685.ckpt:
+  Average Latencies: 738.99012006479
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_686.ckpt:
+  Average Latencies: 736.0063047679629
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_687.ckpt:
+  Average Latencies: 733.8981053239687
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_688.ckpt:
+  Average Latencies: 737.6749695490428
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_689.ckpt:
+  Average Latencies: 734.3752247645242
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_690.ckpt:
+  Average Latencies: 736.4430466453688
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_691.ckpt:
+  Average Latencies: 737.5686910868508
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_692.ckpt:
+  Average Latencies: 735.4535214305878
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_693.ckpt:
+  Average Latencies: 736.5617172875949
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_694.ckpt:
+  Average Latencies: 736.7211604065214
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_695.ckpt:
+  Average Latencies: 735.9845613523755
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_696.ckpt:
+  Average Latencies: 739.4847278782026
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_697.ckpt:
+  Average Latencies: 734.0189968433517
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_698.ckpt:
+  Average Latencies: 736.1859307796615
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_699.ckpt:
+  Average Latencies: 735.0714727563313
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_700.ckpt:
+  Average Latencies: 732.197046023723
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_701.ckpt:
+  Average Latencies: 733.7377582617487
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_702.ckpt:
+  Average Latencies: 735.1679319812774
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_703.ckpt:
+  Average Latencies: 733.0352906396593
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_704.ckpt:
+  Average Latencies: 734.2311297213281
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_705.ckpt:
+  Average Latencies: 732.0346665408679
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_706.ckpt:
+  Average Latencies: 734.9801124201504
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_707.ckpt:
+  Average Latencies: 736.5360127417702
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_708.ckpt:
+  Average Latencies: 737.5150580848695
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_709.ckpt:
+  Average Latencies: 734.8568861592838
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_710.ckpt:
+  Average Latencies: 733.8700389838764
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_711.ckpt:
+  Average Latencies: 735.2188223150662
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_712.ckpt:
+  Average Latencies: 734.5438792508943
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_713.ckpt:
+  Average Latencies: 736.6143940065383
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_714.ckpt:
+  Average Latencies: 736.9047603961671
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_715.ckpt:
+  Average Latencies: 733.5753884362902
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_716.ckpt:
+  Average Latencies: 736.9677914602145
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_717.ckpt:
+  Average Latencies: 737.4039760719028
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_718.ckpt:
+  Average Latencies: 736.0555451764378
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_719.ckpt:
+  Average Latencies: 731.0154524607523
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_720.ckpt:
+  Average Latencies: 731.6150168222428
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_721.ckpt:
+  Average Latencies: 734.8893237218447
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_722.ckpt:
+  Average Latencies: 735.5039872247833
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_723.ckpt:
+  Average Latencies: 736.0688777004378
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_724.ckpt:
+  Average Latencies: 739.5755315620559
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_725.ckpt:
+  Average Latencies: 735.8369826219015
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_726.ckpt:
+  Average Latencies: 736.649668853501
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_727.ckpt:
+  Average Latencies: 736.1497948452812
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_728.ckpt:
+  Average Latencies: 739.0986757423128
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_729.ckpt:
+  Average Latencies: 733.1484877595084
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_730.ckpt:
+  Average Latencies: 736.2628407658576
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_731.ckpt:
+  Average Latencies: 739.1008334775379
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_732.ckpt:
+  Average Latencies: 736.3342012281963
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_733.ckpt:
+  Average Latencies: 731.7597746418952
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_734.ckpt:
+  Average Latencies: 732.8090938057491
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_735.ckpt:
+  Average Latencies: 733.5939054893086
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_736.ckpt:
+  Average Latencies: 729.8097520591463
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_737.ckpt:
+  Average Latencies: 734.8755521859033
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_738.ckpt:
+  Average Latencies: 734.0537301521301
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_739.ckpt:
+  Average Latencies: 734.6525355072567
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_740.ckpt:
+  Average Latencies: 736.9709918201447
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_741.ckpt:
+  Average Latencies: 735.012443441936
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_742.ckpt:
+  Average Latencies: 734.2677552380426
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_743.ckpt:
+  Average Latencies: 737.9816587253162
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_744.ckpt:
+  Average Latencies: 734.2317780576025
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_745.ckpt:
+  Average Latencies: 736.3891731357983
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_746.ckpt:
+  Average Latencies: 734.7386638878686
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_747.ckpt:
+  Average Latencies: 732.6591570486886
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_748.ckpt:
+  Average Latencies: 732.8182596903937
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_749.ckpt:
+  Average Latencies: 736.4810239477022
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_750.ckpt:
+  Average Latencies: 732.8341837538991
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_751.ckpt:
+  Average Latencies: 736.9656994626182
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_752.ckpt:
+  Average Latencies: 739.584067166492
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_753.ckpt:
+  Average Latencies: 736.5487656821252
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_754.ckpt:
+  Average Latencies: 732.7590144480024
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_755.ckpt:
+  Average Latencies: 737.7950813576562
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_756.ckpt:
+  Average Latencies: 736.6142786147799
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_757.ckpt:
+  Average Latencies: 736.7578953624179
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_758.ckpt:
+  Average Latencies: 738.0636852725437
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_759.ckpt:
+  Average Latencies: 737.4920764188223
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_760.ckpt:
+  Average Latencies: 737.5346612037795
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_761.ckpt:
+  Average Latencies: 736.4760480920384
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_762.ckpt:
+  Average Latencies: 737.7899542255537
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_763.ckpt:
+  Average Latencies: 736.0928586544991
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_764.ckpt:
+  Average Latencies: 737.577060571875
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_765.ckpt:
+  Average Latencies: 736.8999501726015
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_766.ckpt:
+  Average Latencies: 734.8143683685031
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_767.ckpt:
+  Average Latencies: 737.3228955693518
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_768.ckpt:
+  Average Latencies: 736.2637033082689
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_769.ckpt:
+  Average Latencies: 736.7059127409663
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_770.ckpt:
+  Average Latencies: 738.5449708587919
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_771.ckpt:
+  Average Latencies: 739.3108297347885
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_772.ckpt:
+  Average Latencies: 735.647689033086
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_773.ckpt:
+  Average Latencies: 737.3968797186443
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_774.ckpt:
+  Average Latencies: 735.4948005903243
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_775.ckpt:
+  Average Latencies: 736.2018270955903
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_776.ckpt:
+  Average Latencies: 734.0983055066517
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_777.ckpt:
+  Average Latencies: 738.9718892736435
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_778.ckpt:
+  Average Latencies: 738.2642553594045
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_779.ckpt:
+  Average Latencies: 738.3507285601343
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_780.ckpt:
+  Average Latencies: 739.0395346079554
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_781.ckpt:
+  Average Latencies: 737.1189034063611
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_782.ckpt:
+  Average Latencies: 737.0386027538435
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_783.ckpt:
+  Average Latencies: 738.2027627421925
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_784.ckpt:
+  Average Latencies: 737.5576585221835
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_785.ckpt:
+  Average Latencies: 737.9778981202535
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_786.ckpt:
+  Average Latencies: 736.6274970797675
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_787.ckpt:
+  Average Latencies: 735.1825065350124
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_788.ckpt:
+  Average Latencies: 736.1950922027723
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_789.ckpt:
+  Average Latencies: 739.17889252788
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_790.ckpt:
+  Average Latencies: 734.4884195844787
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_791.ckpt:
+  Average Latencies: 734.0038095677104
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_792.ckpt:
+  Average Latencies: 739.0695391813006
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_793.ckpt:
+  Average Latencies: 738.647912150056
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_794.ckpt:
+  Average Latencies: 734.7866473211152
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_795.ckpt:
+  Average Latencies: 739.6047713545936
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_796.ckpt:
+  Average Latencies: 735.3671437589645
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_797.ckpt:
+  Average Latencies: 737.8803540091651
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_798.ckpt:
+  Average Latencies: 734.3679556272642
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_799.ckpt:
+  Average Latencies: 735.9198591541153
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_800.ckpt:
+  Average Latencies: 737.3889828564371
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_801.ckpt:
+  Average Latencies: 731.8873105794906
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_802.ckpt:
+  Average Latencies: 741.0723352208819
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_803.ckpt:
+  Average Latencies: 735.2038540351322
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_804.ckpt:
+  Average Latencies: 735.9942248878614
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_805.ckpt:
+  Average Latencies: 738.9475894295011
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_806.ckpt:
+  Average Latencies: 738.6995380257742
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_807.ckpt:
+  Average Latencies: 738.8145054124832
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_808.ckpt:
+  Average Latencies: 737.4423229682242
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_809.ckpt:
+  Average Latencies: 735.532509862532
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_810.ckpt:
+  Average Latencies: 735.3534440540723
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_811.ckpt:
+  Average Latencies: 738.5133403571266
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_812.ckpt:
+  Average Latencies: 736.523817999431
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_813.ckpt:
+  Average Latencies: 737.4586996538707
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_814.ckpt:
+  Average Latencies: 741.6353257511956
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_815.ckpt:
+  Average Latencies: 741.2886385512215
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_816.ckpt:
+  Average Latencies: 738.8951599634988
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_817.ckpt:
+  Average Latencies: 739.3284165407182
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_818.ckpt:
+  Average Latencies: 737.8796208225251
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_819.ckpt:
+  Average Latencies: 738.8089154027531
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_820.ckpt:
+  Average Latencies: 739.0542849924632
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_821.ckpt:
+  Average Latencies: 735.2842257667132
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_822.ckpt:
+  Average Latencies: 735.1576938514846
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_823.ckpt:
+  Average Latencies: 733.9181232029506
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_824.ckpt:
+  Average Latencies: 737.2946490191324
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_825.ckpt:
+  Average Latencies: 732.2039542211124
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_826.ckpt:
+  Average Latencies: 735.7926550385339
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_827.ckpt:
+  Average Latencies: 739.4895391204426
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_828.ckpt:
+  Average Latencies: 738.3365696039608
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_829.ckpt:
+  Average Latencies: 737.1212865548679
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_830.ckpt:
+  Average Latencies: 733.02161719641
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_831.ckpt:
+  Average Latencies: 739.5208516752925
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_832.ckpt:
+  Average Latencies: 737.5136431086951
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_833.ckpt:
+  Average Latencies: 737.790119743238
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_834.ckpt:
+  Average Latencies: 739.0134418998173
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_835.ckpt:
+  Average Latencies: 737.4445718884468
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_836.ckpt:
+  Average Latencies: 733.5662681723459
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_837.ckpt:
+  Average Latencies: 735.0667377788816
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_838.ckpt:
+  Average Latencies: 734.5034617286137
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_839.ckpt:
+  Average Latencies: 738.3789738074848
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_840.ckpt:
+  Average Latencies: 735.8744701695305
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_841.ckpt:
+  Average Latencies: 736.0376001335825
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_842.ckpt:
+  Average Latencies: 740.150307544422
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_843.ckpt:
+  Average Latencies: 740.430067639133
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_844.ckpt:
+  Average Latencies: 739.2458167062488
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_845.ckpt:
+  Average Latencies: 740.7854841743878
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_846.ckpt:
+  Average Latencies: 735.1301501288413
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_847.ckpt:
+  Average Latencies: 735.7225118129048
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_848.ckpt:
+  Average Latencies: 733.8658554877962
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_849.ckpt:
+  Average Latencies: 739.1535788096292
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_850.ckpt:
+  Average Latencies: 736.1921608816147
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_851.ckpt:
+  Average Latencies: 730.907606899861
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_852.ckpt:
+  Average Latencies: 732.2766081277712
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_853.ckpt:
+  Average Latencies: 738.0359956714221
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_854.ckpt:
+  Average Latencies: 733.9179817234857
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_855.ckpt:
+  Average Latencies: 737.6359185367312
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_856.ckpt:
+  Average Latencies: 738.8688557514055
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_857.ckpt:
+  Average Latencies: 737.3932626769611
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_858.ckpt:
+  Average Latencies: 738.4262025147847
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_859.ckpt:
+  Average Latencies: 734.7576397477559
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_860.ckpt:
+  Average Latencies: 737.0995324068887
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_861.ckpt:
+  Average Latencies: 739.0905590439525
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_862.ckpt:
+  Average Latencies: 741.9737659976415
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_863.ckpt:
+  Average Latencies: 738.4451206255368
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_864.ckpt:
+  Average Latencies: 734.7241883201737
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_865.ckpt:
+  Average Latencies: 737.3475137023653
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_866.ckpt:
+  Average Latencies: 738.3299742408343
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_867.ckpt:
+  Average Latencies: 737.7606100961684
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_868.ckpt:
+  Average Latencies: 734.4106737548283
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_869.ckpt:
+  Average Latencies: 740.8715266740389
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_870.ckpt:
+  Average Latencies: 739.816920723084
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_871.ckpt:
+  Average Latencies: 738.1319275026459
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_872.ckpt:
+  Average Latencies: 739.547512373897
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_873.ckpt:
+  Average Latencies: 741.0182238871166
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_874.ckpt:
+  Average Latencies: 736.8230558340755
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_875.ckpt:
+  Average Latencies: 736.308715240574
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_876.ckpt:
+  Average Latencies: 737.8749952907426
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_877.ckpt:
+  Average Latencies: 742.8222196934836
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_878.ckpt:
+  Average Latencies: 739.0463936785698
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_879.ckpt:
+  Average Latencies: 736.1605653392111
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_880.ckpt:
+  Average Latencies: 740.267939432798
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_881.ckpt:
+  Average Latencies: 738.3939792858396
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_882.ckpt:
+  Average Latencies: 738.6983438785553
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_883.ckpt:
+  Average Latencies: 738.4088045063563
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_884.ckpt:
+  Average Latencies: 738.4271453502928
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_885.ckpt:
+  Average Latencies: 739.157219358417
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_886.ckpt:
+  Average Latencies: 740.9451723842211
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_887.ckpt:
+  Average Latencies: 738.7979038973535
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_888.ckpt:
+  Average Latencies: 736.411882811737
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_889.ckpt:
+  Average Latencies: 740.9682956654958
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_890.ckpt:
+  Average Latencies: 737.1669404320307
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_891.ckpt:
+  Average Latencies: 735.8858110110283
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_892.ckpt:
+  Average Latencies: 736.2153146881104
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_893.ckpt:
+  Average Latencies: 735.0066695915222
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_894.ckpt:
+  Average Latencies: 739.1601790383475
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_895.ckpt:
+  Average Latencies: 738.3827890969957
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_896.ckpt:
+  Average Latencies: 735.9472982495715
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_897.ckpt:
+  Average Latencies: 738.1550897167887
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_898.ckpt:
+  Average Latencies: 736.6686809220587
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_899.ckpt:
+  Average Latencies: 737.6391850484304
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_900.ckpt:
+  Average Latencies: 734.088413706725
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_901.ckpt:
+  Average Latencies: 738.6035198327473
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_902.ckpt:
+  Average Latencies: 736.6143532787187
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_903.ckpt:
+  Average Latencies: 736.6512974670683
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_904.ckpt:
+  Average Latencies: 738.3981344051225
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_905.ckpt:
+  Average Latencies: 736.8204732441085
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_906.ckpt:
+  Average Latencies: 737.9486108358519
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_907.ckpt:
+  Average Latencies: 739.2416808738436
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_908.ckpt:
+  Average Latencies: 738.666458130564
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_909.ckpt:
+  Average Latencies: 739.9008362828799
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_910.ckpt:
+  Average Latencies: 736.2852267891749
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_911.ckpt:
+  Average Latencies: 736.7261889091492
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_912.ckpt:
+  Average Latencies: 737.8952883441243
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_913.ckpt:
+  Average Latencies: 736.8742631703922
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_914.ckpt:
+  Average Latencies: 737.4612082114764
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_915.ckpt:
+  Average Latencies: 738.6301992194585
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_916.ckpt:
+  Average Latencies: 742.0945198449407
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_917.ckpt:
+  Average Latencies: 742.0765220148223
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_918.ckpt:
+  Average Latencies: 736.2764214786802
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_919.ckpt:
+  Average Latencies: 736.8167409768241
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_920.ckpt:
+  Average Latencies: 737.162215135874
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_921.ckpt:
+  Average Latencies: 738.1088295216016
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_922.ckpt:
+  Average Latencies: 740.1190819345883
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_923.ckpt:
+  Average Latencies: 738.0461358489582
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_924.ckpt:
+  Average Latencies: 739.1225270551408
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_925.ckpt:
+  Average Latencies: 733.8811733491898
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_926.ckpt:
+  Average Latencies: 735.1021790099961
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_927.ckpt:
+  Average Latencies: 740.4231941954749
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_928.ckpt:
+  Average Latencies: 738.9270354594912
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_929.ckpt:
+  Average Latencies: 737.8577352296284
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_930.ckpt:
+  Average Latencies: 740.9118734049388
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_931.ckpt:
+  Average Latencies: 741.8588051645415
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_932.ckpt:
+  Average Latencies: 736.8224114206313
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_933.ckpt:
+  Average Latencies: 735.6950643195016
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_934.ckpt:
+  Average Latencies: 738.1225017073767
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_935.ckpt:
+  Average Latencies: 739.3392386885234
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_936.ckpt:
+  Average Latencies: 736.6416067276274
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_937.ckpt:
+  Average Latencies: 743.5698960970198
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_938.ckpt:
+  Average Latencies: 740.1272904250826
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_939.ckpt:
+  Average Latencies: 737.0314779558863
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_940.ckpt:
+  Average Latencies: 740.1090489897863
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_941.ckpt:
+  Average Latencies: 740.7947074871063
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_942.ckpt:
+  Average Latencies: 739.4223802250182
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_943.ckpt:
+  Average Latencies: 740.1854339983531
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_944.ckpt:
+  Average Latencies: 742.4581394635472
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_945.ckpt:
+  Average Latencies: 736.2383365261622
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_946.ckpt:
+  Average Latencies: 736.2336525133405
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_947.ckpt:
+  Average Latencies: 740.8949853473937
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_948.ckpt:
+  Average Latencies: 738.3174476765224
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_949.ckpt:
+  Average Latencies: 739.4346978621483
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_950.ckpt:
+  Average Latencies: 737.7289055605752
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_951.ckpt:
+  Average Latencies: 746.2187166616441
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_952.ckpt:
+  Average Latencies: 737.425667638588
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_953.ckpt:
+  Average Latencies: 738.7810125368254
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_954.ckpt:
+  Average Latencies: 740.183145565646
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_955.ckpt:
+  Average Latencies: 736.6974813477516
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_956.ckpt:
+  Average Latencies: 738.5780939127786
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_957.ckpt:
+  Average Latencies: 739.318300683798
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_958.ckpt:
+  Average Latencies: 739.444240203544
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_959.ckpt:
+  Average Latencies: 742.1052703395026
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_960.ckpt:
+  Average Latencies: 739.033702520316
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_961.ckpt:
+  Average Latencies: 740.294346365738
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_962.ckpt:
+  Average Latencies: 739.7256695106234
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_963.ckpt:
+  Average Latencies: 738.5419759399414
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_964.ckpt:
+  Average Latencies: 739.1748562007631
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_965.ckpt:
+  Average Latencies: 735.5430657464981
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_966.ckpt:
+  Average Latencies: 738.5477311073712
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_967.ckpt:
+  Average Latencies: 736.954792453398
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_968.ckpt:
+  Average Latencies: 737.9934738221033
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_969.ckpt:
+  Average Latencies: 737.5684122385978
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_970.ckpt:
+  Average Latencies: 737.0075637468065
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_971.ckpt:
+  Average Latencies: 736.9331700725147
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_972.ckpt:
+  Average Latencies: 738.0848231595992
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_973.ckpt:
+  Average Latencies: 736.0865089491163
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_974.ckpt:
+  Average Latencies: 737.0017548089028
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_975.ckpt:
+  Average Latencies: 737.4130805680957
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_976.ckpt:
+  Average Latencies: 738.370377300494
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_977.ckpt:
+  Average Latencies: 736.179748906735
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_978.ckpt:
+  Average Latencies: 735.5853960433278
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_979.ckpt:
+  Average Latencies: 738.1147386819159
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_980.ckpt:
+  Average Latencies: 738.6685453467913
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_981.ckpt:
+  Average Latencies: 739.9195275811741
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_982.ckpt:
+  Average Latencies: 737.2929333621842
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_983.ckpt:
+  Average Latencies: 738.4465425641604
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_984.ckpt:
+  Average Latencies: 741.4007435214452
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_985.ckpt:
+  Average Latencies: 737.4672653963089
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_986.ckpt:
+  Average Latencies: 739.5457856056486
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_987.ckpt:
+  Average Latencies: 739.2651691105298
+  avg_latencies_final: 728.1876488504547
+Results for checkpoint /home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_988.ckpt:
+  Average Latencies: 739.8469202624185
+  avg_latencies_final: 728.1876488504547

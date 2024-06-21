@@ -13,13 +13,13 @@ if __name__ == "__main__":
                                 batch_size=100,
                                 graph_number=100,
                                 graph_file_paths=[
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_23/random.20."
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_24/random.20."
                                 ],
                                 time_major=False)
 
     env.set_task(0)
 
-    print("calculate optimal solution offloading20_23======")
+    print("calculate optimal solution offloading24_1======")
     cost, plan = env.calculate_optimal_solution()
     target_batch, task_finish_time_batch = env.get_reward_batch_step_by_step(plan,
                                                                              env.task_graphs_batchs[env.task_id],
@@ -41,13 +41,13 @@ if __name__ == "__main__":
                                 batch_size=100,
                                 graph_number=100,
                                 graph_file_paths=[
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_17/random.20."
+                                    "./env/mec_offloaing_envs/data/meta_offloading_n/offload_random20/random.20."
                                 ],
                                 time_major=False)
 
     env.set_task(0)
 
-    print("calculate optimal solution offloading20_17======")
+    print("calculate optimal solution offloading20_n======")
     cost, plan = env.calculate_optimal_solution()
     target_batch, task_finish_time_batch = env.get_reward_batch_step_by_step(plan,
                                                                              env.task_graphs_batchs[env.task_id],
@@ -69,13 +69,13 @@ if __name__ == "__main__":
                                 batch_size=100,
                                 graph_number=100,
                                 graph_file_paths=[
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_18/random.20."
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_3/random.20."
                                 ],
                                 time_major=False)
 
     env.set_task(0)
 
-    print("calculate optimal solution offloading20_18======")
+    print("calculate optimal solution offloading20_3======")
     cost, plan = env.calculate_optimal_solution()
     target_batch, task_finish_time_batch = env.get_reward_batch_step_by_step(plan,
                                                                              env.task_graphs_batchs[env.task_id],
@@ -97,13 +97,13 @@ if __name__ == "__main__":
                                 batch_size=100,
                                 graph_number=100,
                                 graph_file_paths=[
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_19/random.20."
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_5/random.20."
                                 ],
                                 time_major=False)
 
     env.set_task(0)
 
-    print("calculate optimal solution offloading20_19======")
+    print("calculate optimal solution offloading20_5======")
     cost, plan = env.calculate_optimal_solution()
     target_batch, task_finish_time_batch = env.get_reward_batch_step_by_step(plan,
                                                                              env.task_graphs_batchs[env.task_id],
@@ -125,13 +125,13 @@ if __name__ == "__main__":
                                 batch_size=100,
                                 graph_number=100,
                                 graph_file_paths=[
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_21/random.20."
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_6/random.20."
                                 ],
                                 time_major=False)
 
     env.set_task(0)
 
-    print("calculate optimal solution offloading20_21======")
+    print("calculate optimal solution offloading20_6======")
     cost, plan = env.calculate_optimal_solution()
     target_batch, task_finish_time_batch = env.get_reward_batch_step_by_step(plan,
                                                                              env.task_graphs_batchs[env.task_id],
@@ -153,13 +153,13 @@ if __name__ == "__main__":
                                 batch_size=100,
                                 graph_number=100,
                                 graph_file_paths=[
-                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_22/random.20."
+                                    "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_7/random.20."
                                 ],
                                 time_major=False)
 
     env.set_task(0)
 
-    print("calculate optimal solution offloading20_22======")
+    print("calculate optimal solution offloading20_7======")
     cost, plan = env.calculate_optimal_solution()
     target_batch, task_finish_time_batch = env.get_reward_batch_step_by_step(plan,
                                                                              env.task_graphs_batchs[env.task_id],

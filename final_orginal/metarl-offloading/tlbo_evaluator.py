@@ -167,7 +167,6 @@ class FixedSequenceLearningSampleEmbeddingHelper(tf.contrib.seq2seq.SampleEmbedd
 
 def _single_cell(hparams, residual_connection=False, residual_fn=None):
     """Create an instance of a single RNN cell."""
-    # dropout (= 1 - keep_prob) is set to 0 during eval and infer
     dropout = hparams.dropout if hparams.mode == tf.contrib.learn.ModeKeys.TRAIN else 0.0
 
     # Cell Type
@@ -407,17 +406,20 @@ if __name__ == "__main__":
 
     logger.configure(dir="./meta_evaluate_ppo_log/task_offloading", format_strs=['stdout', 'log', 'csv'])
 
-    resource_cluster = Resources(mec_process_capable=(10.0 * 1024 * 1024),
+    resource_cluster = Resources(mec_process_capable=(10.0 * 1024 * 1024 ),
                                  mobile_process_capable=(1.0 * 1024 * 1024),
-                                 bandwidth_up=7.0, bandwidth_dl=7.0)
+                                 bandwidth_up=8.5, bandwidth_dl=8.5)
 
     env = OffloadingEnvironment(resource_cluster=resource_cluster,
                                 batch_size=100,
                                 graph_number=100,
                                 graph_file_paths=[
-                                    #"./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_8/random.20." # full ok
-                                     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_12/random.20." # full ok
-                                    #"./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_24/random.20." # full ok
+                                    "./env/mec_offloaing_envs/data/meta_offloading_n/offload_random20/random.20." # full ok
+                                    
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_8/random.20." # full ok
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_12/random.20." # full ok
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_24/random.20." # full ok
+                                    
                                     # "./env/mec_offloaing_envs/data/meta_offloading_n/offload_random20/random.20." # full ok
                                     # "./env/mec_offloaing_envs/data/meta_offloading_n/offload_random30/random.30."
                                     # "./env/mec_offloaing_envs/data/meta_offloading_n/offload_random40/random.40."
@@ -492,7 +494,6 @@ if __name__ == "__main__":
                clip_value=0.2,
                max_grad_norm=None)
 
-    # define the trainer of ppo to evaluate the performance of the trained meta policy for new tasks.
     trainer = Trainer(algo=algo,
                       env=env,
                       sampler=sampler,
@@ -503,202 +504,27 @@ if __name__ == "__main__":
                       batch_size=500,
                       num_inner_grad_steps=3)
 
-    # checkpoint_directory = "./meta_model_inner_step1"
-
-    # Find all .ckpt files in the directory
     import re
-    checkpoint_files = glob.glob("meta_model_inner_step1/meta_model_19*.ckpt")
-    # checkpoint_files = glob.glob("/home/mehrdad/final_project/test/metarl-offloading/meta_model_inner_step1/meta_model_*.ckpt")
+    # checkpoint_files = glob.glob("/home/mehrdad/final_project/resualts/orginal_2000/meta_model_*.ckpt")
+    checkpoint_files = glob.glob("/home/mehrdad/final_project/resualts/tlbo_20_200_1000/meta_model_*.ckpt")
+    # checkpoint_files = glob.glob("/home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_*.ckpt")
 
     def extract_number(filename):
-        # Extract the number from the filename
         number = re.search(r'\d+', os.path.basename(filename))
         return int(number.group()) if number else 0
     checkpoint_files.sort(key=extract_number)
-    # Loop through the found checkpoint files
     avg_latencies_final = 10000000
     for checkpoint_file in checkpoint_files:
-        with tf.compat.v1.Session() as sess:  # Use tf.compat.v1.Session for TensorFlow 1.x
+        with tf.compat.v1.Session() as sess:  
             print(f"Results for checkpoint {checkpoint_file}:")
             sess.run(tf.compat.v1.global_variables_initializer())
-
-            # Load variables from the current checkpoint file
             load_path = checkpoint_file  
             policy.load_variables(load_path)
-            # print(checkpoint_file)
-            # Train and evaluate on this checkpoint
-
             avg_ret, avg_pg_loss, avg_vf_loss, avg_latencies = trainer.train()
-
-            # (Optionally) Log or store the results for this checkpoint
-            # if np.mean(avg_latencies) < avg_latencies_final:
-            # print(f"  Average Return: {np.mean(avg_ret)}")
-            # print(f"  Average PG Loss: {np.mean(avg_pg_loss)}")
-            # print(f"  Average VF Loss: {np.mean(avg_vf_loss)}")
             print(f"  Average Latencies: {np.mean(avg_latencies)}")
-            avg_latencies_final = np.mean(avg_latencies)
 
-"""
-avg greedy solution:  -5.326296975575445
-avg greedy solution:  802.4605928660801
-avg greedy solution:  808.9166261023114
-avg all remote solution:  1052.0136239681242
-avg all local solution:  1478.0573242759704
-Results for checkpoint tlbo_final_first_eval/meta_model_final.ckpt:
-  Average Return: -4.006132593107096
-  Average PG Loss: -0.0023555042176150983
-  Average VF Loss: 0.020639858565028802
-  Average Latencies: 605.1262185594559
- ---------------- Iteration 0 ----------------
-Sampling set of tasks/goals for this meta-batch...
-0% [##############################] 100% | ETA: 00:00:00
-Total time elapsed: 00:00:02
-Processing samples...
-average policy losses:  0.0009132548735511522
-average value losses:  0.1333148784843492
--------------------------------
-| Average latency, | 683      |
-| Average reward,  | -4.54    |
-| EnvExecTime      | 0.457    |
-| Itr              | 0        |
-| PolicyExecTime   | 1.61     |
--------------------------------
+            if np.mean(avg_latencies) < avg_latencies_final:
+                avg_latencies_final = np.mean(avg_latencies)
+            print(f"  avg_latencies_final: {avg_latencies_final}")
+                
 
-################################################################
-avg greedy solution:  -6.368785728931132
-avg greedy solution:  920.7321981755666
-avg greedy solution:  923.5201095819475
-avg all remote solution:  1561.5375256020684
-avg all local solution:  1450.184811296463
-Results for checkpoint tlbo_final_first_eval/meta_model_final.ckpt:
-  Average Return: -6.617487345116826
-  Average PG Loss: -0.0007270990589196667
-  Average VF Loss: 0.09336047895528653
-  Average Latencies: 955.4265380828994
- ---------------- Iteration 0 ----------------
-Sampling set of tasks/goals for this meta-batch...
-0% [##############################] 100% | ETA: 00:00:00
-Total time elapsed: 00:00:02
-Processing samples...
-average policy losses:  0.0003648714628070593
-average value losses:  0.27519075554094197
--------------------------------
-| Average latency, | 1.08e+03 |
-| Average reward,  | -7.53    |
-| EnvExecTime      | 0.473    |
-| Itr              | 0        |
-| PolicyExecTime   | 1.73     |
--------------------------------
-################################################################
-avg greedy solution:  -5.423785970377555
-avg greedy solution:  814.393790406772
-avg greedy solution:  822.2891510185515
-avg all remote solution:  1187.5299351645879
-avg all local solution:  1496.2145345592498
-Results for checkpoint tlbo_final_first_eval/meta_model_final.ckpt:
-  Average Return: -4.362736345979986
-  Average PG Loss: -0.0012821598944288712
-  Average VF Loss: 0.023710578335104166
-  Average Latencies: 658.5317161785262
- ---------------- Iteration 0 ----------------
-Sampling set of tasks/goals for this meta-batch...
-0% [##############################] 100% | ETA: 00:00:00
-Total time elapsed: 00:00:02
-Processing samples...
-average policy losses:  0.001451832701863123
-average value losses:  0.1482441168692377
--------------------------------
-| Average latency, | 777      |
-| Average reward,  | -5.17    |
-| EnvExecTime      | 0.424    |
-| Itr              | 0        |
-| PolicyExecTime   | 1.7      |
--------------------------------
-################################################################
-avg greedy solution:  -5.722154224537595
-avg greedy solution:  832.5628229292462
-avg greedy solution:  838.3125866107941
-avg all remote solution:  1298.6781690224238
-avg all local solution:  1452.7967105865478
-Results for checkpoint tlbo_final_first_eval/meta_model_final.ckpt:
-  Average Return: -5.134595862697205
-  Average PG Loss: -0.0017736545982368198
-  Average VF Loss: 0.04948927917414241
-  Average Latencies: 755.2112365476744
- ---------------- Iteration 0 ----------------
-Sampling set of tasks/goals for this meta-batch...
-0% [##############################] 100% | ETA: 00:00:00
-Total time elapsed: 00:00:02
-Processing samples...
-average policy losses:  -0.00043788010216415824
-average value losses:  0.1680099547461227
--------------------------------
-| Average latency, | 853      |
-| Average reward,  | -5.81    |
-| EnvExecTime      | 0.444    |
-| Itr              | 0        |
-| PolicyExecTime   | 1.67     |
--------------------------------
-################################################################
-avg greedy solution:  -8.333640707027506
-avg greedy solution:  1218.533719505446
-avg greedy solution:  1222.932388986451
-avg all remote solution:  1948.5279866412027
-avg all local solution:  2140.590572824478
-Results for checkpoint tlbo_final_first_eval/meta_model_final.ckpt:
-  Average Return: -8.72883837617304
-  Average PG Loss: 0.005566532971857641
-  Average VF Loss: 1.2795394114506096
-  Average Latencies: 1280.389930366302
- ---------------- Iteration 0 ----------------
-Sampling set of tasks/goals for this meta-batch...
-0% [###############################] 100% | ETA: 23:59:59
-Total time elapsed: 00:00:02
-Processing samples...
-average policy losses:  0.0012760108435974904
-average value losses:  1.58270729618308
--------------------------------
-| Average latency, | 1.22e+03 |
-| Average reward,  | -8.38    |
-| EnvExecTime      | 0.513    |
-| Itr              | 0        |
-| PolicyExecTime   | 1.67     |
--------------------------------
-################################################################
-avg greedy solution:  -10.786550099683042
-avg greedy solution:  1527.4670617547717
-avg greedy solution:  1531.1153501408442
-avg all remote solution:  2602.868363054003
-avg all local solution:  2751.6491666507723
-Results for checkpoint tlbo_final_first_eval/meta_model_final.ckpt:
-  Average Return: -11.376974525235477
-  Average PG Loss: 0.01721700305747402
-  Average VF Loss: 3.483704914281398
-  Average Latencies: 1616.6302621162688
- ---------------- Iteration 0 ----------------
-Sampling set of tasks/goals for this meta-batch...
-0% [##############################] 100% | ETA: 00:00:00
-Total time elapsed: 00:00:02
-Processing samples...
-average policy losses:  0.00070464990624905
-average value losses:  5.514993237860409
--------------------------------
-| Average latency, | 1.55e+03 |
-| Average reward,  | -10.9    |
-| EnvExecTime      | 0.385    |
-| Itr              | 0        |
-| PolicyExecTime   | 1.62     |
--------------------------------
-"""
-"""
-tlbo
-        tlbo = TLBO(population_size=10, dim=4, bounds=bounds, iterations=500, trainer=trainer)
-        bounds = np.array([
-            [1e-20, 5e-4],     # inner_lr range
-            [1e-20, 5e-4],     # outer_lr range
-            [1, 20], # num_inner_grad_steps
-            [1, 20], # inner_batch_size
-        ]) 
-inner_lr = 1e-20 ,outer_lr = 0.00010636990551864214, num_inner_grad_steps = 1.0075967762524063, inner_batch_size = 2.322259472998285
-        
-"""

@@ -511,7 +511,8 @@ class MRLCO():
         policy_losses = []
         value_losses = []
 
-        batch_number = int(task_samples['observations'].shape[0] / batch_size)
+        batch_number = max(1, int(task_samples['observations'].shape[0] / batch_size))  # Ensure at least 1 batch
+
         self.update_numbers = batch_number
         #:q!
         # print("update number is: ", self.update_numbers)
@@ -806,6 +807,12 @@ if __name__ == "__main__":
                                     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_23/random.20.",
                                     #"./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_24/random.20.",
                                     "./env/mec_offloaing_envs/data/meta_offloading_20/offload_random20_25/random.20.",
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_n/offload_random10/random.10.",                                    
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_n/offload_random15/random.15.",                                    
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_n/offload_random25/random.25.",                                    
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_n/offload_random35/random.35.",                                    
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_n/offload_random45/random.45.",                                    
+                                    # "./env/mec_offloaing_envs/data/meta_offloading_n/offload_random50/random.50.",                                      
                                 ],
                                 time_major=False)
     action, greedy_finish_time = env.greedy_solution()
@@ -872,16 +879,16 @@ if __name__ == "__main__":
                         greedy_finish_time=greedy_finish_time)
 
         bounds = np.array([
-            [1e-20, 5e-4],     # inner_lr range
-            [1e-20, 5e-4],     # outer_lr range
+            [1e-20, 1e-1],     # inner_lr range
+            [1e-20, 1e-1],     # outer_lr range
             # [64, 256],        # num_units range 
             # [64, 256],        # encoder_units range 
             # [64, 256],        # decoder_hidden_unit range 
             # [0.0, 0.5],       # dropout range
             # [0.5, 2.0],       # forget_bias range 
             # [1, 5]           # num_layers range
-            [10, 200], # num_inner_grad_steps
-            [10, 200], # inner_batch_size
+            [10, 60], # num_inner_grad_steps
+            [10, 3000], # inner_batch_size
             # [10, 1000], # num_inner_grad_steps
             # [10, 2000], # inner_batch_size
         ])      
