@@ -1,0 +1,70 @@
+Logging to ./meta_evaluate_ppo_log/task_offloading
+calculate baseline solution======
+avg greedy solution:  -5.021489150837592
+avg greedy solution:  929.7879867597927
+avg greedy solution:  934.169699997902
+avg all remote solution:  1651.7833389954135
+avg all local solution:  1452.7967105865478
+Results for checkpoint /home/mehrdad/final_project/resualts/orginal_2000/meta_model_0.ckpt:
+  Average Latencies: 1156.0705034731602
+  avg_latencies_final: 1156.0705034731602
+Results for checkpoint /home/mehrdad/final_project/resualts/orginal_2000/meta_model_final.ckpt:
+  Average Latencies: 991.8075647941589
+  avg_latencies_final: 991.8075647941589
+Results for checkpoint /home/mehrdad/final_project/resualts/orginal_2000/meta_model_100.ckpt:
+  Average Latencies: 1280.7830034101312
+  avg_latencies_final: 991.8075647941589
+Results for checkpoint /home/mehrdad/final_project/resualts/orginal_2000/meta_model_200.ckpt:
+  Average Latencies: 1139.0533527482899
+  avg_latencies_final: 991.8075647941589
+Results for checkpoint /home/mehrdad/final_project/resualts/orginal_2000/meta_model_300.ckpt:
+  Average Latencies: 1130.0664664647882
+  avg_latencies_final: 991.8075647941589
+Results for checkpoint /home/mehrdad/final_project/resualts/orginal_2000/meta_model_400.ckpt:
+  Average Latencies: 1080.7619500048725
+  avg_latencies_final: 991.8075647941589
+Results for checkpoint /home/mehrdad/final_project/resualts/orginal_2000/meta_model_500.ckpt:
+  Average Latencies: 1061.6979224306021
+  avg_latencies_final: 991.8075647941589
+Results for checkpoint /home/mehrdad/final_project/resualts/orginal_2000/meta_model_600.ckpt:
+  Average Latencies: 1026.0801121415225
+  avg_latencies_final: 991.8075647941589
+Results for checkpoint /home/mehrdad/final_project/resualts/orginal_2000/meta_model_700.ckpt:
+  Average Latencies: 1044.7566364221311
+  avg_latencies_final: 991.8075647941589
+Results for checkpoint /home/mehrdad/final_project/resualts/orginal_2000/meta_model_800.ckpt:
+  Average Latencies: 999.0825281775475
+  avg_latencies_final: 991.8075647941589
+Results for checkpoint /home/mehrdad/final_project/resualts/orginal_2000/meta_model_900.ckpt:
+  Average Latencies: 1006.9884781347534
+  avg_latencies_final: 991.8075647941589
+Results for checkpoint /home/mehrdad/final_project/resualts/orginal_2000/meta_model_1000.ckpt:
+  Average Latencies: 989.8428285275198
+  avg_latencies_final: 989.8428285275198
+Results for checkpoint /home/mehrdad/final_project/resualts/orginal_2000/meta_model_1100.ckpt:
+  Average Latencies: 995.9162857811929
+  avg_latencies_final: 989.8428285275198
+Results for checkpoint /home/mehrdad/final_project/resualts/orginal_2000/meta_model_1200.ckpt:
+  Average Latencies: 991.7600868077192
+  avg_latencies_final: 989.8428285275198
+Results for checkpoint /home/mehrdad/final_project/resualts/orginal_2000/meta_model_1300.ckpt:
+  Average Latencies: 985.2373110784443
+  avg_latencies_final: 985.2373110784443
+Results for checkpoint /home/mehrdad/final_project/resualts/orginal_2000/meta_model_1400.ckpt:
+  Average Latencies: 984.5115385455825
+  avg_latencies_final: 984.5115385455825
+Results for checkpoint /home/mehrdad/final_project/resualts/orginal_2000/meta_model_1500.ckpt:
+  Average Latencies: 990.6049078186469
+  avg_latencies_final: 984.5115385455825
+Results for checkpoint /home/mehrdad/final_project/resualts/orginal_2000/meta_model_1600.ckpt:
+  Average Latencies: 981.4805795300657
+  avg_latencies_final: 981.4805795300657
+Results for checkpoint /home/mehrdad/final_project/resualts/orginal_2000/meta_model_1700.ckpt:
+  Average Latencies: 984.9265101343501
+  avg_latencies_final: 981.4805795300657
+Results for checkpoint /home/mehrdad/final_project/resualts/orginal_2000/meta_model_1800.ckpt:
+  Average Latencies: 978.8134946112805
+  avg_latencies_final: 978.8134946112805
+Results for checkpoint /home/mehrdad/final_project/resualts/orginal_2000/meta_model_1900.ckpt:
+  Average Latencies: 981.4219814361832
+  avg_latencies_final: 978.8134946112805
