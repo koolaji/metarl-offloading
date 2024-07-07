@@ -408,7 +408,7 @@ if __name__ == "__main__":
 
     resource_cluster = Resources(mec_process_capable=(10.0 * 1024 * 1024 ),
                                  mobile_process_capable=(1.0 * 1024 * 1024),
-                                 bandwidth_up=8.5, bandwidth_dl=8.5)
+                                 bandwidth_up=11.5, bandwidth_dl=11.5)
 
     env = OffloadingEnvironment(resource_cluster=resource_cluster,
                                 batch_size=100,
@@ -506,8 +506,8 @@ if __name__ == "__main__":
 
     import re
     # checkpoint_files = glob.glob("/home/mehrdad/final_project/resualts/orginal_2000/meta_model_*.ckpt")
-    checkpoint_files = glob.glob("/home/mehrdad/final_project/resualts/tlbo_20_200_1000/meta_model_*.ckpt")
-    # checkpoint_files = glob.glob("/home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_*.ckpt")
+    # checkpoint_files = glob.glob("/home/mehrdad/final_project/resualts/tlbo_20_200_1000/meta_model_*.ckpt")
+    checkpoint_files = glob.glob("/home/mehrdad/final_project/resualts/mtlbo_20_300_1000/meta_model_*.ckpt")
 
     def extract_number(filename):
         number = re.search(r'\d+', os.path.basename(filename))
